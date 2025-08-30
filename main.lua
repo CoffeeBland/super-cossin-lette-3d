@@ -1,3 +1,4 @@
+require "src.util"
 require "src.states.StateMachine"
 
 local pressActions = {
@@ -22,9 +23,38 @@ function love.load()
         jump = false,
         movement = { x = 0, y = 0 }
     }
+    sprites = {}
+
+    for _,file in ipairs(love.filesystem.getDirectoryItems("img")) do
+        local name = str.split(file, ".")[1]
+        textures[name] = love.graphics.newImage("img/" .. file)
+    end
+
+    for _,file in ipairs(love.filesystem.getDirectoryItems("data")) do
+        local name = str.split(file, ".")[1]
+        local data = require("data." .. name)
+        local texture = textures[name]
+        if data.sprites then
+            for spriteName, sprite in pairs(data.sprites) do
+                for animName, anim in pairs(sprite) do
+                    for i, tile in ipairs(anim.tiles) do
+                        anim.tiles[i] = love.graphics.newQuad(
+                            tile[1] * data.tileWidth,
+                            tile[2] * data.tileHeight,
+                            data.tileWidth,
+                            data.tileHeight,
+                            texture)
+                    end
+                end
+                print(dump(sprite))
+                textures[name .. "." .. spriteName] = texture
+                sprites[name .. "." .. spriteName] = sprite
+            end
+        end
+    end
 
     -- set to first state
-    StateMachine:change(Intro)
+    StateMachine:change(Game)
 
     love.keyboard.keyPressed = {}
 end

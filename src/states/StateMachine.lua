@@ -1,5 +1,5 @@
-require "Intro"
-require "Game"
+require "src.states.Intro"
+require "src.states.Game"
 
 StateMachine = {}
 
