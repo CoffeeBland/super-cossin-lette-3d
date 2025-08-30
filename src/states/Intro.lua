@@ -22,9 +22,9 @@ function Intro:render()
     love.graphics.setColor(72/255, 72/255, 72/255)
     love.graphics.rectangle('fill', 0, 0, x, y)
 
-    local logoX, logoY = textures.coffeeBlandLogoImg:getDimensions()
+    local logoX, logoY = textures.coffeeBland:getDimensions()
     love.graphics.setColor(255/255, 255/255, 255/255)
-    love.graphics.draw(textures.coffeeBlandLogoImg, x/2 - logoX/2, y/2 - logoY/2)
+    love.graphics.draw(textures.coffeeBland, x/2 - logoX/2, y/2 - logoY/2)
 
     -- fade in
     local alpha = 1 - math.min(self.splashFrame - 30, splashFrames - 30 - self.splashFrame) / splashAlphaFrames

@@ -4,7 +4,8 @@ return {
     sprites = {
         corps = {
             idleLeft = {
-                fps = 8,
+                framesByTile = 8,
+                pingPong = true,
                 tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 } }
             }
         }

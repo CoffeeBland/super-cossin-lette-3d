@@ -15,7 +15,7 @@ function Game:enter()
             body = { shape = "circle", size = 1 },
             anim = {
                 name = "idleLeft",
-                frame = 1
+                time = 0
             },
             sprites = {
                 {
@@ -46,6 +46,9 @@ function Game:update(dt)
             self.camera.x = entity.pos.x
             self.camera.y = entity.pos.y + entity.pos.z
         end
+        if entity.anim then
+            entity.anim.time = entity.anim.time + 1
+        end
     end
 
     table.sort(self.entities,
@@ -70,9 +73,23 @@ function Game:render()
         if entity.sprites then
             for _, sprite in ipairs(entity.sprites) do
                 local spriteData = sprites[sprite.name]
+                local animData = spriteData[entity.anim.name]
+
+                -- Moi je trouve que Oui.
+                local frame = math.floor(entity.anim.time / animData.framesByTile)
+                if animData.pingPong then
+                    local tileCount = #animData.tiles * 2 - 2
+                    frame = frame % tileCount
+                    if frame >= #animData.tiles then
+                        frame = tileCount - frame
+                    end
+                else
+                    frame = frame % #animData.tiles
+                end
+
                 love.graphics.draw(
                     textures[sprite.name],
-                    spriteData[entity.anim.name].tiles[entity.anim.frame],
+                    animData.tiles[frame + 1],
                     entity.pos.x + entity.shadow.anchor.x,
                     entity.pos.y + entity.pos.z + entity.shadow.anchor.y)
             end

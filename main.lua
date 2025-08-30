@@ -13,9 +13,7 @@ function love.load()
     math.randomseed(os.time())
 
     fonts = {}
-    textures = {
-        coffeeBlandLogoImg = love.graphics.newImage("img/coffeebland.png")
-    }
+    textures = {}
     sounds = {}
     actions = {
         escape = false,
@@ -46,7 +44,6 @@ function love.load()
                             texture)
                     end
                 end
-                print(dump(sprite))
                 textures[name .. "." .. spriteName] = texture
                 sprites[name .. "." .. spriteName] = sprite
             end
