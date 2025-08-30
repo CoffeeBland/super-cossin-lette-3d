@@ -2,6 +2,7 @@ local g = 3
 local airFriction = 0.975
 local meterScale = 128
 local groundDamping = 64
+local speedMultiplier = groundDamping / 4
 --   2
 --  1 3
 -- 8   4
@@ -19,7 +20,7 @@ function Game:enter()
         {
             input = true,
             --camera = true,
-            actor = { walkSpeed = 0.5, jumpSpeed = 0.5 },
+            actor = { walkSpeed = 1, jumpSpeed = 1 },
             pos = { x = 0, y = 0, z = 0 },
             velocity = { z = 0 },
             body = { shape = "circle", size = 1 },
@@ -100,21 +101,20 @@ function Game:update(dt)
                 entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed
             end
             if entity.actions.movement.angle and entity.pos.onGround and entity.physics then
-                local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * groundDamping
-                local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * groundDamping
+                local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
+                local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * speedMultiplier
                 entity.physics.body:applyForce(dx, dy)
                 entity.physics.body:setAngle(entity.actions.movement.angle)
-            end
-            if entity.anim then
-                if entity.actions.movement.angle then
+
+                if entity.anim then
                     -- RIP
                     local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
                     entity.anim.dir = dirs[a];
                     entity.anim.name = "walk"
                 end
-                if not entity.actions.movement.angle then
-                    entity.anim.name = "walk" -- should be idle
-                end
+            end
+            if not entity.actions.movement.angle and entity.anim then
+                entity.anim.name = "walk" -- should be idle.
             end
         end
     end
@@ -187,4 +187,5 @@ function findAnim(spriteData, entityAnim)
             end
         end
     end
+    return spriteData[#spriteData]
 end
