@@ -14,12 +14,12 @@ function Game:enter()
             velocity = { z = 0 },
             body = { shape = "circle", size = 1 },
             anim = {
-                name = "idleLeft",
+                name = "walkDownRight",
                 time = 0
             },
             sprites = {
                 {
-                    name = "vieuxCossin.corps",
+                    name = "cossin.corps",
                     anchor = { x = 0, y = -20 }
                 }
             },
