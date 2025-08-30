@@ -1,7 +1,14 @@
-local g = 6
-local friction = 0.99
+local g = 3
+local airFriction = 0.975
 local meterScale = 128
 local groundDamping = 64
+--   2
+--  1 3
+-- 8   4
+--  7 5
+--   6
+local dirs = { "tl", "t", "tr", "r", "br", "b", "bl", "l" }
+local v2 = { x = 0, y = 0}
 
 Game = {}
 
@@ -12,17 +19,19 @@ function Game:enter()
         {
             input = true,
             --camera = true,
+            actor = { walkSpeed = 0.5, jumpSpeed = 0.5 },
             pos = { x = 0, y = 0, z = 0 },
             velocity = { z = 0 },
             body = { shape = "circle", size = 1 },
             anim = {
-                name = "walkDownRight",
+                name = "walk",
+                dir = "tr",
                 time = 0
             },
             sprites = {
                 {
                     name = "cossin.corps",
-                    anchor = { x = -96, y = -160 }
+                    anchor = { x = 96, y = 160 }
                 }
             },
             shadow = {
@@ -59,17 +68,13 @@ function Game:update(dt)
 
         if entity.physics then
             entity.pos.x, entity.pos.y = entity.physics.body:getWorldCenter()
-            entity.velocity.z = (entity.velocity.z + g * dt) * friction
+            entity.velocity.z = (entity.velocity.z + g * dt) * airFriction
             entity.pos.z = entity.pos.z + entity.velocity.z
             local wasOnGround = false
             entity.pos.onGround = entity.pos.z >= 0
             if entity.pos.onGround then
                 entity.pos.z = 0
-                if not wasOnGround then
-                    entity.velocity.z = entity.velocity.z * -0.5
-                else
-                    entity.velocity.z = 0
-                end
+                entity.velocity.z = 0
             end
 
             if entity.physics then
@@ -83,18 +88,33 @@ function Game:update(dt)
         end
 
         if entity.anim then
-            entity.anim.time = entity.anim.time + 1
+            entity.anim.time = entity.anim.time + dt
         end
 
         if entity.input then
-            if actions.jump and entity.pos.onGround then
-                entity.velocity.z = entity.velocity.z - 1
+            entity.actions = actions
+        end
+
+        if entity.actor then
+            if entity.actions.jump and entity.pos.onGround then
+                entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed
             end
-            if actions.movement.angle and entity.pos.onGround then
-                local dx = math.cos(actions.movement.angle) * dt * groundDamping
-                local dy = math.sin(actions.movement.angle) * dt * groundDamping
+            if entity.actions.movement.angle and entity.pos.onGround and entity.physics then
+                local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * groundDamping
+                local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * groundDamping
                 entity.physics.body:applyForce(dx, dy)
-                entity.physics.body:setAngle(actions.movement.angle)
+                entity.physics.body:setAngle(entity.actions.movement.angle)
+            end
+            if entity.anim then
+                if entity.actions.movement.angle then
+                    -- RIP
+                    local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
+                    entity.anim.dir = dirs[a];
+                    entity.anim.name = "walk"
+                end
+                if not entity.actions.movement.angle then
+                    entity.anim.name = "walk" -- should be idle
+                end
             end
         end
     end
@@ -124,10 +144,10 @@ function Game:render()
         if entity.sprites then
             for _, sprite in ipairs(entity.sprites) do
                 local spriteData = sprites[sprite.name]
-                local animData = spriteData[entity.anim.name]
+                local animData = findAnim(spriteData, entity.anim)
 
                 -- Moi je trouve que Oui.
-                local frame = math.floor(entity.anim.time / animData.framesByTile)
+                local frame = math.floor(animData.fps * entity.anim.time)
                 if animData.pingPong then
                     local tileCount = #animData.tiles * 2 - 2
                     frame = frame % tileCount
@@ -141,8 +161,29 @@ function Game:render()
                 love.graphics.draw(
                     textures[sprite.name],
                     animData.tiles[frame + 1],
-                    entity.pos.x * meterScale + sprite.anchor.x,
-                    (entity.pos.y + entity.pos.z) * meterScale + sprite.anchor.y)
+                    entity.pos.x * meterScale,
+                    (entity.pos.y + entity.pos.z) * meterScale,
+                    0,
+                    animData.flipX and -1 or 1,
+                    1,
+                    sprite.anchor.x,
+                    sprite.anchor.y)
+            end
+        end
+    end
+end
+
+function findAnim(spriteData, entityAnim)
+    for _, anim in ipairs(spriteData) do
+        if anim.name == entityAnim.name then
+            if anim.dirs then
+                for _, dir in ipairs(anim.dirs) do
+                    if dir == entityAnim.dir then
+                        return anim
+                    end
+                end
+            else
+                return anim
             end
         end
     end
