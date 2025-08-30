@@ -1,4 +1,7 @@
-StateMachine = Class{}
+require "Intro"
+require "Game"
+
+StateMachine = {}
 
 function StateMachine:init(state)
 
@@ -12,10 +15,11 @@ function StateMachine:init(state)
     self.current = self.empty
 end
 
-function StateMachine:change(stateName, params)
-    assert(self.state[stateName])
-    self.current:exit()
-    self.current = self.state[stateName]()
+function StateMachine:change(state, params)
+    if self.current then
+        self.current:exit()
+    end
+    self.current = state
     self.current:enter(params)
 end
 

@@ -1,87 +1,65 @@
-if arg[2] == "debug" then
-    require("lldebugger").start()
-end
+require "src.states.StateMachine"
 
--- START CODE HERE
-
-require "src.Dependencies"
+local pressActions = {
+    escape = "escape",
+    space = "jump",
+    enter = "action"
+}
 
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.window.setTitle("GAME")
     math.randomseed(os.time())
 
-    push:setupScreen(VIRTUAL.WIDTH, VIRTUAL.HEIGHT, WINDOW.WIDTH, WINDOW.HEIGHT, {
-        vsynch = true,
-        fullscreen = false,
-        resizable = true,
-    })
-
-    gFonts = {
-        -- fill with fonts
+    fonts = {}
+    textures = {
+        coffeeBlandLogoImg = love.graphics.newImage("img/coffeebland.png")
     }
-
-    gTextures = {
-        -- fill with textures
-    }
-    gSounds = {
-        -- fill with sounds
-    }
-
-    gStateMachine = {
-        -- fill with every state
+    sounds = {}
+    actions = {
+        escape = false,
+        action = false,
+        jump = false,
+        movement = { x = 0, y = 0 }
     }
 
     -- set to first state
-    gStateMachine:change("")
+    StateMachine:change(Intro)
 
     love.keyboard.keyPressed = {}
 end
 
 function love.resize(w, h)
-    push:resize(w, h)
 end
 
 function love.keypressed(key)
-    love.keyboard.keyPressed[key] = true
-end
-
-function love.keyboard.wasPressed(key)
-    if love.keyboard.keyPressed[key] == true then
-        return true
-    else return false end
+    for key, action in pairs(pressActions) do
+        actions[action] = true
+    end
 end
 
 function love.update(dt)
-    gStateMachine:update(dt)
-    
-    love.keyboard.keyPressed = {}
+    actions.movement.x = 0
+    if love.keyboard.isDown('left') then
+        actions.movement.x = actions.movement.x - 1
+    end
+    if love.keyboard.isDown('right') then
+        actions.movement.x = actions.movement.x + 1
+    end
+    if love.keyboard.isDown('up') then
+        actions.movement.y = actions.movement.y - 1
+    end
+    if love.keyboard.isDown('down') then
+        actions.movement.y = actions.movement.y + 1
+    end
+
+    StateMachine:update(dt)
+
+    for key, action in pairs(pressActions) do
+        actions[action] = false
+    end
 end
 
 function love.draw()
-    push:start()
-
-    -- setup BG
-
-    gStateMachine:render()
-    displayFPS()
-
-    push:finish()
-end
-
-function displayFPS()
-    -- add small font
-    love.graphics.setFont("")
-    love.graphics.setColor(0, 1, 0, 1)
-    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
-end
-
--- END CODE HERE
-
-function love.errorhandler(msg)
-    if lldebugger then
-        error(msg, 2)
-    else
-        return love_errorhandler(msg)
-    end
+    StateMachine:render()
 end
