@@ -60,13 +60,14 @@ function love.resize(w, h)
 end
 
 function love.keypressed(key)
-    for key, action in pairs(pressActions) do
-        actions[action] = true
+    if pressActions[key] then
+        actions[pressActions[key]] = true
     end
 end
 
 function love.update(dt)
     actions.movement.x = 0
+    actions.movement.y = 0
     if love.keyboard.isDown('left') then
         actions.movement.x = actions.movement.x - 1
     end
@@ -78,6 +79,11 @@ function love.update(dt)
     end
     if love.keyboard.isDown('down') then
         actions.movement.y = actions.movement.y + 1
+    end
+    if actions.movement.x ~= 0 or actions.movement.y ~= 0 then
+        actions.movement.angle = math.atan2(actions.movement.y, actions.movement.x)
+    else
+        actions.movement.angle = nil
     end
 
     StateMachine:update(dt)
