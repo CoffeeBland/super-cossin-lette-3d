@@ -33,7 +33,42 @@ return {
       },
       image = "Arche_arriere.png",
       width = 1152,
-      height = 1024
+      height = 1024,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 3,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 2,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 309,
+            y = 452,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 2, y = -26 },
+              { x = 188, y = 91 },
+              { x = -82, y = 235 },
+              { x = -271, y = 133 }
+            },
+            properties = {}
+          }
+        }
+      }
     },
     {
       id = 1,
@@ -43,7 +78,42 @@ return {
       },
       image = "Arche_avant.png",
       width = 1152,
-      height = 1024
+      height = 1024,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 568,
+            y = 888.667,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 16, y = 0 },
+              { x = 217, y = 100.333 },
+              { x = 549, y = -72 },
+              { x = 342, y = -188.667 }
+            },
+            properties = {}
+          }
+        }
+      }
     },
     {
       id = 2,

@@ -69,10 +69,10 @@ local function debug_world_draw_scissor_callback(fixture)
     return true --search continues until false
 end
 
-function physics_renderer.draw_camera(world, entity, x, y, w, h)
+function physics_renderer.draw_camera(physics, x, y, w, h)
     sx, sy = love.graphics.inverseTransformPoint(x, y)
     ex, ey = love.graphics.inverseTransformPoint(x + w, y + h)
-    world.physics:queryBoundingBox(sx, sy, ex, ey, debug_world_draw_scissor_callback)
+    physics:queryBoundingBox(sx, sy, ex, ey, debug_world_draw_scissor_callback)
 
     love.graphics.setLineWidth(1)
 
@@ -81,11 +81,11 @@ function physics_renderer.draw_camera(world, entity, x, y, w, h)
         draw_body(body)
     end
 
-    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.setColor(0, 1, 0, 1)
     love.graphics.setLineWidth(3)
     love.graphics.setPointSize(3)
 
-    local joints = world.physics:getJoints()
+    local joints = physics:getJoints()
     for i = 1, #joints do
         local x1, y1, x2, y2 = joints[i]:getAnchors()
         if x1 and x2 then
@@ -100,9 +100,9 @@ function physics_renderer.draw_camera(world, entity, x, y, w, h)
         end
     end
 
-    love.graphics.setColor(255, 0, 0, 255)
+    love.graphics.setColor(1, 0, 0, 1)
     love.graphics.setPointSize(3)
-    local contacts = world.physics:getContacts()
+    local contacts = physics:getContacts()
     for i = 1, #contacts do
         local x1, y1, x2, y2 = contacts[i]:getPositions()
         if x1 then
@@ -112,6 +112,8 @@ function physics_renderer.draw_camera(world, entity, x, y, w, h)
             love.graphics.points(x2, y2)
         end
     end
+
+    love.graphics.setColor(1, 1, 1, 1)
 end
 
 return physics_renderer

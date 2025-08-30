@@ -1,9 +1,8 @@
 local g = 3
 local airFriction = 0.975
-local meterScale = 128
 local groundDamping = 64
 local jumpMultiplier = 0.5
-local speedMultiplier = groundDamping / 4
+local speedMultiplier = 64 / 4
 --   2
 --  1 3
 -- 8   4
@@ -23,10 +22,10 @@ function Game:enter()
         {
             input = true,
             camera = true,
-            actor = { walkSpeed = 1, jumpSpeed = 1 },
+            actor = { walkSpeed = 1.5, jumpSpeed = 1.6 },
             pos = { x = 0, y = 0, z = 0 },
             velocity = { z = 0 },
-            body = { shape = "circle", size = 1 },
+            body = { shape = "circle", size = 1, type = "dynamic" },
             anim = {
                 name = "walk",
                 dir = "tr",
@@ -58,16 +57,14 @@ function Game:enter()
         for _, data in ipairs(layer.objects or {}) do
             local object = objects.byId[mapObjectsByGid[data.gid]]
 
-            local hypothenuse = 74
-            local tx = data.x / hypothenuse
-            local ty = data.y / hypothenuse
+            local tx = data.x / self.map.tileheight
+            local ty = data.y / self.map.tileheight
             local x = (tx - ty) * self.map.tilewidth / 2 + object.offsetX
             local y = (tx + ty) * self.map.tileheight / 2 + object.offsetY
-            print(x, y)
             local entity = {
                 pos = {
-                    x = x / meterScale,
-                    y = y / meterScale,
+                    x = x / METER_SCALE,
+                    y = y / METER_SCALE,
                     z = 0
                 },
                 sprites = {
@@ -75,7 +72,8 @@ function Game:enter()
                         name = object.name,
                         anchor = { x = object.offsetX, y = object.offsetY }
                     }
-                }
+                },
+                body = object.shape and { preshape = object.shape, type = "static" }
             }
             table.insert(self.entities, entity)
         end
@@ -93,12 +91,15 @@ function Game:update(dt)
         self.physics:update(dt)
 
         if entity.body and not entity.physics then
-            local body = love.physics.newBody(self.physics, entity.pos.x, entity.pos.y, "dynamic")
+            local body = love.physics.newBody(self.physics, entity.pos.x, entity.pos.y, entity.body.type)
             local shape
             if entity.body.shape == "circle" then
                 shape = love.physics.newCircleShape(entity.body.size / 2)
+            elseif entity.body.preshape then
+                shape = entity.body.preshape
             end
             local fixture = love.physics.newFixture(body, shape, 1)
+
             entity.physics = {
                 body = body,
                 shape = shape,
@@ -108,13 +109,15 @@ function Game:update(dt)
 
         if entity.physics then
             entity.pos.x, entity.pos.y = entity.physics.body:getWorldCenter()
-            entity.velocity.z = (entity.velocity.z + g * dt) * airFriction
-            entity.pos.z = entity.pos.z + entity.velocity.z
-            local wasOnGround = false
-            entity.pos.onGround = entity.pos.z >= 0
-            if entity.pos.onGround then
-                entity.pos.z = 0
-                entity.velocity.z = 0
+            if entity.velocity then
+                entity.velocity.z = (entity.velocity.z + g * dt) * airFriction
+                entity.pos.z = entity.pos.z + entity.velocity.z
+                local wasOnGround = false
+                entity.pos.onGround = entity.pos.z >= 0
+                if entity.pos.onGround then
+                    entity.pos.z = 0
+                    entity.velocity.z = 0
+                end
             end
         end
 
@@ -169,7 +172,7 @@ function Game:render()
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
     love.graphics.scale(0.33)
-    love.graphics.translate(-self.camera.x * meterScale, -self.camera.y * meterScale)
+    love.graphics.translate(-self.camera.x * METER_SCALE, -self.camera.y * METER_SCALE)
     love.graphics.clear(0.2, 0.5, 0.4)
 
     self.batch:clear()
@@ -195,8 +198,8 @@ function Game:render()
          if entity.shadow then
             love.graphics.draw(
                 textures[entity.shadow.name],
-                entity.pos.x * meterScale + entity.shadow.anchor.x,
-                entity.pos.y * meterScale + entity.shadow.anchor.y)
+                entity.pos.x * METER_SCALE + entity.shadow.anchor.x,
+                entity.pos.y * METER_SCALE + entity.shadow.anchor.y)
          end
     end
     love.graphics.setBlendMode("alpha")
@@ -223,8 +226,8 @@ function Game:render()
                     love.graphics.draw(
                         textures[sprite.name],
                         animData.tiles[frame + 1],
-                        entity.pos.x * meterScale,
-                        (entity.pos.y + entity.pos.z) * meterScale,
+                        entity.pos.x * METER_SCALE,
+                        (entity.pos.y + entity.pos.z) * METER_SCALE,
                         0,
                         animData.flipX and -1 or 1,
                         1,
@@ -233,8 +236,8 @@ function Game:render()
                 else
                     love.graphics.draw(
                         textures[sprite.name],
-                        entity.pos.x * meterScale,
-                        (entity.pos.y + entity.pos.z) * meterScale,
+                        entity.pos.x * METER_SCALE,
+                        (entity.pos.y + entity.pos.z) * METER_SCALE,
                         0,
                         1,
                         1,

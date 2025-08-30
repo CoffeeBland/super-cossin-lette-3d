@@ -1,4 +1,5 @@
 require "src.util"
+require "src.constants"
 require "src.states.StateMachine"
 
 local pressActions = {
@@ -47,6 +48,21 @@ function love.load()
                     object.offsetY = object.properties and object.properties.offsetY or 0
                     objects.byId[object.id] = object
                     objects.byName[name] = object
+                    objects.shapes = {}
+
+                    if object.objectGroup and object.objectGroup.objects then
+                        for _, subobject in ipairs(object.objectGroup.objects) do
+                            if subobject.shape == "polygon" then
+                                local vertices = {}
+                                for _, point in ipairs(subobject.polygon) do
+                                    table.insert(vertices, (point.x + subobject.x - object.offsetX) / METER_SCALE)
+                                    table.insert(vertices, (point.y + subobject.y - object.offsetY) / METER_SCALE)
+                                end
+                                print(dump(vertices))
+                                object.shape = love.physics.newPolygonShape(vertices)
+                            end
+                        end
+                    end
                 end
             end
 
