@@ -2,6 +2,7 @@ local g = 3
 local airFriction = 0.975
 local meterScale = 128
 local groundDamping = 64
+local jumpMultiplier = 0.5
 local speedMultiplier = groundDamping / 4
 --   2
 --  1 3
@@ -32,12 +33,12 @@ function Game:enter()
             sprites = {
                 {
                     name = "cossin.corps",
-                    anchor = { x = 96, y = 160 }
+                    anchor = { x = 96, y = 236 }
                 }
             },
             shadow = {
-                name = "vieuxCossinShadow",
-                anchor = { x = 0, y = 0 }
+                name = "cossinOmbre",
+                anchor = { x = -96, y = -32 }
             }
         }
     }
@@ -98,7 +99,7 @@ function Game:update(dt)
 
         if entity.actor then
             if entity.actions.jump and entity.pos.onGround then
-                entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed
+                entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed * jumpMultiplier
             end
             if entity.actions.movement.angle and entity.pos.onGround and entity.physics then
                 local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
@@ -130,7 +131,9 @@ function Game:render()
     love.graphics.translate(w / 2, h / 2)
     love.graphics.translate(-self.camera.x, -self.camera.y)
     love.graphics.scale(0.33)
+    love.graphics.clear(0.2, 0.5, 0.4)
 
+    love.graphics.setBlendMode("multiply", "premultiplied")
     for _, entity in ipairs(self.entities) do
          if entity.shadow then
             love.graphics.draw(
@@ -139,6 +142,7 @@ function Game:render()
                 entity.pos.y * meterScale + entity.shadow.anchor.y)
          end
     end
+    love.graphics.setBlendMode("alpha")
 
     for _, entity in ipairs(self.entities) do
         if entity.sprites then

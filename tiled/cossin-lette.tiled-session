@@ -1,0 +1,51 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "map1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1179,
+                "y": -67
+            }
+        },
+        "objects.tsx": {
+            "dynamicWrapping": true
+        },
+        "tileset.tsx": {
+            "dynamicWrapping": false
+        }
+    },
+    "last.exportedFilePath": "/home/deck/Documents/super-cossin-lette-3d/tiled",
+    "last.imagePath": "/home/deck/Documents/super-cossin-lette-3d/img",
+    "last.worldFilePath": "/home/deck/Documents/super-cossin-lette-3d/tiled",
+    "loadedWorlds": [
+        "/home/deck/Documents/super-cossin-lette-3d/tiled/aaa.world",
+        "/home/deck/Documents/super-cossin-lette-3d/tiled/aaa.world"
+    ],
+    "map.fixedSize": false,
+    "map.lastUsedExportFilter": "Lua files (*.lua)",
+    "map.lastUsedFormat": "tmx",
+    "map.orientation": "2",
+    "map.tileHeight": 72,
+    "map.tileWidth": 128,
+    "openFiles": [
+    ],
+    "project": "cossin-lette.tiled-project",
+    "recentFiles": [
+        "map1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 74,
+        "width": 128
+    },
+    "tileset.type": 0
+}
