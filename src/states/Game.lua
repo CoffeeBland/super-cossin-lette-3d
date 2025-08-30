@@ -17,10 +17,12 @@ Game = {}
 function Game:enter()
     self.physics = love.physics.newWorld(0, 0, true)
     self.camera = { x = 0, y = 0 }
+    self.map = require("maps/map1")
+    self.batch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {
         {
             input = true,
-            --camera = true,
+            camera = true,
             actor = { walkSpeed = 1, jumpSpeed = 1 },
             pos = { x = 0, y = 0, z = 0 },
             velocity = { z = 0 },
@@ -42,6 +44,42 @@ function Game:enter()
             }
         }
     }
+
+    local mapObjectsByGid = {}
+    for _, data in ipairs(self.map.tilesets) do
+        if data.name == "objects" then
+            for i, object in pairs(objects.byId) do
+                mapObjectsByGid[data.firstgid + i] = object.id
+            end
+        end
+    end
+
+    for _, layer in ipairs(self.map.layers) do
+        for _, data in ipairs(layer.objects or {}) do
+            local object = objects.byId[mapObjectsByGid[data.gid]]
+
+            local hypothenuse = 74
+            local tx = data.x / hypothenuse
+            local ty = data.y / hypothenuse
+            local x = (tx - ty) * self.map.tilewidth / 2 + object.offsetX
+            local y = (tx + ty) * self.map.tileheight / 2 + object.offsetY
+            print(x, y)
+            local entity = {
+                pos = {
+                    x = x / meterScale,
+                    y = y / meterScale,
+                    z = 0
+                },
+                sprites = {
+                    {
+                        name = object.name,
+                        anchor = { x = object.offsetX, y = object.offsetY }
+                    }
+                }
+            }
+            table.insert(self.entities, entity)
+        end
+    end
 end
 
 function Game:exit()
@@ -78,15 +116,11 @@ function Game:update(dt)
                 entity.pos.z = 0
                 entity.velocity.z = 0
             end
-
-            if entity.physics then
-                entity.physics.body:setLinearDamping(entity.pos.onGround and groundDamping or 0)
-            end
         end
 
         if entity.camera then
             self.camera.x = entity.pos.x
-            self.camera.y = entity.pos.y + entity.pos.z
+            self.camera.y = entity.pos.y
         end
 
         if entity.anim then
@@ -100,6 +134,7 @@ function Game:update(dt)
         if entity.actor then
             if entity.actions.jump and entity.pos.onGround then
                 entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed * jumpMultiplier
+                entity.pos.onGround = false
             end
             if entity.actions.movement.angle and entity.pos.onGround and entity.physics then
                 local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
@@ -118,20 +153,42 @@ function Game:update(dt)
                 entity.anim.name = "walk" -- should be idle.
             end
         end
+
+        if entity.physics then
+            entity.physics.body:setLinearDamping(entity.pos.onGround and groundDamping or 0)
+        end
     end
 
     table.sort(self.entities,
         function (a, b)
-            return a.pos.y + a.pos.z > b.pos.y + b.pos.z
+            return a.pos.y < b.pos.y
         end)
 end
 
 function Game:render()
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
-    love.graphics.translate(-self.camera.x, -self.camera.y)
     love.graphics.scale(0.33)
+    love.graphics.translate(-self.camera.x * meterScale, -self.camera.y * meterScale)
     love.graphics.clear(0.2, 0.5, 0.4)
+
+    self.batch:clear()
+    for _, layer in ipairs(self.map.layers) do
+        if layer.type == "tilelayer" then
+            for _, chunk in ipairs(layer.chunks) do
+                for i, tile in ipairs(chunk.data) do
+                    if tile > 0 then
+                        local tx = layer.x + chunk.x + ((i - 1) % chunk.width)
+                        local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width)
+                        local x = (tx - ty - 1) * self.map.tilewidth / 2
+                        local y = (tx + ty) * self.map.tileheight / 2
+                        self.batch:add(tileset.tiles[tile], x, y)
+                    end
+                end
+            end
+        end
+    end
+    love.graphics.draw(self.batch, 0, 0)
 
     love.graphics.setBlendMode("multiply", "premultiplied")
     for _, entity in ipairs(self.entities) do
@@ -148,30 +205,42 @@ function Game:render()
         if entity.sprites then
             for _, sprite in ipairs(entity.sprites) do
                 local spriteData = sprites[sprite.name]
-                local animData = findAnim(spriteData, entity.anim)
+                if spriteData then
+                    local animData = findAnim(spriteData, entity.anim)
 
-                -- Moi je trouve que Oui.
-                local frame = math.floor(animData.fps * entity.anim.time)
-                if animData.pingPong then
-                    local tileCount = #animData.tiles * 2 - 2
-                    frame = frame % tileCount
-                    if frame >= #animData.tiles then
-                        frame = tileCount - frame
+                    -- Moi je trouve que Oui.
+                    local frame = math.floor(animData.fps * entity.anim.time)
+                    if animData.pingPong then
+                        local tileCount = #animData.tiles * 2 - 2
+                        frame = frame % tileCount
+                        if frame >= #animData.tiles then
+                            frame = tileCount - frame
+                        end
+                    else
+                        frame = frame % #animData.tiles
                     end
-                else
-                    frame = frame % #animData.tiles
-                end
 
-                love.graphics.draw(
-                    textures[sprite.name],
-                    animData.tiles[frame + 1],
-                    entity.pos.x * meterScale,
-                    (entity.pos.y + entity.pos.z) * meterScale,
-                    0,
-                    animData.flipX and -1 or 1,
-                    1,
-                    sprite.anchor.x,
-                    sprite.anchor.y)
+                    love.graphics.draw(
+                        textures[sprite.name],
+                        animData.tiles[frame + 1],
+                        entity.pos.x * meterScale,
+                        (entity.pos.y + entity.pos.z) * meterScale,
+                        0,
+                        animData.flipX and -1 or 1,
+                        1,
+                        sprite.anchor.x,
+                        sprite.anchor.y)
+                else
+                    love.graphics.draw(
+                        textures[sprite.name],
+                        entity.pos.x * meterScale,
+                        (entity.pos.y + entity.pos.z) * meterScale,
+                        0,
+                        1,
+                        1,
+                        sprite.anchor.x,
+                        sprite.anchor.y)
+                end
             end
         end
     end

@@ -30,5 +30,7 @@ function Intro:render()
     local alpha = 1 - math.min(self.splashFrame - 30, splashFrames - 30 - self.splashFrame) / splashAlphaFrames
     love.graphics.setColor(0/255, 0/255, 0/255, alpha)
     love.graphics.rectangle('fill', 0, 0, x, y)
+
+    love.graphics.setColor(1, 1, 1, 1)
     return
 end
