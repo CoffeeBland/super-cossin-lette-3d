@@ -1,11 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="128" tileheight="74" tilecount="119" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="128" tileheight="74" tilecount="148" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
- <tile id="96">
+ <tile id="96" probability="50">
   <image source="../img/Tiles/Tuile_herbe-2.png" width="128" height="74"/>
  </tile>
- <tile id="97">
+ <tile id="97" probability="5">
   <image source="../img/Tiles/Tuile_herbe-1.png" width="128" height="74"/>
+ </tile>
+ <tile id="122">
+  <image source="../img/Tiles/Tuile_gazon-2.png" width="128" height="74"/>
+ </tile>
+ <tile id="124">
+  <image source="../img/Tiles/Tuile_gazon-4.png" width="128" height="74"/>
+ </tile>
+ <tile id="130">
+  <image source="../img/Tiles/Tuile_gazon-10.png" width="128" height="74"/>
+ </tile>
+ <tile id="128">
+  <image source="../img/Tiles/Tuile_gazon-8.png" width="128" height="74"/>
+ </tile>
+ <tile id="127">
+  <image source="../img/Tiles/Tuile_gazon-7.png" width="128" height="74"/>
+ </tile>
+ <tile id="134">
+  <image source="../img/Tiles/Tuile_gazon-14.png" width="128" height="74"/>
+ </tile>
+ <tile id="132">
+  <image source="../img/Tiles/Tuile_gazon-12.png" width="128" height="74"/>
+ </tile>
+ <tile id="129">
+  <image source="../img/Tiles/Tuile_gazon-9.png" width="128" height="74"/>
+ </tile>
+ <tile id="137">
+  <image source="../img/Tiles/Tuile_gazon-17.png" width="128" height="74"/>
+ </tile>
+ <tile id="123">
+  <image source="../img/Tiles/Tuile_gazon-3.png" width="128" height="74"/>
+ </tile>
+ <tile id="135">
+  <image source="../img/Tiles/Tuile_gazon-15.png" width="128" height="74"/>
+ </tile>
+ <tile id="125">
+  <image source="../img/Tiles/Tuile_gazon-5.png" width="128" height="74"/>
+ </tile>
+ <tile id="131">
+  <image source="../img/Tiles/Tuile_gazon-11.png" width="128" height="74"/>
+ </tile>
+ <tile id="136">
+  <image source="../img/Tiles/Tuile_gazon-16.png" width="128" height="74"/>
+ </tile>
+ <tile id="133">
+  <image source="../img/Tiles/Tuile_gazon-13.png" width="128" height="74"/>
+ </tile>
+ <tile id="138">
+  <image source="../img/Tiles/Tuile_gazon-18.png" width="128" height="74"/>
+ </tile>
+ <tile id="139">
+  <image source="../img/Tiles/Tuile_gazon-19.png" width="128" height="74"/>
+ </tile>
+ <tile id="147">
+  <image source="../img/Tiles/Tuile_gazon-27.png" width="128" height="74"/>
+ </tile>
+ <tile id="142">
+  <image source="../img/Tiles/Tuile_gazon-22.png" width="128" height="74"/>
+ </tile>
+ <tile id="140">
+  <image source="../img/Tiles/Tuile_gazon-20.png" width="128" height="74"/>
+ </tile>
+ <tile id="141">
+  <image source="../img/Tiles/Tuile_gazon-21.png" width="128" height="74"/>
+ </tile>
+ <tile id="146">
+  <image source="../img/Tiles/Tuile_gazon-26.png" width="128" height="74"/>
+ </tile>
+ <tile id="145">
+  <image source="../img/Tiles/Tuile_gazon-25.png" width="128" height="74"/>
+ </tile>
+ <tile id="144">
+  <image source="../img/Tiles/Tuile_gazon-24.png" width="128" height="74"/>
+ </tile>
+ <tile id="143">
+  <image source="../img/Tiles/Tuile_gazon-23.png" width="128" height="74"/>
+ </tile>
+ <tile id="148">
+  <image source="../img/Tiles/Tuile_gazon-28.png" width="128" height="74"/>
+ </tile>
+ <tile id="149">
+  <image source="../img/Tiles/Tuile_gazon-29.png" width="128" height="74"/>
+ </tile>
+ <tile id="150">
+  <image source="../img/Tiles/Tuile_gazon-30.png" width="128" height="74"/>
+ </tile>
+ <tile id="151">
+  <image source="../img/Tiles/Tuile_gazon-31.png" width="128" height="74"/>
  </tile>
  <tile id="1">
   <image source="../img/Tiles/Tuile_chemin-1.png" width="128" height="74"/>
@@ -813,4 +900,9 @@
    <frame tileid="93" duration="200"/>
   </animation>
  </tile>
+ <wangsets>
+  <wangset name="Unnamed Set" type="mixed" tile="-1">
+   <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+  </wangset>
+ </wangsets>
 </tileset>
