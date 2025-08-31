@@ -8,8 +8,8 @@ local fruitPickupAnimFrames = 20
 local firstFruitOffset = { x = 0, y = 0, z = -1.3 }
 local fruitOffset = { x = 0, y = 0, z = -0.7 }
 local fruitJumpSpeed = 1
-local fruitPickupForce = 0.5
-local eatCooldown = 180
+local fruitPickupForce = 0.7
+local eatCooldown = 600
 --   2
 --  1 3
 -- 8   4

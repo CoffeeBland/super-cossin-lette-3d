@@ -15,6 +15,7 @@ function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.window.setTitle("Super Cossin Lette 3D")
     love.window.setMode(1024, 768, { resizable = true })
+    love.window.setVSync(1)
     math.randomseed(os.time())
 
     fonts = {}
@@ -134,7 +135,7 @@ function love.load()
         end
     end
 
-    StateMachine:change(Game)
+    StateMachine:change(Intro)
 
     love.keyboard.keyPressed = {}
 end
