@@ -225,6 +225,28 @@ return {
                 fps = 0,
                 tiles = { { 4, 5 } }
             },
+            -- Manger
+            {
+                name = "eat",
+                dirs = { "l", "tl", "bl", "b" },
+                fps = 10,
+                oneShot = true,
+                tiles = {
+                    { 2, 7 }, { 3, 7 }, { 4, 7 },
+                    { 0, 8 }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8 }
+                }
+            },
+            {
+                name = "eat",
+                dirs = { "r", "tr", "br", "t" },
+                fps = 10,
+                flipX = true,
+                oneShot = true,
+                tiles = {
+                    { 2, 7 }, { 3, 7 }, { 4, 7 },
+                    { 0, 8 }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8 }
+                }
+            }
         },
         cossinPiedBack = {
             {
@@ -447,6 +469,64 @@ return {
                 fps = 0,
                 tiles = { { 4, 5 } }
             },
+            -- Eat
+            {
+                name = "eat",
+                dirs = { "b" },
+                fps = 0,
+                tiles = { { 2, 0 } }
+            },
+            {
+                name = "eat",
+                dirs = { "bl" },
+                fps = 0,
+                tiles = { { 2, 1 } }
+            },
+            {
+                name = "eat",
+                dirs = { "l" },
+                fps = 0,
+                tiles = { { 2, 2 } }
+            },
+            {
+                name = "eat",
+                dirs = { "tl" },
+                fps = 0,
+                tiles = { { 2, 3 } }
+            },
+            {
+                name = "eat",
+                dirs = { "t" },
+                fps = 0,
+                tiles = { { 2, 4 } }
+            },
+            {
+                name = "eat",
+                dirs = { "tr" },
+                fps = 0,
+                flipX = true,
+                tiles = { { 2, 3 } }
+            },
+            {
+                name = "eat",
+                dirs = { "r" },
+                fps = 0,
+                flipX = true,
+                tiles = { { 2, 2 } }
+            },
+            {
+                name = "eat",
+                dirs = { "br" },
+                fps = 0,
+                flipX = true,
+                tiles = { { 2, 1 } }
+            },
+            {
+                name = "eat",
+                dirs = { "b" },
+                fps = 0,
+                tiles = { { 2, 0 } }
+            },
         },
         cossinPiedFront = {
             {
@@ -662,6 +742,64 @@ return {
                 dirs = { "t" },
                 fps = 0,
                 tiles = { { 4, 5 } }
+            },
+            -- Eat
+            {
+                name = "eat",
+                dirs = { "b" },
+                fps = 0,
+                tiles = { { 2, 0 } }
+            },
+            {
+                name = "eat",
+                dirs = { "bl" },
+                fps = 0,
+                tiles = { { 2, 1 } }
+            },
+            {
+                name = "eat",
+                dirs = { "l" },
+                fps = 0,
+                tiles = { { 2, 2 } }
+            },
+            {
+                name = "eat",
+                dirs = { "tl" },
+                fps = 0,
+                tiles = { { 2, 3 } }
+            },
+            {
+                name = "eat",
+                dirs = { "t" },
+                fps = 0,
+                tiles = { { 2, 4 } }
+            },
+            {
+                name = "eat",
+                dirs = { "tr" },
+                fps = 0,
+                flipX = true,
+                tiles = { { 2, 3 } }
+            },
+            {
+                name = "eat",
+                dirs = { "r" },
+                fps = 0,
+                flipX = true,
+                tiles = { { 2, 2 } }
+            },
+            {
+                name = "eat",
+                dirs = { "br" },
+                fps = 0,
+                flipX = true,
+                tiles = { { 2, 1 } }
+            },
+            {
+                name = "eat",
+                dirs = { "b" },
+                fps = 0,
+                tiles = { { 2, 0 } }
             },
         }
     }
