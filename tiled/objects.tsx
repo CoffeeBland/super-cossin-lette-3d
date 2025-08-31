@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="58" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="73" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <properties>
@@ -597,5 +597,185 @@
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_ultra.png" width="256" height="148"/>
+ </tile>
+ <tile id="73">
+  <properties>
+   <property name="offsetX" type="float" value="302.5"/>
+   <property name="offsetY" type="float" value="170"/>
+  </properties>
+  <image source="../img/Picnic.png" width="605" height="459"/>
+  <objectgroup draworder="index" id="3">
+   <object id="2" x="31" y="260">
+    <polygon points="0,8 326,-201 449,-122 438,-47 499,-16 494,30 268,174 199,140 193,102 88,44 65,62"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="74">
+  <properties>
+   <property name="offsetX" type="float" value="156.5"/>
+   <property name="offsetY" type="float" value="190"/>
+  </properties>
+  <image source="../img/Roche_gros_mousse-1.png" width="313" height="321"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="28" y="235">
+    <polygon points="1,2 85,-53 261,18 176,79"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="75">
+  <properties>
+   <property name="offsetX" type="float" value="156.5"/>
+   <property name="offsetY" type="float" value="190"/>
+  </properties>
+  <image source="../img/Roche_gros_mousse-2.png" width="313" height="321"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="36" y="224">
+    <polygon points="-3,2 97,-59 255,15 159,88"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="76">
+  <properties>
+   <property name="offsetX" type="float" value="156.5"/>
+   <property name="offsetY" type="float" value="220"/>
+  </properties>
+  <image source="../img/Roche_gros_mousse-3.png" width="313" height="321"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="50" y="241">
+    <polygon points="0,0 100,-40 232,27 139,75"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="77">
+  <properties>
+   <property name="offsetX" type="float" value="156.5"/>
+   <property name="offsetY" type="float" value="225"/>
+  </properties>
+  <image source="../img/Roche_gros_mousse-4.png" width="313" height="321"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="94" y="257">
+    <polygon points="-6,3 71,-40 180,18 106,61"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="78">
+  <properties>
+   <property name="offsetX" type="float" value="156.5"/>
+   <property name="offsetY" type="float" value="210"/>
+  </properties>
+  <image source="../img/Roche_gros_mousse-5.png" width="313" height="321"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="70" y="244">
+    <polygon points="0,4 81,-33 202,27 115,69"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="79">
+  <properties>
+   <property name="offsetX" type="float" value="156.5"/>
+   <property name="offsetY" type="float" value="185"/>
+  </properties>
+  <image source="../img/Roche_gros_mousse-6.png" width="313" height="321"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="25" y="219">
+    <polygon points="-5,12 97,-44 266,37 165,97"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="80">
+  <properties>
+   <property name="offsetX" type="float" value="156.5"/>
+   <property name="offsetY" type="float" value="225"/>
+  </properties>
+  <image source="../img/Roche_gros_mousse-7.png" width="313" height="321"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="75" y="255">
+    <polygon points="0,0 120,61 214,8 97,-51"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="81">
+  <properties>
+   <property name="offsetX" type="float" value="161"/>
+   <property name="offsetY" type="float" value="175"/>
+  </properties>
+  <image source="../img/Roche_gros-1.png" width="322" height="319"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="26" y="228">
+    <polygon points="0,0 107,-47 266,28 164,84"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="82">
+  <properties>
+   <property name="offsetX" type="float" value="161"/>
+   <property name="offsetY" type="float" value="205"/>
+  </properties>
+  <image source="../img/Roche_gros-2.png" width="322" height="319"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="85" y="247">
+    <polygon points="0,0 82,-40 192,18 111,61"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="83">
+  <properties>
+   <property name="offsetX" type="float" value="161"/>
+   <property name="offsetY" type="float" value="175"/>
+  </properties>
+  <image source="../img/Roche_gros-3.png" width="322" height="319"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="40" y="223">
+    <polygon points="1,1 101,-48 256,25 151,82"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="84">
+  <properties>
+   <property name="offsetX" type="float" value="161"/>
+   <property name="offsetY" type="float" value="205"/>
+  </properties>
+  <image source="../img/Roche_gros-4.png" width="322" height="319"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="48" y="230">
+    <polygon points="0,0 91,-47 230,27 140,78"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="85">
+  <properties>
+   <property name="offsetX" type="float" value="161"/>
+   <property name="offsetY" type="float" value="190"/>
+  </properties>
+  <image source="../img/Roche_gros-5.png" width="322" height="319"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="27" y="224">
+    <polygon points="-3,9 158,89 266,24 103,-50"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="86">
+  <properties>
+   <property name="offsetX" type="float" value="161"/>
+   <property name="offsetY" type="float" value="215"/>
+  </properties>
+  <image source="../img/Roche_gros-6.png" width="322" height="319"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="77" y="250">
+    <polygon points="-2,4 78,-40 201,23 118,71"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="87">
+  <properties>
+   <property name="offsetX" type="float" value="161"/>
+   <property name="offsetY" type="float" value="215"/>
+  </properties>
+  <image source="../img/Roche_gros-7.png" width="322" height="319"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="76" y="250">
+    <polygon points="0,0 89,-45 212,17 120,64"/>
+   </object>
+  </objectgroup>
  </tile>
 </tileset>
