@@ -56,15 +56,15 @@
         },
         "map1.tmx": {
             "expandedObjectLayers": [
-                14,
-                12,
                 17,
-                18
+                18,
+                14,
+                12
             ],
             "scale": 0.125,
-            "selectedLayer": 4,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1488,
+                "x": 1484,
                 "y": 1468
             }
         },
@@ -98,12 +98,12 @@
     ],
     "project": "cossin-lette.tiled-project",
     "recentFiles": [
-        "C:/Users/Lenovo/Documents/GitHub/super-cossin-lette-3d/maps/Buissons.tsx",
-        "Roches.tsx",
         "map1.tmx",
+        "Roches.tsx",
+        "Fruits.tsx",
+        "C:/Users/Lenovo/Documents/GitHub/super-cossin-lette-3d/maps/Buissons.tsx",
         "D:/SuperCossinLette3D.tmx",
         "D:/rules.tmx",
-        "Fruits.tsx",
         "Chemin.tsx",
         "objects.tsx",
         "cossin.tsx"
