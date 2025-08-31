@@ -136,6 +136,11 @@
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Buisson_petit-1.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="39.3522" y="103.701" width="54.0138" height="23.3917" rotation="4.47813">
+    <ellipse/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="15">
   <properties>
@@ -143,6 +148,11 @@
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Buisson_petit-2.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="35.6302" y="101.536" width="60.464" height="23.755" rotation="4.47813">
+    <ellipse/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="16">
   <properties>
@@ -217,6 +227,7 @@
  </tile>
  <tile id="32">
   <properties>
+   <property name="fruit" value="apple"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -229,6 +240,7 @@
  </tile>
  <tile id="33">
   <properties>
+   <property name="fruit" value="banana"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -241,6 +253,7 @@
  </tile>
  <tile id="34">
   <properties>
+   <property name="fruit" value="pineapple"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -253,6 +266,7 @@
  </tile>
  <tile id="35">
   <properties>
+   <property name="fruit" value="pear"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -265,6 +279,7 @@
  </tile>
  <tile id="36">
   <properties>
+   <property name="fruit" value="tomato"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -277,6 +292,7 @@
  </tile>
  <tile id="37">
   <properties>
+   <property name="fruit" value="orange"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -289,6 +305,7 @@
  </tile>
  <tile id="38">
   <properties>
+   <property name="fruit" value="mushroom"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -301,6 +318,7 @@
  </tile>
  <tile id="39">
   <properties>
+   <property name="fruit" value="grape"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -313,6 +331,7 @@
  </tile>
  <tile id="40">
   <properties>
+   <property name="fruit" value="durian"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -325,6 +344,7 @@
  </tile>
  <tile id="41">
   <properties>
+   <property name="fruit" value="peach"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -337,6 +357,7 @@
  </tile>
  <tile id="42">
   <properties>
+   <property name="fruit" value="radish"/>
    <property name="offsetX" type="float" value="0"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
@@ -383,7 +404,7 @@
   <image source="../img/Roche_moyenne-1.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="8.5" y="102.5">
-    <polygon points="0,0 56.5,34.5 100.5,12.5 45.5,-20"/>
+    <polygon points="-2,1 60.5,35.5 105,13 45.5,-20"/>
    </object>
   </objectgroup>
  </tile>
@@ -395,7 +416,7 @@
   <image source="../img/Roche_moyenne-2.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="11" y="108.5">
-    <polygon points="-1,-1 56,28 103.5,2.5 46.5,-25.5"/>
+    <polygon points="-1.5,0 55.5,27.5 106.5,1.5 48,-25"/>
    </object>
   </objectgroup>
  </tile>
@@ -407,7 +428,7 @@
   <image source="../img/Roche_moyenne-3.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="8" y="100.5">
-    <polygon points="0,0 55.5,28 107.5,5.5 53,-22.5"/>
+    <polygon points="-1,4 56,31 110,6 53,-22.5"/>
    </object>
   </objectgroup>
  </tile>
@@ -419,7 +440,7 @@
   <image source="../img/Roche_moyenne-4.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="14" y="103.5">
-    <polygon points="-5,-1 53,32.5 93,13.5 37.5,-17.5"/>
+    <polygon points="-5,-1 55.5,33.5 97,13.5 37.5,-20.5"/>
    </object>
   </objectgroup>
  </tile>
@@ -431,7 +452,7 @@
   <image source="../img/Roche_moyenne-5.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="10.5" y="107.5">
-    <polygon points="0,0 52,25.5 104,3 52,-21.5"/>
+    <polygon points="-3,2 54.5,29 106,3.5 47,-22.5"/>
    </object>
   </objectgroup>
  </tile>
@@ -443,7 +464,7 @@
   <image source="../img/Roche_moyenne-6.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="7.5" y="101">
-    <polygon points="0,0 56,30 109.5,4.5 54.5,-21"/>
+    <polygon points="-2,2 56,30 114,4 58,-22.5"/>
    </object>
   </objectgroup>
  </tile>
@@ -455,7 +476,7 @@
   <image source="../img/Roche_petit-1.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="37.5" y="45.5">
-    <polygon points="0,2 30,15 52.5,1 24.5,-11.5"/>
+    <polygon points="-3,3 29,15.5 54.5,0 24.5,-11.5"/>
    </object>
   </objectgroup>
  </tile>
@@ -467,7 +488,7 @@
   <image source="../img/Roche_petit-2.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="26" y="45">
-    <polygon points="0,0 41.5,17.5 71,-2 30,-17"/>
+    <polygon points="-2,-0.5 44,18 73,-2 28.5,-16.5"/>
    </object>
   </objectgroup>
  </tile>
@@ -479,7 +500,7 @@
   <image source="../img/Roche_petit-3.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="37" y="46">
-    <polygon points="0,0 28,12 59,-3 27.5,-12"/>
+    <polygon points="-3.5,-0.5 26.5,12.5 62,-3.5 29.5,-14.5"/>
    </object>
   </objectgroup>
  </tile>
@@ -491,7 +512,7 @@
   <image source="../img/Roche_petit-4.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="34.5" y="49">
-    <polygon points="0,0 28.5,14 59,-1.5 27,-13.5"/>
+    <polygon points="-3.5,0 28.5,14 60,-1.5 27,-13.5"/>
    </object>
   </objectgroup>
  </tile>
@@ -503,7 +524,7 @@
   <image source="../img/Roche_petit-5.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="30.5" y="44.5">
-    <polygon points="0,0 32,19 61.5,4.5 30.5,-12"/>
+    <polygon points="0,1 32,19.5 63.5,4.5 31,-12"/>
    </object>
   </objectgroup>
  </tile>

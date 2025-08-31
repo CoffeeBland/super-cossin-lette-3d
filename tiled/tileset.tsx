@@ -438,11 +438,6 @@
    <property name="Type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-1.png" width="128" height="74"/>
-  <objectgroup draworder="index" id="5">
-   <object id="4" x="-4.66667" y="35.6667">
-    <polygon points="0,0 69.6667,-41 139.333,1.33333 68.3333,42.6667"/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="56">
   <properties>
