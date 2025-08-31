@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.1" name="objects" tilewidth="1152" tileheight="1286" tilecount="8" columns="0" objectalignment="topleft">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="8" columns="0" objectalignment="topleft">
  <editorsettings>
   <export target="../data/objects.lua" format="lua"/>
  </editorsettings>
@@ -55,6 +55,17 @@
    <property name="offsetY" type="float" value="1210"/>
   </properties>
   <image source="../img/Tronc1.png" width="1024" height="1286"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="1286" width="1024">
+    <ellipse/>
+   </object>
+   <object id="2" x="0" y="1286" width="1024">
+    <ellipse/>
+   </object>
+   <object id="4" x="396" y="1165.33" width="216" height="70.6667">
+    <ellipse/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="6">
   <properties>

@@ -3,18 +3,56 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map1.tmx",
+    "activeFile": "tileset.tsx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
-        "map1.tmx": {
-            "scale": 0.5,
+        "": {
+            "scaleInDock": 1
+        },
+        ":/automap-tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Documents/GitHub/super-cossin-lette-3d/maps/map1_prototype.tmx": {
+            "scale": 0.14253088426527957,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1341,
-                "y": 873
+                "x": 1076.9595711923364,
+                "y": 1178.6919085362379
+            }
+        },
+        "D:/SuperCossinLette3D/tiled/Chemin.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/SuperCossinLette3D/tiled/Fruits.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/SuperCossinLette3D/tiled/Roches.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/SuperCossinLette3D/tiled/cossin.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/SuperCossinLette3D/tiled/objects.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/SuperCossinLette3D/tiled/tileset.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "chemin.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1753.0303030303028,
+                "y": 15.151515151515241
             }
         },
         "objects.tsx": {
@@ -22,16 +60,21 @@
             "scaleInDock": 0.25,
             "scaleInEditor": 0.12
         },
+        "test.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 0.125
+        },
         "tileset.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
-            "scaleInEditor": 0.12
+            "scaleInEditor": 2
         }
     },
-    "last.exportedFilePath": "/home/deck/Documents/super-cossin-lette-3d/data",
-    "last.imagePath": "/home/deck/Documents/super-cossin-lette-3d/img",
+    "last.exportedFilePath": "D:/Documents/GitHub/super-cossin-lette-3d/tiled",
+    "last.imagePath": "D:/Documents/GitHub/super-cossin-lette-3d/img",
     "last.worldFilePath": "/home/deck/Documents/super-cossin-lette-3d/tiled",
-    "lastUsedTilesetExportFilter": "Lua files (*.lua)",
+    "lastUsedTilesetExportFilter": "Tiled tileset files (*.tsx *.xml)",
     "loadedWorlds": [
         "/home/deck/Documents/super-cossin-lette-3d/tiled/aaa.world",
         "/home/deck/Documents/super-cossin-lette-3d/tiled/aaa.world"
@@ -43,21 +86,23 @@
     "map.tileHeight": 72,
     "map.tileWidth": 128,
     "openFiles": [
-        "objects.tsx",
-        "map1.tmx",
+        "D:/Documents/GitHub/super-cossin-lette-3d/maps/map1_prototype.tmx",
         "tileset.tsx"
     ],
     "project": "cossin-lette.tiled-project",
     "property.type": "float",
     "recentFiles": [
-        "objects.tsx",
+        "D:/Documents/GitHub/super-cossin-lette-3d/maps/map1_prototype.tmx",
         "tileset.tsx",
-        "map1.tmx"
+        "chemin.tsx",
+        "map1.tmx",
+        "test.tsx",
+        "objects.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 74,
         "width": 128
     },
-    "tileset.type": 0
+    "tileset.type": 1
 }
