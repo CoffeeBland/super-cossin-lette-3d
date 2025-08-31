@@ -5,10 +5,11 @@ local groundDamping = 8
 local jumpMultiplier = 0.5
 local speedMultiplier = 10 / 4
 local fruitPickupAnimFrames = 20
-local firstFruitOffset = { x = 0, y = 0, z = -1.2 }
+local firstFruitOffset = { x = 0, y = 0, z = -1.3 }
 local fruitOffset = { x = 0, y = 0, z = -0.7 }
 local fruitJumpSpeed = 1
 local fruitPickupForce = 0.5
+local eatCooldown = 180
 --   2
 --  1 3
 -- 8   4
@@ -60,7 +61,7 @@ function Game:enter()
                 name = "cossinOmbre",
                 anchor = { x = 96, y = 32 }
             },
-            fruitStack = {}
+            fruitStack = { fruits = {} }
         }
     }
 
@@ -160,17 +161,29 @@ function Game:update(dt)
             }
         end
 
-        if entity.anim then
-            entity.anim.time = entity.anim.time + dt
-        end
-
         if entity.input then
             entity.actions = actions
         end
 
         if entity.actor then
+            if entity.fruitStack then
+                if #entity.fruitStack.fruits > 0 then
+                    if not entity.fruitStack.cooldown then
+                        entity.fruitStack.cooldown = eatCooldown
+                    else
+                        entity.fruitStack.cooldown = entity.fruitStack.cooldown - 1
+                    end
+
+                    if entity.fruitStack.cooldown == 0 then
+                        entity.fruitStack.eating = true
+                    end
+                else
+                    entity.fruitStack.eating = false
+                    entity.fruitStack.cooldown = nil
+                end
+            end
             if entity.actions.movement.angle and entity.physics then
-                if not entity.actions.prejump then
+                if not (entity.fruitStack.eating and entity.pos.onGround) and not entity.actions.prejump then
                     local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
                     local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * speedMultiplier
                     entity.physics.body:applyForce(dx, dy)
@@ -182,16 +195,24 @@ function Game:update(dt)
                 entity.anim.dir = dirs[a];
                 entity.anim.name = "walk"
             end
-            if entity.actions.jump and entity.pos.onGround then
-                entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed * jumpMultiplier
-                entity.pos.onGround = false
-            end
-            if entity.actions.prejump and entity.pos.onGround then
-                entity.anim.name = "squish"
-            elseif not entity.pos.onGround then
-                entity.anim.name = "jump"
-            elseif not entity.actions.movement.angle then
-                entity.anim.name = "idle"
+            if entity.fruitStack.eating and entity.pos.onGround then
+                entity.anim.name = "eat"
+                if entity.anim.finished then
+                    entity.fruitStack.eating = false
+                    entity.fruitStack.cooldown = nil
+                end
+            else
+                if entity.actions.jump and entity.pos.onGround then
+                    entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed * jumpMultiplier
+                    entity.pos.onGround = false
+                end
+                if entity.actions.prejump and entity.pos.onGround then
+                    entity.anim.name = "squish"
+                elseif not entity.pos.onGround then
+                    entity.anim.name = "jump"
+                elseif not entity.actions.movement.angle then
+                    entity.anim.name = "idle"
+                end
             end
         end
 
@@ -232,6 +253,15 @@ function Game:update(dt)
             if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z > targetZ then
                 entity.pos.z = targetZ
                 entity.velocity.z = 0
+            end
+        end
+
+        if entity.anim then
+            entity.anim.time = entity.anim.time + dt
+            if entity.anim.name ~= entity.anim.prevName then
+                entity.anim.time = 0
+                entity.anim.finished = false
+                entity.anim.prevName = entity.anim.name
             end
         end
 
@@ -318,6 +348,9 @@ function Game:render()
 
                     -- Moi je trouve que Oui.
                     local frame = math.floor(animData.fps * entity.anim.time)
+                    if animData.oneShot and frame >= #animData.tiles then
+                        entity.anim.finished = true
+                    end
                     if animData.pingPong then
                         local tileCount = #animData.tiles * 2 - 2
                         frame = frame % tileCount
@@ -362,12 +395,12 @@ function Game:onBeginContact(fix1, fix2, contact)
     local fruitEntity = (entity1.fruit and entity1) or (entity2.fruit and entity2)
 
     if fruitStackEntity and fruitEntity and not fruitEntity.fruit.stackEntity then
-        table.insert(fruitStackEntity.fruitStack, fruitEntity)
-        fruitEntity.fruit.stackEntity = #fruitStackEntity.fruitStack > 1 and
-            fruitStackEntity.fruitStack[#fruitStackEntity.fruitStack - 1] or
+        table.insert(fruitStackEntity.fruitStack.fruits, fruitEntity)
+        fruitEntity.fruit.stackEntity = #fruitStackEntity.fruitStack.fruits > 1 and
+            fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
             fruitStackEntity
         fruitEntity.fruit.animFrames = fruitPickupAnimFrames
-        fruitEntity.velocity.z = -fruitJumpSpeed * math.pow(#fruitStackEntity.fruitStack, 1/3) * jumpMultiplier
+        fruitEntity.velocity.z = -fruitJumpSpeed * math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) * jumpMultiplier
     end
 end
 
