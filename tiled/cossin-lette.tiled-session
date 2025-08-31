@@ -92,6 +92,7 @@
             "scaleInEditor": 1
         }
     },
+    "frame.defaultDuration": 200,
     "last.exportedFilePath": "/home/deck/Documents/super-cossin-lette-3d/tiled",
     "last.externalTilesetPath": "D:/Documents/GitHub/super-cossin-lette-3d/tiled",
     "last.imagePath": "D:/Documents/GitHub/super-cossin-lette-3d/img/Tiles",
