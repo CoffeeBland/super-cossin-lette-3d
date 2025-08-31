@@ -10,13 +10,14 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 6,
-  nextobjectid = 43,
+  nextobjectid = 52,
   properties = {},
   tilesets = {
     {
       name = "tileset",
       firstgid = 1,
-      filename = "../tiled/tileset.tsx"
+      filename = "../tiled/tileset.tsx",
+      exportfilename = "../data/tileset.lua"
     },
     {
       name = "objects",
@@ -37,8 +38,8 @@ return {
       class = "",
       visible = true,
       opacity = 1,
-      offsetx = 0,
-      offsety = 0,
+      offsetx = -80,
+      offsety = 248,
       parallaxx = 1,
       parallaxy = 1,
       properties = {},
@@ -167,7 +168,7 @@ return {
             98, 97, 98, 97, 98, 97, 98, 97, 97, 97, 98, 97, 97, 98, 98, 98,
             97, 97, 97, 98, 98, 98, 97, 97, 97, 97, 97, 97, 98, 98, 98, 97,
             98, 97, 98, 97, 97, 97, 97, 98, 98, 98, 97, 97, 97, 98, 98, 98,
-            98, 98, 97, 97, 98, 98, 98, 98, 97, 97, 98, 97, 97, 97, 97, 2
+            98, 98, 97, 97, 98, 98, 98, 98, 97, 97, 98, 97, 97, 97, 97, 98
           }
         },
         {
@@ -188,7 +189,7 @@ return {
             98, 98, 97, 98, 98, 97, 97, 98, 97, 98, 98, 98, 98, 97, 97, 97,
             97, 98, 98, 98, 97, 98, 97, 97, 98, 98, 97, 97, 98, 98, 97, 98,
             98, 98, 97, 98, 98, 97, 97, 97, 98, 98, 97, 97, 98, 98, 97, 97,
-            2, 2, 98, 98, 98, 98, 97, 98, 98, 97, 97, 97, 97, 98, 98, 97
+            98, 98, 98, 98, 98, 98, 97, 98, 98, 97, 97, 97, 97, 98, 98, 97
           }
         },
         {
@@ -236,8 +237,8 @@ return {
         {
           x = -16, y = 0, width = 16, height = 16,
           data = {
-            97, 97, 97, 98, 98, 98, 97, 97, 97, 97, 97, 97, 98, 97, 97, 2,
-            98, 97, 97, 98, 98, 97, 98, 97, 98, 98, 97, 97, 98, 97, 97, 2,
+            97, 97, 97, 98, 98, 98, 97, 97, 97, 97, 97, 97, 98, 97, 97, 97,
+            98, 97, 97, 98, 98, 97, 98, 97, 98, 98, 97, 97, 98, 97, 97, 97,
             98, 97, 98, 97, 97, 98, 97, 97, 98, 98, 97, 97, 97, 98, 98, 97,
             98, 98, 97, 98, 97, 98, 98, 97, 98, 98, 97, 97, 98, 98, 98, 97,
             98, 97, 97, 98, 98, 97, 97, 98, 97, 98, 98, 97, 97, 98, 97, 98,
@@ -257,8 +258,8 @@ return {
         {
           x = 0, y = 0, width = 16, height = 16,
           data = {
-            97, 2, 97, 97, 97, 97, 97, 97, 97, 98, 97, 98, 98, 98, 97, 97,
-            2, 2, 97, 97, 98, 97, 98, 98, 98, 98, 97, 97, 98, 98, 98, 98,
+            97, 97, 97, 97, 97, 97, 97, 97, 97, 98, 97, 98, 98, 98, 97, 97,
+            98, 97, 97, 97, 98, 97, 98, 98, 98, 98, 97, 97, 98, 98, 98, 98,
             97, 97, 98, 97, 97, 98, 97, 97, 98, 98, 97, 97, 98, 98, 97, 97,
             97, 98, 98, 98, 97, 97, 97, 98, 97, 97, 97, 98, 97, 97, 98, 98,
             98, 98, 97, 98, 98, 98, 97, 98, 97, 97, 98, 97, 97, 97, 97, 98,
@@ -414,8 +415,8 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 512,
-          y = 0,
+          x = 370,
+          y = 666,
           width = 256,
           height = 148,
           rotation = 0,
@@ -582,12 +583,124 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 0,
-          y = 256,
+          x = 74,
+          y = 148,
           width = 128,
           height = 148,
           rotation = 0,
           gid = 2147483821,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 43,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1028.73,
+          y = -630.667,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 157,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 44,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1343.36,
+          y = -1048.33,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 163,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 45,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1106.99,
+          y = -1060.45,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 164,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 46,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1796.15,
+          y = -367.788,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 158,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 47,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1765.47,
+          y = -706.803,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 160,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 48,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1542.41,
+          y = -386.775,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 161,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 49,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1628.87,
+          y = -952.021,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 162,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 51,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 533.936,
+          y = -1202.54,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 165,
           visible = true,
           properties = {}
         }

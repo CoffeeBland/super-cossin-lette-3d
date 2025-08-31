@@ -104,7 +104,7 @@ function love.load()
                             textures[tileName],
                             x * data.tilewidth,
                             y * data.tileheight)
-                        tileset.tiles[tile.id + 1] = love.graphics.newQuad(
+                        tileset.tiles[tile.id] = love.graphics.newQuad(
                             x * data.tilewidth,
                             y * data.tileheight,
                             data.tilewidth,

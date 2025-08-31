@@ -1,5 +1,9 @@
 str = {}
 
+function math.clamp(x, min, max)
+    return math.min(math.max(x, min), max)
+end
+
 function love.filesystem.crawl(dir, _results)
     if not _results then
         _results = {}

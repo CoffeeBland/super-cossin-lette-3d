@@ -1,9 +1,14 @@
 local bit = require("bit")
 local g = 3
 local airFriction = 0.975
-local groundDamping = 64
+local groundDamping = 8
 local jumpMultiplier = 0.5
-local speedMultiplier = 64 / 4
+local speedMultiplier = 10 / 4
+local fruitPickupAnimFrames = 20
+local firstFruitOffset = { x = 0, y = 0, z = -1.2 }
+local fruitOffset = { x = 0, y = 0, z = -0.7 }
+local fruitJumpSpeed = 1
+local fruitPickupForce = 0.5
 --   2
 --  1 3
 -- 8   4
@@ -16,17 +21,22 @@ Game = {}
 
 function Game:enter()
     self.physics = love.physics.newWorld(0, 0, true)
+    self.physics:setCallbacks(
+        function (a, b, c)
+            Game:onBeginContact(a, b, c)
+        end)
     self.camera = { x = 0, y = 0 }
     self.map = require("maps/map1")
     self.batch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {
         {
+            id = 1,
             input = true,
             camera = true,
-            actor = { walkSpeed = 1.5, jumpSpeed = 1.6 },
+            actor = { walkSpeed = 1, jumpSpeed = 1.6 },
             pos = { x = 0, y = 0, z = 0 },
             velocity = { z = 0 },
-            body = { shape = "circle", size = 1, type = "dynamic" },
+            body = { shape = "circle", size = 0.8, type = "dynamic" },
             anim = {
                 name = "walk",
                 dir = "tr",
@@ -35,30 +45,35 @@ function Game:enter()
             sprites = {
                 {
                     name = "cossinPiedBack",
-                    anchor = { x = 96, y = 236 }
+                    anchor = { x = 96, y = 220 }
                 },
                 {
                     name = "cossinCorps",
-                    anchor = { x = 96, y = 236 }
+                    anchor = { x = 96, y = 220 }
                 },
                 {
                     name = "cossinPiedFront",
-                    anchor = { x = 96, y = 236 }
+                    anchor = { x = 96, y = 220 }
                 }
             },
             shadow = {
                 name = "cossinOmbre",
-                anchor = { x = -96, y = -32 }
-            }
+                anchor = { x = 96, y = 32 }
+            },
+            fruitStack = {}
         }
     }
 
     local mapObjectsByGid = {}
+    self.map.tilesetFirstGid = 0
     for _, data in ipairs(self.map.tilesets) do
         if data.name == "objects" then
             for i, object in pairs(objects.byId) do
                 mapObjectsByGid[data.firstgid + i] = object.id
             end
+        end
+        if data.name == "tileset" then
+            self.map.tilesetFirstGid = data.firstgid
         end
     end
 
@@ -88,12 +103,26 @@ function Game:enter()
                             flipX = flipX,
                             flipY = flipY
                         }
-                    },
-                    body = object.shape and { preshape = object.shape, type = "static" }
+                    }
                 }
+                if object.properties.fruit then
+                    entity.shadow = {
+                        name = "fruitOmbre",
+                        anchor = { x = 67, y = 0 }
+                    }
+                    entity.body = object.shape and { preshape = object.shape, type = "static", trigger = true }
+                    entity.fruit = {
+                        type = object.properties.fruit
+                    }
+                    entity.velocity = { z = 0 }
+                else
+                    entity.body = object.shape and { preshape = object.shape, type = "static" }
+                end
+
                 table.insert(self.entities, entity)
+                entity.id = #self.entities
             else
-                print("unknown gid!", data.gid)
+                print("unknown object gid!", data.gid)
             end
         end
     end
@@ -111,6 +140,8 @@ function Game:update(dt)
 
         if entity.body and not entity.physics then
             local body = love.physics.newBody(self.physics, entity.pos.x, entity.pos.y, entity.body.type)
+            body:setLinearDamping(groundDamping)
+            body:setUserData(entity)
             local shape
             if entity.body.shape == "circle" then
                 shape = love.physics.newCircleShape(entity.body.size / 2)
@@ -118,31 +149,15 @@ function Game:update(dt)
                 shape = entity.body.preshape
             end
             local fixture = love.physics.newFixture(body, shape, 1)
+            if entity.body.trigger then
+                fixture:setSensor(true)
+            end
 
             entity.physics = {
                 body = body,
                 shape = shape,
                 fixture = fixture
             }
-        end
-
-        if entity.physics then
-            entity.pos.x, entity.pos.y = entity.physics.body:getWorldCenter()
-            if entity.velocity then
-                entity.velocity.z = (entity.velocity.z + g * dt) * airFriction
-                entity.pos.z = entity.pos.z + entity.velocity.z
-                local wasOnGround = false
-                entity.pos.onGround = entity.pos.z >= 0
-                if entity.pos.onGround then
-                    entity.pos.z = 0
-                    entity.velocity.z = 0
-                end
-            end
-        end
-
-        if entity.camera then
-            self.camera.x = entity.pos.x
-            self.camera.y = entity.pos.y
         end
 
         if entity.anim then
@@ -155,10 +170,12 @@ function Game:update(dt)
 
         if entity.actor then
             if entity.actions.movement.angle and entity.physics then
-                local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
-                local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * speedMultiplier
-                entity.physics.body:applyForce(dx, dy)
-                entity.physics.body:setAngle(entity.actions.movement.angle)
+                if not entity.actions.prejump then
+                    local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
+                    local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * speedMultiplier
+                    entity.physics.body:applyForce(dx, dy)
+                    entity.physics.body:setAngle(entity.actions.movement.angle)
+                end
 
                 -- RIP
                 local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
@@ -179,12 +196,59 @@ function Game:update(dt)
         end
 
         if entity.physics then
-            entity.physics.body:setLinearDamping(groundDamping)
+            entity.pos.x, entity.pos.y = entity.physics.body:getWorldCenter()
+            if entity.velocity then
+                entity.velocity.z = (entity.velocity.z + g * dt) * airFriction
+                entity.pos.z = entity.pos.z + entity.velocity.z
+                local wasOnGround = false
+                entity.pos.onGround = entity.pos.z >= 0
+                if entity.pos.onGround then
+                    entity.pos.z = 0
+                    entity.velocity.z = 0
+                end
+            end
+        end
+
+        if entity.fruit and entity.fruit.animFrames then
+            local offset = entity.fruit.stackEntity.fruitStack and firstFruitOffset or fruitOffset
+            local targetX = entity.fruit.stackEntity.pos.x + offset.x
+            local targetY = entity.fruit.stackEntity.pos.y + offset.y
+            local targetZ = entity.fruit.stackEntity.pos.z + offset.z
+
+            if entity.fruit.animFrames > 0 then
+                local p = entity.fruit.animFrames / fruitPickupAnimFrames
+                entity.physics.body:setPosition(
+                    entity.pos.x * p + targetX * (1 - p),
+                    entity.pos.y * p + targetY * (1 - p))
+                entity.fruit.animFrames = entity.fruit.animFrames - 1
+                if entity.pos.z < targetZ then
+                    entity.fruit.reachedStack = true
+                end
+            else
+                entity.physics.body:setPosition(
+                    entity.pos.x * (1 - fruitPickupForce) + targetX * fruitPickupForce,
+                    entity.pos.y * (1 - fruitPickupForce) + targetY * fruitPickupForce)
+            end
+            if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z > targetZ then
+                entity.pos.z = targetZ
+                entity.velocity.z = 0
+            end
+        end
+
+        if entity.camera then
+            self.camera.x = entity.pos.x
+            self.camera.y = entity.pos.y
         end
     end
 
     table.sort(self.entities,
         function (a, b)
+            if math.abs(a.pos.y - b.pos.y) < 0.1 then
+                if math.abs(a.pos.z - b.pos.z) < 0.1 then
+                    return a.id < b.id
+                end
+                return a.pos.z > b.pos.z
+            end
             return a.pos.y < b.pos.y
         end)
 end
@@ -202,13 +266,17 @@ function Game:render()
             for _, chunk in ipairs(layer.chunks) do
                 for i, tile in ipairs(chunk.data) do
                     if tile > 0 then
+                        local og = tile
                         local flipX = bit.band(tile, TILE_FLIP_H) ~= 0
                         local flipY = bit.band(tile, TILE_FLIP_V) ~= 0
-                        tile = bit.band(tile, TILE_ID_MASK)
+                        tile = bit.band(tile, TILE_ID_MASK) - self.map.tilesetFirstGid
                         local tx = layer.x + chunk.x + ((i - 1) % chunk.width)
                         local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width)
                         local x = (tx - ty - 1) * self.map.tilewidth / 2
                         local y = (tx + ty) * self.map.tileheight / 2
+                        if not tileset.tiles[tile] then
+                            print("Unknown tile gid!", tile, og)
+                        end
                         self.batch:add(
                             tileset.tiles[tile],
                             x + self.map.tilewidth / 2,
@@ -230,8 +298,13 @@ function Game:render()
          if entity.shadow then
             love.graphics.draw(
                 textures[entity.shadow.name],
-                entity.pos.x * METER_SCALE + entity.shadow.anchor.x,
-                entity.pos.y * METER_SCALE + entity.shadow.anchor.y)
+                entity.pos.x * METER_SCALE,
+                entity.pos.y * METER_SCALE,
+                0,
+                math.pow(1 / math.max(-entity.pos.z, 1), 1/4),
+                math.pow(1 / math.max(-entity.pos.z, 1), 1/4),
+                entity.shadow.anchor.x,
+                entity.shadow.anchor.y)
          end
     end
     love.graphics.setBlendMode("alpha")
@@ -278,6 +351,23 @@ function Game:render()
                 end
             end
         end
+    end
+end
+
+function Game:onBeginContact(fix1, fix2, contact)
+    local entity1 = fix1:getBody():getUserData()
+    local entity2 = fix2:getBody():getUserData()
+
+    local fruitStackEntity = (entity1.fruitStack and entity1) or (entity2.fruitStack and entity2)
+    local fruitEntity = (entity1.fruit and entity1) or (entity2.fruit and entity2)
+
+    if fruitStackEntity and fruitEntity and not fruitEntity.fruit.stackEntity then
+        table.insert(fruitStackEntity.fruitStack, fruitEntity)
+        fruitEntity.fruit.stackEntity = #fruitStackEntity.fruitStack > 1 and
+            fruitStackEntity.fruitStack[#fruitStackEntity.fruitStack - 1] or
+            fruitStackEntity
+        fruitEntity.fruit.animFrames = fruitPickupAnimFrames
+        fruitEntity.velocity.z = -fruitJumpSpeed * math.pow(#fruitStackEntity.fruitStack, 1/3) * jumpMultiplier
     end
 end
 
