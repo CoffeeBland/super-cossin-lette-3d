@@ -82,7 +82,7 @@ function love.load()
                 elseif data.tiles then
                     local tw = math.ceil(math.sqrt(data.tilecount))
                     local th = math.ceil(data.tilecount / tw)
-                    local canvas = love.graphics.newCanvas(tw * data.tilewidth, data.tileheight)
+                    local canvas = love.graphics.newCanvas(tw * data.tilewidth, th * data.tileheight)
                     textures[name] = canvas
                     love.graphics.setCanvas(canvas)
                     for i, tile in ipairs(data.tiles) do
@@ -93,7 +93,7 @@ function love.load()
                             textures[tileName],
                             x * data.tilewidth,
                             y * data.tileheight)
-                        tileset.tiles[i] = love.graphics.newQuad(
+                        tileset.tiles[tile.id + 1] = love.graphics.newQuad(
                             x * data.tilewidth,
                             y * data.tileheight,
                             data.tilewidth,
