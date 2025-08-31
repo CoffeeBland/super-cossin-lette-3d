@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="21" nextobjectid="444">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="21" nextobjectid="447">
  <editorsettings>
   <export format="lua"/>
  </editorsettings>
@@ -443,9 +443,9 @@
   <object id="409" gid="159" x="3339.75" y="1878.25" width="128" height="74"/>
   <object id="443" gid="64" x="2191.73" y="774.938" width="128" height="148"/>
  </objectgroup>
- <objectgroup id="18" name="Fruits dans les arbres">
-  <object id="367" name="Fruit-4" gid="103" x="-222" y="-148" width="128" height="192"/>
-  <object id="368" name="Fruit-4" gid="103" x="-222" y="-444" width="128" height="192"/>
-  <object id="369" gid="103" x="74" y="-444" width="128" height="192"/>
+ <objectgroup id="18" name="Fruits dans les arbres" opacity="0.29">
+  <object id="444" gid="103" x="-218.688" y="-149.313" width="128" height="192"/>
+  <object id="445" gid="103" x="-219" y="-441" width="128" height="192"/>
+  <object id="446" gid="103" x="71" y="-447" width="128" height="192"/>
  </objectgroup>
 </map>
