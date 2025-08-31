@@ -426,7 +426,36 @@ return {
       },
       image = "../img/Buisson_petit-1.png",
       width = 128,
-      height = 148
+      height = 148,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "ellipse",
+            x = 39.3522,
+            y = 103.701,
+            width = 54.0138,
+            height = 23.3917,
+            rotation = 4.47813,
+            visible = true,
+            properties = {}
+          }
+        }
+      }
     },
     {
       id = 15,
@@ -436,7 +465,36 @@ return {
       },
       image = "../img/Buisson_petit-2.png",
       width = 128,
-      height = 148
+      height = 148,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "ellipse",
+            x = 35.6302,
+            y = 101.536,
+            width = 60.464,
+            height = 23.755,
+            rotation = 4.47813,
+            visible = true,
+            properties = {}
+          }
+        }
+      }
     },
     {
       id = 16,
@@ -608,6 +666,7 @@ return {
     {
       id = 32,
       properties = {
+        ["fruit"] = "apple",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -647,6 +706,7 @@ return {
     {
       id = 33,
       properties = {
+        ["fruit"] = "banana",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -686,6 +746,7 @@ return {
     {
       id = 34,
       properties = {
+        ["fruit"] = "pineapple",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -725,6 +786,7 @@ return {
     {
       id = 35,
       properties = {
+        ["fruit"] = "pear",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -764,6 +826,7 @@ return {
     {
       id = 36,
       properties = {
+        ["fruit"] = "tomato",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -803,6 +866,7 @@ return {
     {
       id = 37,
       properties = {
+        ["fruit"] = "orange",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -842,6 +906,7 @@ return {
     {
       id = 38,
       properties = {
+        ["fruit"] = "mushroom",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -881,6 +946,7 @@ return {
     {
       id = 39,
       properties = {
+        ["fruit"] = "grape",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -920,6 +986,7 @@ return {
     {
       id = 40,
       properties = {
+        ["fruit"] = "durian",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -959,6 +1026,7 @@ return {
     {
       id = 41,
       properties = {
+        ["fruit"] = "peach",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -998,6 +1066,7 @@ return {
     {
       id = 42,
       properties = {
+        ["fruit"] = "radish",
         ["offsetX"] = 0,
         ["offsetY"] = 0
       },
@@ -1109,9 +1178,9 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = 0, y = 0 },
-              { x = 56.5, y = 34.5 },
-              { x = 100.5, y = 12.5 },
+              { x = -2, y = 1 },
+              { x = 60.5, y = 35.5 },
+              { x = 105, y = 13 },
               { x = 45.5, y = -20 }
             },
             properties = {}
@@ -1154,10 +1223,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -1, y = -1 },
-              { x = 56, y = 28 },
-              { x = 103.5, y = 2.5 },
-              { x = 46.5, y = -25.5 }
+              { x = -1.5, y = 0 },
+              { x = 55.5, y = 27.5 },
+              { x = 106.5, y = 1.5 },
+              { x = 48, y = -25 }
             },
             properties = {}
           }
@@ -1199,9 +1268,9 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = 0, y = 0 },
-              { x = 55.5, y = 28 },
-              { x = 107.5, y = 5.5 },
+              { x = -1, y = 4 },
+              { x = 56, y = 31 },
+              { x = 110, y = 6 },
               { x = 53, y = -22.5 }
             },
             properties = {}
@@ -1245,9 +1314,9 @@ return {
             visible = true,
             polygon = {
               { x = -5, y = -1 },
-              { x = 53, y = 32.5 },
-              { x = 93, y = 13.5 },
-              { x = 37.5, y = -17.5 }
+              { x = 55.5, y = 33.5 },
+              { x = 97, y = 13.5 },
+              { x = 37.5, y = -20.5 }
             },
             properties = {}
           }
@@ -1289,10 +1358,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = 0, y = 0 },
-              { x = 52, y = 25.5 },
-              { x = 104, y = 3 },
-              { x = 52, y = -21.5 }
+              { x = -3, y = 2 },
+              { x = 54.5, y = 29 },
+              { x = 106, y = 3.5 },
+              { x = 47, y = -22.5 }
             },
             properties = {}
           }
@@ -1334,10 +1403,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = 0, y = 0 },
+              { x = -2, y = 2 },
               { x = 56, y = 30 },
-              { x = 109.5, y = 4.5 },
-              { x = 54.5, y = -21 }
+              { x = 114, y = 4 },
+              { x = 58, y = -22.5 }
             },
             properties = {}
           }
@@ -1379,9 +1448,9 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = 0, y = 2 },
-              { x = 30, y = 15 },
-              { x = 52.5, y = 1 },
+              { x = -3, y = 3 },
+              { x = 29, y = 15.5 },
+              { x = 54.5, y = 0 },
               { x = 24.5, y = -11.5 }
             },
             properties = {}
@@ -1424,10 +1493,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = 0, y = 0 },
-              { x = 41.5, y = 17.5 },
-              { x = 71, y = -2 },
-              { x = 30, y = -17 }
+              { x = -2, y = -0.5 },
+              { x = 44, y = 18 },
+              { x = 73, y = -2 },
+              { x = 28.5, y = -16.5 }
             },
             properties = {}
           }
@@ -1469,10 +1538,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = 0, y = 0 },
-              { x = 28, y = 12 },
-              { x = 59, y = -3 },
-              { x = 27.5, y = -12 }
+              { x = -3.5, y = -0.5 },
+              { x = 26.5, y = 12.5 },
+              { x = 62, y = -3.5 },
+              { x = 29.5, y = -14.5 }
             },
             properties = {}
           }
@@ -1514,9 +1583,9 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = 0, y = 0 },
+              { x = -3.5, y = 0 },
               { x = 28.5, y = 14 },
-              { x = 59, y = -1.5 },
+              { x = 60, y = -1.5 },
               { x = 27, y = -13.5 }
             },
             properties = {}
@@ -1559,10 +1628,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = 0, y = 0 },
-              { x = 32, y = 19 },
-              { x = 61.5, y = 4.5 },
-              { x = 30.5, y = -12 }
+              { x = 0, y = 1 },
+              { x = 32, y = 19.5 },
+              { x = 63.5, y = 4.5 },
+              { x = 31, y = -12 }
             },
             properties = {}
           }
