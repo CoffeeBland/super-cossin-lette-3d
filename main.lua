@@ -61,6 +61,12 @@ function love.load()
                                     table.insert(vertices, (point.y + subobject.y - object.offsetY) / METER_SCALE)
                                 end
                                 object.shape = love.physics.newPolygonShape(vertices)
+                            elseif subobject.shape == "ellipse" then
+                                -- Oops, all circles!
+                                object.shape = love.physics.newCircleShape(
+                                    (subobject.x + subobject.width / 2 - object.offsetX) / METER_SCALE,
+                                    (subobject.y + subobject.height / 2 - object.offsetY) / METER_SCALE,
+                                    (subobject.width + subobject.height) / 4 / METER_SCALE)
                             end
                         end
                     end
