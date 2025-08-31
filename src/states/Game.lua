@@ -1,3 +1,4 @@
+local bit = require("bit")
 local g = 3
 local airFriction = 0.975
 local groundDamping = 64
@@ -55,27 +56,31 @@ function Game:enter()
 
     for _, layer in ipairs(self.map.layers) do
         for _, data in ipairs(layer.objects or {}) do
-            local object = objects.byId[mapObjectsByGid[data.gid]]
+            if mapObjectsByGid[data.gid] then
+                local object = objects.byId[mapObjectsByGid[data.gid]]
 
-            local tx = data.x / self.map.tileheight
-            local ty = data.y / self.map.tileheight
-            local x = (tx - ty) * self.map.tilewidth / 2 + object.offsetX
-            local y = (tx + ty) * self.map.tileheight / 2 + object.offsetY
-            local entity = {
-                pos = {
-                    x = x / METER_SCALE,
-                    y = y / METER_SCALE,
-                    z = 0
-                },
-                sprites = {
-                    {
-                        name = object.name,
-                        anchor = { x = object.offsetX, y = object.offsetY }
-                    }
-                },
-                body = object.shape and { preshape = object.shape, type = "static" }
-            }
-            table.insert(self.entities, entity)
+                local tx = data.x / self.map.tileheight
+                local ty = data.y / self.map.tileheight
+                local x = (tx - ty) * self.map.tilewidth / 2 + object.offsetX
+                local y = (tx + ty) * self.map.tileheight / 2 + object.offsetY
+                local entity = {
+                    pos = {
+                        x = x / METER_SCALE,
+                        y = y / METER_SCALE,
+                        z = 0
+                    },
+                    sprites = {
+                        {
+                            name = object.name,
+                            anchor = { x = object.offsetX, y = object.offsetY }
+                        }
+                    },
+                    body = object.shape and { preshape = object.shape, type = "static" }
+                }
+                table.insert(self.entities, entity)
+            else
+                print("unknown gid!", data.gid)
+            end
         end
     end
 end
@@ -181,11 +186,25 @@ function Game:render()
             for _, chunk in ipairs(layer.chunks) do
                 for i, tile in ipairs(chunk.data) do
                     if tile > 0 then
+                        local flipH = bit.band(tile, TILE_FLIP_H) ~= 0
+                        local flipV = bit.band(tile, TILE_FLIP_V) ~= 0
+                        tile = bit.band(tile, TILE_ID_MASK)
                         local tx = layer.x + chunk.x + ((i - 1) % chunk.width)
                         local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width)
                         local x = (tx - ty - 1) * self.map.tilewidth / 2
                         local y = (tx + ty) * self.map.tileheight / 2
-                        self.batch:add(tileset.tiles[tile], x, y)
+                        if (flipH) then
+                            print(flipH and -1 or 1)
+                        end
+                        self.batch:add(
+                            tileset.tiles[tile],
+                            x,
+                            y,
+                            0,
+                            flipH and -1 or 1,
+                            flipV and -1 or 1,
+                            self.map.tilewidth / 2,
+                            self.map.tileheight / 2)
                     end
                 end
             end
