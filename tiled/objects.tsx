@@ -53,8 +53,8 @@
   </properties>
   <image source="../img/Tronc1.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="4">
-   <object id="5" x="381.658" y="1200.49" width="240.56" height="37.0093">
-    <ellipse/>
+   <object id="6" x="394" y="1215">
+    <polygon points="0,0 70,29 161,25 222,2 170,-45 48,-44"/>
    </object>
   </objectgroup>
  </tile>
@@ -65,8 +65,8 @@
   </properties>
   <image source="../img/Tronc2.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="448.859" y="1189.86" width="196.116" height="39.3223">
-    <ellipse/>
+   <object id="2" x="442" y="1207">
+    <polygon points="0,0 65.2703,29 150.122,25 207,2 158.514,-45 44.7568,-44"/>
    </object>
   </objectgroup>
  </tile>
@@ -77,8 +77,8 @@
   </properties>
   <image source="../img/Tronc3.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="376.78" y="1185.92" width="235.439" height="60.14">
-    <ellipse/>
+   <object id="2" x="357.765" y="1214.86">
+    <polygon points="14.2353,-1 85.6288,32.1351 196.946,27.7027 256.235,1.21622 207.956,-49.8649 58.7169,-48.7568"/>
    </object>
   </objectgroup>
  </tile>
