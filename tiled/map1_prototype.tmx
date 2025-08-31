@@ -3,7 +3,7 @@
  <editorsettings>
   <export format="lua"/>
  </editorsettings>
- <tileset firstgid="1" source="tileset.tsx"/>
+ <tileset firstgid="1" source="tileset_2.tsx"/>
  <tileset firstgid="17" source="objects.tsx"/>
  <tileset firstgid="89" source="cossin.tsx"/>
  <tileset firstgid="99" source="Fruits.tsx"/>
