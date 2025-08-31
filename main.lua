@@ -4,8 +4,11 @@ require "src.states.StateMachine"
 
 local pressActions = {
     escape = "escape",
-    space = "jump",
     enter = "action"
+}
+
+local releaseActions = {
+    space = "jump"
 }
 
 function love.load()
@@ -75,6 +78,8 @@ function love.load()
 
             if data.name == "tileset" then
                 tileset.tiles = {}
+                tileset.tilewidth = data.tilewidth
+                tileset.tileheight = data.tileheight
                 if data.image then
                     local name = str.filename(data.image)
                     for i = 1, data.tilecount do
@@ -129,7 +134,6 @@ function love.load()
         end
     end
 
-    -- set to first state
     StateMachine:change(Game)
 
     love.keyboard.keyPressed = {}
@@ -148,16 +152,16 @@ function love.update(dt)
     actions.movement.x = 0
     actions.movement.y = 0
     if love.keyboard.isDown('left') then
-        actions.movement.x = actions.movement.x - 1
+        actions.movement.x = actions.movement.x - tileset.tilewidth
     end
     if love.keyboard.isDown('right') then
-        actions.movement.x = actions.movement.x + 1
+        actions.movement.x = actions.movement.x + tileset.tilewidth
     end
     if love.keyboard.isDown('up') then
-        actions.movement.y = actions.movement.y - 1
+        actions.movement.y = actions.movement.y - tileset.tileheight
     end
     if love.keyboard.isDown('down') then
-        actions.movement.y = actions.movement.y + 1
+        actions.movement.y = actions.movement.y + tileset.tileheight
     end
     if actions.movement.x ~= 0 or actions.movement.y ~= 0 then
         actions.movement.angle = math.atan2(actions.movement.y, actions.movement.x)
@@ -166,6 +170,17 @@ function love.update(dt)
     end
 
     StateMachine:update(dt)
+
+    for key, action in pairs(releaseActions) do
+        local preaction = "pre" .. action
+        actions[action] = false
+        if love.keyboard.isDown(key) then
+            actions[preaction] = true
+        elseif actions[preaction] then
+            actions[preaction] = false
+            actions[action] = true
+        end
+    end
 
     for key, action in pairs(pressActions) do
         actions[action] = false
