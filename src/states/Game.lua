@@ -154,30 +154,32 @@ function Game:update(dt)
         end
 
         if entity.actor then
-            if entity.actions.jump and entity.pos.onGround then
-                entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed * jumpMultiplier
-                entity.pos.onGround = false
-            end
-            if entity.actions.movement.angle and entity.pos.onGround and entity.physics then
+            if entity.actions.movement.angle and entity.physics then
                 local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
                 local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * speedMultiplier
                 entity.physics.body:applyForce(dx, dy)
                 entity.physics.body:setAngle(entity.actions.movement.angle)
 
-                if entity.anim then
-                    -- RIP
-                    local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
-                    entity.anim.dir = dirs[a];
-                    entity.anim.name = "walk"
-                end
+                -- RIP
+                local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
+                entity.anim.dir = dirs[a];
+                entity.anim.name = "walk"
             end
-            if not entity.actions.movement.angle and entity.anim then
+            if entity.actions.jump and entity.pos.onGround then
+                entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed * jumpMultiplier
+                entity.pos.onGround = false
+            end
+            if entity.actions.prejump and entity.pos.onGround then
+                entity.anim.name = "squish"
+            elseif not entity.pos.onGround then
+                entity.anim.name = "jump"
+            elseif not entity.actions.movement.angle then
                 entity.anim.name = "idle"
             end
         end
 
         if entity.physics then
-            entity.physics.body:setLinearDamping(entity.pos.onGround and groundDamping or 0)
+            entity.physics.body:setLinearDamping(groundDamping)
         end
     end
 

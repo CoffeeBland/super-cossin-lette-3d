@@ -121,6 +121,13 @@ return {
                 flipX = true,
                 tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
             },
+            {
+                name = "squish",
+                fps = 6,
+                pingPong = true,
+                flipX = true,
+                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
+            },
         },
         cossinPiedBack = {
             {
@@ -239,6 +246,66 @@ return {
                 flipX = true,
                 tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
             },
+            -- squish
+            {
+                name = "squish",
+                dirs = { "b" },
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } }
+            },
+            {
+                name = "squish",
+                dirs = { "bl"},
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
+            },
+            {
+                name = "squish",
+                dirs = { "l"},
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
+            },
+            {
+                name = "squish",
+                dirs = { "tl" },
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
+            },
+            {
+                name = "squish",
+                dirs = { "t" },
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 4 }, { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 } }
+            },
+            {
+                name = "squish",
+                dirs = { "br"},
+                fps = 15,
+                pingPong = true,
+                flipX = true,
+                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
+            },
+            {
+                name = "squish",
+                dirs = { "r"},
+                fps = 15,
+                pingPong = true,
+                flipX = true,
+                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
+            },
+            {
+                name = "squish",
+                dirs = { "tr" },
+                fps = 15,
+                pingPong = true,
+                flipX = true,
+                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
+            },
         },
         cossinPiedFront = {
             {
@@ -345,6 +412,66 @@ return {
             },
             {
                 name = "walk",
+                dirs = { "tr" },
+                fps = 15,
+                pingPong = true,
+                flipX = true,
+                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
+            },
+            -- squish
+            {
+                name = "squish",
+                dirs = { "b" },
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } }
+            },
+            {
+                name = "squish",
+                dirs = { "bl"},
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
+            },
+            {
+                name = "squish",
+                dirs = { "l"},
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
+            },
+            {
+                name = "squish",
+                dirs = { "tl" },
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
+            },
+            {
+                name = "squish",
+                dirs = { "t" },
+                fps = 15,
+                pingPong = true,
+                tiles = { { 0, 4 }, { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 } }
+            },
+            {
+                name = "squish",
+                dirs = { "br"},
+                fps = 15,
+                pingPong = true,
+                flipX = true,
+                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
+            },
+            {
+                name = "squish",
+                dirs = { "r"},
+                fps = 15,
+                pingPong = true,
+                flipX = true,
+                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
+            },
+            {
+                name = "squish",
                 dirs = { "tr" },
                 fps = 15,
                 pingPong = true,
