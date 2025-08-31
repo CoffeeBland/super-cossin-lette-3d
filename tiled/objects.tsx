@@ -84,137 +84,137 @@
  </tile>
  <tile id="10">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="192"/>
+   <property name="offsetY" type="float" value="110"/>
   </properties>
   <image source="../img/Buisson_grand-1.png" width="384" height="216"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="77.295" y="80.7671" width="172.263" height="58" rotation="17.6041">
-    <ellipse/>
+   <object id="2" x="69.5" y="126">
+    <polygon points="0,0 118.5,53 169,20 49.5,-34"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="11">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="192"/>
+   <property name="offsetY" type="float" value="120"/>
   </properties>
   <image source="../img/Buisson_grand-2.png" width="384" height="216"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="85.2018" y="81.6667" width="172.263" height="58" rotation="17.6041">
-    <ellipse/>
+   <object id="2" x="74" y="122.54">
+    <polygon points="0,0 125.862,56.9598 179.5,21.4943 52.5754,-36.5402"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="12">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="128"/>
+   <property name="offsetY" type="float" value="90"/>
   </properties>
   <image source="../img/Buisson_moyen-1.png" width="256" height="148"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="67.0166" y="65.6989" width="119.449" height="42.1685" rotation="4.47813">
-    <ellipse/>
+   <object id="1" x="64.7531" y="97.264" rotation="350.178">
+    <polygon points="0,0 86.9739,35.6379 124.039,13.4483 36.3309,-22.8621"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="13">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="128"/>
+   <property name="offsetY" type="float" value="75"/>
   </properties>
   <image source="../img/Buisson_moyen-2.png" width="256" height="148"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="51.151" y="62.6473" width="119.449" height="42.1685" rotation="5.85616">
-    <ellipse/>
+   <object id="2" x="49.3572" y="90.9749" rotation="353.421">
+    <polygon points="0,0 86.9739,35.6379 124.039,13.4483 36.3309,-22.8621"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="14">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="110"/>
   </properties>
   <image source="../img/Buisson_petit-1.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="39.3522" y="103.701" width="54.0138" height="23.3917" rotation="4.47813">
-    <ellipse/>
+   <object id="2" x="35.7383" y="121.403" rotation="350.178">
+    <polygon points="0,0 40.2254,15.7462 57.368,5.94198 16.803,-10.1014"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="15">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="110"/>
   </properties>
   <image source="../img/Buisson_petit-2.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="35.6302" y="101.536" width="60.464" height="23.755" rotation="4.47813">
-    <ellipse/>
+   <object id="2" x="31.2356" y="119.361" rotation="350.178">
+    <polygon points="0,0 47.5593,17.8991 67.8274,6.75439 19.8665,-11.4825"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="16">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="110"/>
   </properties>
   <image source="../img/Buisson_petit-3.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="31.4545" y="99.6584" width="64.2956" height="26.5987" rotation="4.47813">
-    <ellipse/>
+   <object id="2" x="26.3998" y="120.81" rotation="350.178">
+    <polygon points="0,0 51.3129,19.3998 73.1806,7.32068 21.4344,-12.4452"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="17">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="95"/>
   </properties>
   <image source="../img/Buisson_petit-4.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="23.946" y="88.0074" width="82.3187" height="31.5444" rotation="4.47813">
-    <ellipse/>
+   <object id="1" x="20.5561" y="111.656" rotation="354.883">
+    <polygon points="0,0 62.4871,22.0487 89.1168,8.32028 26.1021,-14.1445"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="18">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="95"/>
   </properties>
   <image source="../img/Buisson_petit-5.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="24.3406" y="90.2278" width="82.3187" height="31.5444" rotation="4.47813">
-    <ellipse/>
+   <object id="2" x="20.5561" y="111.656" rotation="354.883">
+    <polygon points="0,0 62.4871,22.0487 89.1168,8.32028 26.1021,-14.1445"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="19">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="55"/>
   </properties>
   <image source="../img/Champignons-1.png" width="128" height="74"/>
  </tile>
  <tile id="20">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="55"/>
   </properties>
   <image source="../img/Champignons-2.png" width="128" height="74"/>
  </tile>
  <tile id="21">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="55"/>
   </properties>
   <image source="../img/Champignons-3.png" width="128" height="74"/>
  </tile>
  <tile id="22">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="55"/>
   </properties>
   <image source="../img/Champignons-4.png" width="128" height="74"/>
  </tile>
@@ -228,12 +228,12 @@
  <tile id="32">
   <properties>
    <property name="fruit" value="apple"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-1.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="9.5" y="91" width="106" height="96.5">
+   <object id="3" x="6.5" y="82" width="110" height="110">
     <ellipse/>
    </object>
   </objectgroup>
@@ -241,12 +241,12 @@
  <tile id="33">
   <properties>
    <property name="fruit" value="banana"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-2.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="5.99141" y="68.1697" width="88.4986" height="128.177" rotation="345.912">
+   <object id="2" x="2.5" y="66.5" width="122" height="122">
     <ellipse/>
    </object>
   </objectgroup>
@@ -254,12 +254,12 @@
  <tile id="34">
   <properties>
    <property name="fruit" value="pineapple"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-3.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="10.3342" y="69.4329" width="92.5" height="125.5" rotation="352.12">
+   <object id="2" x="5.5" y="63.5" width="124" height="124">
     <ellipse/>
    </object>
   </objectgroup>
@@ -267,12 +267,12 @@
  <tile id="35">
   <properties>
    <property name="fruit" value="pear"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-4.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="17.5" y="84" width="92.5" height="103.5">
+   <object id="2" x="6.5" y="82" width="110" height="110">
     <ellipse/>
    </object>
   </objectgroup>
@@ -280,12 +280,12 @@
  <tile id="36">
   <properties>
    <property name="fruit" value="tomato"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-5.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="5" y="90.5" width="114.5" height="95.5">
+   <object id="2" x="4.5" y="80" width="114" height="114">
     <ellipse/>
    </object>
   </objectgroup>
@@ -293,12 +293,12 @@
  <tile id="37">
   <properties>
    <property name="fruit" value="orange"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-6.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="9.5" y="84" width="110.5" height="102.5">
+   <object id="2" x="4" y="74.5" width="118" height="118">
     <ellipse/>
    </object>
   </objectgroup>
@@ -306,12 +306,12 @@
  <tile id="38">
   <properties>
    <property name="fruit" value="mushroom"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-7.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="7.66429" y="54.4551" width="92.5" height="136.811" rotation="353.422">
+   <object id="2" x="0.5" y="57" width="126" height="126">
     <ellipse/>
    </object>
   </objectgroup>
@@ -319,12 +319,12 @@
  <tile id="39">
   <properties>
    <property name="fruit" value="grape"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-8.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="50.3822" y="37.2952" width="92.5" height="139" rotation="25.8162">
+   <object id="2" x="0" y="56.5" width="127" height="127">
     <ellipse/>
    </object>
   </objectgroup>
@@ -332,12 +332,12 @@
  <tile id="40">
   <properties>
    <property name="fruit" value="durian"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-9.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="3.70861" y="78.0697" width="92.5" height="119.5" rotation="349.866">
+   <object id="2" x="1" y="71" width="116" height="116">
     <ellipse/>
    </object>
   </objectgroup>
@@ -345,8 +345,8 @@
  <tile id="41">
   <properties>
    <property name="fruit" value="peach"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="150"/>
   </properties>
   <image source="../img/Fruit-10.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -358,48 +358,48 @@
  <tile id="42">
   <properties>
    <property name="fruit" value="radish"/>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="175"/>
   </properties>
   <image source="../img/Fruit-11.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="64.714" y="110.39" width="32.5" height="78.6773" rotation="24.9218">
+   <object id="2" x="25" y="122.5" width="71" height="71">
     <ellipse/>
    </object>
   </objectgroup>
  </tile>
  <tile id="43">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="45"/>
   </properties>
   <image source="../img/Roche_mini-1.png" width="128" height="74"/>
  </tile>
  <tile id="44">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="30"/>
   </properties>
   <image source="../img/Roche_mini-2.png" width="128" height="74"/>
  </tile>
  <tile id="45">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="30"/>
   </properties>
   <image source="../img/Roche_mini-3.png" width="128" height="74"/>
  </tile>
  <tile id="46">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="25"/>
   </properties>
   <image source="../img/Roche_mini-4.png" width="128" height="74"/>
  </tile>
  <tile id="47">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="100"/>
   </properties>
   <image source="../img/Roche_moyenne-1.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -410,8 +410,8 @@
  </tile>
  <tile id="48">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="100"/>
   </properties>
   <image source="../img/Roche_moyenne-2.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -422,8 +422,8 @@
  </tile>
  <tile id="49">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="100"/>
   </properties>
   <image source="../img/Roche_moyenne-3.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -434,8 +434,8 @@
  </tile>
  <tile id="50">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="100"/>
   </properties>
   <image source="../img/Roche_moyenne-4.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -446,8 +446,8 @@
  </tile>
  <tile id="51">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="100"/>
   </properties>
   <image source="../img/Roche_moyenne-5.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -458,8 +458,8 @@
  </tile>
  <tile id="52">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="100"/>
   </properties>
   <image source="../img/Roche_moyenne-6.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -470,8 +470,8 @@
  </tile>
  <tile id="53">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="40"/>
   </properties>
   <image source="../img/Roche_petit-1.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -482,20 +482,20 @@
  </tile>
  <tile id="54">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="30"/>
   </properties>
   <image source="../img/Roche_petit-2.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="26" y="45">
-    <polygon points="-2,-0.5 44,18 73,-2 28.5,-16.5"/>
+    <polygon points="-2,-0.5 44,18 73,-2 26,-17.5"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="55">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="35"/>
   </properties>
   <image source="../img/Roche_petit-3.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -506,8 +506,8 @@
  </tile>
  <tile id="56">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="40"/>
   </properties>
   <image source="../img/Roche_petit-4.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -518,8 +518,8 @@
  </tile>
  <tile id="57">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
+   <property name="offsetY" type="float" value="40"/>
   </properties>
   <image source="../img/Roche_petit-5.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -530,70 +530,70 @@
  </tile>
  <tile id="62">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="128"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_large.png" width="256" height="148"/>
  </tile>
  <tile id="63">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_moyen.png" width="128" height="72"/>
  </tile>
  <tile id="64">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_petit-1.png" width="128" height="74"/>
  </tile>
  <tile id="65">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_petit-2.png" width="128" height="74"/>
  </tile>
  <tile id="66">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_petit-3.png" width="128" height="74"/>
  </tile>
  <tile id="67">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_petit-4.png" width="128" height="74"/>
  </tile>
  <tile id="68">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_petit-5.png" width="128" height="74"/>
  </tile>
  <tile id="69">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_petit-6.png" width="128" height="74"/>
  </tile>
  <tile id="70">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_petit-7.png" width="128" height="74"/>
  </tile>
  <tile id="71">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
+   <property name="offsetX" type="float" value="128"/>
    <property name="offsetY" type="float" value="0"/>
   </properties>
   <image source="../img/Tuile_roche_ultra.png" width="256" height="148"/>
