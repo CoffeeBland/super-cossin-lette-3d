@@ -30,19 +30,21 @@ function love.load()
         byName = {}
     }
 
-    for _,file in ipairs(love.filesystem.getDirectoryItems("img")) do
-        local name = str.split(file, ".")[1]
-        textures[name] = love.graphics.newImage("img/" .. file)
+    print("loading imgs")
+    for _,file in ipairs(love.filesystem.crawl("img")) do
+        local name = str.filename(file)
+        textures[name] = love.graphics.newImage(file)
     end
 
-    for _,file in ipairs(love.filesystem.getDirectoryItems("data")) do
-        local name = str.split(file, ".")[1]
-        local data = require("data." .. name)
+    for _,file in ipairs(love.filesystem.crawl("data")) do
+        local name = str.filename(file)
+        local data = require(str.requirename(file))
+        print("reading data", file)
 
         if data.tiledversion then
             if data.name == "objects" then
                 for _, object in ipairs(data.tiles) do
-                    local name = str.split(object.image, ".")[1]
+                    local name = str.filename(object.image)
                     object.name = name
                     object.offsetX = object.properties and object.properties.offsetX or 0
                     object.offsetY = object.properties and object.properties.offsetY or 0
@@ -58,7 +60,6 @@ function love.load()
                                     table.insert(vertices, (point.x + subobject.x - object.offsetX) / METER_SCALE)
                                     table.insert(vertices, (point.y + subobject.y - object.offsetY) / METER_SCALE)
                                 end
-                                print(dump(vertices))
                                 object.shape = love.physics.newPolygonShape(vertices)
                             end
                         end
@@ -68,14 +69,38 @@ function love.load()
 
             if data.name == "tileset" then
                 tileset.tiles = {}
-                local name = str.split(data.image, ".")[1]
-                for i = 1, data.tilecount do
-                    tileset.tiles[i] = love.graphics.newQuad(
-                        ((i - 1) % data.columns) * data.tilewidth,
-                        math.floor((i - 1) / data.columns) * data.tileheight,
-                        data.tilewidth,
-                        data.tileheight,
-                        textures[name])
+                if data.image then
+                    local name = str.filename(data.image)
+                    for i = 1, data.tilecount do
+                        tileset.tiles[i] = love.graphics.newQuad(
+                            ((i - 1) % data.columns) * data.tilewidth,
+                            math.floor((i - 1) / data.columns) * data.tileheight,
+                            data.tilewidth,
+                            data.tileheight,
+                            textures[name])
+                    end
+                elseif data.tiles then
+                    local tw = math.ceil(math.sqrt(data.tilecount))
+                    local th = math.ceil(data.tilecount / tw)
+                    local canvas = love.graphics.newCanvas(tw * data.tilewidth, data.tileheight)
+                    textures[name] = canvas
+                    love.graphics.setCanvas(canvas)
+                    for i, tile in ipairs(data.tiles) do
+                        local tileName = str.filename(tile.image)
+                        local x = (i - 1) % tw
+                        local y = math.floor((i - 1) / tw)
+                        love.graphics.draw(
+                            textures[tileName],
+                            x * data.tilewidth,
+                            y * data.tileheight)
+                        tileset.tiles[i] = love.graphics.newQuad(
+                            x * data.tilewidth,
+                            y * data.tileheight,
+                            data.tilewidth,
+                            data.tileheight,
+                            canvas)
+                    end
+                    love.graphics.setCanvas()
                 end
             end
         end
