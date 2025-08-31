@@ -171,7 +171,7 @@
  </tile>
  <tile id="31">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-1.png" width="128" height="74"/>
   <objectgroup draworder="index" id="3">
@@ -182,7 +182,7 @@
  </tile>
  <tile id="32">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-2.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -193,7 +193,7 @@
  </tile>
  <tile id="33">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-3.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -204,7 +204,7 @@
  </tile>
  <tile id="34">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-4.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -215,7 +215,7 @@
  </tile>
  <tile id="35">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-5.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -226,7 +226,7 @@
  </tile>
  <tile id="36">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-6.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -237,7 +237,7 @@
  </tile>
  <tile id="37">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-7.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -248,7 +248,7 @@
  </tile>
  <tile id="38">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-8.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -259,7 +259,7 @@
  </tile>
  <tile id="39">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-9.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -270,7 +270,7 @@
  </tile>
  <tile id="40">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-10.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -281,7 +281,7 @@
  </tile>
  <tile id="41">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-11.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -292,7 +292,7 @@
  </tile>
  <tile id="42">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-12.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -303,7 +303,7 @@
  </tile>
  <tile id="43">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-13.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -314,7 +314,7 @@
  </tile>
  <tile id="44">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-14.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -325,7 +325,7 @@
  </tile>
  <tile id="45">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-15.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -336,7 +336,7 @@
  </tile>
  <tile id="46">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-16.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -347,7 +347,7 @@
  </tile>
  <tile id="47">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-17.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -358,7 +358,7 @@
  </tile>
  <tile id="48">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-18.png" width="128" height="74"/>
   <objectgroup draworder="index" id="3">
@@ -369,7 +369,7 @@
  </tile>
  <tile id="49">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-19.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -380,7 +380,7 @@
  </tile>
  <tile id="50">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-20.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -391,7 +391,7 @@
  </tile>
  <tile id="51">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-21.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -402,7 +402,7 @@
  </tile>
  <tile id="52">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-22.png" width="128" height="74"/>
   <objectgroup draworder="index" id="4">
@@ -413,7 +413,7 @@
  </tile>
  <tile id="53">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-23.png" width="128" height="74"/>
   <objectgroup draworder="index" id="3">
@@ -424,7 +424,7 @@
  </tile>
  <tile id="54">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-24.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -435,13 +435,13 @@
  </tile>
  <tile id="95">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-1.png" width="128" height="74"/>
  </tile>
  <tile id="56">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-2.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -452,7 +452,7 @@
  </tile>
  <tile id="57">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-3.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -463,7 +463,7 @@
  </tile>
  <tile id="58">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-4.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -474,7 +474,7 @@
  </tile>
  <tile id="59">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-5.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -485,7 +485,7 @@
  </tile>
  <tile id="60">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-6.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -496,7 +496,7 @@
  </tile>
  <tile id="61">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-7.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -507,7 +507,7 @@
  </tile>
  <tile id="62">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-8.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -518,7 +518,7 @@
  </tile>
  <tile id="63">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-9.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -529,7 +529,7 @@
  </tile>
  <tile id="64">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-10.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -540,7 +540,7 @@
  </tile>
  <tile id="65">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-11.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -551,7 +551,7 @@
  </tile>
  <tile id="66">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-12.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -562,7 +562,7 @@
  </tile>
  <tile id="67">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-13.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -573,7 +573,7 @@
  </tile>
  <tile id="68">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-14.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -584,7 +584,7 @@
  </tile>
  <tile id="69">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-15.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -595,7 +595,7 @@
  </tile>
  <tile id="70">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-16.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -606,7 +606,7 @@
  </tile>
  <tile id="71">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-17.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -617,7 +617,7 @@
  </tile>
  <tile id="72">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-18.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -628,7 +628,7 @@
  </tile>
  <tile id="73">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-19.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -639,7 +639,7 @@
  </tile>
  <tile id="74">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-20.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -650,7 +650,7 @@
  </tile>
  <tile id="75">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-21.png" width="128" height="74"/>
   <objectgroup draworder="index" id="3">
@@ -661,7 +661,7 @@
  </tile>
  <tile id="76">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-22.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -672,7 +672,7 @@
  </tile>
  <tile id="77">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-23.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -683,7 +683,7 @@
  </tile>
  <tile id="78">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-24.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -694,7 +694,7 @@
  </tile>
  <tile id="79">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-25.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -705,25 +705,25 @@
  </tile>
  <tile id="80">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-26.png" width="128" height="74"/>
  </tile>
  <tile id="81">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-27.png" width="128" height="74"/>
  </tile>
  <tile id="82">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-28.png" width="128" height="74"/>
  </tile>
  <tile id="83">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-29.png" width="128" height="74"/>
   <animation>
@@ -737,25 +737,25 @@
  </tile>
  <tile id="84">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-30.png" width="128" height="74"/>
  </tile>
  <tile id="85">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-31.png" width="128" height="74"/>
  </tile>
  <tile id="86">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-32.png" width="128" height="74"/>
  </tile>
  <tile id="87">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-33.png" width="128" height="74"/>
   <animation>
@@ -769,19 +769,19 @@
  </tile>
  <tile id="88">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-34.png" width="128" height="74"/>
  </tile>
  <tile id="89">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-35.png" width="128" height="74"/>
  </tile>
  <tile id="90">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-36.png" width="128" height="74"/>
   <animation>
@@ -792,19 +792,19 @@
  </tile>
  <tile id="91">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-37.png" width="128" height="74"/>
  </tile>
  <tile id="92">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-38.png" width="128" height="74"/>
  </tile>
  <tile id="93">
   <properties>
-   <property name="Type" value="eau"/>
+   <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-39.png" width="128" height="74"/>
   <animation>
