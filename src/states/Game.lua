@@ -175,10 +175,35 @@ function Game:update(dt)
                     end
 
                     if entity.fruitStack.cooldown == 0 then
-                        entity.fruitStack.eating = true
+                        entity.fruitStack.eating = 48
+                    end
+
+                    if entity.fruitStack.eating then
+                        entity.fruitStack.eating = entity.fruitStack.eating - 1
+
+                        if entity.fruitStack.eating == 30 then
+                            for _, fruitEntity in ipairs(entity.fruitStack.fruits) do
+                                fruitEntity.velocity.z = -fruitJumpSpeed * jumpMultiplier
+                            end
+                        end
+
+                        if entity.fruitStack.eating == 6 then
+                            local eaten = entity.fruitStack.fruits[1]
+                            eaten.toRemove = true
+                            table.remove(entity.fruitStack.fruits, 1)
+                            local nextFruitEntity = entity.fruitStack.fruits[1]
+                            if nextFruitEntity then
+                                nextFruitEntity.fruit.stackEntity = entity
+                            end
+                        end
+
+                        if entity.fruitStack.eating == 0 then
+                            entity.fruitStack.eating = nil
+                            entity.fruitStack.cooldown = nil
+                        end
                     end
                 else
-                    entity.fruitStack.eating = false
+                    entity.fruitStack.eating = nil
                     entity.fruitStack.cooldown = nil
                 end
             end
@@ -197,10 +222,6 @@ function Game:update(dt)
             end
             if entity.fruitStack.eating and entity.pos.onGround then
                 entity.anim.name = "eat"
-                if entity.anim.finished then
-                    entity.fruitStack.eating = false
-                    entity.fruitStack.cooldown = nil
-                end
             else
                 if entity.actions.jump and entity.pos.onGround then
                     entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed * jumpMultiplier
@@ -268,6 +289,12 @@ function Game:update(dt)
         if entity.camera then
             self.camera.x = entity.pos.x
             self.camera.y = entity.pos.y
+        end
+    end
+
+    for i = #self.entities, 1, -1 do
+        if self.entities[i].toRemove then
+            table.remove(self.entities, i)
         end
     end
 
