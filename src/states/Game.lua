@@ -56,8 +56,12 @@ function Game:enter()
 
     for _, layer in ipairs(self.map.layers) do
         for _, data in ipairs(layer.objects or {}) do
-            if mapObjectsByGid[data.gid] then
-                local object = objects.byId[mapObjectsByGid[data.gid]]
+            local gid = data.gid
+            local flipX = bit.band(gid, TILE_FLIP_H) ~= 0
+            local flipY = bit.band(gid, TILE_FLIP_V) ~= 0
+            gid = bit.band(gid, TILE_ID_MASK)
+            if mapObjectsByGid[gid] then
+                local object = objects.byId[mapObjectsByGid[gid]]
 
                 local tx = data.x / self.map.tileheight
                 local ty = data.y / self.map.tileheight
@@ -72,7 +76,9 @@ function Game:enter()
                     sprites = {
                         {
                             name = object.name,
-                            anchor = { x = object.offsetX, y = object.offsetY }
+                            anchor = { x = object.offsetX, y = object.offsetY },
+                            flipX = flipX,
+                            flipY = flipY
                         }
                     },
                     body = object.shape and { preshape = object.shape, type = "static" }
@@ -186,23 +192,20 @@ function Game:render()
             for _, chunk in ipairs(layer.chunks) do
                 for i, tile in ipairs(chunk.data) do
                     if tile > 0 then
-                        local flipH = bit.band(tile, TILE_FLIP_H) ~= 0
-                        local flipV = bit.band(tile, TILE_FLIP_V) ~= 0
+                        local flipX = bit.band(tile, TILE_FLIP_H) ~= 0
+                        local flipY = bit.band(tile, TILE_FLIP_V) ~= 0
                         tile = bit.band(tile, TILE_ID_MASK)
                         local tx = layer.x + chunk.x + ((i - 1) % chunk.width)
                         local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width)
                         local x = (tx - ty - 1) * self.map.tilewidth / 2
                         local y = (tx + ty) * self.map.tileheight / 2
-                        if (flipH) then
-                            print(flipH and -1 or 1)
-                        end
                         self.batch:add(
                             tileset.tiles[tile],
-                            x,
+                            x + self.map.tilewidth / 2,
                             y,
                             0,
-                            flipH and -1 or 1,
-                            flipV and -1 or 1,
+                            flipX and -1 or 1,
+                            flipY and -1 or 1,
                             self.map.tilewidth / 2,
                             self.map.tileheight / 2)
                     end
@@ -248,8 +251,8 @@ function Game:render()
                         entity.pos.x * METER_SCALE,
                         (entity.pos.y + entity.pos.z) * METER_SCALE,
                         0,
-                        animData.flipX and -1 or 1,
-                        1,
+                        (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1),
+                        (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1),
                         sprite.anchor.x,
                         sprite.anchor.y)
                 else
@@ -258,8 +261,8 @@ function Game:render()
                         entity.pos.x * METER_SCALE,
                         (entity.pos.y + entity.pos.z) * METER_SCALE,
                         0,
-                        1,
-                        1,
+                        sprite.flipX and -1 or 1,
+                        sprite.flipY and -1 or 1,
                         sprite.anchor.x,
                         sprite.anchor.y)
                 end
