@@ -112,8 +112,8 @@ function love.load()
         end
 
         if data.sprites then
-            local texture = textures[name]
             for spriteName, sprite in pairs(data.sprites) do
+                local texture = textures[spriteName]
                 for animName, anim in pairs(sprite) do
                     for i, tile in ipairs(anim.tiles) do
                         anim.tiles[i] = love.graphics.newQuad(
@@ -124,8 +124,7 @@ function love.load()
                             texture)
                     end
                 end
-                textures[name .. "." .. spriteName] = texture
-                sprites[name .. "." .. spriteName] = sprite
+                sprites[spriteName] = sprite
             end
         end
     end

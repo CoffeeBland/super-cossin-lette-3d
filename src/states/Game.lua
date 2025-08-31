@@ -34,7 +34,15 @@ function Game:enter()
             },
             sprites = {
                 {
-                    name = "cossin.corps",
+                    name = "cossinPiedBack",
+                    anchor = { x = 96, y = 236 }
+                },
+                {
+                    name = "cossinCorps",
+                    anchor = { x = 96, y = 236 }
+                },
+                {
+                    name = "cossinPiedFront",
                     anchor = { x = 96, y = 236 }
                 }
             },
@@ -164,7 +172,7 @@ function Game:update(dt)
                 end
             end
             if not entity.actions.movement.angle and entity.anim then
-                entity.anim.name = "walk" -- should be idle.
+                entity.anim.name = "idle"
             end
         end
 
