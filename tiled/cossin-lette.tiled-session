@@ -3,35 +3,84 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map1.tmx",
+    "activeFile": "Roches.tsx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
-        "map1.tmx": {
-            "scale": 0.5,
+        ":/automap-tiles.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "C:/Users/Lenovo/Documents/GitHub/super-cossin-lette-3d/maps/Buissons.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Chemin.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "D:/SuperCossinLette3D.tmx": {
+            "scale": 5.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1341,
-                "y": 873
+                "x": 63.63636363636363,
+                "y": 31.363636363636367
+            }
+        },
+        "D:/rules.tmx": {
+            "scale": 5.6480468749999995,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 63.915900131406055,
+                "y": 79.58503354312194
+            }
+        },
+        "Fruits.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Roches.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "cossin.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map1.tmx": {
+            "expandedObjectLayers": [
+                14,
+                12,
+                17,
+                18
+            ],
+            "scale": 0.125,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 1488,
+                "y": 1468
             }
         },
         "objects.tsx": {
             "dynamicWrapping": true,
-            "scaleInDock": 0.25,
-            "scaleInEditor": 0.12
+            "scaleInDock": 0.12,
+            "scaleInEditor": 0.25
         },
         "tileset.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1,
-            "scaleInEditor": 0.12
+            "scaleInDock": 0.12
         }
     },
-    "last.exportedFilePath": "/home/deck/Documents/super-cossin-lette-3d/data",
-    "last.imagePath": "/home/deck/Documents/super-cossin-lette-3d/img",
+    "last.exportedFilePath": "/home/deck/Documents/super-cossin-lette-3d/tiled",
+    "last.imagePath": "C:/Users/Lenovo/Documents/GitHub/super-cossin-lette-3d/img",
     "last.worldFilePath": "/home/deck/Documents/super-cossin-lette-3d/tiled",
-    "lastUsedTilesetExportFilter": "Lua files (*.lua)",
     "loadedWorlds": [
         "/home/deck/Documents/super-cossin-lette-3d/tiled/aaa.world",
         "/home/deck/Documents/super-cossin-lette-3d/tiled/aaa.world"
@@ -39,25 +88,30 @@
     "map.fixedSize": false,
     "map.lastUsedExportFilter": "Lua files (*.lua)",
     "map.lastUsedFormat": "tmx",
-    "map.orientation": "2",
+    "map.layerDataFormat": "1",
+    "map.orientation": "3",
     "map.tileHeight": 72,
     "map.tileWidth": 128,
     "openFiles": [
-        "objects.tsx",
         "map1.tmx",
-        "tileset.tsx"
+        "Roches.tsx"
     ],
     "project": "cossin-lette.tiled-project",
-    "property.type": "float",
     "recentFiles": [
+        "C:/Users/Lenovo/Documents/GitHub/super-cossin-lette-3d/maps/Buissons.tsx",
+        "Roches.tsx",
+        "map1.tmx",
+        "D:/SuperCossinLette3D.tmx",
+        "D:/rules.tmx",
+        "Fruits.tsx",
+        "Chemin.tsx",
         "objects.tsx",
-        "tileset.tsx",
-        "map1.tmx"
+        "cossin.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
-        "height": 74,
-        "width": 128
+        "height": 30,
+        "width": 30
     },
-    "tileset.type": 0
+    "tileset.type": 1
 }
