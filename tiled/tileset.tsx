@@ -13,122 +13,80 @@
  <tile id="124">
   <image source="../img/Tiles/Tuile_gazon-4.png" width="128" height="74"/>
  </tile>
- <tile id="130">
-  <image source="../img/Tiles/Tuile_gazon-10.png" width="128" height="74"/>
- </tile>
  <tile id="128">
   <image source="../img/Tiles/Tuile_gazon-8.png" width="128" height="74"/>
  </tile>
- <tile id="127">
-  <image source="../img/Tiles/Tuile_gazon-7.png" width="128" height="74"/>
+ <tile id="130">
+  <image source="../img/Tiles/Tuile_gazon-10.png" width="128" height="74"/>
  </tile>
- <tile id="134">
-  <image source="../img/Tiles/Tuile_gazon-14.png" width="128" height="74"/>
- </tile>
- <tile id="132">
-  <image source="../img/Tiles/Tuile_gazon-12.png" width="128" height="74"/>
- </tile>
- <tile id="129">
-  <image source="../img/Tiles/Tuile_gazon-9.png" width="128" height="74"/>
- </tile>
- <tile id="137">
+ <tile id="137" type="gazon_edge_C" probability="0.5">
   <image source="../img/Tiles/Tuile_gazon-17.png" width="128" height="74"/>
  </tile>
- <tile id="123">
+ <tile id="123" type="gazon_edge_C" probability="0.5">
   <image source="../img/Tiles/Tuile_gazon-3.png" width="128" height="74"/>
  </tile>
- <tile id="135">
+ <tile id="127" type="gazon_edge_A" probability="0.5">
+  <image source="../img/Tiles/Tuile_gazon-7.png" width="128" height="74"/>
+ </tile>
+ <tile id="134" type="gazon_edge_A" probability="0.5">
+  <image source="../img/Tiles/Tuile_gazon-14.png" width="128" height="74"/>
+ </tile>
+ <tile id="132" type="gazon_edge_B" probability="0.5">
+  <image source="../img/Tiles/Tuile_gazon-12.png" width="128" height="74"/>
+ </tile>
+ <tile id="129" type="gazon_edge_B" probability="0.5">
+  <image source="../img/Tiles/Tuile_gazon-9.png" width="128" height="74"/>
+ </tile>
+ <tile id="135" type="gazon_edge_D" probability="0.5">
   <image source="../img/Tiles/Tuile_gazon-15.png" width="128" height="74"/>
  </tile>
- <tile id="125">
+ <tile id="125" type="gazon_edge_D" probability="0.5">
   <image source="../img/Tiles/Tuile_gazon-5.png" width="128" height="74"/>
  </tile>
  <tile id="131">
   <image source="../img/Tiles/Tuile_gazon-11.png" width="128" height="74"/>
  </tile>
- <tile id="136">
-  <image source="../img/Tiles/Tuile_gazon-16.png" width="128" height="74"/>
- </tile>
  <tile id="133">
   <image source="../img/Tiles/Tuile_gazon-13.png" width="128" height="74"/>
+ </tile>
+ <tile id="136">
+  <image source="../img/Tiles/Tuile_gazon-16.png" width="128" height="74"/>
  </tile>
  <tile id="138">
   <image source="../img/Tiles/Tuile_gazon-18.png" width="128" height="74"/>
  </tile>
- <tile id="139">
-  <image source="../img/Tiles/Tuile_gazon-19.png" width="128" height="74"/>
+ <tile id="15">
+  <image source="../img/Tiles/Tuile_chemin-15.png" width="128" height="74"/>
  </tile>
- <tile id="147">
-  <image source="../img/Tiles/Tuile_gazon-27.png" width="128" height="74"/>
+ <tile id="21">
+  <image source="../img/Tiles/Tuile_chemin-21.png" width="128" height="74"/>
  </tile>
- <tile id="142">
-  <image source="../img/Tiles/Tuile_gazon-22.png" width="128" height="74"/>
+ <tile id="18">
+  <image source="../img/Tiles/Tuile_chemin-18.png" width="128" height="74"/>
  </tile>
- <tile id="140">
-  <image source="../img/Tiles/Tuile_gazon-20.png" width="128" height="74"/>
- </tile>
- <tile id="141">
-  <image source="../img/Tiles/Tuile_gazon-21.png" width="128" height="74"/>
- </tile>
- <tile id="146">
-  <image source="../img/Tiles/Tuile_gazon-26.png" width="128" height="74"/>
- </tile>
- <tile id="145">
-  <image source="../img/Tiles/Tuile_gazon-25.png" width="128" height="74"/>
- </tile>
- <tile id="144">
-  <image source="../img/Tiles/Tuile_gazon-24.png" width="128" height="74"/>
- </tile>
- <tile id="143">
-  <image source="../img/Tiles/Tuile_gazon-23.png" width="128" height="74"/>
- </tile>
- <tile id="148">
-  <image source="../img/Tiles/Tuile_gazon-28.png" width="128" height="74"/>
- </tile>
- <tile id="149">
-  <image source="../img/Tiles/Tuile_gazon-29.png" width="128" height="74"/>
- </tile>
- <tile id="150">
-  <image source="../img/Tiles/Tuile_gazon-30.png" width="128" height="74"/>
- </tile>
- <tile id="151">
-  <image source="../img/Tiles/Tuile_gazon-31.png" width="128" height="74"/>
- </tile>
- <tile id="1">
-  <image source="../img/Tiles/Tuile_chemin-1.png" width="128" height="74"/>
- </tile>
- <tile id="2">
-  <image source="../img/Tiles/Tuile_chemin-2.png" width="128" height="74"/>
- </tile>
- <tile id="3">
-  <image source="../img/Tiles/Tuile_chemin-3.png" width="128" height="74"/>
- </tile>
- <tile id="4">
-  <image source="../img/Tiles/Tuile_chemin-4.png" width="128" height="74"/>
- </tile>
- <tile id="5">
-  <image source="../img/Tiles/Tuile_chemin-5.png" width="128" height="74"/>
- </tile>
- <tile id="6">
-  <image source="../img/Tiles/Tuile_chemin-6.png" width="128" height="74"/>
- </tile>
- <tile id="7">
-  <image source="../img/Tiles/Tuile_chemin-7.png" width="128" height="74"/>
- </tile>
- <tile id="8">
-  <image source="../img/Tiles/Tuile_chemin-8.png" width="128" height="74"/>
+ <tile id="12">
+  <image source="../img/Tiles/Tuile_chemin-12.png" width="128" height="74"/>
  </tile>
  <tile id="9">
   <image source="../img/Tiles/Tuile_chemin-9.png" width="128" height="74"/>
  </tile>
- <tile id="10">
-  <image source="../img/Tiles/Tuile_chemin-10.png" width="128" height="74"/>
+ <tile id="19">
+  <image source="../img/Tiles/Tuile_chemin-19.png" width="128" height="74"/>
  </tile>
- <tile id="11">
-  <image source="../img/Tiles/Tuile_chemin-11.png" width="128" height="74"/>
+ <tile id="7">
+  <image source="../img/Tiles/Tuile_chemin-7.png" width="128" height="74"/>
  </tile>
- <tile id="12">
-  <image source="../img/Tiles/Tuile_chemin-12.png" width="128" height="74"/>
+ <tile id="119">
+  <image source="../img/Tiles/Tuile_chemin_courbe-22.png" width="128" height="74"/>
+ </tile>
+ <tile id="20">
+  <image source="../img/Tiles/Tuile_chemin-20.png" width="128" height="74"/>
+ </tile>
+ <tile id="4">
+  <image source="../img/Tiles/Tuile_chemin-4.png" width="128" height="74"/>
+ </tile>
+ <tile id="115">
+  <image source="../img/Tiles/Tuile_chemin_courbe-18.png" width="128" height="74"/>
  </tile>
  <tile id="13">
   <image source="../img/Tiles/Tuile_chemin-13.png" width="128" height="74"/>
@@ -136,8 +94,23 @@
  <tile id="14">
   <image source="../img/Tiles/Tuile_chemin-14.png" width="128" height="74"/>
  </tile>
- <tile id="15">
-  <image source="../img/Tiles/Tuile_chemin-15.png" width="128" height="74"/>
+ <tile id="10">
+  <image source="../img/Tiles/Tuile_chemin-10.png" width="128" height="74"/>
+ </tile>
+ <tile id="11">
+  <image source="../img/Tiles/Tuile_chemin-11.png" width="128" height="74"/>
+ </tile>
+ <tile id="111">
+  <image source="../img/Tiles/Tuile_chemin_courbe-14.png" width="128" height="74"/>
+ </tile>
+ <tile id="2">
+  <image source="../img/Tiles/Tuile_chemin-2.png" width="128" height="74"/>
+ </tile>
+ <tile id="107">
+  <image source="../img/Tiles/Tuile_chemin_courbe-10.png" width="128" height="74"/>
+ </tile>
+ <tile id="5">
+  <image source="../img/Tiles/Tuile_chemin-5.png" width="128" height="74"/>
  </tile>
  <tile id="16">
   <image source="../img/Tiles/Tuile_chemin-16.png" width="128" height="74"/>
@@ -145,47 +118,44 @@
  <tile id="17">
   <image source="../img/Tiles/Tuile_chemin-17.png" width="128" height="74"/>
  </tile>
- <tile id="18">
-  <image source="../img/Tiles/Tuile_chemin-18.png" width="128" height="74"/>
+ <tile id="1">
+  <image source="../img/Tiles/Tuile_chemin-1.png" width="128" height="74"/>
  </tile>
- <tile id="19">
-  <image source="../img/Tiles/Tuile_chemin-19.png" width="128" height="74"/>
+ <tile id="3">
+  <image source="../img/Tiles/Tuile_chemin-3.png" width="128" height="74"/>
  </tile>
- <tile id="20">
-  <image source="../img/Tiles/Tuile_chemin-20.png" width="128" height="74"/>
+ <tile id="6">
+  <image source="../img/Tiles/Tuile_chemin-6.png" width="128" height="74"/>
  </tile>
- <tile id="21">
-  <image source="../img/Tiles/Tuile_chemin-21.png" width="128" height="74"/>
- </tile>
- <tile id="98">
-  <image source="../img/Tiles/Tuile_chemin_courbe-1.png" width="128" height="74"/>
+ <tile id="8">
+  <image source="../img/Tiles/Tuile_chemin-8.png" width="128" height="74"/>
  </tile>
  <tile id="99">
   <image source="../img/Tiles/Tuile_chemin_courbe-2.png" width="128" height="74"/>
  </tile>
- <tile id="100">
-  <image source="../img/Tiles/Tuile_chemin_courbe-3.png" width="128" height="74"/>
- </tile>
  <tile id="101">
   <image source="../img/Tiles/Tuile_chemin_courbe-4.png" width="128" height="74"/>
- </tile>
- <tile id="102">
-  <image source="../img/Tiles/Tuile_chemin_courbe-5.png" width="128" height="74"/>
- </tile>
- <tile id="103">
-  <image source="../img/Tiles/Tuile_chemin_courbe-6.png" width="128" height="74"/>
- </tile>
- <tile id="104">
-  <image source="../img/Tiles/Tuile_chemin_courbe-7.png" width="128" height="74"/>
  </tile>
  <tile id="105">
   <image source="../img/Tiles/Tuile_chemin_courbe-8.png" width="128" height="74"/>
  </tile>
+ <tile id="103">
+  <image source="../img/Tiles/Tuile_chemin_courbe-6.png" width="128" height="74"/>
+ </tile>
+ <tile id="98">
+  <image source="../img/Tiles/Tuile_chemin_courbe-1.png" width="128" height="74"/>
+ </tile>
+ <tile id="100">
+  <image source="../img/Tiles/Tuile_chemin_courbe-3.png" width="128" height="74"/>
+ </tile>
+ <tile id="102">
+  <image source="../img/Tiles/Tuile_chemin_courbe-5.png" width="128" height="74"/>
+ </tile>
+ <tile id="104">
+  <image source="../img/Tiles/Tuile_chemin_courbe-7.png" width="128" height="74"/>
+ </tile>
  <tile id="106">
   <image source="../img/Tiles/Tuile_chemin_courbe-9.png" width="128" height="74"/>
- </tile>
- <tile id="107">
-  <image source="../img/Tiles/Tuile_chemin_courbe-10.png" width="128" height="74"/>
  </tile>
  <tile id="108">
   <image source="../img/Tiles/Tuile_chemin_courbe-11.png" width="128" height="74"/>
@@ -196,9 +166,6 @@
  <tile id="110">
   <image source="../img/Tiles/Tuile_chemin_courbe-13.png" width="128" height="74"/>
  </tile>
- <tile id="111">
-  <image source="../img/Tiles/Tuile_chemin_courbe-14.png" width="128" height="74"/>
- </tile>
  <tile id="112">
   <image source="../img/Tiles/Tuile_chemin_courbe-15.png" width="128" height="74"/>
  </tile>
@@ -208,53 +175,20 @@
  <tile id="114">
   <image source="../img/Tiles/Tuile_chemin_courbe-17.png" width="128" height="74"/>
  </tile>
- <tile id="115">
-  <image source="../img/Tiles/Tuile_chemin_courbe-18.png" width="128" height="74"/>
- </tile>
  <tile id="116">
   <image source="../img/Tiles/Tuile_chemin_courbe-19.png" width="128" height="74"/>
- </tile>
- <tile id="117">
-  <image source="../img/Tiles/Tuile_chemin_courbe-20.png" width="128" height="74"/>
- </tile>
- <tile id="118">
-  <image source="../img/Tiles/Tuile_chemin_courbe-21.png" width="128" height="74"/>
- </tile>
- <tile id="119">
-  <image source="../img/Tiles/Tuile_chemin_courbe-22.png" width="128" height="74"/>
- </tile>
- <tile id="120">
-  <image source="../img/Tiles/Tuile_chemin_courbe-23.png" width="128" height="74"/>
  </tile>
  <tile id="121">
   <image source="../img/Tiles/Tuile_chemin_courbe-24.png" width="128" height="74"/>
  </tile>
- <tile id="22">
-  <image source="../img/Tiles/Tuile_chemin-22.png" width="128" height="74"/>
+ <tile id="120">
+  <image source="../img/Tiles/Tuile_chemin_courbe-23.png" width="128" height="74"/>
  </tile>
- <tile id="23">
-  <image source="../img/Tiles/Tuile_chemin-23.png" width="128" height="74"/>
+ <tile id="118">
+  <image source="../img/Tiles/Tuile_chemin_courbe-21.png" width="128" height="74"/>
  </tile>
- <tile id="24">
-  <image source="../img/Tiles/Tuile_chemin-24.png" width="128" height="74"/>
- </tile>
- <tile id="25">
-  <image source="../img/Tiles/Tuile_chemin-25.png" width="128" height="74"/>
- </tile>
- <tile id="26">
-  <image source="../img/Tiles/Tuile_chemin-26.png" width="128" height="74"/>
- </tile>
- <tile id="27">
-  <image source="../img/Tiles/Tuile_chemin-27.png" width="128" height="74"/>
- </tile>
- <tile id="28">
-  <image source="../img/Tiles/Tuile_chemin-28.png" width="128" height="74"/>
- </tile>
- <tile id="29">
-  <image source="../img/Tiles/Tuile_chemin-29.png" width="128" height="74"/>
- </tile>
- <tile id="30">
-  <image source="../img/Tiles/Tuile_chemin-30.png" width="128" height="74"/>
+ <tile id="117">
+  <image source="../img/Tiles/Tuile_chemin_courbe-20.png" width="128" height="74"/>
  </tile>
  <tile id="31">
   <properties>
@@ -790,6 +724,56 @@
    </object>
   </objectgroup>
  </tile>
+ <tile id="83">
+  <properties>
+   <property name="type" value="eau"/>
+  </properties>
+  <image source="../img/Tiles/Tuile_eau-29.png" width="128" height="74"/>
+  <animation>
+   <frame tileid="83" duration="200"/>
+   <frame tileid="82" duration="200"/>
+   <frame tileid="81" duration="200"/>
+   <frame tileid="80" duration="200"/>
+   <frame tileid="81" duration="200"/>
+   <frame tileid="82" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="87">
+  <properties>
+   <property name="type" value="eau"/>
+  </properties>
+  <image source="../img/Tiles/Tuile_eau-33.png" width="128" height="74"/>
+  <animation>
+   <frame tileid="87" duration="200"/>
+   <frame tileid="86" duration="200"/>
+   <frame tileid="85" duration="200"/>
+   <frame tileid="84" duration="200"/>
+   <frame tileid="85" duration="200"/>
+   <frame tileid="86" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="90">
+  <properties>
+   <property name="type" value="eau"/>
+  </properties>
+  <image source="../img/Tiles/Tuile_eau-36.png" width="128" height="74"/>
+  <animation>
+   <frame tileid="88" duration="200"/>
+   <frame tileid="89" duration="200"/>
+   <frame tileid="90" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="93">
+  <properties>
+   <property name="type" value="eau"/>
+  </properties>
+  <image source="../img/Tiles/Tuile_eau-39.png" width="128" height="74"/>
+  <animation>
+   <frame tileid="91" duration="200"/>
+   <frame tileid="92" duration="200"/>
+   <frame tileid="93" duration="200"/>
+  </animation>
+ </tile>
  <tile id="80">
   <properties>
    <property name="type" value="eau"/>
@@ -807,20 +791,6 @@
    <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-28.png" width="128" height="74"/>
- </tile>
- <tile id="83">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
-  <image source="../img/Tiles/Tuile_eau-29.png" width="128" height="74"/>
-  <animation>
-   <frame tileid="83" duration="200"/>
-   <frame tileid="82" duration="200"/>
-   <frame tileid="81" duration="200"/>
-   <frame tileid="80" duration="200"/>
-   <frame tileid="81" duration="200"/>
-   <frame tileid="82" duration="200"/>
-  </animation>
  </tile>
  <tile id="84">
   <properties>
@@ -840,20 +810,6 @@
   </properties>
   <image source="../img/Tiles/Tuile_eau-32.png" width="128" height="74"/>
  </tile>
- <tile id="87">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
-  <image source="../img/Tiles/Tuile_eau-33.png" width="128" height="74"/>
-  <animation>
-   <frame tileid="87" duration="200"/>
-   <frame tileid="86" duration="200"/>
-   <frame tileid="85" duration="200"/>
-   <frame tileid="84" duration="200"/>
-   <frame tileid="85" duration="200"/>
-   <frame tileid="86" duration="200"/>
-  </animation>
- </tile>
  <tile id="88">
   <properties>
    <property name="type" value="eau"/>
@@ -865,17 +821,6 @@
    <property name="type" value="eau"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-35.png" width="128" height="74"/>
- </tile>
- <tile id="90">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
-  <image source="../img/Tiles/Tuile_eau-36.png" width="128" height="74"/>
-  <animation>
-   <frame tileid="88" duration="200"/>
-   <frame tileid="89" duration="200"/>
-   <frame tileid="90" duration="200"/>
-  </animation>
  </tile>
  <tile id="91">
   <properties>
@@ -889,20 +834,118 @@
   </properties>
   <image source="../img/Tiles/Tuile_eau-38.png" width="128" height="74"/>
  </tile>
- <tile id="93">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
-  <image source="../img/Tiles/Tuile_eau-39.png" width="128" height="74"/>
-  <animation>
-   <frame tileid="91" duration="200"/>
-   <frame tileid="92" duration="200"/>
-   <frame tileid="93" duration="200"/>
-  </animation>
+ <tile id="145" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-25.png" width="128" height="74"/>
+ </tile>
+ <tile id="139" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-19.png" width="128" height="74"/>
+ </tile>
+ <tile id="147" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-27.png" width="128" height="74"/>
+ </tile>
+ <tile id="142" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-22.png" width="128" height="74"/>
+ </tile>
+ <tile id="140" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-20.png" width="128" height="74"/>
+ </tile>
+ <tile id="144" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-24.png" width="128" height="74"/>
+ </tile>
+ <tile id="143" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-23.png" width="128" height="74"/>
+ </tile>
+ <tile id="148" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-28.png" width="128" height="74"/>
+ </tile>
+ <tile id="149" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-29.png" width="128" height="74"/>
+ </tile>
+ <tile id="150" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-30.png" width="128" height="74"/>
+ </tile>
+ <tile id="151" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-31.png" width="128" height="74"/>
+ </tile>
+ <tile id="146" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-26.png" width="128" height="74"/>
+ </tile>
+ <tile id="141" type="ligne_gazon" probability="0.076">
+  <image source="../img/Tiles/Tuile_gazon-21.png" width="128" height="74"/>
+ </tile>
+ <tile id="22">
+  <image source="../img/Tiles/Tuile_chemin-22.png" width="128" height="74"/>
+ </tile>
+ <tile id="23">
+  <image source="../img/Tiles/Tuile_chemin-23.png" width="128" height="74"/>
+ </tile>
+ <tile id="24">
+  <image source="../img/Tiles/Tuile_chemin-24.png" width="128" height="74"/>
+ </tile>
+ <tile id="25">
+  <image source="../img/Tiles/Tuile_chemin-25.png" width="128" height="74"/>
+ </tile>
+ <tile id="26">
+  <image source="../img/Tiles/Tuile_chemin-26.png" width="128" height="74"/>
+ </tile>
+ <tile id="27">
+  <image source="../img/Tiles/Tuile_chemin-27.png" width="128" height="74"/>
+ </tile>
+ <tile id="28">
+  <image source="../img/Tiles/Tuile_chemin-28.png" width="128" height="74"/>
+ </tile>
+ <tile id="29">
+  <image source="../img/Tiles/Tuile_chemin-29.png" width="128" height="74"/>
+ </tile>
+ <tile id="30">
+  <image source="../img/Tiles/Tuile_chemin-30.png" width="128" height="74"/>
  </tile>
  <wangsets>
-  <wangset name="Unnamed Set" type="mixed" tile="-1">
-   <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+  <wangset name="Gazon pâle" type="corner" tile="-1">
+   <wangcolor name="gazon pâle" color="#aaff7f" tile="-1" probability="1"/>
+   <wangcolor name="chemin" color="#ffff7f" tile="-1" probability="1"/>
+   <wangtile tileid="1" wangid="0,2,0,0,0,2,0,2"/>
+   <wangtile tileid="2" wangid="0,2,0,0,0,0,0,2"/>
+   <wangtile tileid="3" wangid="0,2,0,2,0,0,0,2"/>
+   <wangtile tileid="4" wangid="0,0,0,0,0,2,0,2"/>
+   <wangtile tileid="5" wangid="0,2,0,2,0,0,0,0"/>
+   <wangtile tileid="6" wangid="0,0,0,2,0,2,0,2"/>
+   <wangtile tileid="7" wangid="0,0,0,2,0,2,0,0"/>
+   <wangtile tileid="8" wangid="0,2,0,2,0,2,0,0"/>
+   <wangtile tileid="9" wangid="0,0,0,0,0,0,0,2"/>
+   <wangtile tileid="10" wangid="0,2,0,0,0,0,0,2"/>
+   <wangtile tileid="11" wangid="0,2,0,0,0,0,0,2"/>
+   <wangtile tileid="12" wangid="0,2,0,0,0,0,0,0"/>
+   <wangtile tileid="13" wangid="0,0,0,0,0,2,0,2"/>
+   <wangtile tileid="14" wangid="0,0,0,0,0,2,0,2"/>
+   <wangtile tileid="15" wangid="0,2,0,2,0,2,0,2"/>
+   <wangtile tileid="16" wangid="0,2,0,2,0,0,0,0"/>
+   <wangtile tileid="17" wangid="0,2,0,2,0,0,0,0"/>
+   <wangtile tileid="18" wangid="0,0,0,0,0,2,0,0"/>
+   <wangtile tileid="19" wangid="0,0,0,2,0,2,0,0"/>
+   <wangtile tileid="20" wangid="0,0,0,2,0,2,0,0"/>
+   <wangtile tileid="21" wangid="0,0,0,2,0,0,0,0"/>
+   <wangtile tileid="97" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="107" wangid="0,2,0,2,0,0,0,0"/>
+   <wangtile tileid="111" wangid="0,2,0,0,0,0,0,2"/>
+   <wangtile tileid="115" wangid="0,0,0,0,0,2,0,2"/>
+   <wangtile tileid="119" wangid="0,0,0,2,0,2,0,0"/>
+   <wangtile tileid="122" wangid="0,0,0,1,0,0,0,0"/>
+   <wangtile tileid="123" wangid="0,0,0,1,0,1,0,0"/>
+   <wangtile tileid="124" wangid="0,0,0,0,0,1,0,0"/>
+   <wangtile tileid="125" wangid="0,1,0,1,0,0,0,0"/>
+   <wangtile tileid="127" wangid="0,0,0,0,0,1,0,1"/>
+   <wangtile tileid="128" wangid="0,1,0,0,0,0,0,0"/>
+   <wangtile tileid="129" wangid="0,1,0,0,0,0,0,1"/>
+   <wangtile tileid="130" wangid="0,0,0,0,0,0,0,1"/>
+   <wangtile tileid="131" wangid="0,1,0,0,0,1,0,1"/>
+   <wangtile tileid="132" wangid="0,1,0,0,0,0,0,1"/>
+   <wangtile tileid="133" wangid="0,1,0,1,0,0,0,1"/>
+   <wangtile tileid="134" wangid="0,0,0,0,0,1,0,1"/>
+   <wangtile tileid="135" wangid="0,1,0,1,0,0,0,0"/>
+   <wangtile tileid="136" wangid="0,0,0,1,0,1,0,1"/>
+   <wangtile tileid="137" wangid="0,0,0,1,0,1,0,0"/>
+   <wangtile tileid="138" wangid="0,1,0,1,0,1,0,0"/>
   </wangset>
  </wangsets>
 </tileset>
