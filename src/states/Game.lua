@@ -1,13 +1,16 @@
+require "src.map"
+local physics_render = require "src.PhysicsRenderer"
+
 local bit = require("bit")
-local g = 3
+local g = 3 * METER_SCALE
 local airFriction = 0.975
-local groundDamping = 8
+local groundDamping = 16
 local jumpMultiplier = 0.5
-local speedMultiplier = 10 / 4
+local speedMultiplier = METER_SCALE * 10
 local fruitPickupAnimFrames = 20
-local firstFruitOffset = { x = 0, y = 0, z = -1.3 }
-local fruitOffset = { x = 0, y = 0, z = -0.7 }
-local fruitJumpSpeed = 1
+local firstFruitOffset = { x = 0, y = 0, z = -165 }
+local fruitOffset = { x = 0, y = 0, z = -90 }
+local fruitJumpSpeed = 140
 local fruitPickupForce = 0.7
 local eatCooldown = 600
 --   2
@@ -27,17 +30,17 @@ function Game:enter()
             Game:onBeginContact(a, b, c)
         end)
     self.camera = { x = 0, y = 0 }
-    self.map = require("maps/map1")
-    self.batch = love.graphics.newSpriteBatch(textures.tileset)
+    self.map = map.load("map_mymp")
+    self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {
         {
             id = 1,
             input = true,
             camera = true,
-            actor = { walkSpeed = 1, jumpSpeed = 1.6 },
+            actor = { walkSpeed = 200, jumpSpeed = 200 },
             pos = { x = 0, y = 0, z = 0 },
             velocity = { z = 0 },
-            body = { shape = "circle", size = 0.8, type = "dynamic" },
+            body = { shape = "circle", size = 64, type = "dynamic" },
             anim = {
                 name = "walk",
                 dir = "tr",
@@ -46,87 +49,27 @@ function Game:enter()
             sprites = {
                 {
                     name = "cossinPiedBack",
-                    anchor = { x = 96, y = 220 }
+                    anchor = { x = 96, y = 236 }
                 },
                 {
                     name = "cossinCorps",
-                    anchor = { x = 96, y = 220 }
+                    anchor = { x = 96, y = 236 }
                 },
                 {
                     name = "cossinPiedFront",
-                    anchor = { x = 96, y = 220 }
+                    anchor = { x = 96, y = 236 }
                 }
             },
             shadow = {
                 name = "cossinOmbre",
-                anchor = { x = 96, y = 32 }
+                anchor = { x = 96, y = 46 }
             },
             fruitStack = { fruits = {} }
         }
     }
 
-    local mapObjectsByGid = {}
-    self.map.tilesetFirstGid = 0
-    for _, data in ipairs(self.map.tilesets) do
-        if data.name == "objects" then
-            for i, object in pairs(objects.byId) do
-                mapObjectsByGid[data.firstgid + i] = object.id
-            end
-        end
-        if data.name == "tileset" then
-            self.map.tilesetFirstGid = data.firstgid
-        end
-    end
-
-    for _, layer in ipairs(self.map.layers) do
-        for _, data in ipairs(layer.objects or {}) do
-            local gid = data.gid
-            local flipX = bit.band(gid, TILE_FLIP_H) ~= 0
-            local flipY = bit.band(gid, TILE_FLIP_V) ~= 0
-            gid = bit.band(gid, TILE_ID_MASK)
-            if mapObjectsByGid[gid] then
-                local object = objects.byId[mapObjectsByGid[gid]]
-
-                local tx = data.x / self.map.tileheight
-                local ty = data.y / self.map.tileheight
-                local x = (tx - ty) * self.map.tilewidth / 2 + object.offsetX
-                local y = (tx + ty) * self.map.tileheight / 2 + object.offsetY
-                local entity = {
-                    pos = {
-                        x = x / METER_SCALE,
-                        y = y / METER_SCALE,
-                        z = 0
-                    },
-                    sprites = {
-                        {
-                            name = object.name,
-                            anchor = { x = object.offsetX, y = object.offsetY },
-                            flipX = flipX,
-                            flipY = flipY
-                        }
-                    }
-                }
-                if object.properties.fruit then
-                    entity.shadow = {
-                        name = "fruitOmbre",
-                        anchor = { x = 67, y = 0 }
-                    }
-                    entity.body = object.shape and { preshape = object.shape, type = "static", trigger = true }
-                    entity.fruit = {
-                        type = object.properties.fruit
-                    }
-                    entity.velocity = { z = 0 }
-                else
-                    entity.body = object.shape and { preshape = object.shape, type = "static" }
-                end
-
-                table.insert(self.entities, entity)
-                entity.id = #self.entities
-            else
-                print("unknown object gid!", data.gid)
-            end
-        end
-    end
+    self.map:getEntities(self.entities)
+    self.map:drawTiles(self.tilesBatch)
 end
 
 function Game:exit()
@@ -135,13 +78,11 @@ function Game:exit()
 end
 
 function Game:update(dt)
+    self.physics:update(dt)
+
     for _, entity in ipairs(self.entities) do
-
-        self.physics:update(dt)
-
         if entity.body and not entity.physics then
             local body = love.physics.newBody(self.physics, entity.pos.x, entity.pos.y, entity.body.type)
-            body:setLinearDamping(groundDamping)
             body:setUserData(entity)
             local shape
             if entity.body.shape == "circle" then
@@ -208,11 +149,10 @@ function Game:update(dt)
                 end
             end
             if entity.actions.movement.angle and entity.physics then
-                if not (entity.fruitStack.eating and entity.pos.onGround) and not entity.actions.prejump then
+                if entity.pos.onGround and not entity.fruitStack.eating and not entity.actions.prejump then
                     local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
                     local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * speedMultiplier
                     entity.physics.body:applyForce(dx, dy)
-                    entity.physics.body:setAngle(entity.actions.movement.angle)
                 end
 
                 -- RIP
@@ -249,6 +189,7 @@ function Game:update(dt)
                     entity.velocity.z = 0
                 end
             end
+            entity.physics.body:setLinearDamping(entity.pos.onGround and groundDamping or 0)
         end
 
         if entity.fruit and entity.fruit.animFrames then
@@ -293,7 +234,11 @@ function Game:update(dt)
     end
 
     for i = #self.entities, 1, -1 do
-        if self.entities[i].toRemove then
+        local entity = self.entities[i]
+        if entity.toRemove then
+            if entity.physics then
+                entity.physics.body:destroy()
+            end
             table.remove(self.entities, i)
         end
     end
@@ -310,61 +255,33 @@ function Game:update(dt)
         end)
 end
 
-function Game:render()
-    local w, h = love.graphics.getDimensions()
-    love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(0.33)
-    love.graphics.translate(-self.camera.x * METER_SCALE, -self.camera.y * METER_SCALE)
-    love.graphics.clear(0.2, 0.5, 0.4)
-
-    self.batch:clear()
-    for _, layer in ipairs(self.map.layers) do
-        if layer.type == "tilelayer" then
-            for _, chunk in ipairs(layer.chunks) do
-                for i, tile in ipairs(chunk.data) do
-                    if tile > 0 then
-                        local og = tile
-                        local flipX = bit.band(tile, TILE_FLIP_H) ~= 0
-                        local flipY = bit.band(tile, TILE_FLIP_V) ~= 0
-                        tile = bit.band(tile, TILE_ID_MASK) - self.map.tilesetFirstGid
-                        local tx = layer.x + chunk.x + ((i - 1) % chunk.width)
-                        local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width)
-                        local x = (tx - ty - 1) * self.map.tilewidth / 2
-                        local y = (tx + ty) * self.map.tileheight / 2
-                        if not tileset.tiles[tile] then
-                            print("Unknown tile gid!", tile, og)
-                        end
-                        self.batch:add(
-                            tileset.tiles[tile],
-                            x + self.map.tilewidth / 2,
-                            y,
-                            0,
-                            flipX and -1 or 1,
-                            flipY and -1 or 1,
-                            self.map.tilewidth / 2,
-                            self.map.tileheight / 2)
-                    end
-                end
-            end
-        end
-    end
-    love.graphics.draw(self.batch, 0, 0)
-
+function Game:renderShadows()
     love.graphics.setBlendMode("multiply", "premultiplied")
     for _, entity in ipairs(self.entities) do
          if entity.shadow then
             love.graphics.draw(
                 textures[entity.shadow.name],
-                entity.pos.x * METER_SCALE,
-                entity.pos.y * METER_SCALE,
+                entity.pos.x,
+                entity.pos.y,
                 0,
-                math.pow(1 / math.max(-entity.pos.z, 1), 1/4),
-                math.pow(1 / math.max(-entity.pos.z, 1), 1/4),
+                math.pow(1 / math.max(-(entity.pos.z / METER_SCALE), 1), 1/4),
+                math.pow(1 / math.max(-(entity.pos.z / METER_SCALE), 1), 1/4),
                 entity.shadow.anchor.x,
                 entity.shadow.anchor.y)
          end
     end
     love.graphics.setBlendMode("alpha")
+end
+
+function Game:render()
+    local w, h = love.graphics.getDimensions()
+    love.graphics.translate(w / 2, h / 2)
+    love.graphics.scale(0.33)
+    love.graphics.translate(-self.camera.x, -self.camera.y)
+    love.graphics.clear(0.2, 0.5, 0.4)
+
+    love.graphics.draw(self.tilesBatch, 0, 0)
+    self:renderShadows()
 
     for _, entity in ipairs(self.entities) do
         if entity.sprites then
@@ -391,8 +308,8 @@ function Game:render()
                     love.graphics.draw(
                         textures[sprite.name],
                         animData.tiles[frame + 1],
-                        entity.pos.x * METER_SCALE,
-                        (entity.pos.y + entity.pos.z) * METER_SCALE,
+                        entity.pos.x,
+                        (entity.pos.y + entity.pos.z),
                         0,
                         (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1),
                         (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1),
@@ -401,8 +318,8 @@ function Game:render()
                 else
                     love.graphics.draw(
                         textures[sprite.name],
-                        entity.pos.x * METER_SCALE,
-                        (entity.pos.y + entity.pos.z) * METER_SCALE,
+                        entity.pos.x,
+                        (entity.pos.y + entity.pos.z),
                         0,
                         sprite.flipX and -1 or 1,
                         sprite.flipY and -1 or 1,
@@ -412,6 +329,8 @@ function Game:render()
             end
         end
     end
+
+    --physics_render.draw_camera(self.physics, 0, 0, w, h)
 end
 
 function Game:onBeginContact(fix1, fix2, contact)

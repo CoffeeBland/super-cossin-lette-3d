@@ -70,8 +70,8 @@ local function debug_world_draw_scissor_callback(fixture)
 end
 
 function physics_renderer.draw_camera(physics, x, y, w, h)
-    sx, sy = love.graphics.inverseTransformPoint(x, y)
-    ex, ey = love.graphics.inverseTransformPoint(x + w, y + h)
+    local sx, sy = love.graphics.inverseTransformPoint(x, y)
+    local ex, ey = love.graphics.inverseTransformPoint(x + w, y + h)
     physics:queryBoundingBox(sx, sy, ex, ey, debug_world_draw_scissor_callback)
 
     love.graphics.setLineWidth(1)

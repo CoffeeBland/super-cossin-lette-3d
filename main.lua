@@ -11,12 +11,19 @@ local releaseActions = {
     space = "jump"
 }
 
+function getObjectPos(alignment, obj)
+    local texture = textures[obj.name]
+    if alignment == "bottom" then
+        return -texture:getWidth() / 2, -texture:getHeight()
+    end
+end
+
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.window.setTitle("Super Cossin Lette 3D")
     love.window.setMode(1024, 768, { resizable = true })
     love.window.setVSync(1)
-    math.randomseed(os.time())
+    love.physics.setMeter(METER_SCALE)
 
     fonts = {}
     textures = {}
@@ -47,30 +54,34 @@ function love.load()
 
         if data.tiledversion then
             if data.name == "objects" then
-                for _, object in ipairs(data.tiles) do
-                    local name = str.filename(object.image)
-                    object.name = name
-                    object.offsetX = object.properties and object.properties.offsetX or 0
-                    object.offsetY = object.properties and object.properties.offsetY or 0
-                    objects.byId[object.id] = object
-                    objects.byName[name] = object
-                    objects.shapes = {}
+                for _, objData in ipairs(data.tiles) do
+                    local obj = {}
+                    obj.name = str.filename(objData.image)
+                    obj.id = objData.id
+                    obj.offsetX = 0
+                    obj.offsetY = 0
+                    for key, value in pairs(objData.properties) do
+                        obj[key] = value
+                    end
+                    obj.posX, obj.posY = getObjectPos(data.objectalignment, obj)
+                    objects.byId[obj.id] = obj
+                    objects.byName[obj.name] = obj
 
-                    if object.objectGroup and object.objectGroup.objects then
-                        for _, subobject in ipairs(object.objectGroup.objects) do
+                    if objData.objectGroup and objData.objectGroup.objects then
+                        for _, subobject in ipairs(objData.objectGroup.objects) do
                             if subobject.shape == "polygon" then
                                 local vertices = {}
                                 for _, point in ipairs(subobject.polygon) do
-                                    table.insert(vertices, (point.x + subobject.x - object.offsetX) / METER_SCALE)
-                                    table.insert(vertices, (point.y + subobject.y - object.offsetY) / METER_SCALE)
+                                    table.insert(vertices, (point.x + subobject.x - obj.offsetX))
+                                    table.insert(vertices, (point.y + subobject.y - obj.offsetY))
                                 end
-                                object.shape = love.physics.newPolygonShape(vertices)
+                                obj.shape = love.physics.newPolygonShape(vertices)
                             elseif subobject.shape == "ellipse" then
                                 -- Oops, all circles!
-                                object.shape = love.physics.newCircleShape(
-                                    (subobject.x + subobject.width / 2 - object.offsetX) / METER_SCALE,
-                                    (subobject.y + subobject.height / 2 - object.offsetY) / METER_SCALE,
-                                    (subobject.width + subobject.height) / 4 / METER_SCALE)
+                                obj.shape = love.physics.newCircleShape(
+                                    (subobject.x + subobject.width / 2 - obj.offsetX),
+                                    (subobject.y + subobject.height / 2 - obj.offsetY),
+                                    (subobject.width + subobject.height) / 4)
                             end
                         end
                     end
