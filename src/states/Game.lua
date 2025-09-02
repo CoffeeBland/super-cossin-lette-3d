@@ -30,6 +30,7 @@ function Game:enter()
             Game:onBeginContact(a, b, c)
         end)
     self.camera = { x = 0, y = 0 }
+    self.time = 0
     self.map = map.load("map_mymp")
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {
@@ -69,7 +70,6 @@ function Game:enter()
     }
 
     self.map:getEntities(self.entities)
-    self.map:drawTiles(self.tilesBatch)
 end
 
 function Game:exit()
@@ -79,6 +79,7 @@ end
 
 function Game:update(dt)
     self.physics:update(dt)
+    self.time = self.time + dt
 
     for _, entity in ipairs(self.entities) do
         if entity.body and not entity.physics then
@@ -273,14 +274,19 @@ function Game:renderShadows()
     love.graphics.setBlendMode("alpha")
 end
 
-function Game:render()
+function Game:render(dt)
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(0.33)
+    love.graphics.scale(0.5)
     love.graphics.translate(-self.camera.x, -self.camera.y)
     love.graphics.clear(0.2, 0.5, 0.4)
 
+    love.graphics.setBlendMode("alpha", "premultiplied")
+    self.tilesBatch:clear()
+    self.map:drawTiles(self.tilesBatch, self.time)
     love.graphics.draw(self.tilesBatch, 0, 0)
+    love.graphics.setBlendMode("alpha")
+
     self:renderShadows()
 
     for _, entity in ipairs(self.entities) do

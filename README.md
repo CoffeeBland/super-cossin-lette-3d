@@ -2,7 +2,6 @@
 
 * Collisions de tilesets
 * Eau
-* La masse de cossin
 * Sons
 * Intro
 * Fruits qui tombent quand ya de la hauteur

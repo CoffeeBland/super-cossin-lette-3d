@@ -75,13 +75,18 @@ function map:getEntities(entities)
     return entities
 end
 
-function map:drawChunk(batch, layer, chunk)
+function map:drawChunk(batch, time, layer, chunk)
     for i, tile in ipairs(chunk.data) do
         if tile > 0 then
             local og = tile
             local flipX = bit.band(tile, TILE_FLIP_H) ~= 0
             local flipY = bit.band(tile, TILE_FLIP_V) ~= 0
             tile = bit.band(tile, TILE_ID_MASK) - self._data.tilesetFirstGid
+            local anim = tileset.anims[tile]
+            if anim then
+                local frame = math.floor(time * anim.fps) % #anim.ids
+                tile = anim.ids[frame + 1]
+            end
             local tx = layer.x + chunk.x + ((i - 1) % chunk.width)
             local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width) + 1
             local x = (tx - ty) * self._data.tilewidth / 2
@@ -102,11 +107,11 @@ function map:drawChunk(batch, layer, chunk)
     end
 end
 
-function map:drawTiles(batch)
+function map:drawTiles(batch, time)
     for _, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks or {}) do
-                self:drawChunk(batch, layer, chunk)
+                self:drawChunk(batch, time, layer, chunk)
             end
             if layer.data then
                 local chunk = {
@@ -116,7 +121,7 @@ function map:drawTiles(batch)
                     width = layer.width,
                     height = layer.height
                 }
-                self:drawChunk(batch, layer, chunk)
+                self:drawChunk(batch, time, layer, chunk)
             end
         end
     end

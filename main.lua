@@ -93,6 +93,7 @@ function love.load()
 
             if data.name == "tileset" then
                 tileset.tiles = {}
+                tileset.anims = {}
                 tileset.tilewidth = data.tilewidth
                 tileset.tileheight = data.tileheight
                 if data.image then
@@ -125,6 +126,17 @@ function love.load()
                             data.tilewidth,
                             data.tileheight,
                             canvas)
+
+                        if tile.animation and #tile.animation > 1 then
+                            local ids = {}
+                            for i, frame in ipairs(tile.animation) do
+                                ids[i] = frame.tileid
+                            end
+                            tileset.anims[tile.id] = {
+                                fps = 1000 / tile.animation[1].duration,
+                                ids = ids
+                            }
+                        end
                     end
                     love.graphics.setCanvas()
                 end
