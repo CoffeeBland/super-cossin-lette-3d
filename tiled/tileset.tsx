@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="128" tileheight="74" tilecount="159" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="150" tilecount="139" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="96" probability="50">
   <image source="../img/Tiles/Tuile_herbe-2.png" width="128" height="74"/>
@@ -174,6 +174,18 @@
  </tile>
  <tile id="4">
   <image source="../img/Tiles/Tuile_chemin-4.png" width="128" height="74"/>
+ </tile>
+ <tile id="167">
+  <image source="../img/Tiles/Tuile_chemin_courbe_1.png" width="128" height="150"/>
+ </tile>
+ <tile id="168">
+  <image source="../img/Tiles/Tuile_chemin_courbe_2.png" width="128" height="150"/>
+ </tile>
+ <tile id="169">
+  <image source="../img/Tiles/Tuile_chemin_courbe_3.png" width="256" height="74"/>
+ </tile>
+ <tile id="170">
+  <image source="../img/Tiles/Tuile_chemin_courbe_4.png" width="256" height="74"/>
  </tile>
  <tile id="95">
   <properties>
@@ -860,78 +872,6 @@
  </tile>
  <tile id="141" type="ligne_gazon" probability="0.015">
   <image source="../img/Tiles/Tuile_gazon-21.png" width="128" height="74"/>
- </tile>
- <tile id="99">
-  <image source="../img/Tiles/Tuile_chemin_courbe-2.png"/>
- </tile>
- <tile id="101">
-  <image source="../img/Tiles/Tuile_chemin_courbe-4.png"/>
- </tile>
- <tile id="115">
-  <image source="../img/Tiles/Tuile_chemin_courbe-18.png"/>
- </tile>
- <tile id="111">
-  <image source="../img/Tiles/Tuile_chemin_courbe-14.png"/>
- </tile>
- <tile id="119">
-  <image source="../img/Tiles/Tuile_chemin_courbe-22.png"/>
- </tile>
- <tile id="107">
-  <image source="../img/Tiles/Tuile_chemin_courbe-10.png"/>
- </tile>
- <tile id="105">
-  <image source="../img/Tiles/Tuile_chemin_courbe-8.png"/>
- </tile>
- <tile id="103">
-  <image source="../img/Tiles/Tuile_chemin_courbe-6.png"/>
- </tile>
- <tile id="98">
-  <image source="../img/Tiles/Tuile_chemin_courbe-1.png"/>
- </tile>
- <tile id="100">
-  <image source="../img/Tiles/Tuile_chemin_courbe-3.png"/>
- </tile>
- <tile id="102">
-  <image source="../img/Tiles/Tuile_chemin_courbe-5.png"/>
- </tile>
- <tile id="113">
-  <image source="../img/Tiles/Tuile_chemin_courbe-16.png"/>
- </tile>
- <tile id="104">
-  <image source="../img/Tiles/Tuile_chemin_courbe-7.png"/>
- </tile>
- <tile id="106">
-  <image source="../img/Tiles/Tuile_chemin_courbe-9.png"/>
- </tile>
- <tile id="121">
-  <image source="../img/Tiles/Tuile_chemin_courbe-24.png"/>
- </tile>
- <tile id="120">
-  <image source="../img/Tiles/Tuile_chemin_courbe-23.png"/>
- </tile>
- <tile id="118">
-  <image source="../img/Tiles/Tuile_chemin_courbe-21.png"/>
- </tile>
- <tile id="117">
-  <image source="../img/Tiles/Tuile_chemin_courbe-20.png"/>
- </tile>
- <tile id="116">
-  <image source="../img/Tiles/Tuile_chemin_courbe-19.png"/>
- </tile>
- <tile id="114">
-  <image source="../img/Tiles/Tuile_chemin_courbe-17.png"/>
- </tile>
- <tile id="112">
-  <image source="../img/Tiles/Tuile_chemin_courbe-15.png"/>
- </tile>
- <tile id="110">
-  <image source="../img/Tiles/Tuile_chemin_courbe-13.png"/>
- </tile>
- <tile id="109">
-  <image source="../img/Tiles/Tuile_chemin_courbe-12.png"/>
- </tile>
- <tile id="108">
-  <image source="../img/Tiles/Tuile_chemin_courbe-11.png"/>
  </tile>
  <wangsets>
   <wangset name="Gazon pâle" type="corner" tile="-1">
