@@ -1,5 +1,5 @@
 require "src.map"
-local physics_render = require "src.PhysicsRenderer"
+local PhysicsRenderer = require "src.PhysicsRenderer"
 
 local bit = require("bit")
 local g = 3 * METER_SCALE
@@ -330,7 +330,9 @@ function Game:render()
         end
     end
 
-    --physics_render.draw_camera(self.physics, 0, 0, w, h)
+    if debug.physics then
+        PhysicsRenderer.draw_camera(self.physics, 0, 0, w, h)
+    end
 end
 
 function Game:onBeginContact(fix1, fix2, contact)

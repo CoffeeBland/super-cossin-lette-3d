@@ -4,7 +4,8 @@ require "src.states.StateMachine"
 
 local pressActions = {
     escape = "escape",
-    enter = "action"
+    enter = "action",
+    f12 = "toggleDebug"
 }
 
 local releaseActions = {
@@ -17,6 +18,8 @@ function getObjectPos(alignment, obj)
         return -texture:getWidth() / 2, -texture:getHeight()
     end
 end
+
+debug = { physics = false }
 
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
@@ -146,7 +149,7 @@ function love.load()
         end
     end
 
-    StateMachine:change(Intro)
+    StateMachine:change(Game)
 
     love.keyboard.keyPressed = {}
 end
@@ -192,6 +195,10 @@ function love.update(dt)
             actions[preaction] = false
             actions[action] = true
         end
+    end
+
+    if actions.toggleDebug then
+        debug.physics = not debug.physics
     end
 
     for key, action in pairs(pressActions) do

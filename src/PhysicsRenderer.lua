@@ -1,4 +1,4 @@
-local physics_renderer = { name = 'physics_renderer' }
+local PhysicsRenderer = { name = 'PhysicsRenderer' }
 
 local seed = 123
 local rng = love.math.newRandomGenerator(seed)
@@ -69,7 +69,7 @@ local function debug_world_draw_scissor_callback(fixture)
     return true --search continues until false
 end
 
-function physics_renderer.draw_camera(physics, x, y, w, h)
+function PhysicsRenderer.draw_camera(physics, x, y, w, h)
     local sx, sy = love.graphics.inverseTransformPoint(x, y)
     local ex, ey = love.graphics.inverseTransformPoint(x + w, y + h)
     physics:queryBoundingBox(sx, sy, ex, ey, debug_world_draw_scissor_callback)
@@ -116,4 +116,4 @@ function physics_renderer.draw_camera(physics, x, y, w, h)
     love.graphics.setColor(1, 1, 1, 1)
 end
 
-return physics_renderer
+return PhysicsRenderer

@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   name = "tileset",
   class = "",
   tilewidth = 128,
@@ -22,66 +22,352 @@ return {
     height = 1
   },
   properties = {},
-  wangsets = {},
-  tilecount = 119,
+  wangsets = {
+    {
+      name = "Gazon pâle",
+      class = "",
+      tile = -1,
+      wangsettype = "corner",
+      properties = {},
+      colors = {
+        {
+          color = { 170, 255, 127 },
+          name = "gazon pâle",
+          class = "",
+          probability = 1,
+          tile = -1,
+          properties = {}
+        },
+        {
+          color = { 255, 255, 127 },
+          name = "chemin",
+          class = "",
+          probability = 1,
+          tile = -1,
+          properties = {}
+        }
+      },
+      wangtiles = {
+        {
+          wangid = { 0, 2, 0, 0, 0, 2, 0, 2 },
+          tileid = 1
+        },
+        {
+          wangid = { 0, 2, 0, 0, 0, 0, 0, 2 },
+          tileid = 2
+        },
+        {
+          wangid = { 0, 2, 0, 2, 0, 0, 0, 2 },
+          tileid = 3
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 2, 0, 2 },
+          tileid = 4
+        },
+        {
+          wangid = { 0, 2, 0, 2, 0, 0, 0, 0 },
+          tileid = 5
+        },
+        {
+          wangid = { 0, 0, 0, 2, 0, 2, 0, 2 },
+          tileid = 6
+        },
+        {
+          wangid = { 0, 0, 0, 2, 0, 2, 0, 0 },
+          tileid = 7
+        },
+        {
+          wangid = { 0, 2, 0, 2, 0, 2, 0, 0 },
+          tileid = 8
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 0, 0, 2 },
+          tileid = 9
+        },
+        {
+          wangid = { 0, 2, 0, 0, 0, 0, 0, 2 },
+          tileid = 10
+        },
+        {
+          wangid = { 0, 2, 0, 0, 0, 0, 0, 2 },
+          tileid = 11
+        },
+        {
+          wangid = { 0, 2, 0, 0, 0, 0, 0, 0 },
+          tileid = 12
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 2, 0, 2 },
+          tileid = 13
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 2, 0, 2 },
+          tileid = 14
+        },
+        {
+          wangid = { 0, 2, 0, 2, 0, 2, 0, 2 },
+          tileid = 15
+        },
+        {
+          wangid = { 0, 2, 0, 2, 0, 0, 0, 0 },
+          tileid = 16
+        },
+        {
+          wangid = { 0, 2, 0, 2, 0, 0, 0, 0 },
+          tileid = 17
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 2, 0, 0 },
+          tileid = 18
+        },
+        {
+          wangid = { 0, 0, 0, 2, 0, 2, 0, 0 },
+          tileid = 19
+        },
+        {
+          wangid = { 0, 0, 0, 2, 0, 2, 0, 0 },
+          tileid = 20
+        },
+        {
+          wangid = { 0, 0, 0, 2, 0, 0, 0, 0 },
+          tileid = 21
+        },
+        {
+          wangid = { 0, 1, 0, 1, 0, 1, 0, 1 },
+          tileid = 97
+        },
+        {
+          wangid = { 0, 2, 0, 2, 0, 0, 0, 0 },
+          tileid = 107
+        },
+        {
+          wangid = { 0, 2, 0, 0, 0, 0, 0, 2 },
+          tileid = 111
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 2, 0, 2 },
+          tileid = 115
+        },
+        {
+          wangid = { 0, 0, 0, 2, 0, 2, 0, 0 },
+          tileid = 119
+        },
+        {
+          wangid = { 0, 0, 0, 1, 0, 0, 0, 0 },
+          tileid = 122
+        },
+        {
+          wangid = { 0, 0, 0, 1, 0, 1, 0, 0 },
+          tileid = 123
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 1, 0, 0 },
+          tileid = 124
+        },
+        {
+          wangid = { 0, 1, 0, 1, 0, 0, 0, 0 },
+          tileid = 125
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 1, 0, 1 },
+          tileid = 127
+        },
+        {
+          wangid = { 0, 1, 0, 0, 0, 0, 0, 0 },
+          tileid = 128
+        },
+        {
+          wangid = { 0, 1, 0, 0, 0, 0, 0, 1 },
+          tileid = 129
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 0, 0, 1 },
+          tileid = 130
+        },
+        {
+          wangid = { 0, 1, 0, 0, 0, 1, 0, 1 },
+          tileid = 131
+        },
+        {
+          wangid = { 0, 1, 0, 0, 0, 0, 0, 1 },
+          tileid = 132
+        },
+        {
+          wangid = { 0, 1, 0, 1, 0, 0, 0, 1 },
+          tileid = 133
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 1, 0, 1 },
+          tileid = 134
+        },
+        {
+          wangid = { 0, 1, 0, 1, 0, 0, 0, 0 },
+          tileid = 135
+        },
+        {
+          wangid = { 0, 0, 0, 1, 0, 1, 0, 1 },
+          tileid = 136
+        },
+        {
+          wangid = { 0, 0, 0, 1, 0, 1, 0, 0 },
+          tileid = 137
+        },
+        {
+          wangid = { 0, 1, 0, 1, 0, 1, 0, 0 },
+          tileid = 138
+        }
+      }
+    }
+  },
+  tilecount = 149,
   tiles = {
     {
       id = 96,
       image = "../img/Tiles/Tuile_herbe-2.png",
       width = 128,
-      height = 74
+      height = 74,
+      probability = 50
     },
     {
       id = 97,
       image = "../img/Tiles/Tuile_herbe-1.png",
       width = 128,
-      height = 74
+      height = 74,
+      probability = 5
     },
     {
-      id = 1,
-      image = "../img/Tiles/Tuile_chemin-1.png",
+      id = 122,
+      image = "../img/Tiles/Tuile_gazon-2.png",
       width = 128,
       height = 74
     },
     {
-      id = 2,
-      image = "../img/Tiles/Tuile_chemin-2.png",
+      id = 124,
+      image = "../img/Tiles/Tuile_gazon-4.png",
       width = 128,
       height = 74
     },
     {
-      id = 3,
-      image = "../img/Tiles/Tuile_chemin-3.png",
+      id = 128,
+      image = "../img/Tiles/Tuile_gazon-8.png",
       width = 128,
       height = 74
     },
     {
-      id = 4,
-      image = "../img/Tiles/Tuile_chemin-4.png",
+      id = 130,
+      image = "../img/Tiles/Tuile_gazon-10.png",
       width = 128,
       height = 74
     },
     {
-      id = 5,
-      image = "../img/Tiles/Tuile_chemin-5.png",
+      id = 137,
+      type = "gazon_edge_C",
+      image = "../img/Tiles/Tuile_gazon-17.png",
+      width = 128,
+      height = 74,
+      probability = 0.5
+    },
+    {
+      id = 123,
+      type = "gazon_edge_C",
+      image = "../img/Tiles/Tuile_gazon-3.png",
+      width = 128,
+      height = 74,
+      probability = 0.5
+    },
+    {
+      id = 127,
+      type = "gazon_edge_A",
+      image = "../img/Tiles/Tuile_gazon-7.png",
+      width = 128,
+      height = 74,
+      probability = 0.5
+    },
+    {
+      id = 134,
+      type = "gazon_edge_A",
+      image = "../img/Tiles/Tuile_gazon-14.png",
+      width = 128,
+      height = 74,
+      probability = 0.5
+    },
+    {
+      id = 132,
+      type = "gazon_edge_B",
+      image = "../img/Tiles/Tuile_gazon-12.png",
+      width = 128,
+      height = 74,
+      probability = 0.5
+    },
+    {
+      id = 129,
+      type = "gazon_edge_B",
+      image = "../img/Tiles/Tuile_gazon-9.png",
+      width = 128,
+      height = 74,
+      probability = 0.5
+    },
+    {
+      id = 135,
+      type = "gazon_edge_D",
+      image = "../img/Tiles/Tuile_gazon-15.png",
+      width = 128,
+      height = 74,
+      probability = 0.5
+    },
+    {
+      id = 125,
+      type = "gazon_edge_D",
+      image = "../img/Tiles/Tuile_gazon-5.png",
+      width = 128,
+      height = 74,
+      probability = 0.5
+    },
+    {
+      id = 131,
+      image = "../img/Tiles/Tuile_gazon-11.png",
       width = 128,
       height = 74
     },
     {
-      id = 6,
-      image = "../img/Tiles/Tuile_chemin-6.png",
+      id = 133,
+      image = "../img/Tiles/Tuile_gazon-13.png",
       width = 128,
       height = 74
     },
     {
-      id = 7,
-      image = "../img/Tiles/Tuile_chemin-7.png",
+      id = 136,
+      image = "../img/Tiles/Tuile_gazon-16.png",
       width = 128,
       height = 74
     },
     {
-      id = 8,
-      image = "../img/Tiles/Tuile_chemin-8.png",
+      id = 138,
+      image = "../img/Tiles/Tuile_gazon-18.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 15,
+      image = "../img/Tiles/Tuile_chemin-15.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 21,
+      image = "../img/Tiles/Tuile_chemin-21.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 18,
+      image = "../img/Tiles/Tuile_chemin-18.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 12,
+      image = "../img/Tiles/Tuile_chemin-12.png",
       width = 128,
       height = 74
     },
@@ -92,20 +378,38 @@ return {
       height = 74
     },
     {
-      id = 10,
-      image = "../img/Tiles/Tuile_chemin-10.png",
+      id = 19,
+      image = "../img/Tiles/Tuile_chemin-19.png",
       width = 128,
       height = 74
     },
     {
-      id = 11,
-      image = "../img/Tiles/Tuile_chemin-11.png",
+      id = 7,
+      image = "../img/Tiles/Tuile_chemin-7.png",
       width = 128,
       height = 74
     },
     {
-      id = 12,
-      image = "../img/Tiles/Tuile_chemin-12.png",
+      id = 119,
+      image = "../img/Tiles/Tuile_chemin_courbe-22.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 20,
+      image = "../img/Tiles/Tuile_chemin-20.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 4,
+      image = "../img/Tiles/Tuile_chemin-4.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 115,
+      image = "../img/Tiles/Tuile_chemin_courbe-18.png",
       width = 128,
       height = 74
     },
@@ -122,8 +426,38 @@ return {
       height = 74
     },
     {
-      id = 15,
-      image = "../img/Tiles/Tuile_chemin-15.png",
+      id = 10,
+      image = "../img/Tiles/Tuile_chemin-10.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 11,
+      image = "../img/Tiles/Tuile_chemin-11.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 111,
+      image = "../img/Tiles/Tuile_chemin_courbe-14.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 2,
+      image = "../img/Tiles/Tuile_chemin-2.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 107,
+      image = "../img/Tiles/Tuile_chemin_courbe-10.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 5,
+      image = "../img/Tiles/Tuile_chemin-5.png",
       width = 128,
       height = 74
     },
@@ -140,32 +474,26 @@ return {
       height = 74
     },
     {
-      id = 18,
-      image = "../img/Tiles/Tuile_chemin-18.png",
+      id = 1,
+      image = "../img/Tiles/Tuile_chemin-1.png",
       width = 128,
       height = 74
     },
     {
-      id = 19,
-      image = "../img/Tiles/Tuile_chemin-19.png",
+      id = 3,
+      image = "../img/Tiles/Tuile_chemin-3.png",
       width = 128,
       height = 74
     },
     {
-      id = 20,
-      image = "../img/Tiles/Tuile_chemin-20.png",
+      id = 6,
+      image = "../img/Tiles/Tuile_chemin-6.png",
       width = 128,
       height = 74
     },
     {
-      id = 21,
-      image = "../img/Tiles/Tuile_chemin-21.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 98,
-      image = "../img/Tiles/Tuile_chemin_courbe-1.png",
+      id = 8,
+      image = "../img/Tiles/Tuile_chemin-8.png",
       width = 128,
       height = 74
     },
@@ -176,32 +504,8 @@ return {
       height = 74
     },
     {
-      id = 100,
-      image = "../img/Tiles/Tuile_chemin_courbe-3.png",
-      width = 128,
-      height = 74
-    },
-    {
       id = 101,
       image = "../img/Tiles/Tuile_chemin_courbe-4.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 102,
-      image = "../img/Tiles/Tuile_chemin_courbe-5.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 103,
-      image = "../img/Tiles/Tuile_chemin_courbe-6.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 104,
-      image = "../img/Tiles/Tuile_chemin_courbe-7.png",
       width = 128,
       height = 74
     },
@@ -212,14 +516,38 @@ return {
       height = 74
     },
     {
-      id = 106,
-      image = "../img/Tiles/Tuile_chemin_courbe-9.png",
+      id = 103,
+      image = "../img/Tiles/Tuile_chemin_courbe-6.png",
       width = 128,
       height = 74
     },
     {
-      id = 107,
-      image = "../img/Tiles/Tuile_chemin_courbe-10.png",
+      id = 98,
+      image = "../img/Tiles/Tuile_chemin_courbe-1.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 100,
+      image = "../img/Tiles/Tuile_chemin_courbe-3.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 102,
+      image = "../img/Tiles/Tuile_chemin_courbe-5.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 104,
+      image = "../img/Tiles/Tuile_chemin_courbe-7.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 106,
+      image = "../img/Tiles/Tuile_chemin_courbe-9.png",
       width = 128,
       height = 74
     },
@@ -242,12 +570,6 @@ return {
       height = 74
     },
     {
-      id = 111,
-      image = "../img/Tiles/Tuile_chemin_courbe-14.png",
-      width = 128,
-      height = 74
-    },
-    {
       id = 112,
       image = "../img/Tiles/Tuile_chemin_courbe-15.png",
       width = 128,
@@ -266,38 +588,8 @@ return {
       height = 74
     },
     {
-      id = 115,
-      image = "../img/Tiles/Tuile_chemin_courbe-18.png",
-      width = 128,
-      height = 74
-    },
-    {
       id = 116,
       image = "../img/Tiles/Tuile_chemin_courbe-19.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 117,
-      image = "../img/Tiles/Tuile_chemin_courbe-20.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 118,
-      image = "../img/Tiles/Tuile_chemin_courbe-21.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 119,
-      image = "../img/Tiles/Tuile_chemin_courbe-22.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 120,
-      image = "../img/Tiles/Tuile_chemin_courbe-23.png",
       width = 128,
       height = 74
     },
@@ -308,56 +600,20 @@ return {
       height = 74
     },
     {
-      id = 22,
-      image = "../img/Tiles/Tuile_chemin-22.png",
+      id = 120,
+      image = "../img/Tiles/Tuile_chemin_courbe-23.png",
       width = 128,
       height = 74
     },
     {
-      id = 23,
-      image = "../img/Tiles/Tuile_chemin-23.png",
+      id = 118,
+      image = "../img/Tiles/Tuile_chemin_courbe-21.png",
       width = 128,
       height = 74
     },
     {
-      id = 24,
-      image = "../img/Tiles/Tuile_chemin-24.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 25,
-      image = "../img/Tiles/Tuile_chemin-25.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 26,
-      image = "../img/Tiles/Tuile_chemin-26.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 27,
-      image = "../img/Tiles/Tuile_chemin-27.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 28,
-      image = "../img/Tiles/Tuile_chemin-28.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 29,
-      image = "../img/Tiles/Tuile_chemin-29.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 30,
-      image = "../img/Tiles/Tuile_chemin-30.png",
+      id = 117,
+      image = "../img/Tiles/Tuile_chemin_courbe-20.png",
       width = 128,
       height = 74
     },
@@ -2509,33 +2765,6 @@ return {
       }
     },
     {
-      id = 80,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-26.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 81,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-27.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 82,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-28.png",
-      width = 128,
-      height = 74
-    },
-    {
       id = 83,
       properties = {
         ["type"] = "eau"
@@ -2569,33 +2798,6 @@ return {
           duration = 200
         }
       }
-    },
-    {
-      id = 84,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-30.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 85,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-31.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 86,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-32.png",
-      width = 128,
-      height = 74
     },
     {
       id = 87,
@@ -2633,24 +2835,6 @@ return {
       }
     },
     {
-      id = 88,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-34.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 89,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-35.png",
-      width = 128,
-      height = 74
-    },
-    {
       id = 90,
       properties = {
         ["type"] = "eau"
@@ -2674,24 +2858,6 @@ return {
       }
     },
     {
-      id = 91,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-37.png",
-      width = 128,
-      height = 74
-    },
-    {
-      id = 92,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-38.png",
-      width = 128,
-      height = 74
-    },
-    {
       id = 93,
       properties = {
         ["type"] = "eau"
@@ -2713,6 +2879,260 @@ return {
           duration = 200
         }
       }
+    },
+    {
+      id = 80,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-26.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 81,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-27.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 82,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-28.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 84,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-30.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 85,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-31.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 86,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-32.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 88,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-34.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 89,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-35.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 91,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-37.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 92,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-38.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 145,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-25.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 139,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-19.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 147,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-27.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 142,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-22.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 140,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-20.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 144,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-24.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 143,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-23.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 148,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-28.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 149,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-29.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 150,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-30.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 151,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-31.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 146,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-26.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 141,
+      type = "ligne_gazon",
+      image = "../img/Tiles/Tuile_gazon-21.png",
+      width = 128,
+      height = 74,
+      probability = 0.076
+    },
+    {
+      id = 22,
+      image = "../img/Tiles/Tuile_chemin-22.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 23,
+      image = "../img/Tiles/Tuile_chemin-23.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 24,
+      image = "../img/Tiles/Tuile_chemin-24.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 25,
+      image = "../img/Tiles/Tuile_chemin-25.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 26,
+      image = "../img/Tiles/Tuile_chemin-26.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 27,
+      image = "../img/Tiles/Tuile_chemin-27.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 28,
+      image = "../img/Tiles/Tuile_chemin-28.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 29,
+      image = "../img/Tiles/Tuile_chemin-29.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 30,
+      image = "../img/Tiles/Tuile_chemin-30.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 152,
+      image = "../img/Tiles/vide.png",
+      width = 128,
+      height = 74
     }
   }
 }

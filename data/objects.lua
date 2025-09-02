@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -9,7 +9,7 @@ return {
   spacing = 0,
   margin = 0,
   columns = 0,
-  objectalignment = "unspecified",
+  objectalignment = "bottom",
   tilerendersize = "tile",
   fillmode = "stretch",
   tileoffset = {
@@ -23,7 +23,7 @@ return {
   },
   properties = {},
   wangsets = {},
-  tilecount = 58,
+  tilecount = 73,
   tiles = {
     {
       id = 0,
@@ -746,7 +746,7 @@ return {
       properties = {
         ["fruit"] = "apple",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-1.png",
       width = 128,
@@ -786,7 +786,7 @@ return {
       properties = {
         ["fruit"] = "banana",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-2.png",
       width = 128,
@@ -826,7 +826,7 @@ return {
       properties = {
         ["fruit"] = "pineapple",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-3.png",
       width = 128,
@@ -866,7 +866,7 @@ return {
       properties = {
         ["fruit"] = "pear",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-4.png",
       width = 128,
@@ -906,7 +906,7 @@ return {
       properties = {
         ["fruit"] = "tomato",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-5.png",
       width = 128,
@@ -946,7 +946,7 @@ return {
       properties = {
         ["fruit"] = "orange",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-6.png",
       width = 128,
@@ -986,7 +986,7 @@ return {
       properties = {
         ["fruit"] = "mushroom",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-7.png",
       width = 128,
@@ -1026,7 +1026,7 @@ return {
       properties = {
         ["fruit"] = "grape",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-8.png",
       width = 128,
@@ -1066,7 +1066,7 @@ return {
       properties = {
         ["fruit"] = "durian",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-9.png",
       width = 128,
@@ -1106,7 +1106,7 @@ return {
       properties = {
         ["fruit"] = "peach",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-10.png",
       width = 128,
@@ -1146,7 +1146,7 @@ return {
       properties = {
         ["fruit"] = "radish",
         ["offsetX"] = 64,
-        ["offsetY"] = 175
+        ["offsetY"] = 180
       },
       image = "../img/Fruit-11.png",
       width = 128,
@@ -1815,6 +1815,681 @@ return {
       image = "../img/Tuile_roche_ultra.png",
       width = 256,
       height = 148
+    },
+    {
+      id = 73,
+      properties = {
+        ["offsetX"] = 302.5,
+        ["offsetY"] = 300
+      },
+      image = "../img/Picnic.png",
+      width = 605,
+      height = 459,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 3,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 2,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 31,
+            y = 260,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = -6, y = 25.3333 },
+              { x = 320.667, y = -194.333 },
+              { x = 545.333, y = 3.33333 },
+              { x = 264.667, y = 182.667 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 74,
+      properties = {
+        ["offsetX"] = 156.5,
+        ["offsetY"] = 190
+      },
+      image = "../img/Roche_gros_mousse-1.png",
+      width = 313,
+      height = 321,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 28,
+            y = 235,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 1, y = 2 },
+              { x = 85, y = -53 },
+              { x = 261, y = 18 },
+              { x = 176, y = 79 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 75,
+      properties = {
+        ["offsetX"] = 156.5,
+        ["offsetY"] = 190
+      },
+      image = "../img/Roche_gros_mousse-2.png",
+      width = 313,
+      height = 321,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 36,
+            y = 224,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = -3, y = 2 },
+              { x = 97, y = -59 },
+              { x = 255, y = 15 },
+              { x = 159, y = 88 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 76,
+      properties = {
+        ["offsetX"] = 156.5,
+        ["offsetY"] = 220
+      },
+      image = "../img/Roche_gros_mousse-3.png",
+      width = 313,
+      height = 321,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 50,
+            y = 241,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 100, y = -40 },
+              { x = 232, y = 27 },
+              { x = 139, y = 75 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 77,
+      properties = {
+        ["offsetX"] = 156.5,
+        ["offsetY"] = 225
+      },
+      image = "../img/Roche_gros_mousse-4.png",
+      width = 313,
+      height = 321,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 94,
+            y = 257,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = -6, y = 3 },
+              { x = 71, y = -40 },
+              { x = 180, y = 18 },
+              { x = 106, y = 61 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 78,
+      properties = {
+        ["offsetX"] = 156.5,
+        ["offsetY"] = 210
+      },
+      image = "../img/Roche_gros_mousse-5.png",
+      width = 313,
+      height = 321,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 70,
+            y = 244,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 4 },
+              { x = 81, y = -33 },
+              { x = 202, y = 27 },
+              { x = 115, y = 69 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 79,
+      properties = {
+        ["offsetX"] = 156.5,
+        ["offsetY"] = 185
+      },
+      image = "../img/Roche_gros_mousse-6.png",
+      width = 313,
+      height = 321,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 25,
+            y = 219,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = -5, y = 12 },
+              { x = 97, y = -44 },
+              { x = 266, y = 37 },
+              { x = 165, y = 97 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 80,
+      properties = {
+        ["offsetX"] = 156.5,
+        ["offsetY"] = 225
+      },
+      image = "../img/Roche_gros_mousse-7.png",
+      width = 313,
+      height = 321,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 75,
+            y = 255,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 120, y = 61 },
+              { x = 214, y = 8 },
+              { x = 97, y = -51 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 81,
+      properties = {
+        ["offsetX"] = 161,
+        ["offsetY"] = 175
+      },
+      image = "../img/Roche_gros-1.png",
+      width = 322,
+      height = 319,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 26,
+            y = 228,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 107, y = -47 },
+              { x = 266, y = 28 },
+              { x = 164, y = 84 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 82,
+      properties = {
+        ["offsetX"] = 161,
+        ["offsetY"] = 205
+      },
+      image = "../img/Roche_gros-2.png",
+      width = 322,
+      height = 319,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 85,
+            y = 247,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 82, y = -40 },
+              { x = 192, y = 18 },
+              { x = 111, y = 61 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 83,
+      properties = {
+        ["offsetX"] = 161,
+        ["offsetY"] = 175
+      },
+      image = "../img/Roche_gros-3.png",
+      width = 322,
+      height = 319,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 40,
+            y = 223,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 1, y = 1 },
+              { x = 101, y = -48 },
+              { x = 256, y = 25 },
+              { x = 151, y = 82 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 84,
+      properties = {
+        ["offsetX"] = 161,
+        ["offsetY"] = 205
+      },
+      image = "../img/Roche_gros-4.png",
+      width = 322,
+      height = 319,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 48,
+            y = 230,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 91, y = -47 },
+              { x = 230, y = 27 },
+              { x = 140, y = 78 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 85,
+      properties = {
+        ["offsetX"] = 161,
+        ["offsetY"] = 190
+      },
+      image = "../img/Roche_gros-5.png",
+      width = 322,
+      height = 319,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 27,
+            y = 224,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = -3, y = 9 },
+              { x = 158, y = 89 },
+              { x = 266, y = 24 },
+              { x = 103, y = -50 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 86,
+      properties = {
+        ["offsetX"] = 161,
+        ["offsetY"] = 215
+      },
+      image = "../img/Roche_gros-6.png",
+      width = 322,
+      height = 319,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 77,
+            y = 250,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = -2, y = 4 },
+              { x = 78, y = -40 },
+              { x = 201, y = 23 },
+              { x = 118, y = 71 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 87,
+      properties = {
+        ["offsetX"] = 161,
+        ["offsetY"] = 215
+      },
+      image = "../img/Roche_gros-7.png",
+      width = 322,
+      height = 319,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 76,
+            y = 250,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 89, y = -45 },
+              { x = 212, y = 17 },
+              { x = 120, y = 64 }
+            },
+            properties = {}
+          }
+        }
+      }
     }
   }
 }
