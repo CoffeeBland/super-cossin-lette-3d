@@ -9,7 +9,7 @@ return {
   spacing = 0,
   margin = 0,
   columns = 0,
-  objectalignment = "bottom",
+  objectalignment = "unspecified",
   tilerendersize = "tile",
   fillmode = "stretch",
   tileoffset = {
@@ -746,7 +746,7 @@ return {
       properties = {
         ["fruit"] = "apple",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-1.png",
       width = 128,
@@ -786,7 +786,7 @@ return {
       properties = {
         ["fruit"] = "banana",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-2.png",
       width = 128,
@@ -826,7 +826,7 @@ return {
       properties = {
         ["fruit"] = "pineapple",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-3.png",
       width = 128,
@@ -866,7 +866,7 @@ return {
       properties = {
         ["fruit"] = "pear",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-4.png",
       width = 128,
@@ -906,7 +906,7 @@ return {
       properties = {
         ["fruit"] = "tomato",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-5.png",
       width = 128,
@@ -946,7 +946,7 @@ return {
       properties = {
         ["fruit"] = "orange",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-6.png",
       width = 128,
@@ -986,7 +986,7 @@ return {
       properties = {
         ["fruit"] = "mushroom",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-7.png",
       width = 128,
@@ -1026,7 +1026,7 @@ return {
       properties = {
         ["fruit"] = "grape",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-8.png",
       width = 128,
@@ -1066,7 +1066,7 @@ return {
       properties = {
         ["fruit"] = "durian",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-9.png",
       width = 128,
@@ -1106,7 +1106,7 @@ return {
       properties = {
         ["fruit"] = "peach",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 150
       },
       image = "../img/Fruit-10.png",
       width = 128,
@@ -1146,7 +1146,7 @@ return {
       properties = {
         ["fruit"] = "radish",
         ["offsetX"] = 64,
-        ["offsetY"] = 180
+        ["offsetY"] = 175
       },
       image = "../img/Fruit-11.png",
       width = 128,
@@ -1820,7 +1820,7 @@ return {
       id = 73,
       properties = {
         ["offsetX"] = 302.5,
-        ["offsetY"] = 300
+        ["offsetY"] = 170
       },
       image = "../img/Picnic.png",
       width = 605,
@@ -1851,10 +1851,17 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -6, y = 25.3333 },
-              { x = 320.667, y = -194.333 },
-              { x = 545.333, y = 3.33333 },
-              { x = 264.667, y = 182.667 }
+              { x = 0, y = 8 },
+              { x = 326, y = -201 },
+              { x = 449, y = -122 },
+              { x = 438, y = -47 },
+              { x = 499, y = -16 },
+              { x = 494, y = 30 },
+              { x = 268, y = 174 },
+              { x = 199, y = 140 },
+              { x = 193, y = 102 },
+              { x = 88, y = 44 },
+              { x = 65, y = 62 }
             },
             properties = {}
           }
