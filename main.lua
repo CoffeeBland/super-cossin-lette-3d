@@ -14,7 +14,7 @@ local releaseActions = {
 
 function getObjectPos(alignment, obj)
     local texture = textures[obj.name]
-    if alignment == "bottom" then
+    if alignment == "unspecified" or alignment == "bottom" then
         return -texture:getWidth() / 2, -texture:getHeight()
     end
 end
@@ -74,17 +74,36 @@ function love.load()
                         for _, subobject in ipairs(objData.objectGroup.objects) do
                             if subobject.shape == "polygon" then
                                 local vertices = {}
+                                local verticesFlipX = {}
+                                local verticesFlipY = {}
                                 for _, point in ipairs(subobject.polygon) do
-                                    table.insert(vertices, (point.x + subobject.x - obj.offsetX))
-                                    table.insert(vertices, (point.y + subobject.y - obj.offsetY))
+                                    -- Regular
+                                    table.insert(vertices, point.x + subobject.x - obj.offsetX)
+                                    table.insert(vertices, point.y + subobject.y - obj.offsetY)
+                                    -- FlipX TODO AAA
+                                    table.insert(verticesFlipX, point.x + subobject.x - obj.offsetX)
+                                    table.insert(verticesFlipX, point.y + subobject.y - obj.offsetY)
+                                    -- FlipY TODO AAA
+                                    table.insert(verticesFlipY, point.x + subobject.x - obj.offsetX)
+                                    table.insert(verticesFlipY, point.y + subobject.y - obj.offsetY)
                                 end
-                                obj.shape = love.physics.newPolygonShape(vertices)
+                                if #vertices > 8 then
+                                    obj.shape = love.physics.newChainShape(true, vertices)
+                                    obj.shapeFlipX = love.physics.newChainShape(true, verticesFlipX)
+                                    obj.shapeFlipY = love.physics.newChainShape(true, verticesFlipY)
+                                else
+                                    obj.shape = love.physics.newPolygonShape(vertices)
+                                    obj.shapeFlipX = love.physics.newPolygonShape(verticesFlipX)
+                                    obj.shapeFlipY = love.physics.newPolygonShape(verticesFlipY)
+                                end
                             elseif subobject.shape == "ellipse" then
                                 -- Oops, all circles!
                                 obj.shape = love.physics.newCircleShape(
                                     (subobject.x + subobject.width / 2 - obj.offsetX),
                                     (subobject.y + subobject.height / 2 - obj.offsetY),
                                     (subobject.width + subobject.height) / 4)
+                                obj.shapeFlipX = obj.shape
+                                obj.shapeFlipY = obj.shape
                             end
                         end
                     end

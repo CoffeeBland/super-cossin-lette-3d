@@ -5,6 +5,7 @@ local bit = require("bit")
 local g = 3 * METER_SCALE
 local airFriction = 0.975
 local groundDamping = 16
+local slidingDamping = 1
 local jumpMultiplier = 0.5
 local speedMultiplier = METER_SCALE * 10
 local fruitPickupAnimFrames = 20
@@ -38,10 +39,10 @@ function Game:enter()
             id = 1,
             input = true,
             camera = true,
-            actor = { walkSpeed = 200, jumpSpeed = 200 },
+            actor = { walkSpeed = 250, jumpSpeed = 225 },
             pos = { x = 0, y = 0, z = 0 },
             velocity = { z = 0 },
-            body = { shape = "circle", size = 64, type = "dynamic" },
+            body = { shape = "circle", size = 80, type = "dynamic" },
             anim = {
                 name = "walk",
                 dir = "tr",
@@ -65,7 +66,10 @@ function Game:enter()
                 name = "cossinOmbre",
                 anchor = { x = 96, y = 46 }
             },
-            fruitStack = { fruits = {} }
+            fruitStack = {
+                fruits = {},
+                fruitPickupRange = 128
+            }
         }
     }
 
@@ -107,48 +111,60 @@ function Game:update(dt)
             entity.actions = actions
         end
 
-        if entity.actor then
-            if entity.fruitStack then
-                if #entity.fruitStack.fruits > 0 then
-                    if not entity.fruitStack.cooldown then
-                        entity.fruitStack.cooldown = eatCooldown
-                    else
-                        entity.fruitStack.cooldown = entity.fruitStack.cooldown - 1
-                    end
-
-                    if entity.fruitStack.cooldown == 0 then
-                        entity.fruitStack.eating = 48
-                    end
-
-                    if entity.fruitStack.eating then
-                        entity.fruitStack.eating = entity.fruitStack.eating - 1
-
-                        if entity.fruitStack.eating == 30 then
-                            for _, fruitEntity in ipairs(entity.fruitStack.fruits) do
-                                fruitEntity.velocity.z = -fruitJumpSpeed * jumpMultiplier
-                            end
-                        end
-
-                        if entity.fruitStack.eating == 6 then
-                            local eaten = entity.fruitStack.fruits[1]
-                            eaten.toRemove = true
-                            table.remove(entity.fruitStack.fruits, 1)
-                            local nextFruitEntity = entity.fruitStack.fruits[1]
-                            if nextFruitEntity then
-                                nextFruitEntity.fruit.stackEntity = entity
-                            end
-                        end
-
-                        if entity.fruitStack.eating == 0 then
-                            entity.fruitStack.eating = nil
-                            entity.fruitStack.cooldown = nil
-                        end
-                    end
+        if entity.fruitStack then
+            if #entity.fruitStack.fruits > 0 then
+                if not entity.fruitStack.cooldown then
+                    entity.fruitStack.cooldown = eatCooldown
                 else
-                    entity.fruitStack.eating = nil
-                    entity.fruitStack.cooldown = nil
+                    entity.fruitStack.cooldown = entity.fruitStack.cooldown - 1
+                end
+
+                if entity.fruitStack.cooldown == 0 then
+                    entity.fruitStack.eating = 48
+                end
+
+                if entity.fruitStack.eating then
+                    entity.fruitStack.eating = entity.fruitStack.eating - 1
+
+                    if entity.fruitStack.eating == 30 then
+                        for _, fruitEntity in ipairs(entity.fruitStack.fruits) do
+                            fruitEntity.velocity.z = -fruitJumpSpeed * jumpMultiplier
+                        end
+                    end
+
+                    if entity.fruitStack.eating == 6 then
+                        local eaten = entity.fruitStack.fruits[1]
+                        eaten.toRemove = true
+                        table.remove(entity.fruitStack.fruits, 1)
+                        local nextFruitEntity = entity.fruitStack.fruits[1]
+                        if nextFruitEntity then
+                            nextFruitEntity.fruit.stackEntity = entity
+                        end
+                    end
+
+                    if entity.fruitStack.eating == 0 then
+                        entity.fruitStack.eating = nil
+                        entity.fruitStack.cooldown = nil
+                    end
+                end
+            else
+                entity.fruitStack.eating = nil
+                entity.fruitStack.cooldown = nil
+            end
+
+            for _, contact in pairs(entity.physics.body:getContacts()) do
+                local fix1, fix2 = contact:getFixtures()
+                local entity1 = fix1:getBody():getUserData()
+                local entity2 = fix2:getBody():getUserData()
+                local other = entity1.id == entity.id and entity2 or entity1
+                if other.fruit then
+                    self:checkFruitPickup(entity, other)
                 end
             end
+        end
+
+        if entity.actor then
+            entity.pos.sliding = false
             if entity.actions.movement.angle and entity.physics then
                 if entity.pos.onGround and not entity.fruitStack.eating and not entity.actions.prejump then
                     local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
@@ -169,6 +185,7 @@ function Game:update(dt)
                     entity.pos.onGround = false
                 end
                 if entity.actions.prejump and entity.pos.onGround then
+                    entity.pos.sliding = true
                     entity.anim.name = "squish"
                 elseif not entity.pos.onGround then
                     entity.anim.name = "jump"
@@ -190,31 +207,36 @@ function Game:update(dt)
                     entity.velocity.z = 0
                 end
             end
-            entity.physics.body:setLinearDamping(entity.pos.onGround and groundDamping or 0)
+            entity.physics.body:setLinearDamping(entity.pos.onGround and (entity.pos.sliding and slidingDamping or groundDamping) or 0)
         end
 
-        if entity.fruit and entity.fruit.animFrames then
-            local offset = entity.fruit.stackEntity.fruitStack and firstFruitOffset or fruitOffset
-            local targetX = entity.fruit.stackEntity.pos.x + offset.x
-            local targetY = entity.fruit.stackEntity.pos.y + offset.y
-            local targetZ = entity.fruit.stackEntity.pos.z + offset.z
+        if entity.fruit then
+            if entity.fruit.animFrames then
+                local offset = entity.fruit.stackEntity.fruitStack and firstFruitOffset or fruitOffset
+                local targetX = entity.fruit.stackEntity.pos.x + offset.x
+                local targetY = entity.fruit.stackEntity.pos.y + offset.y
+                local targetZ = entity.fruit.stackEntity.pos.z + offset.z
 
-            if entity.fruit.animFrames > 0 then
-                local p = entity.fruit.animFrames / fruitPickupAnimFrames
-                entity.physics.body:setPosition(
-                    entity.pos.x * p + targetX * (1 - p),
-                    entity.pos.y * p + targetY * (1 - p))
-                entity.fruit.animFrames = entity.fruit.animFrames - 1
-                if entity.pos.z < targetZ then
-                    entity.fruit.reachedStack = true
+                if entity.fruit.animFrames > 0 then
+                    local p = entity.fruit.animFrames / fruitPickupAnimFrames
+                    entity.physics.body:setPosition(
+                        entity.pos.x * p + targetX * (1 - p),
+                        entity.pos.y * p + targetY * (1 - p))
+                    entity.fruit.animFrames = entity.fruit.animFrames - 1
+                    if entity.pos.z < targetZ then
+                        entity.fruit.reachedStack = true
+                    end
+                else
+                    entity.physics.body:setPosition(
+                        entity.pos.x * (1 - fruitPickupForce) + targetX * fruitPickupForce,
+                        entity.pos.y * (1 - fruitPickupForce) + targetY * fruitPickupForce)
                 end
-            else
-                entity.physics.body:setPosition(
-                    entity.pos.x * (1 - fruitPickupForce) + targetX * fruitPickupForce,
-                    entity.pos.y * (1 - fruitPickupForce) + targetY * fruitPickupForce)
-            end
-            if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z > targetZ then
-                entity.pos.z = targetZ
+                if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z > targetZ then
+                    entity.pos.z = targetZ
+                    entity.velocity.z = 0
+                end
+            elseif entity.fruit.z then
+                entity.pos.z = entity.fruit.z
                 entity.velocity.z = 0
             end
         end
@@ -277,7 +299,7 @@ end
 function Game:render(dt)
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(0.5)
+    love.graphics.scale(0.33)
     love.graphics.translate(-self.camera.x, -self.camera.y)
     love.graphics.clear(0.2, 0.5, 0.4)
 
@@ -341,21 +363,30 @@ function Game:render(dt)
     end
 end
 
+function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
+    if fruitEntity.fruit.stackEntity then
+        return
+    end
+
+    local dx = fruitStackEntity.pos.x - fruitEntity.pos.x
+    local dy = fruitStackEntity.pos.y - fruitEntity.pos.y
+    local dz = fruitStackEntity.pos.z - fruitEntity.pos.z
+    local d = math.sqrt(math.pow(dx, 2) + math.pow(dy, 2) + math.pow(dz, 2))
+    if d > fruitStackEntity.fruitStack.fruitPickupRange then
+        return
+    end
+
+    table.insert(fruitStackEntity.fruitStack.fruits, fruitEntity)
+    fruitEntity.fruit.stackEntity = #fruitStackEntity.fruitStack.fruits > 1 and
+        fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
+        fruitStackEntity
+    fruitEntity.fruit.animFrames = fruitPickupAnimFrames
+    fruitEntity.velocity.z = -fruitJumpSpeed * math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) * jumpMultiplier
+end
+
 function Game:onBeginContact(fix1, fix2, contact)
     local entity1 = fix1:getBody():getUserData()
     local entity2 = fix2:getBody():getUserData()
-
-    local fruitStackEntity = (entity1.fruitStack and entity1) or (entity2.fruitStack and entity2)
-    local fruitEntity = (entity1.fruit and entity1) or (entity2.fruit and entity2)
-
-    if fruitStackEntity and fruitEntity and not fruitEntity.fruit.stackEntity then
-        table.insert(fruitStackEntity.fruitStack.fruits, fruitEntity)
-        fruitEntity.fruit.stackEntity = #fruitStackEntity.fruitStack.fruits > 1 and
-            fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
-            fruitStackEntity
-        fruitEntity.fruit.animFrames = fruitPickupAnimFrames
-        fruitEntity.velocity.z = -fruitJumpSpeed * math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) * jumpMultiplier
-    end
 end
 
 function findAnim(spriteData, entityAnim)

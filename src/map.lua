@@ -34,13 +34,15 @@ function map:getEntities(entities)
 
                 local tx = data.x / self._data.tileheight
                 local ty = data.y / self._data.tileheight
-                local x = (tx - ty) * self._data.tilewidth / 2 + object.offsetX + object.posX
-                local y = (tx + ty) * self._data.tileheight / 2 + object.offsetY + object.posY
+                local x = (tx - ty) * self._data.tilewidth / 2 + object.offsetX + (object.posX or 0)
+                local y = (tx + ty) * self._data.tileheight / 2 + object.offsetY + (object.posY or 0)
+                local z = -(data.properties.posZ or object.posZ or 0)
+                local shape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
                 local entity = {
                     pos = {
                         x = x,
                         y = y,
-                        z = 0
+                        z = z
                     },
                     sprites = {
                         {
@@ -56,13 +58,17 @@ function map:getEntities(entities)
                         name = "fruitOmbre",
                         anchor = { x = 67, y = 40 }
                     }
-                    entity.body = object.shape and { preshape = object.shape, type = "static", trigger = true }
+                    entity.body = shape and { preshape = shape, type = "static", trigger = true }
                     entity.fruit = {
-                        type = object.fruit
+                        type = object.fruit,
+                        z = z
                     }
                     entity.velocity = { z = 0 }
                 else
-                    entity.body = object.shape and { preshape = object.shape, type = "static" }
+                    entity.body = shape and { preshape = shape, type = "static" }
+                end
+                if object.picnic then
+                    entity.picnic = 300
                 end
 
                 table.insert(entities, entity)
