@@ -36,13 +36,14 @@ function map:getEntities(entities)
                 local ty = data.y / self._data.tileheight
                 local x = (tx - ty) * self._data.tilewidth / 2 + object.offsetX + (object.posX or 0)
                 local y = (tx + ty) * self._data.tileheight / 2 + object.offsetY + (object.posY or 0)
-                local z = -(data.properties.posZ or object.posZ or 0)
+                local z = (data.properties.posZ or object.posZ or 0)
                 local shape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
                 local entity = {
                     pos = {
                         x = x,
                         y = y,
-                        z = z
+                        z = z,
+                        height = object.height
                     },
                     sprites = {
                         {

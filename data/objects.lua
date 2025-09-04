@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -148,6 +148,7 @@ return {
     {
       id = 5,
       properties = {
+        ["height"] = 800,
         ["offsetX"] = 510,
         ["offsetY"] = 1210
       },
@@ -195,6 +196,7 @@ return {
     {
       id = 6,
       properties = {
+        ["height"] = 800,
         ["offsetX"] = 510,
         ["offsetY"] = 1210
       },
@@ -242,6 +244,7 @@ return {
     {
       id = 7,
       properties = {
+        ["height"] = 800,
         ["offsetX"] = 510,
         ["offsetY"] = 1210
       },
@@ -1224,6 +1227,7 @@ return {
     {
       id = 47,
       properties = {
+        ["height"] = 160,
         ["offsetX"] = 64,
         ["offsetY"] = 100
       },
@@ -1269,6 +1273,7 @@ return {
     {
       id = 48,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 64,
         ["offsetY"] = 100
       },
@@ -1314,6 +1319,7 @@ return {
     {
       id = 49,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 64,
         ["offsetY"] = 100
       },
@@ -1359,6 +1365,7 @@ return {
     {
       id = 50,
       properties = {
+        ["height"] = 160,
         ["offsetX"] = 64,
         ["offsetY"] = 100
       },
@@ -1404,6 +1411,7 @@ return {
     {
       id = 51,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 64,
         ["offsetY"] = 100
       },
@@ -1449,6 +1457,7 @@ return {
     {
       id = 52,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 64,
         ["offsetY"] = 100
       },
@@ -1819,8 +1828,9 @@ return {
     {
       id = 73,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 302.5,
-        ["offsetY"] = 170
+        ["offsetY"] = 300
       },
       image = "../img/Picnic.png",
       width = 605,
@@ -1871,6 +1881,7 @@ return {
     {
       id = 74,
       properties = {
+        ["height"] = 160,
         ["offsetX"] = 156.5,
         ["offsetY"] = 190
       },
@@ -1916,6 +1927,7 @@ return {
     {
       id = 75,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 156.5,
         ["offsetY"] = 190
       },
@@ -1961,6 +1973,7 @@ return {
     {
       id = 76,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 156.5,
         ["offsetY"] = 220
       },
@@ -2006,6 +2019,7 @@ return {
     {
       id = 77,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 156.5,
         ["offsetY"] = 225
       },
@@ -2051,6 +2065,7 @@ return {
     {
       id = 78,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 156.5,
         ["offsetY"] = 210
       },
@@ -2096,6 +2111,7 @@ return {
     {
       id = 79,
       properties = {
+        ["height"] = 160,
         ["offsetX"] = 156.5,
         ["offsetY"] = 185
       },
@@ -2141,6 +2157,7 @@ return {
     {
       id = 80,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 156.5,
         ["offsetY"] = 225
       },
@@ -2186,6 +2203,7 @@ return {
     {
       id = 81,
       properties = {
+        ["height"] = 160,
         ["offsetX"] = 161,
         ["offsetY"] = 175
       },
@@ -2231,6 +2249,7 @@ return {
     {
       id = 82,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 161,
         ["offsetY"] = 205
       },
@@ -2276,6 +2295,7 @@ return {
     {
       id = 83,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 161,
         ["offsetY"] = 175
       },
@@ -2321,6 +2341,7 @@ return {
     {
       id = 84,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 161,
         ["offsetY"] = 205
       },
@@ -2366,6 +2387,7 @@ return {
     {
       id = 85,
       properties = {
+        ["height"] = 160,
         ["offsetX"] = 161,
         ["offsetY"] = 190
       },
@@ -2411,6 +2433,7 @@ return {
     {
       id = 86,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 161,
         ["offsetY"] = 215
       },
@@ -2456,6 +2479,7 @@ return {
     {
       id = 87,
       properties = {
+        ["height"] = 80,
         ["offsetX"] = 161,
         ["offsetY"] = 215
       },

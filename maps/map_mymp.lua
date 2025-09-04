@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -16,8 +16,7 @@ return {
     {
       name = "tileset",
       firstgid = 1,
-      filename = "../tiled/tileset.tsx",
-      exportfilename = "../data/tileset.lua"
+      filename = "../tiled/tileset.tsx"
     },
     {
       name = "objects",
@@ -755,7 +754,9 @@ return {
           rotation = 0,
           gid = 2147483927,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 160
+          }
         },
         {
           id = 50,

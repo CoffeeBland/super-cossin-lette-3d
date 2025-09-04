@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="73" columns="0">
+<tileset version="1.10" tiledversion="1.11.1" name="objects" tilewidth="1152" tileheight="1286" tilecount="73" columns="0">
+ <editorsettings>
+  <export target="../data/objects.lua" format="lua"/>
+ </editorsettings>
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <properties>
@@ -48,6 +51,7 @@
  </tile>
  <tile id="5">
   <properties>
+   <property name="height" type="float" value="800"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
   </properties>
@@ -60,6 +64,7 @@
  </tile>
  <tile id="6">
   <properties>
+   <property name="height" type="float" value="800"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
   </properties>
@@ -72,6 +77,7 @@
  </tile>
  <tile id="7">
   <properties>
+   <property name="height" type="float" value="800"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
   </properties>
@@ -398,6 +404,7 @@
  </tile>
  <tile id="47">
   <properties>
+   <property name="height" type="float" value="160"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="100"/>
   </properties>
@@ -410,6 +417,7 @@
  </tile>
  <tile id="48">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="100"/>
   </properties>
@@ -422,6 +430,7 @@
  </tile>
  <tile id="49">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="100"/>
   </properties>
@@ -434,6 +443,7 @@
  </tile>
  <tile id="50">
   <properties>
+   <property name="height" type="float" value="160"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="100"/>
   </properties>
@@ -446,6 +456,7 @@
  </tile>
  <tile id="51">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="100"/>
   </properties>
@@ -458,6 +469,7 @@
  </tile>
  <tile id="52">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="100"/>
   </properties>
@@ -600,8 +612,9 @@
  </tile>
  <tile id="73">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="302.5"/>
-   <property name="offsetY" type="float" value="170"/>
+   <property name="offsetY" type="float" value="300"/>
   </properties>
   <image source="../img/Picnic.png" width="605" height="459"/>
   <objectgroup draworder="index" id="3">
@@ -612,6 +625,7 @@
  </tile>
  <tile id="74">
   <properties>
+   <property name="height" type="float" value="160"/>
    <property name="offsetX" type="float" value="156.5"/>
    <property name="offsetY" type="float" value="190"/>
   </properties>
@@ -624,6 +638,7 @@
  </tile>
  <tile id="75">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="156.5"/>
    <property name="offsetY" type="float" value="190"/>
   </properties>
@@ -636,6 +651,7 @@
  </tile>
  <tile id="76">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="156.5"/>
    <property name="offsetY" type="float" value="220"/>
   </properties>
@@ -648,6 +664,7 @@
  </tile>
  <tile id="77">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="156.5"/>
    <property name="offsetY" type="float" value="225"/>
   </properties>
@@ -660,6 +677,7 @@
  </tile>
  <tile id="78">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="156.5"/>
    <property name="offsetY" type="float" value="210"/>
   </properties>
@@ -672,6 +690,7 @@
  </tile>
  <tile id="79">
   <properties>
+   <property name="height" type="float" value="160"/>
    <property name="offsetX" type="float" value="156.5"/>
    <property name="offsetY" type="float" value="185"/>
   </properties>
@@ -684,6 +703,7 @@
  </tile>
  <tile id="80">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="156.5"/>
    <property name="offsetY" type="float" value="225"/>
   </properties>
@@ -696,6 +716,7 @@
  </tile>
  <tile id="81">
   <properties>
+   <property name="height" type="float" value="160"/>
    <property name="offsetX" type="float" value="161"/>
    <property name="offsetY" type="float" value="175"/>
   </properties>
@@ -708,6 +729,7 @@
  </tile>
  <tile id="82">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="161"/>
    <property name="offsetY" type="float" value="205"/>
   </properties>
@@ -720,6 +742,7 @@
  </tile>
  <tile id="83">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="161"/>
    <property name="offsetY" type="float" value="175"/>
   </properties>
@@ -732,6 +755,7 @@
  </tile>
  <tile id="84">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="161"/>
    <property name="offsetY" type="float" value="205"/>
   </properties>
@@ -744,6 +768,7 @@
  </tile>
  <tile id="85">
   <properties>
+   <property name="height" type="float" value="160"/>
    <property name="offsetX" type="float" value="161"/>
    <property name="offsetY" type="float" value="190"/>
   </properties>
@@ -756,6 +781,7 @@
  </tile>
  <tile id="86">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="161"/>
    <property name="offsetY" type="float" value="215"/>
   </properties>
@@ -768,6 +794,7 @@
  </tile>
  <tile id="87">
   <properties>
+   <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="161"/>
    <property name="offsetY" type="float" value="215"/>
   </properties>

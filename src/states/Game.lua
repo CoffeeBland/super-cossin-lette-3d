@@ -9,12 +9,12 @@ local slidingDamping = 1
 local jumpMultiplier = 0.5
 local speedMultiplier = METER_SCALE * 10
 local fruitPickupAnimFrames = 20
-local firstFruitOffset = { x = 0, y = 0, z = -165 }
-local fruitOffset = { x = 0, y = 0, z = -90 }
+local firstFruitOffset = { x = 0, y = 0, z = 165 }
+local fruitOffset = { x = 0, y = 0, z = 90 }
 local fruitJumpSpeed = 140
 local fruitPickupForce = 0.7
 local eatCooldown = 600
-local heightSlice = 64
+local heightSlice = 80
 --   2
 --  1 3
 -- 8   4
@@ -82,12 +82,37 @@ function Game:exit()
     self.physics = nil
 end
 
-function getHeightSlices(entity)
-    local startZ = -entity.pos.z
-    local endZ = startZ + (entity.pos.height or 0)
-    local sliceStart = math.floor(startZ / heightSlice)
-    local sliceEnd = math.ceil(endZ / heightSlice)
-    return math.clamp(1 + sliceStart, 1, 16), math.clamp(1 + sliceEnd, 1, 16)
+function updateHeightSlices(entity)
+    local startZ = entity.pos.z
+    local endZ = startZ + (entity.pos.height or heightSlice)
+    local sliceStart = math.clamp(1 + math.floor(startZ / heightSlice), 1, 16)
+    local sliceEnd = math.clamp(1 + math.floor((endZ - 1) / heightSlice), 1, 16)
+    if sliceStart ~= entity.physics.sliceStart or sliceEnd ~= entity.physics.sliceEnd then
+        -- Categories
+        local categories = {}
+        for i = sliceStart,sliceEnd do
+            table.insert(categories, i)
+        end
+        entity.physics.fixture:setCategory(unpack(categories))
+
+        -- Masks
+        local masks = {}
+        if sliceStart > 1 then
+            for i = 1, sliceStart - 1 do
+                table.insert(masks, i)
+            end
+        end
+        if sliceEnd < 16 then
+            for i = sliceEnd + 1, 16 do
+                table.insert(masks, i)
+            end
+        end
+
+        entity.physics.fixture:setMask(unpack(masks))
+
+        entity.physics.sliceStart = sliceStart
+        entity.physics.sliceEnd = sliceEnd
+    end
 end
 
 function Game:update(dt)
@@ -109,20 +134,18 @@ function Game:update(dt)
                 fixture:setSensor(true)
             end
 
-            local sliceStart, sliceEnd = getHeightSlices(entity)
-            local categories = {}
-            for i = 1,16 do
-                categories[i] = math.min(sliceStart + i - 1, sliceEnd)
-            end
-            fixture:setCategory(unpack(categories))
+            local heightSensor = love.physics.newFixture(body, shape, 0)
+            heightSensor:setSensor(true)
+            heightSensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
 
             entity.physics = {
                 body = body,
                 shape = shape,
                 fixture = fixture,
-                sliceStart = sliceStart,
-                sliceEnd = sliceEnd
+                heightSensor = heightSensor
             }
+
+            updateHeightSlices(entity)
         end
 
         if entity.input then
@@ -199,7 +222,7 @@ function Game:update(dt)
                 entity.anim.name = "eat"
             else
                 if entity.actions.jump and entity.pos.onGround then
-                    entity.velocity.z = entity.velocity.z - entity.actor.jumpSpeed * jumpMultiplier
+                    entity.velocity.z = entity.velocity.z + entity.actor.jumpSpeed * jumpMultiplier
                     entity.pos.onGround = false
                 end
                 if entity.actions.prejump and entity.pos.onGround then
@@ -216,33 +239,36 @@ function Game:update(dt)
         if entity.physics then
             entity.pos.x, entity.pos.y = entity.physics.body:getWorldCenter()
             if entity.velocity then
-                entity.velocity.z = (entity.velocity.z + g * dt) * airFriction
-                entity.pos.z = entity.pos.z + entity.velocity.z
                 local wasOnGround = false
-                entity.pos.onGround = entity.pos.z >= 0
+                local floorZ = 0
+                --self.physics:queryBoundingBox(unpack(entity.physics.fixture:getBoundingBox()), function () end)
+                for _, contact in pairs(entity.physics.body:getContacts()) do
+                    local fix1, fix2 = contact:getFixtures()
+                    local body1 = fix1:getBody()
+                    local body2 = fix2:getBody()
+                    local otherEntity =
+                        (body1 ~= entity.physics.body and body1:getUserData()) or
+                        (body2 ~= entity.physics.body and body2:getUserData()) or
+                        nil
+                    if otherEntity and (
+                        contact:isTouching() or
+                        otherEntity.physics.fixture:testPoint(entity.pos.x, entity.pos.y))
+                    then
+                        local ez = otherEntity.pos.z + (otherEntity.pos.height or heightSlice)
+                        if ez < entity.pos.z + DELTA then
+                            floorZ = math.max(floorZ, ez)
+                        end
+                    end
+                end
+                entity.velocity.z = (entity.velocity.z - g * dt) * airFriction
+                entity.pos.z = entity.pos.z + entity.velocity.z
+                entity.pos.onGround = entity.pos.z < floorZ + DELTA
                 if entity.pos.onGround then
-                    entity.pos.z = 0
+                    entity.pos.z = floorZ
                     entity.velocity.z = 0
                 end
 
-                local sliceStart, sliceEnd = getHeightSlices(entity)
-                local masks = {}
-                if sliceStart ~= entity.physics.sliceStart or sliceEnd ~= entity.physics.sliceEnd then
-                    if sliceStart > 1 then
-                        for i = 1,sliceStart - 1 do
-                            table.insert(masks, i)
-                        end
-                    end
-                    if sliceEnd < 16 then
-                        for i = sliceEnd + 1, 16 do
-                            table.insert(masks, i)
-                        end
-                    end
-                end
-                for i = #masks + 1, 16 do
-                    table.insert(masks, masks[#masks])
-                end
-                entity.physics.fixture:setMask(unpack(masks))
+                updateHeightSlices(entity)
             end
             entity.physics.body:setLinearDamping(entity.pos.onGround and (entity.pos.sliding and slidingDamping or groundDamping) or 0)
         end
@@ -260,7 +286,7 @@ function Game:update(dt)
                         entity.pos.x * p + targetX * (1 - p),
                         entity.pos.y * p + targetY * (1 - p))
                     entity.fruit.animFrames = entity.fruit.animFrames - 1
-                    if entity.pos.z < targetZ then
+                    if entity.pos.z > targetZ then
                         entity.fruit.reachedStack = true
                     end
                 else
@@ -268,7 +294,7 @@ function Game:update(dt)
                         entity.pos.x * (1 - fruitPickupForce) + targetX * fruitPickupForce,
                         entity.pos.y * (1 - fruitPickupForce) + targetY * fruitPickupForce)
                 end
-                if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z > targetZ then
+                if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z <= targetZ then
                     entity.pos.z = targetZ
                     entity.velocity.z = 0
                 end
@@ -305,11 +331,27 @@ function Game:update(dt)
 
     table.sort(self.entities,
         function (a, b)
-            if math.abs(a.pos.y - b.pos.y) < 0.1 then
-                if math.abs(a.pos.z - b.pos.z) < 0.1 then
-                    return a.id < b.id
+            local asz = a.pos.z
+            local aez = a.pos.z + (a.pos.height or heightSlice)
+            local bsz = b.pos.z
+            local bez = b.pos.z + (b.pos.height or heightSlice)
+            -- a is completely under b
+
+            if aez < bsz then
+                if (a.id == 1 or b.id == 1) and (a.pos.height == 800 or b.pos.height == 800) then
+                    print(asz, aez, bsz, bez, aez < bsz, bez < asz)
                 end
-                return a.pos.z > b.pos.z
+                return true
+            end
+            -- b is completely under a
+            if bez < asz then
+                if (a.id == 1 or b.id == 1) and (a.pos.height == 800 or b.pos.height == 800) then
+                    print(asz, aez, bsz, bez, aez < bsz, bez < asz)
+                end
+                return false
+            end
+            if math.abs(a.pos.y - b.pos.y) < DELTA then
+                return a.id < b.id
             end
             return a.pos.y < b.pos.y
         end)
@@ -374,7 +416,7 @@ function Game:render(dt)
                         textures[sprite.name],
                         animData.tiles[frame + 1],
                         entity.pos.x,
-                        (entity.pos.y + entity.pos.z),
+                        (entity.pos.y - entity.pos.z),
                         0,
                         (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1),
                         (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1),
@@ -384,7 +426,7 @@ function Game:render(dt)
                     love.graphics.draw(
                         textures[sprite.name],
                         entity.pos.x,
-                        (entity.pos.y + entity.pos.z),
+                        (entity.pos.y - entity.pos.z),
                         0,
                         sprite.flipX and -1 or 1,
                         sprite.flipY and -1 or 1,
@@ -418,7 +460,7 @@ function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
         fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
         fruitStackEntity
     fruitEntity.fruit.animFrames = fruitPickupAnimFrames
-    fruitEntity.velocity.z = -fruitJumpSpeed * math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) * jumpMultiplier
+    fruitEntity.velocity.z = math.max(fruitStackEntity.velocity.z, fruitJumpSpeed) * math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) * jumpMultiplier
 end
 
 function Game:onBeginContact(fix1, fix2, contact)

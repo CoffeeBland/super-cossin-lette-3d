@@ -42,7 +42,7 @@ function str.requirename(file)
     return nameParts[1]:gsub("/", ".")
 end
 
-function dump(o, pre, seen, args)
+function _dump(o, pre, seen, args)
     args = args or { sep = '\n' }
     seen = seen or {}
     pre = pre or ''
@@ -59,10 +59,14 @@ function dump(o, pre, seen, args)
             else
                 k = ''
             end
-            s = s .. args.sep .. '  ' .. pre .. k .. dump(v, pre .. '  ', seen, args) .. ','
+            s = s .. args.sep .. ' ' .. pre .. k .. _dump(v, pre .. ' ', seen, args) .. ','
         end
         return s .. args.sep .. pre .. '}'
     else
         return tostring(o)
     end
+end
+
+function dump(o, args)
+    return _dump(o, "", {}, args)
 end
