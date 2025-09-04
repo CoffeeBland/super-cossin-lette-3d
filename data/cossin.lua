@@ -65,42 +65,42 @@ return {
             {
                 name = "walk",
                 dirs = { "b" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } }
             },
             {
                 name = "walk",
                 dirs = { "bl"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
             },
             {
                 name = "walk",
                 dirs = { "l"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
             },
             {
                 name = "walk",
                 dirs = { "tl" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
             },
             {
                 name = "walk",
                 dirs = { "t" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 4 }, { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 } }
             },
             {
                 name = "walk",
                 dirs = { "br"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 flipX = true,
                 tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
@@ -108,7 +108,7 @@ return {
             {
                 name = "walk",
                 dirs = { "r"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 flipX = true,
                 tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
@@ -116,7 +116,7 @@ return {
             {
                 name = "walk",
                 dirs = { "tr" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 flipX = true,
                 tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
@@ -309,42 +309,42 @@ return {
             {
                 name = "walk",
                 dirs = { "b" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } }
             },
             {
                 name = "walk",
                 dirs = { "bl"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
             },
             {
                 name = "walk",
                 dirs = { "l"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
             },
             {
                 name = "walk",
                 dirs = { "tl" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
             },
             {
                 name = "walk",
                 dirs = { "t" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 4 }, { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 } }
             },
             {
                 name = "walk",
                 dirs = { "br"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 flipX = true,
                 tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
@@ -352,7 +352,7 @@ return {
             {
                 name = "walk",
                 dirs = { "r"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 flipX = true,
                 tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
@@ -360,7 +360,7 @@ return {
             {
                 name = "walk",
                 dirs = { "tr" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 flipX = true,
                 tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
@@ -583,42 +583,42 @@ return {
             {
                 name = "walk",
                 dirs = { "b" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } }
             },
             {
                 name = "walk",
                 dirs = { "bl"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
             },
             {
                 name = "walk",
                 dirs = { "l"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
             },
             {
                 name = "walk",
                 dirs = { "tl" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
             },
             {
                 name = "walk",
                 dirs = { "t" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 tiles = { { 0, 4 }, { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 } }
             },
             {
                 name = "walk",
                 dirs = { "br"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 flipX = true,
                 tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
@@ -626,7 +626,7 @@ return {
             {
                 name = "walk",
                 dirs = { "r"},
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 flipX = true,
                 tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
@@ -634,7 +634,7 @@ return {
             {
                 name = "walk",
                 dirs = { "tr" },
-                fps = 15,
+                fps = 25,
                 pingPong = true,
                 flipX = true,
                 tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
