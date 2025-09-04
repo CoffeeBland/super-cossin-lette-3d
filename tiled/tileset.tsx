@@ -1,11 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="150" tilecount="139" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="150" tilecount="164" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
- <tile id="96" probability="50">
+ <tile id="96" probability="0.8">
   <image source="../img/Tiles/Tuile_herbe-2.png" width="128" height="74"/>
  </tile>
- <tile id="97" probability="5">
+ <tile id="171" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-21.png" width="128" height="74"/>
+ </tile>
+ <tile id="177" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-27.png" width="128" height="74"/>
+ </tile>
+ <tile id="183" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-213.png" width="128" height="74"/>
+ </tile>
+ <tile id="178" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-28.png" width="128" height="74"/>
+ </tile>
+ <tile id="179" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-29.png" width="128" height="74"/>
+ </tile>
+ <tile id="180" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-210.png" width="128" height="74"/>
+ </tile>
+ <tile id="181" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-211.png" width="128" height="74"/>
+ </tile>
+ <tile id="172" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-22.png" width="128" height="74"/>
+ </tile>
+ <tile id="173" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-23.png" width="128" height="74"/>
+ </tile>
+ <tile id="174" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-24.png" width="128" height="74"/>
+ </tile>
+ <tile id="175" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-25.png" width="128" height="74"/>
+ </tile>
+ <tile id="176" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-26.png" width="128" height="74"/>
+ </tile>
+ <tile id="182" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-212.png" width="128" height="74"/>
+ </tile>
+ <tile id="97" probability="0.8">
   <image source="../img/Tiles/Tuile_herbe-1.png" width="128" height="74"/>
+ </tile>
+ <tile id="184" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-11.png" width="128" height="74"/>
+ </tile>
+ <tile id="185" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-12.png" width="128" height="74"/>
+ </tile>
+ <tile id="186" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-13.png" width="128" height="74"/>
+ </tile>
+ <tile id="187" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-14.png" width="128" height="74"/>
+ </tile>
+ <tile id="190" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-17.png" width="128" height="74"/>
+ </tile>
+ <tile id="191" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-18.png" width="128" height="74"/>
+ </tile>
+ <tile id="192" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-19.png" width="128" height="74"/>
+ </tile>
+ <tile id="193" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-110.png" width="128" height="74"/>
+ </tile>
+ <tile id="188" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-15.png" width="128" height="74"/>
+ </tile>
+ <tile id="189" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-16.png" width="128" height="74"/>
+ </tile>
+ <tile id="194" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-111.png" width="128" height="74"/>
+ </tile>
+ <tile id="195" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-112.png" width="128" height="74"/>
+ </tile>
+ <tile id="196" probability="0.015">
+  <image source="../img/Tiles/Tuile_herbe-113.png" width="128" height="74"/>
  </tile>
  <tile id="122">
   <image source="../img/Tiles/Tuile_gazon-2.png" width="128" height="74"/>
@@ -831,9 +909,6 @@
   </properties>
   <image source="../img/Tiles/Tuile_eau-38.png" width="128" height="74"/>
  </tile>
- <tile id="152" probability="0.8">
-  <image source="../img/Tiles/vide.png" width="128" height="74"/>
- </tile>
  <tile id="145" type="ligne_gazon" probability="0.015">
   <image source="../img/Tiles/Tuile_gazon-25.png" width="128" height="74"/>
  </tile>
@@ -878,7 +953,7 @@
    <wangcolor name="gazon pâle" color="#aaff7f" tile="-1" probability="1"/>
    <wangcolor name="chemin" color="#ffff7f" tile="-1" probability="1"/>
    <wangcolor name="eau" color="#0000ff" tile="-1" probability="1"/>
-   <wangcolor name="test gazon" color="#ff7700" tile="-1" probability="1"/>
+   <wangcolor name="gazon" color="#00aa00" tile="-1" probability="1"/>
    <wangtile tileid="1" wangid="0,2,0,0,0,2,0,2"/>
    <wangtile tileid="2" wangid="0,2,0,2,0,0,0,2"/>
    <wangtile tileid="3" wangid="0,0,0,2,0,2,0,2"/>
@@ -938,6 +1013,7 @@
    <wangtile tileid="78" wangid="0,0,0,3,0,3,0,0"/>
    <wangtile tileid="79" wangid="0,0,0,3,0,3,0,0"/>
    <wangtile tileid="95" wangid="0,3,0,3,0,3,0,3"/>
+   <wangtile tileid="96" wangid="0,4,0,4,0,4,0,4"/>
    <wangtile tileid="97" wangid="0,1,0,1,0,1,0,1"/>
    <wangtile tileid="122" wangid="0,0,0,1,0,0,0,0"/>
    <wangtile tileid="123" wangid="0,0,0,1,0,1,0,0"/>
@@ -955,20 +1031,6 @@
    <wangtile tileid="136" wangid="0,0,0,1,0,1,0,1"/>
    <wangtile tileid="137" wangid="0,0,0,1,0,1,0,0"/>
    <wangtile tileid="138" wangid="0,1,0,1,0,1,0,0"/>
-   <wangtile tileid="139" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="140" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="141" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="142" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="143" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="144" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="145" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="146" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="147" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="148" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="149" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="150" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="151" wangid="0,4,0,4,0,4,0,4"/>
-   <wangtile tileid="152" wangid="0,4,0,4,0,4,0,4"/>
    <wangtile tileid="153" wangid="0,0,0,2,0,0,0,0"/>
    <wangtile tileid="154" wangid="0,0,0,2,0,0,0,0"/>
    <wangtile tileid="155" wangid="0,2,0,2,0,2,0,2"/>
@@ -979,6 +1041,32 @@
    <wangtile tileid="160" wangid="0,2,0,2,0,2,0,2"/>
    <wangtile tileid="161" wangid="0,2,0,2,0,2,0,2"/>
    <wangtile tileid="162" wangid="0,2,0,2,0,2,0,2"/>
+   <wangtile tileid="171" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="172" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="173" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="174" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="175" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="176" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="177" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="178" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="179" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="180" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="181" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="182" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="183" wangid="0,4,0,4,0,4,0,4"/>
+   <wangtile tileid="184" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="185" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="186" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="187" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="188" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="189" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="190" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="191" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="192" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="193" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="194" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="195" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="196" wangid="0,1,0,1,0,1,0,1"/>
   </wangset>
  </wangsets>
 </tileset>
