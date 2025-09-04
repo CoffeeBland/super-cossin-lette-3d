@@ -100,15 +100,16 @@ function map:drawChunk(batch, time, layer, chunk)
             if not tileset.tiles[tile] then
                 print("Unknown tile gid!", tile, og)
             end
+            local tileData = tileset.tiles[tile]
             batch:add(
-                tileset.tiles[tile],
+                tileData.quad,
                 x + self._data.tilewidth / 2,
                 y,
                 0,
                 flipX and -1 or 1,
                 flipY and -1 or 1,
-                self._data.tilewidth / 2,
-                self._data.tileheight / 2)
+                tileData.originX + self._data.tilewidth / 2,
+                tileData.originY - self._data.tileheight / 2)
         end
     end
 end

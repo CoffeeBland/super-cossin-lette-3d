@@ -126,37 +126,61 @@ function love.load()
                             textures[name])
                     end
                 elseif data.tiles then
-                    local tw = math.ceil(math.sqrt(data.tilecount))
-                    local th = math.ceil(data.tilecount / tw)
-                    local canvas = love.graphics.newCanvas(tw * data.tilewidth, th * data.tileheight)
+                    -- Tiles can be of non-uniform size.
+                    -- As such, this is fucked.
+                    -- Sort by greatest height first, make rows of the given height, and fuck being optimal
+                    table.sort(data.tiles,
+                        function (a, b)
+                            return a.height > b.height
+                        end)
+
+                    -- Use a width for fun.
+                    local width = data.tilewidth * 8
+                    local height = 0
+
+                    -- Fill out rows so we can find out the height...
+                    local rows = {}
+                    local row = nil
+                    for _, tile in ipairs(data.tiles) do
+                        if not row or row.remainingWidth < tile.width then
+                            row = { y = height, remainingWidth = width, height = tile.height, tiles = {} }
+                            height = height + tile.height
+                            table.insert(rows, row)
+                        end
+                        row.remainingWidth = row.remainingWidth - tile.width
+                        table.insert(row.tiles, tile)
+                    end
+
+                    local canvas = love.graphics.newCanvas(width, height)
                     textures[name] = canvas
                     love.graphics.setCanvas(canvas)
-                    for i, tile in ipairs(data.tiles) do
-                        local tileName = str.filename(tile.image)
-                        local x = (i - 1) % tw
-                        local y = math.floor((i - 1) / tw)
-                        love.graphics.draw(
-                            textures[tileName],
-                            x * data.tilewidth,
-                            y * data.tileheight)
-                        tileset.tiles[tile.id] = love.graphics.newQuad(
-                            x * data.tilewidth,
-                            y * data.tileheight,
-                            data.tilewidth,
-                            data.tileheight,
-                            canvas)
 
-                        if tile.animation and #tile.animation > 1 then
-                            local ids = {}
-                            for i, frame in ipairs(tile.animation) do
-                                ids[i] = frame.tileid
-                            end
-                            tileset.anims[tile.id] = {
-                                fps = 1000 / tile.animation[1].duration,
-                                ids = ids
+                    -- Gogo gadget.
+                    for _, row in ipairs(rows) do
+                        local x = 0
+                        local y = row.y
+                        for _, tile in ipairs(row.tiles) do
+                            local tileName = str.filename(tile.image)
+                            love.graphics.draw(textures[tileName], x, y)
+                            tileset.tiles[tile.id] = {
+                                quad = love.graphics.newQuad(x, y, tile.width, tile.height, canvas),
+                                originX = 0,
+                                originY = tile.height
                             }
+                            if tile.animation and #tile.animation > 1 then
+                                local ids = {}
+                                for i, frame in ipairs(tile.animation) do
+                                    ids[i] = frame.tileid
+                                end
+                                tileset.anims[tile.id] = {
+                                    fps = 1000 / tile.animation[1].duration,
+                                    ids = ids
+                                }
+                            end
+                            x = x + tile.width
                         end
                     end
+
                     love.graphics.setCanvas()
                 end
             end
