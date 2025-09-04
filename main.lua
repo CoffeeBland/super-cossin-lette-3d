@@ -77,15 +77,14 @@ function love.load()
                                 local verticesFlipX = {}
                                 local verticesFlipY = {}
                                 for _, point in ipairs(subobject.polygon) do
-                                    -- Regular
-                                    table.insert(vertices, point.x + subobject.x - obj.offsetX)
-                                    table.insert(vertices, point.y + subobject.y - obj.offsetY)
-                                    -- FlipX TODO AAA
-                                    table.insert(verticesFlipX, point.x + subobject.x - obj.offsetX)
-                                    table.insert(verticesFlipX, point.y + subobject.y - obj.offsetY)
-                                    -- FlipY TODO AAA
-                                    table.insert(verticesFlipY, point.x + subobject.x - obj.offsetX)
-                                    table.insert(verticesFlipY, point.y + subobject.y - obj.offsetY)
+                                    local x = point.x + subobject.x - obj.offsetX
+                                    local y = point.y + subobject.y - obj.offsetY
+                                    table.insert(vertices, x)
+                                    table.insert(vertices, y)
+                                    table.insert(verticesFlipX, -x)
+                                    table.insert(verticesFlipX, y)
+                                    table.insert(verticesFlipY, x)
+                                    table.insert(verticesFlipY, -y)
                                 end
                                 if #vertices > 8 then
                                     obj.shape = love.physics.newChainShape(true, vertices)

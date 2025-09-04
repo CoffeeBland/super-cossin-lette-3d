@@ -14,6 +14,7 @@ local fruitOffset = { x = 0, y = 0, z = -90 }
 local fruitJumpSpeed = 140
 local fruitPickupForce = 0.7
 local eatCooldown = 600
+local heightSlice = 64
 --   2
 --  1 3
 -- 8   4
@@ -81,6 +82,14 @@ function Game:exit()
     self.physics = nil
 end
 
+function getHeightSlices(entity)
+    local startZ = -entity.pos.z
+    local endZ = startZ + (entity.pos.height or 0)
+    local sliceStart = math.floor(startZ / heightSlice)
+    local sliceEnd = math.ceil(endZ / heightSlice)
+    return math.clamp(1 + sliceStart, 1, 16), math.clamp(1 + sliceEnd, 1, 16)
+end
+
 function Game:update(dt)
     self.physics:update(dt)
     self.time = self.time + dt
@@ -100,10 +109,19 @@ function Game:update(dt)
                 fixture:setSensor(true)
             end
 
+            local sliceStart, sliceEnd = getHeightSlices(entity)
+            local categories = {}
+            for i = 1,16 do
+                categories[i] = math.min(sliceStart + i - 1, sliceEnd)
+            end
+            fixture:setCategory(unpack(categories))
+
             entity.physics = {
                 body = body,
                 shape = shape,
-                fixture = fixture
+                fixture = fixture,
+                sliceStart = sliceStart,
+                sliceEnd = sliceEnd
             }
         end
 
@@ -206,6 +224,25 @@ function Game:update(dt)
                     entity.pos.z = 0
                     entity.velocity.z = 0
                 end
+
+                local sliceStart, sliceEnd = getHeightSlices(entity)
+                local masks = {}
+                if sliceStart ~= entity.physics.sliceStart or sliceEnd ~= entity.physics.sliceEnd then
+                    if sliceStart > 1 then
+                        for i = 1,sliceStart - 1 do
+                            table.insert(masks, i)
+                        end
+                    end
+                    if sliceEnd < 16 then
+                        for i = sliceEnd + 1, 16 do
+                            table.insert(masks, i)
+                        end
+                    end
+                end
+                for i = #masks + 1, 16 do
+                    table.insert(masks, masks[#masks])
+                end
+                entity.physics.fixture:setMask(unpack(masks))
             end
             entity.physics.body:setLinearDamping(entity.pos.onGround and (entity.pos.sliding and slidingDamping or groundDamping) or 0)
         end
