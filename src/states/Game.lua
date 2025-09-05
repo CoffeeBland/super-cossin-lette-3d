@@ -21,6 +21,12 @@ Game = {}
 
 function Game:enter()
     self.physics = love.physics.newWorld(0, 0, true)
+    self.physics:setContactFilter(
+        function(fix1, fix2)
+            local e1 = fix1:getBody():getUserData()
+            local e2 = fix2:getBody():getUserData()
+            return self:shouldEntitiesContact(e1, e2)
+        end)
     self.camera = { x = 0, y = 0 }
     self.time = 0
     self.map = map.load("map_mymp")
@@ -65,6 +71,7 @@ function Game:enter()
                 pickupAnimFrames = 20,
                 firstOffset = { x = 0, y = 0, z = 165 },
                 otherOffset = { x = 0, y = 0, z = 90 },
+                dropForce = 100,
                 dropCooldown = 60
             }
         }
@@ -132,12 +139,8 @@ function Game:update(dt)
             heightSensor:setSensor(true)
             heightSensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
 
-            local fixture = nil
-            if entity.body.trigger then
-                fixture = heightSensor
-            else
-                fixture = love.physics.newFixture(body, shape, 1)
-            end
+            local fixture = love.physics.newFixture(body, shape, 1)
+            fixture:setRestitution(1)
 
             entity.physics = {
                 body = body,
@@ -196,11 +199,7 @@ function Game:update(dt)
                 entity.fruitStack.cooldown = nil
             end
 
-            for _, contact in pairs(entity.physics.body:getContacts()) do
-                local fix1, fix2 = contact:getFixtures()
-                local entity1 = fix1:getBody():getUserData()
-                local entity2 = fix2:getBody():getUserData()
-                local other = entity1.id == entity.id and entity2 or entity1
+            for _, other in pairs(self:getOverlappingEntities(entity)) do
                 if other.fruit then
                     self:checkFruitPickup(entity, other)
                 end
@@ -211,7 +210,7 @@ function Game:update(dt)
         if entity.actor then
             entity.pos.sliding = false
             if entity.actions.movement.angle and entity.physics then
-                if entity.pos.onGround and not entity.fruitStack.eating and not entity.actions.prejump then
+                if entity.pos.onGround and not (entity.fruitStack and entity.fruitStack.eating) and not entity.actions.prejump then
                     local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
                     local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * speedMultiplier
                     entity.physics.body:applyForce(dx, dy)
@@ -222,7 +221,7 @@ function Game:update(dt)
                 entity.anim.dir = dirs[a];
                 entity.anim.name = "walk"
             end
-            if entity.fruitStack.eating and entity.pos.onGround then
+            if (entity.fruitStack and entity.fruitStack.eating) and entity.pos.onGround then
                 entity.anim.name = "eat"
             else
                 if entity.actions.jump and entity.pos.onGround then
@@ -251,7 +250,7 @@ function Game:update(dt)
                 local floorZ = 0
                 local ceilingZ = SKY_LIMIT
                 for _, otherEntity in pairs(self:getOverlappingEntities(entity)) do
-                    if not otherEntity.body.trigger then
+                    if Game:shouldEntitiesContact(entity, otherEntity) then
                         local sz = otherEntity.pos.z
                         local ez = otherEntity.pos.z + (otherEntity.pos.height)
                         if ez < entity.pos.z + DELTA and ez > floorZ then
@@ -294,6 +293,10 @@ function Game:update(dt)
         -- Fruit being
         if entity.fruit then
             if entity.fruit.animFrames then
+                local prevX = entity.pos.x
+                local prevY = entity.pos.y
+                local prevZ = entity.pos.z
+
                 local parentEntity = entity.fruit.stackEntity
                 local stackRootEntity = parentEntity
                 while stackRootEntity.fruit and stackRootEntity.fruit.stackEntity do
@@ -327,27 +330,7 @@ function Game:update(dt)
                     entity.pos.floorZ = targetZ
                 end
 
-                -- TODO fruit drop
-                for _, otherEntity in pairs(self:getOverlappingEntities(entity)) do
-                    if not otherEntity.fruit and not otherEntity.fruitStack then
-                        if entity.pos.z <= otherEntity.pos.z + otherEntity.pos.height and
-                            entity.pos.z + entity.pos.height >= otherEntity.pos.z
-                        then
-                            local i = table.index(stackRootEntity.fruitStack.fruits, entity)
-                            local next = stackRootEntity.fruitStack.fruits[i + 1]
-                            if next then
-                                next.fruit.stackEntity = parentEntity
-                            end
-                            table.remove(stackRootEntity.fruitStack.fruits, i)
-                            entity.fruit.stackEntity = nil
-                            entity.fruit.animFrames = nil
-                            entity.shadow = { name = "fruitOmbre", anchor = { x = 67, y = 0 } }
-                            -- TODO - That's insufficient!
-                            entity.velocity.z = stackRootEntity.fruitStack.pickupJumpSpeed * jumpMultiplier
-                            entity.fruit.cooldown = stackRootEntity.fruitStack.dropCooldown
-                        end
-                    end
-                end
+                self:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
             end
             if entity.fruit.cooldown then
                 entity.fruit.cooldown = entity.fruit.cooldown - 1
@@ -473,6 +456,8 @@ function Game:render(dt)
     if debug.physics then
         PhysicsRenderer.draw_camera(self.physics, 0, 0, w, h)
     end
+
+    love.graphics:reset()
 end
 
 mask_shader = love.graphics.newShader[[
@@ -504,6 +489,44 @@ function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
     fruitEntity.fruit.animFrames = fruitStackEntity.fruitStack.pickupAnimFrames
     fruitEntity.shadow = nil
     fruitEntity.velocity.z = math.max(fruitStackEntity.velocity.z, fruitStackEntity.fruitStack.pickupJumpSpeed) * math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) * jumpMultiplier
+end
+
+function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
+    for _, otherEntity in pairs(self:getOverlappingEntities(entity)) do
+        if not otherEntity.fruit and not otherEntity.fruitStack then
+            if entity.pos.z <= otherEntity.pos.z + otherEntity.pos.height and
+                entity.pos.z + entity.pos.height >= otherEntity.pos.z
+            then
+                local dx = prevX - entity.pos.x
+                local dy = prevY - entity.pos.y
+                local dir = math.atan2(dy, dx)
+                if math.abs(dx) < DELTA and math.abs(dy) < DELTA then
+                    dir = math.random() * math.pi * 2
+                end
+                dx = math.cos(dir) * stackRootEntity.fruitStack.dropForce
+                dy = math.sin(dir) * stackRootEntity.fruitStack.dropForce
+                entity.pos.x = prevX
+                entity.pos.y = prevY
+                entity.pos.z = prevZ
+                for i = #stackRootEntity.fruitStack.fruits, 1, -1 do
+                    local fruitEntity = stackRootEntity.fruitStack.fruits[i]
+                    stackRootEntity.fruitStack.fruits[i] = nil
+
+                    fruitEntity.fruit.stackEntity = nil
+                    fruitEntity.fruit.animFrames = nil
+                    fruitEntity.fruit.reachedStack = false
+                    fruitEntity.fruit.cooldown = stackRootEntity.fruitStack.dropCooldown
+                    fruitEntity.shadow = { name = "fruitOmbre", anchor = { x = 67, y = 0 } }
+                    fruitEntity.velocity.z = stackRootEntity.fruitStack.pickupJumpSpeed * jumpMultiplier
+                    fruitEntity.physics.body:setLinearDamping(0)
+                    fruitEntity.physics.body:setLinearVelocity(dx, dy)
+                    fruitEntity.pos.onGround = false
+                    fruitEntity.pos.floorEntity = nil
+                    fruitEntity.pos.ceilingEntity = nil
+                end
+            end
+        end
+    end
 end
 
 function Game:check(fix1, fix2, contact)
@@ -545,9 +568,13 @@ end
 
 function Game:findFloorEntity(entity)
     local y = entity.pos.y
-    while entity.pos.floorEntity do
-        entity = entity.pos.floorEntity
-        y = math.max(entity.pos.y + DELTA * 3, y)
+    for i = 1, 10 do
+        if entity.pos.floorEntity then
+            entity = entity.pos.floorEntity
+            y = math.max(entity.pos.y + DELTA * 3, y)
+        else
+            return entity, y
+        end
     end
     return entity, y
 end
@@ -627,4 +654,8 @@ function Game:drawEntitySprites(entity)
                 sprite.anchor.y)
         end
     end
+end
+
+function Game:shouldEntitiesContact(e1, e2)
+    return not ((e1.fruit or e1.fruitStack) and (e2.fruit or e2.fruitStack))
 end

@@ -217,6 +217,8 @@ function love.keypressed(key)
     end
 end
 
+local avgDt = 1 / 60
+
 function love.update(dt)
     actions.movement.x = 0
     actions.movement.y = 0
@@ -253,13 +255,20 @@ function love.update(dt)
 
     if actions.toggleDebug then
         debug.physics = not debug.physics
+        debug.fps = not debug.fps
     end
 
     for key, action in pairs(pressActions) do
         actions[action] = false
     end
+
+    avgDt = avgDt * 0.9 + dt * 0.1
 end
 
 function love.draw()
     StateMachine:render()
+
+    if debug.fps then
+        love.graphics.print(math.round(1 / avgDt))
+    end
 end
