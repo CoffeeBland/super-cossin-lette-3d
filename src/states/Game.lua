@@ -64,7 +64,8 @@ function Game:enter()
                 pickupJumpSpeed = 140,
                 pickupAnimFrames = 20,
                 firstOffset = { x = 0, y = 0, z = 165 },
-                otherOffset = { x = 0, y = 0, z = 90 }
+                otherOffset = { x = 0, y = 0, z = 90 },
+                dropCooldown = 60
             }
         }
     }
@@ -325,9 +326,34 @@ function Game:update(dt)
                     entity.pos.floorEntity = parentEntity
                     entity.pos.floorZ = targetZ
                 end
-            elseif entity.fruit.z then
-                entity.pos.z = entity.fruit.z
-                entity.velocity.z = 0
+
+                -- TODO fruit drop
+                for _, otherEntity in pairs(self:getOverlappingEntities(entity)) do
+                    if not otherEntity.fruit and not otherEntity.fruitStack then
+                        if entity.pos.z <= otherEntity.pos.z + otherEntity.pos.height and
+                            entity.pos.z + entity.pos.height >= otherEntity.pos.z
+                        then
+                            local i = table.index(stackRootEntity.fruitStack.fruits, entity)
+                            local next = stackRootEntity.fruitStack.fruits[i + 1]
+                            if next then
+                                next.fruit.stackEntity = parentEntity
+                            end
+                            table.remove(stackRootEntity.fruitStack.fruits, i)
+                            entity.fruit.stackEntity = nil
+                            entity.fruit.animFrames = nil
+                            entity.shadow = { name = "fruitOmbre", anchor = { x = 67, y = 0 } }
+                            -- TODO - That's insufficient!
+                            entity.velocity.z = stackRootEntity.fruitStack.pickupJumpSpeed * jumpMultiplier
+                            entity.fruit.cooldown = stackRootEntity.fruitStack.dropCooldown
+                        end
+                    end
+                end
+            end
+            if entity.fruit.cooldown then
+                entity.fruit.cooldown = entity.fruit.cooldown - 1
+                if entity.fruit.cooldown < 0 then
+                    entity.fruit.cooldown = nil
+                end
             end
         end
 
@@ -459,7 +485,7 @@ mask_shader = love.graphics.newShader[[
 ]]
 
 function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
-    if fruitEntity.fruit.stackEntity then
+    if fruitEntity.fruit.stackEntity or fruitEntity.fruit.cooldown then
         return
     end
 

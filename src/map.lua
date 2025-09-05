@@ -57,7 +57,7 @@ function map:getEntities(entities)
                 if object.fruit then
                     entity.shadow = {
                         name = "fruitOmbre",
-                        anchor = { x = 67, y = 40 }
+                        anchor = { x = 67, y = 0 }
                     }
                     entity.body = shape and { preshape = shape, type = "static", trigger = true }
                     entity.fruit = {

@@ -70,3 +70,11 @@ end
 function dump(o, args)
     return _dump(o, "", {}, args)
 end
+
+function table.index(table, obj)
+    for i, x in ipairs(table) do
+        if x == obj then
+            return i
+        end
+    end
+end
