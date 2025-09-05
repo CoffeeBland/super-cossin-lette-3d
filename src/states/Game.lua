@@ -82,6 +82,7 @@ function Game:updateHeightSlices(entity)
     local endZ = startZ + (entity.pos.height)
     local sliceStart = math.clamp(1 + math.ceil(startZ / HEIGHT_SLICE), 1, 16)
     local sliceEnd = math.clamp(1 + math.floor((endZ - 1) / HEIGHT_SLICE), 1, 16)
+    sliceEnd = math.max(sliceStart, sliceEnd)
     if sliceStart ~= entity.physics.sliceStart or sliceEnd ~= entity.physics.sliceEnd then
         -- Categories
         local categories = {}
@@ -321,6 +322,8 @@ function Game:update(dt)
                 if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z <= targetZ then
                     entity.pos.z = targetZ
                     entity.velocity.z = 0
+                    entity.pos.floorEntity = parentEntity
+                    entity.pos.floorZ = targetZ
                 end
             elseif entity.fruit.z then
                 entity.pos.z = entity.fruit.z
@@ -365,6 +368,12 @@ function Game:update(dt)
             local floorB, by = self:findFloorEntity(b)
 
             if math.abs(ay - by) < DELTA then
+                if math.abs(a.pos.y - b.pos.y) < DELTA then
+                    if math.abs(a.pos.z - b.pos.z) < DELTA then
+                        return a.id < b.id
+                    end
+                    return a.pos.z < b.pos.z
+                end
                 return a.pos.y < b.pos.y
             end
 
@@ -467,6 +476,7 @@ function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
         fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
         fruitStackEntity
     fruitEntity.fruit.animFrames = fruitStackEntity.fruitStack.pickupAnimFrames
+    fruitEntity.shadow = nil
     fruitEntity.velocity.z = math.max(fruitStackEntity.velocity.z, fruitStackEntity.fruitStack.pickupJumpSpeed) * math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) * jumpMultiplier
 end
 
