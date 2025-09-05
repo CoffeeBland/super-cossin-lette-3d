@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -28,6 +28,7 @@ return {
     {
       id = 0,
       properties = {
+        ["height"] = 480,
         ["offsetX"] = 280,
         ["offsetY"] = 560
       },
@@ -73,6 +74,7 @@ return {
     {
       id = 1,
       properties = {
+        ["height"] = 480,
         ["offsetX"] = 860,
         ["offsetY"] = 830
       },
@@ -292,6 +294,7 @@ return {
     {
       id = 10,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 192,
         ["offsetY"] = 110
       },
@@ -337,6 +340,7 @@ return {
     {
       id = 11,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 192,
         ["offsetY"] = 120
       },
@@ -382,6 +386,7 @@ return {
     {
       id = 12,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 128,
         ["offsetY"] = 90
       },
@@ -427,6 +432,7 @@ return {
     {
       id = 13,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 128,
         ["offsetY"] = 75
       },
@@ -472,6 +478,7 @@ return {
     {
       id = 14,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 110
       },
@@ -517,6 +524,7 @@ return {
     {
       id = 15,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 110
       },
@@ -562,6 +570,7 @@ return {
     {
       id = 16,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 110
       },
@@ -607,6 +616,7 @@ return {
     {
       id = 17,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 95
       },
@@ -652,6 +662,7 @@ return {
     {
       id = 18,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 95
       },
@@ -1227,7 +1238,7 @@ return {
     {
       id = 47,
       properties = {
-        ["height"] = 160,
+        ["height"] = 80,
         ["offsetX"] = 64,
         ["offsetY"] = 100
       },
@@ -1365,7 +1376,7 @@ return {
     {
       id = 50,
       properties = {
-        ["height"] = 160,
+        ["height"] = 80,
         ["offsetX"] = 64,
         ["offsetY"] = 100
       },
@@ -1503,6 +1514,7 @@ return {
     {
       id = 53,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 40
       },
@@ -1548,6 +1560,7 @@ return {
     {
       id = 54,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 30
       },
@@ -1593,6 +1606,7 @@ return {
     {
       id = 55,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 35
       },
@@ -1638,6 +1652,7 @@ return {
     {
       id = 56,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 40
       },
@@ -1683,6 +1698,7 @@ return {
     {
       id = 57,
       properties = {
+        ["height"] = 20,
         ["offsetX"] = 64,
         ["offsetY"] = 40
       },
@@ -1862,16 +1878,9 @@ return {
             visible = true,
             polygon = {
               { x = 0, y = 8 },
-              { x = 326, y = -201 },
-              { x = 449, y = -122 },
-              { x = 438, y = -47 },
-              { x = 499, y = -16 },
-              { x = 494, y = 30 },
-              { x = 268, y = 174 },
-              { x = 199, y = 140 },
-              { x = 193, y = 102 },
-              { x = 88, y = 44 },
-              { x = 65, y = 62 }
+              { x = 273, y = -161.333 },
+              { x = 535, y = 5 },
+              { x = 268, y = 174 }
             },
             properties = {}
           }
@@ -1881,7 +1890,7 @@ return {
     {
       id = 74,
       properties = {
-        ["height"] = 160,
+        ["height"] = 120,
         ["offsetX"] = 156.5,
         ["offsetY"] = 190
       },
@@ -1929,7 +1938,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 156.5,
-        ["offsetY"] = 190
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros_mousse-2.png",
       width = 313,
@@ -1975,7 +1984,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 156.5,
-        ["offsetY"] = 220
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros_mousse-3.png",
       width = 313,
@@ -2021,7 +2030,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 156.5,
-        ["offsetY"] = 225
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros_mousse-4.png",
       width = 313,
@@ -2067,7 +2076,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 156.5,
-        ["offsetY"] = 210
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros_mousse-5.png",
       width = 313,
@@ -2111,9 +2120,9 @@ return {
     {
       id = 79,
       properties = {
-        ["height"] = 160,
+        ["height"] = 120,
         ["offsetX"] = 156.5,
-        ["offsetY"] = 185
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros_mousse-6.png",
       width = 313,
@@ -2159,7 +2168,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 156.5,
-        ["offsetY"] = 225
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros_mousse-7.png",
       width = 313,
@@ -2203,9 +2212,9 @@ return {
     {
       id = 81,
       properties = {
-        ["height"] = 160,
+        ["height"] = 120,
         ["offsetX"] = 161,
-        ["offsetY"] = 175
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros-1.png",
       width = 322,
@@ -2251,7 +2260,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 161,
-        ["offsetY"] = 205
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros-2.png",
       width = 322,
@@ -2297,7 +2306,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 161,
-        ["offsetY"] = 175
+        ["offsetY"] = 240
       },
       image = "../img/Roche_gros-3.png",
       width = 322,
@@ -2343,7 +2352,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 161,
-        ["offsetY"] = 205
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros-4.png",
       width = 322,
@@ -2387,9 +2396,9 @@ return {
     {
       id = 85,
       properties = {
-        ["height"] = 160,
+        ["height"] = 120,
         ["offsetX"] = 161,
-        ["offsetY"] = 190
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros-5.png",
       width = 322,
@@ -2435,7 +2444,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 161,
-        ["offsetY"] = 215
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros-6.png",
       width = 322,
@@ -2481,7 +2490,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 161,
-        ["offsetY"] = 215
+        ["offsetY"] = 250
       },
       image = "../img/Roche_gros-7.png",
       width = 322,

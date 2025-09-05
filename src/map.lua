@@ -43,7 +43,7 @@ function map:getEntities(entities)
                         x = x,
                         y = y,
                         z = z,
-                        height = object.height
+                        height = object.height or HEIGHT_SLICE
                     },
                     sprites = {
                         {

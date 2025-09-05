@@ -7,13 +7,13 @@ local function fixture_fill_color(fixture)
     if fixture:isSensor() then
         return 0, 0, 0.5, 0.4
     else
-        return 0.5, 0.5, 0.5, 0.5
+        return 0.5, 0.5, 0.5, 0
     end
 end
 
 local function fixture_line_color(fixture)
     if fixture:isSensor() then
-        return 0, 0, 1, 0.75
+        return 0, 0, 1, 0
     else
         return 1, 1, 1
     end
@@ -32,15 +32,12 @@ local function draw_fixture(fixture)
         love.graphics.setColor(fixture_line_color(fixture))
         love.graphics.circle("line", x, y, radius, 15)
         love.graphics.line(x, y, x + radius, y)
-    elseif shapeType == "polygon" then
+    elseif shapeType == "polygon" or shapeType == "chain" then
         local points = {shape:getPoints()}
         love.graphics.polygon("fill", points)
         love.graphics.setColor(fixture_line_color(fixture))
         love.graphics.polygon("line", points)
     elseif shapeType == "edge" then
-        love.graphics.setColor(fixture_line_color(fixture))
-        love.graphics.line(shape:getPoints())
-    elseif shapeType == "chain" then
         love.graphics.setColor(fixture_line_color(fixture))
         love.graphics.line(shape:getPoints())
     end
@@ -60,6 +57,8 @@ local function draw_body(body)
     for i = 1, #fixtures do
         draw_fixture(fixtures[i])
     end
+
+    love.graphics.points(0, 0)
     love.graphics.pop()
 end
 
