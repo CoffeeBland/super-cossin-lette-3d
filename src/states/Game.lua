@@ -71,8 +71,9 @@ function Game:enter()
                 pickupAnimFrames = 20,
                 firstOffset = { x = 0, y = 0, z = 165 },
                 otherOffset = { x = 0, y = 0, z = 90 },
-                dropForce = 100,
-                dropCooldown = 60
+                dropForce = 240,
+                dropJumpSpeed = 60,
+                dropCooldown = 60,
             }
         }
     }
@@ -140,7 +141,6 @@ function Game:update(dt)
             heightSensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
 
             local fixture = love.physics.newFixture(body, shape, 1)
-            fixture:setRestitution(1)
 
             entity.physics = {
                 body = body,
@@ -210,7 +210,10 @@ function Game:update(dt)
         if entity.actor then
             entity.pos.sliding = false
             if entity.actions.movement.angle and entity.physics then
-                if entity.pos.onGround and not (entity.fruitStack and entity.fruitStack.eating) and not entity.actions.prejump then
+                if entity.pos.onGround and
+                    not (entity.fruitStack and entity.fruitStack.eating) and
+                    not entity.actions.prejump
+                then
                     local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
                     local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * speedMultiplier
                     entity.physics.body:applyForce(dx, dy)
@@ -488,7 +491,11 @@ function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
         fruitStackEntity
     fruitEntity.fruit.animFrames = fruitStackEntity.fruitStack.pickupAnimFrames
     fruitEntity.shadow = nil
-    fruitEntity.velocity.z = math.max(fruitStackEntity.velocity.z, fruitStackEntity.fruitStack.pickupJumpSpeed) * math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) * jumpMultiplier
+    fruitEntity.physics.body:setType("static")
+    fruitEntity.velocity.z =
+        math.max(fruitStackEntity.velocity.z, fruitStackEntity.fruitStack.pickupJumpSpeed) *
+        math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) *
+        jumpMultiplier
 end
 
 function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
@@ -508,6 +515,7 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
                 entity.pos.x = prevX
                 entity.pos.y = prevY
                 entity.pos.z = prevZ
+                entity.physics.body:setPosition(entity.pos.x, entity.pos.y)
                 for i = #stackRootEntity.fruitStack.fruits, 1, -1 do
                     local fruitEntity = stackRootEntity.fruitStack.fruits[i]
                     stackRootEntity.fruitStack.fruits[i] = nil
@@ -517,9 +525,10 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
                     fruitEntity.fruit.reachedStack = false
                     fruitEntity.fruit.cooldown = stackRootEntity.fruitStack.dropCooldown
                     fruitEntity.shadow = { name = "fruitOmbre", anchor = { x = 67, y = 0 } }
-                    fruitEntity.velocity.z = stackRootEntity.fruitStack.pickupJumpSpeed * jumpMultiplier
+                    fruitEntity.velocity.z = stackRootEntity.fruitStack.dropJumpSpeed * jumpMultiplier
+                    fruitEntity.physics.body:setType("dynamic")
                     fruitEntity.physics.body:setLinearDamping(0)
-                    fruitEntity.physics.body:setLinearVelocity(dx, dy)
+                    fruitEntity.physics.body:applyLinearImpulse(dx, dy)
                     fruitEntity.pos.onGround = false
                     fruitEntity.pos.floorEntity = nil
                     fruitEntity.pos.ceilingEntity = nil

@@ -59,7 +59,7 @@ function map:getEntities(entities)
                         name = "fruitOmbre",
                         anchor = { x = 67, y = 0 }
                     }
-                    entity.body = shape and { preshape = shape, type = "static" }
+                    entity.body = shape and { preshape = shape, type = "dynamic" }
                     entity.fruit = {
                         type = object.fruit,
                         z = z
