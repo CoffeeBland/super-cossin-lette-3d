@@ -23,12 +23,12 @@ return {
   },
   properties = {},
   wangsets = {},
-  tilecount = 73,
+  tilecount = 74,
   tiles = {
     {
       id = 0,
       properties = {
-        ["height"] = 480,
+        ["height"] = 400,
         ["offsetX"] = 280,
         ["offsetY"] = 560
       },
@@ -74,7 +74,7 @@ return {
     {
       id = 1,
       properties = {
-        ["height"] = 480,
+        ["height"] = 400,
         ["offsetX"] = 860,
         ["offsetY"] = 830
       },
@@ -2525,6 +2525,53 @@ return {
               { x = 89, y = -45 },
               { x = 212, y = 17 },
               { x = 120, y = 64 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 88,
+      properties = {
+        ["height"] = 80,
+        ["offsetX"] = 400,
+        ["offsetY"] = 400,
+        ["posZ"] = 400
+      },
+      image = "../img/Arche_top.png",
+      width = 961,
+      height = 622,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 954,
+            y = 466,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = -74, y = -124 },
+              { x = -335, y = 35 },
+              { x = -946, y = -272 },
+              { x = -648, y = -392 }
             },
             properties = {}
           }

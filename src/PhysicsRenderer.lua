@@ -58,6 +58,13 @@ local function draw_body(body)
         draw_fixture(fixtures[i])
     end
 
+    local entity = body:getUserData()
+    if entity and entity.pos then
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.print("z" .. math.round(entity.pos.z) .. ":" .. entity.pos.height, 0, 0, 0, 3, 3)
+    end
+
+    love.graphics.setPointSize(8)
     love.graphics.points(0, 0)
     love.graphics.pop()
 end

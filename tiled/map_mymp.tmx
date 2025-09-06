@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="60" height="60" tilewidth="128" tileheight="74" infinite="0" nextlayerid="11" nextobjectid="134">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="60" height="60" tilewidth="128" tileheight="74" infinite="0" nextlayerid="11" nextobjectid="136">
  <editorsettings>
   <export target="../maps/map_mymp.lua" format="lua"/>
  </editorsettings>
@@ -231,7 +231,11 @@
   <object id="43" gid="224" x="2932.31" y="3293.2" width="128" height="74"/>
   <object id="45" gid="222" x="2939.92" y="3417.59" width="128" height="74"/>
   <object id="46" gid="251" x="3101.83" y="3595.69" width="128" height="148"/>
-  <object id="47" gid="2147483931" x="3420.02" y="4029.5" width="322" height="319"/>
+  <object id="47" gid="2147483931" x="3420.02" y="4029.5" width="322" height="319">
+   <properties>
+    <property name="posZ" type="float" value="160"/>
+   </properties>
+  </object>
   <object id="50" gid="2147483856" x="3112.64" y="974.875" width="1024" height="1286"/>
   <object id="52" gid="209" x="3489.28" y="2195.23" width="1024" height="1286"/>
   <object id="53" gid="212" x="3474.44" y="2309.08" width="384" height="216"/>
@@ -288,6 +292,8 @@
   <object id="127" gid="207" x="712.193" y="3523.81" width="1024" height="1286"/>
   <object id="132" gid="222" x="1002.16" y="3688.51" width="128" height="74"/>
   <object id="133" gid="221" x="1022.6" y="3468.07" width="128" height="74"/>
+  <object id="134" gid="290" x="1369.1" y="2288.9" width="961" height="622"/>
+  <object id="135" gid="290" x="479.523" y="734.477" width="961" height="622"/>
  </objectgroup>
  <objectgroup id="5" name="Calque d'Objets 2">
   <object id="18" gid="206" x="181.292" y="1430.04" width="1024" height="1286"/>

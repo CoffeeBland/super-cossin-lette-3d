@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="73" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="74" columns="0">
  <editorsettings>
   <export target="../data/objects.lua" format="lua"/>
  </editorsettings>
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <properties>
-   <property name="height" type="float" value="480"/>
+   <property name="height" type="float" value="400"/>
    <property name="offsetX" type="float" value="280"/>
    <property name="offsetY" type="float" value="560"/>
   </properties>
@@ -19,7 +19,7 @@
  </tile>
  <tile id="1">
   <properties>
-   <property name="height" type="float" value="480"/>
+   <property name="height" type="float" value="400"/>
    <property name="offsetX" type="float" value="860"/>
    <property name="offsetY" type="float" value="830"/>
   </properties>
@@ -818,6 +818,20 @@
   <objectgroup draworder="index" id="2">
    <object id="1" x="76" y="250">
     <polygon points="0,0 89,-45 212,17 120,64"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="88">
+  <properties>
+   <property name="height" type="float" value="80"/>
+   <property name="offsetX" type="float" value="400"/>
+   <property name="offsetY" type="float" value="400"/>
+   <property name="posZ" type="float" value="400"/>
+  </properties>
+  <image source="../img/Arche_top.png" width="961" height="622"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="954" y="466">
+    <polygon points="-74,-124 -335,35 -946,-272 -648,-392"/>
    </object>
   </objectgroup>
  </tile>

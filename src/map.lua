@@ -34,10 +34,16 @@ function map:getEntities(entities)
 
                 local tx = data.x / self._data.tileheight
                 local ty = data.y / self._data.tileheight
+                local z = (data.properties.posZ or 0) + (object.posZ or 0)
                 local x = (tx - ty) * self._data.tilewidth / 2 + object.offsetX + (object.posX or 0)
-                local y = (tx + ty) * self._data.tileheight / 2 + object.offsetY + (object.posY or 0)
-                local z = (data.properties.posZ or object.posZ or 0)
+                local y = (tx + ty) * self._data.tileheight / 2 + object.offsetY + (object.posY or 0) + z
                 local shape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
+                local shadow = object.shadow and{
+                    name = object.shadow.name,
+                    anchor = object.shadow.anchor,
+                    flipX = flipX,
+                    flipY = flipY
+                }
                 local entity = {
                     pos = {
                         x = x,
@@ -54,12 +60,15 @@ function map:getEntities(entities)
                         }
                     }
                 }
+                entity.shadow = shadow
                 if object.fruit then
-                    entity.shadow = {
+                    entity.shadow = shadow or {
                         name = "fruitOmbre",
-                        anchor = { x = 67, y = 0 }
+                        anchor = { x = 0, y = 0 }
                     }
-                    entity.body = shape and { preshape = shape, type = "dynamic" }
+                    entity.body = shape and
+                        { preshape = shape, type = "dynamic" } or
+                        { shape = "circle", size = 64 }
                     entity.fruit = {
                         type = object.fruit,
                         z = z

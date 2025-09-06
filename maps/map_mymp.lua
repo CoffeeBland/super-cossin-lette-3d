@@ -10,13 +10,14 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 11,
-  nextobjectid = 134,
+  nextobjectid = 136,
   properties = {},
   tilesets = {
     {
       name = "tileset",
       firstgid = 1,
-      filename = "../tiled/tileset.tsx"
+      filename = "../tiled/tileset.tsx",
+      exportfilename = "../data/tileset.lua"
     },
     {
       name = "objects",
@@ -754,7 +755,9 @@ return {
           rotation = 0,
           gid = 2147483931,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 160
+          }
         },
         {
           id = 50,
@@ -1537,6 +1540,34 @@ return {
           height = 74,
           rotation = 0,
           gid = 221,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 134,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1369.1,
+          y = 2288.9,
+          width = 961,
+          height = 622,
+          rotation = 0,
+          gid = 290,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 135,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 479.523,
+          y = 734.477,
+          width = 961,
+          height = 622,
+          rotation = 0,
+          gid = 290,
           visible = true,
           properties = {}
         }

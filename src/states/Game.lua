@@ -15,7 +15,7 @@ local eatCooldown = 600
 --  7 5
 --   6
 local dirs = { "tl", "t", "tr", "r", "br", "b", "bl", "l" }
-local v2 = { x = 0, y = 0}
+local v2 = { x = 0, y = 0 }
 
 Game = {}
 
@@ -23,6 +23,9 @@ function Game:enter()
     self.physics = love.physics.newWorld(0, 0, true)
     self.physics:setContactFilter(
         function(fix1, fix2)
+            if fix1:isSensor() or fix2:isSensor() then
+                return true
+            end
             local e1 = fix1:getBody():getUserData()
             local e2 = fix2:getBody():getUserData()
             return self:shouldEntitiesContact(e1, e2)
@@ -65,7 +68,7 @@ function Game:enter()
             },
             fruitStack = {
                 fruits = {},
-                pickupRange = 128,
+                pickupRange = 100,
                 pickupForce = 0.7,
                 pickupJumpSpeed = 140,
                 pickupAnimFrames = 20,
@@ -159,6 +162,13 @@ function Game:update(dt)
 
         -- Fruit stack haver
         if entity.fruitStack then
+            if not entity.fruitStack.sensor and entity.physics then
+                local shape = love.physics.newCircleShape(entity.fruitStack.pickupRange / 2)
+                local sensor = love.physics.newFixture(entity.physics.body, shape, 0)
+                sensor:setSensor(true)
+                sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+                entity.fruitStack.sensor = sensor
+            end
             if #entity.fruitStack.fruits > 0 then
                 if not entity.fruitStack.cooldown then
                     entity.fruitStack.cooldown = eatCooldown
@@ -199,7 +209,7 @@ function Game:update(dt)
                 entity.fruitStack.cooldown = nil
             end
 
-            for _, other in pairs(self:getOverlappingEntities(entity)) do
+            for _, other in pairs(self:getOverlappingEntities(entity, entity.fruitStack.sensor)) do
                 if other.fruit then
                     self:checkFruitPickup(entity, other)
                 end
@@ -412,25 +422,18 @@ function Game:render(dt)
     love.graphics.setBlendMode("multiply", "premultiplied")
     for _, entity in ipairs(self.entities) do
         if entity.shadow then
-            love.graphics.draw(
-                textures[entity.shadow.name],
-                entity.pos.x,
-                entity.pos.y,
-                0,
-                math.pow(1 / math.max(-(entity.pos.z / METER_SCALE), 1), 1/4),
-                math.pow(1 / math.max(-(entity.pos.z / METER_SCALE), 1), 1/4),
-                entity.shadow.anchor.x,
-                entity.shadow.anchor.y)
+            Game:drawEntityShadow(entity)
         end
     end
     love.graphics.setBlendMode("alpha")
 
     -- Entities
     for _, entity in ipairs(self.entities) do
+        -- Stacked entities shadows
         if entity.shadow and entity.pos.floorEntity then
             love.graphics.stencil(
                 function()
-                    love.graphics.setShader(mask_shader)
+                    love.graphics.setShader(MASK_SHADER)
                     Game:drawEntitySprites(entity.pos.floorEntity)
                     love.graphics.setShader()
                 end,
@@ -438,18 +441,11 @@ function Game:render(dt)
                 1)
             love.graphics.setStencilTest("greater", 0)
             love.graphics.setBlendMode("multiply", "premultiplied")
-            love.graphics.draw(
-                textures[entity.shadow.name],
-                entity.pos.x,
-                entity.pos.y - entity.pos.floorZ,
-                0,
-                math.pow(1 / math.max(-(entity.pos.z / METER_SCALE), 1), 1/4),
-                math.pow(1 / math.max(-(entity.pos.z / METER_SCALE), 1), 1/4),
-                entity.shadow.anchor.x,
-                entity.shadow.anchor.y)
+            Game:drawEntityShadow(entity, entity.pos.floorZ)
             love.graphics.setBlendMode("alpha")
             love.graphics.setStencilTest()
         end
+        -- Sprites
         if entity.sprites then
             Game:drawEntitySprites(entity)
         end
@@ -462,15 +458,6 @@ function Game:render(dt)
 
     love.graphics:reset()
 end
-
-mask_shader = love.graphics.newShader[[
-    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
-        if (Texel(texture, texture_coords).a < 0.5) {
-            discard;
-        }
-        return vec4(1.0);
-    }
-]]
 
 function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
     if fruitEntity.fruit.stackEntity or fruitEntity.fruit.cooldown then
@@ -504,14 +491,6 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
             if entity.pos.z <= otherEntity.pos.z + otherEntity.pos.height and
                 entity.pos.z + entity.pos.height >= otherEntity.pos.z
             then
-                local dx = prevX - entity.pos.x
-                local dy = prevY - entity.pos.y
-                local dir = math.atan2(dy, dx)
-                if math.abs(dx) < DELTA and math.abs(dy) < DELTA then
-                    dir = math.random() * math.pi * 2
-                end
-                dx = math.cos(dir) * stackRootEntity.fruitStack.dropForce
-                dy = math.sin(dir) * stackRootEntity.fruitStack.dropForce
                 entity.pos.x = prevX
                 entity.pos.y = prevY
                 entity.pos.z = prevZ
@@ -520,6 +499,9 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
                     local fruitEntity = stackRootEntity.fruitStack.fruits[i]
                     stackRootEntity.fruitStack.fruits[i] = nil
 
+                    local dir = math.random() * math.pi * 2
+                    local dx = math.cos(dir) * stackRootEntity.fruitStack.dropForce
+                    local dy = math.sin(dir) * stackRootEntity.fruitStack.dropForce
                     fruitEntity.fruit.stackEntity = nil
                     fruitEntity.fruit.animFrames = nil
                     fruitEntity.fruit.reachedStack = false
@@ -590,9 +572,10 @@ end
 
 Game.overlappingEntitiesCheckResult = nil
 Game.overlappingEntitiesCheckResult = {}
-function Game:getOverlappingEntities(entity)
+function Game:getOverlappingEntities(entity, sensor)
     Game.overlappingEntitiesCheckEntity = entity
-    local tlx, tly, brx, bry = entity.physics.heightSensor:getBoundingBox()
+    sensor = sensor or entity.physics.heightSensor
+    local tlx, tly, brx, bry = sensor:getBoundingBox()
     self.physics:queryBoundingBox(
         tlx, tly, brx, bry,
         Game.onOverlappingEntitiesCheck)
@@ -663,6 +646,22 @@ function Game:drawEntitySprites(entity)
                 sprite.anchor.y)
         end
     end
+end
+
+function Game:drawEntityShadow(entity, floorZ)
+    floorZ = floorZ or 0
+    local zscale = entity.velocity and
+        math.pow(1 / math.max((entity.pos.z - floorZ) / METER_SCALE, 1), 1/4) or
+        1
+    love.graphics.draw(
+        textures[entity.shadow.name],
+        entity.pos.x,
+        entity.pos.y - floorZ,
+        0,
+        (entity.shadow.flipX and -1 or 1) * zscale,
+        (entity.shadow.flipY and -1 or 1) * zscale,
+        entity.shadow.anchor.x,
+        entity.shadow.anchor.y)
 end
 
 function Game:shouldEntitiesContact(e1, e2)

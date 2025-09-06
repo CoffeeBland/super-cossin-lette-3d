@@ -76,9 +76,14 @@ function love.load()
                                 local vertices = {}
                                 local verticesFlipX = {}
                                 local verticesFlipY = {}
+                                local minX, minY, maxX, maxY
                                 for _, point in ipairs(subobject.polygon) do
                                     local x = point.x + subobject.x - obj.offsetX
                                     local y = point.y + subobject.y - obj.offsetY
+                                    minX = minX and math.min(x, minX) or x
+                                    maxX = maxX and math.max(x, maxX) or x
+                                    minY = minY and math.min(y, minY) or y
+                                    maxY = maxY and math.max(y, maxY) or y
                                     table.insert(vertices, x)
                                     table.insert(vertices, y)
                                     table.insert(verticesFlipX, -x)
@@ -95,6 +100,39 @@ function love.load()
                                     obj.shapeFlipX = love.physics.newPolygonShape(verticesFlipX)
                                     obj.shapeFlipY = love.physics.newPolygonShape(verticesFlipY)
                                 end
+
+                                local shadowW = maxX - minX + STATIC_SHADOW_SLOP * 2
+                                local shadowH = maxY - minY + STATIC_SHADOW_SLOP * 2
+                                local shadowCanvas = love.graphics.newCanvas(shadowW, shadowH)
+                                love.graphics.setCanvas(shadowCanvas)
+
+                                love.graphics.setColor(1, 1, 1, 1)
+                                love.graphics.rectangle("fill", 0, 0, shadowW, shadowH)
+
+                                love.graphics.push()
+                                love.graphics.translate(-minX + STATIC_SHADOW_SLOP, -minY + STATIC_SHADOW_SLOP)
+                                love.graphics.setColor(0.875, 0.867, 0.941, 1)
+                                love.graphics.setLineWidth(STATIC_SHADOW_SLOP)
+                                love.graphics.setLineStyle("smooth")
+                                love.graphics.polygon("line", obj.shape:getPoints())
+                                love.graphics.polygon("fill", obj.shape:getPoints())
+                                love.graphics.pop()
+
+                                love.graphics.setColor(1, 1, 1, 1)
+                                love.graphics.setCanvas()
+                                local shadowName = "objectShadow" .. obj.name;
+                                textures[shadowName] = shadowCanvas
+
+                                local centerX = (maxX + minX) / 2
+                                local centerY = (maxY + minY) / 2
+
+                                obj.shadow = {
+                                    name = shadowName,
+                                    anchor = {
+                                        x = shadowW / 2 - centerX,
+                                        y = shadowH / 2 - centerY
+                                    }
+                                }
                             elseif subobject.shape == "ellipse" then
                                 -- Oops, all circles!
                                 obj.shape = love.physics.newCircleShape(
