@@ -32,7 +32,7 @@ function Game:enter()
         end)
     self.camera = { x = 0, y = 0 }
     self.time = 0
-    self.map = map.load("map_mymp")
+    self.map = map.load("map1_prototype")
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {
         {
