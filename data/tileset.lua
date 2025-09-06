@@ -5,7 +5,7 @@ return {
   name = "tileset",
   class = "",
   tilewidth = 256,
-  tileheight = 150,
+  tileheight = 149,
   spacing = 0,
   margin = 0,
   columns = 0,
@@ -519,7 +519,7 @@ return {
       }
     }
   },
-  tilecount = 164,
+  tilecount = 168,
   tiles = {
     {
       id = 96,
@@ -1107,27 +1107,51 @@ return {
     },
     {
       id = 167,
-      image = "../img/Tiles/Tuile_chemin_courbe_1.png",
-      width = 128,
-      height = 150
+      image = "../img/Tiles/Tuile_chemin_courbe-1.png",
+      width = 256,
+      height = 74
     },
     {
       id = 168,
-      image = "../img/Tiles/Tuile_chemin_courbe_2.png",
+      image = "../img/Tiles/Tuile_chemin_courbe-2.png",
       width = 128,
-      height = 150
+      height = 149
     },
     {
       id = 169,
-      image = "../img/Tiles/Tuile_chemin_courbe_3.png",
+      image = "../img/Tiles/Tuile_chemin_courbe-3.png",
       width = 256,
       height = 74
     },
     {
       id = 170,
-      image = "../img/Tiles/Tuile_chemin_courbe_4.png",
+      image = "../img/Tiles/Tuile_chemin_courbe-4.png",
+      width = 128,
+      height = 149
+    },
+    {
+      id = 197,
+      image = "../img/Tiles/Tuile_chemin_courbe-5.png",
       width = 256,
       height = 74
+    },
+    {
+      id = 198,
+      image = "../img/Tiles/Tuile_chemin_courbe-6.png",
+      width = 256,
+      height = 74
+    },
+    {
+      id = 199,
+      image = "../img/Tiles/Tuile_chemin_courbe-7.png",
+      width = 128,
+      height = 149
+    },
+    {
+      id = 200,
+      image = "../img/Tiles/Tuile_chemin_courbe-8.png",
+      width = 128,
+      height = 149
     },
     {
       id = 95,

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="150" tilecount="164" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="149" tilecount="168" columns="0">
+ <editorsettings>
+  <export target="../data/tileset.lua" format="lua"/>
+ </editorsettings>
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="96" probability="0.8">
   <image source="../img/Tiles/Tuile_herbe-2.png" width="128" height="74"/>
@@ -254,16 +257,28 @@
   <image source="../img/Tiles/Tuile_chemin-4.png" width="128" height="74"/>
  </tile>
  <tile id="167">
-  <image source="../img/Tiles/Tuile_chemin_courbe_1.png" width="128" height="150"/>
+  <image source="../img/Tiles/Tuile_chemin_courbe-1.png" width="256" height="74"/>
  </tile>
  <tile id="168">
-  <image source="../img/Tiles/Tuile_chemin_courbe_2.png" width="128" height="150"/>
+  <image source="../img/Tiles/Tuile_chemin_courbe-2.png" width="128" height="149"/>
  </tile>
  <tile id="169">
-  <image source="../img/Tiles/Tuile_chemin_courbe_3.png" width="256" height="74"/>
+  <image source="../img/Tiles/Tuile_chemin_courbe-3.png" width="256" height="74"/>
  </tile>
  <tile id="170">
-  <image source="../img/Tiles/Tuile_chemin_courbe_4.png" width="256" height="74"/>
+  <image source="../img/Tiles/Tuile_chemin_courbe-4.png" width="128" height="149"/>
+ </tile>
+ <tile id="197">
+  <image source="../img/Tiles/Tuile_chemin_courbe-5.png" width="256" height="74"/>
+ </tile>
+ <tile id="198">
+  <image source="../img/Tiles/Tuile_chemin_courbe-6.png" width="256" height="74"/>
+ </tile>
+ <tile id="199">
+  <image source="../img/Tiles/Tuile_chemin_courbe-7.png" width="128" height="149"/>
+ </tile>
+ <tile id="200">
+  <image source="../img/Tiles/Tuile_chemin_courbe-8.png" width="128" height="149"/>
  </tile>
  <tile id="95">
   <properties>
