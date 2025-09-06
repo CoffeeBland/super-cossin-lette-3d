@@ -82,3 +82,15 @@ function table.index(table, obj)
         end
     end
 end
+
+function table.setHandlingTable(o, key, value)
+    for actualKey in string.gmatch(key, "(%a+)%[%d*%]") do
+        if not o[actualKey] then
+            o[actualKey] = {}
+        end
+        table.insert(o[actualKey], value)
+        return
+    end
+
+    o[key] = value
+end

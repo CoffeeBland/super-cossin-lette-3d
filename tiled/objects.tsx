@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="74" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="75" columns="0">
  <editorsettings>
   <export target="../data/objects.lua" format="lua"/>
  </editorsettings>
  <grid orientation="orthogonal" width="1" height="1"/>
- <tile id="0">
+ <tile id="89">
   <properties>
-   <property name="height" type="float" value="400"/>
-   <property name="offsetX" type="float" value="280"/>
-   <property name="offsetY" type="float" value="560"/>
-  </properties>
-  <image source="../img/Arche_arriere.png" width="1152" height="1024"/>
-  <objectgroup draworder="index" id="3">
-   <object id="8" x="49" y="580">
-    <polygon points="-4,1 164,104 448,-31 251,-143"/>
-   </object>
-  </objectgroup>
- </tile>
- <tile id="1">
-  <properties>
-   <property name="height" type="float" value="400"/>
+   <property name="height" type="float" value="480"/>
    <property name="offsetX" type="float" value="860"/>
    <property name="offsetY" type="float" value="830"/>
+   <property name="replaceTo[0]" type="class" propertytype="replaceTo"/>
+   <property name="replaceTo[1]" type="class" propertytype="replaceTo">
+    <properties>
+     <property name="id" type="int" value="1"/>
+     <property name="objectId" type="int" value="1"/>
+    </properties>
+   </property>
+   <property name="replaceTo[2]" type="class" propertytype="replaceTo">
+    <properties>
+     <property name="id" type="int" value="88"/>
+     <property name="objectId" type="int" value="88"/>
+     <property name="posX" type="float" value="40"/>
+     <property name="posY" type="float" value="-360"/>
+    </properties>
+   </property>
   </properties>
-  <image source="../img/Arche_avant.png" width="1152" height="1024"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="588" y="884">
-    <polygon points="-7,3 192,99 519,-76 324,-180"/>
-   </object>
-  </objectgroup>
+  <image source="../img/Arche.png" width="1152" height="1024"/>
  </tile>
  <tile id="2">
   <properties>
@@ -823,15 +820,41 @@
  </tile>
  <tile id="88">
   <properties>
-   <property name="height" type="float" value="80"/>
+   <property name="height" type="float" value="120"/>
    <property name="offsetX" type="float" value="400"/>
    <property name="offsetY" type="float" value="400"/>
-   <property name="posZ" type="float" value="400"/>
+   <property name="posZ" type="float" value="360"/>
   </properties>
   <image source="../img/Arche_top.png" width="961" height="622"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="954" y="466">
     <polygon points="-74,-124 -335,35 -946,-272 -648,-392"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="0">
+  <properties>
+   <property name="height" type="float" value="480"/>
+   <property name="offsetX" type="float" value="280"/>
+   <property name="offsetY" type="float" value="560"/>
+  </properties>
+  <image source="../img/Arche_arriere.png" width="1152" height="1024"/>
+  <objectgroup draworder="index" id="3">
+   <object id="8" x="49" y="580">
+    <polygon points="-4,1 164,104 448,-31 251,-143"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="1">
+  <properties>
+   <property name="height" type="float" value="480"/>
+   <property name="offsetX" type="float" value="860"/>
+   <property name="offsetY" type="float" value="830"/>
+  </properties>
+  <image source="../img/Arche_avant.png" width="1152" height="1024"/>
+  <objectgroup draworder="index" id="2">
+   <object id="2" x="588" y="884">
+    <polygon points="-7,3 192,99 519,-76 324,-180"/>
    </object>
   </objectgroup>
  </tile>

@@ -10,5 +10,34 @@
     "properties": [
     ],
     "propertyTypes": [
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 1,
+            "members": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "posX",
+                    "type": "float",
+                    "value": 0
+                },
+                {
+                    "name": "posY",
+                    "type": "float",
+                    "value": 0
+                }
+            ],
+            "name": "replaceTo",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
+                "project"
+            ]
+        }
     ]
 }

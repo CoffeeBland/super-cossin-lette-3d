@@ -64,12 +64,13 @@ function love.load()
                     obj.offsetX = 0
                     obj.offsetY = 0
                     for key, value in pairs(objData.properties) do
-                        obj[key] = value
+                        table.setHandlingTable(obj, key, value)
                     end
                     obj.posX, obj.posY = getObjectPos(data.objectalignment, obj)
                     objects.byId[obj.id] = obj
                     objects.byName[obj.name] = obj
 
+                    -- Collisions!!!
                     if objData.objectGroup and objData.objectGroup.objects then
                         for _, subobject in ipairs(objData.objectGroup.objects) do
                             if subobject.shape == "polygon" then

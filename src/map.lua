@@ -28,67 +28,84 @@ function map:getEntities(entities)
             local gid = data.gid
             local flipX = bit.band(gid, TILE_FLIP_H) ~= 0
             local flipY = bit.band(gid, TILE_FLIP_V) ~= 0
-            gid = bit.band(gid, TILE_ID_MASK)
-            if mapObjectsByGid[gid] then
-                local object = objects.byId[mapObjectsByGid[gid]]
-
-                local tx = data.x / self._data.tileheight
-                local ty = data.y / self._data.tileheight
-                local z = (data.properties.posZ or 0) + (object.posZ or 0)
-                local x = (tx - ty) * self._data.tilewidth / 2 + object.offsetX + (object.posX or 0)
-                local y = (tx + ty) * self._data.tileheight / 2 + object.offsetY + (object.posY or 0) + z
-                local shape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
-                local shadow = object.shadow and{
-                    name = object.shadow.name,
-                    anchor = object.shadow.anchor,
-                    flipX = flipX,
-                    flipY = flipY
-                }
-                local entity = {
-                    pos = {
-                        x = x,
-                        y = y,
-                        z = z,
-                        height = object.height or HEIGHT_SLICE
-                    },
-                    sprites = {
-                        {
-                            name = object.name,
-                            anchor = { x = object.offsetX, y = object.offsetY },
-                            flipX = flipX,
-                            flipY = flipY
-                        }
-                    }
-                }
-                entity.shadow = shadow
-                if object.fruit then
-                    entity.shadow = shadow or {
-                        name = "fruitOmbre",
-                        anchor = { x = 0, y = 0 }
-                    }
-                    entity.body = shape and
-                        { preshape = shape, type = "dynamic" } or
-                        { shape = "circle", size = 64 }
-                    entity.fruit = {
-                        type = object.fruit,
-                        z = z
-                    }
-                    entity.velocity = { z = 0 }
-                else
-                    entity.body = shape and { preshape = shape, type = "static" }
-                end
-                if object.picnic then
-                    entity.picnic = 300
-                end
-
-                table.insert(entities, entity)
-                entity.id = #entities
+            local id = mapObjectsByGid[bit.band(gid, TILE_ID_MASK)]
+            if id then
+                self:createEntity(entities, data, id, flipX, flipY)
             else
-                print("unknown object gid!", data.gid)
+                print("unknown object gid!", data.gid, gid)
             end
         end
     end
     return entities
+end
+
+function map:createEntity(entities, data, id, flipX, flipY)
+    local object = objects.byId[id]
+
+    if object.replaceTo then
+        for _, replacement in pairs(object.replaceTo) do
+            local entity = self:createEntity(entities, data, replacement.id or 0, flipX, flipY)
+            -- TODO sub replacements aren't supported
+            -- Also this can blow up if data is recursive (oops!)
+            entity.pos.x = entity.pos.x + (replacement.posX or 0)
+            entity.pos.y = entity.pos.y + (replacement.posY or 0)
+            entity.pos.z = entity.pos.z + (replacement.posZ or 0)
+        end
+        return
+    end
+
+    local tx = data.x / self._data.tileheight
+    local ty = data.y / self._data.tileheight
+    local z = (data.properties.posZ or 0) + (object.posZ or 0)
+    local x = (tx - ty) * self._data.tilewidth / 2 + object.offsetX + (object.posX or 0)
+    local y = (tx + ty) * self._data.tileheight / 2 + object.offsetY + (object.posY or 0) + z
+    local shape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
+    local shadow = object.shadow and{
+        name = object.shadow.name,
+        anchor = object.shadow.anchor,
+        flipX = flipX,
+        flipY = flipY
+    }
+    local entity = {
+        pos = {
+            x = x,
+            y = y,
+            z = z,
+            height = object.height or HEIGHT_SLICE
+        },
+        sprites = {
+            {
+                name = object.name,
+                anchor = { x = object.offsetX, y = object.offsetY },
+                flipX = flipX,
+                flipY = flipY
+            }
+        }
+    }
+    entity.shadow = shadow
+    if object.fruit then
+        entity.shadow = shadow or {
+            name = "fruitOmbre",
+            anchor = { x = 0, y = 0 }
+        }
+        entity.body = shape and
+            { preshape = shape, type = "dynamic" } or
+            { shape = "circle", size = 64 }
+        entity.fruit = {
+            type = object.fruit,
+            z = z
+        }
+        entity.velocity = { z = 0 }
+    else
+        entity.body = shape and { preshape = shape, type = "static" }
+    end
+    if object.picnic then
+        entity.picnic = 300
+    end
+
+    table.insert(entities, entity)
+    entity.id = #entities
+    return entity
 end
 
 function map:drawChunk(batch, time, layer, chunk)

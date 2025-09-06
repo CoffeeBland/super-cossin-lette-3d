@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="60" height="60" tilewidth="128" tileheight="74" infinite="0" nextlayerid="11" nextobjectid="136">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="60" height="60" tilewidth="128" tileheight="74" infinite="0" nextlayerid="11" nextobjectid="139">
  <editorsettings>
   <export target="../maps/map_mymp.lua" format="lua"/>
  </editorsettings>
@@ -198,8 +198,6 @@
 </data>
  </layer>
  <objectgroup id="4" name="Calque d'Objets 1">
-  <object id="1" gid="202" x="814" y="1110" width="1152" height="1024"/>
-  <object id="2" gid="203" x="814" y="1110" width="1152" height="1024"/>
   <object id="3" gid="287" x="1006.21" y="1158.46" width="322" height="319"/>
   <object id="4" gid="288" x="590.562" y="1430.77" width="322" height="319"/>
   <object id="5" gid="289" x="1107.21" y="586.125" width="322" height="319"/>
@@ -225,7 +223,6 @@
   <object id="37" gid="216" x="2079" y="2518.52" width="128" height="148"/>
   <object id="38" gid="217" x="2090.88" y="2576.64" width="128" height="148"/>
   <object id="39" gid="217" x="3031.3" y="2186.22" width="128" height="148"/>
-  <object id="40" gid="219" x="1340.39" y="1885.12" width="128" height="148"/>
   <object id="41" gid="220" x="1569.95" y="1499.56" width="128" height="148"/>
   <object id="42" gid="212" x="1388.73" y="1528.78" width="384" height="216"/>
   <object id="43" gid="224" x="2932.31" y="3293.2" width="128" height="74"/>
@@ -280,8 +277,6 @@
   <object id="101" gid="2147483912" x="3371.84" y="1889.67" width="256" height="148"/>
   <object id="102" gid="265" x="3227.22" y="1754.3" width="128" height="72"/>
   <object id="103" gid="3221225736" x="3209.13" y="1900.39" width="256" height="148"/>
-  <object id="105" gid="202" x="1702" y="2664" width="1152" height="1024"/>
-  <object id="106" gid="203" x="1702" y="2664" width="1152" height="1024"/>
   <object id="107" gid="213" x="1884.12" y="2659.16" width="384" height="216"/>
   <object id="113" gid="289" x="2794.31" y="2192.36" width="322" height="319"/>
   <object id="114" gid="289" x="1545.54" y="3683.55" width="322" height="319"/>
@@ -292,8 +287,9 @@
   <object id="127" gid="207" x="712.193" y="3523.81" width="1024" height="1286"/>
   <object id="132" gid="222" x="1002.16" y="3688.51" width="128" height="74"/>
   <object id="133" gid="221" x="1022.6" y="3468.07" width="128" height="74"/>
-  <object id="134" gid="290" x="1369.1" y="2288.9" width="961" height="622"/>
-  <object id="135" gid="290" x="479.523" y="734.477" width="961" height="622"/>
+  <object id="136" gid="291" x="814" y="1110" width="1152" height="1024"/>
+  <object id="137" gid="291" x="1628" y="2516" width="1152" height="1024"/>
+  <object id="138" gid="290" x="1292" y="2137" width="961" height="622"/>
  </objectgroup>
  <objectgroup id="5" name="Calque d'Objets 2">
   <object id="18" gid="206" x="181.292" y="1430.04" width="1024" height="1286"/>
