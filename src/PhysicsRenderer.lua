@@ -1,4 +1,4 @@
-local physics_renderer = { name = 'physics_renderer' }
+local PhysicsRenderer = { name = 'PhysicsRenderer' }
 
 local seed = 123
 local rng = love.math.newRandomGenerator(seed)
@@ -7,13 +7,13 @@ local function fixture_fill_color(fixture)
     if fixture:isSensor() then
         return 0, 0, 0.5, 0.4
     else
-        return 0.5, 0.5, 0.5, 0.5
+        return 0.5, 0.5, 0.5, 0
     end
 end
 
 local function fixture_line_color(fixture)
     if fixture:isSensor() then
-        return 0, 0, 1, 0.75
+        return 0, 0, 1, 0
     else
         return 1, 1, 1
     end
@@ -32,15 +32,12 @@ local function draw_fixture(fixture)
         love.graphics.setColor(fixture_line_color(fixture))
         love.graphics.circle("line", x, y, radius, 15)
         love.graphics.line(x, y, x + radius, y)
-    elseif shapeType == "polygon" then
+    elseif shapeType == "polygon" or shapeType == "chain" then
         local points = {shape:getPoints()}
         love.graphics.polygon("fill", points)
         love.graphics.setColor(fixture_line_color(fixture))
         love.graphics.polygon("line", points)
     elseif shapeType == "edge" then
-        love.graphics.setColor(fixture_line_color(fixture))
-        love.graphics.line(shape:getPoints())
-    elseif shapeType == "chain" then
         love.graphics.setColor(fixture_line_color(fixture))
         love.graphics.line(shape:getPoints())
     end
@@ -60,6 +57,8 @@ local function draw_body(body)
     for i = 1, #fixtures do
         draw_fixture(fixtures[i])
     end
+
+    love.graphics.points(0, 0)
     love.graphics.pop()
 end
 
@@ -69,9 +68,9 @@ local function debug_world_draw_scissor_callback(fixture)
     return true --search continues until false
 end
 
-function physics_renderer.draw_camera(physics, x, y, w, h)
-    sx, sy = love.graphics.inverseTransformPoint(x, y)
-    ex, ey = love.graphics.inverseTransformPoint(x + w, y + h)
+function PhysicsRenderer.draw_camera(physics, x, y, w, h)
+    local sx, sy = love.graphics.inverseTransformPoint(x, y)
+    local ex, ey = love.graphics.inverseTransformPoint(x + w, y + h)
     physics:queryBoundingBox(sx, sy, ex, ey, debug_world_draw_scissor_callback)
 
     love.graphics.setLineWidth(1)
@@ -116,4 +115,4 @@ function physics_renderer.draw_camera(physics, x, y, w, h)
     love.graphics.setColor(1, 1, 1, 1)
 end
 
-return physics_renderer
+return PhysicsRenderer

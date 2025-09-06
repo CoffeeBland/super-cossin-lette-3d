@@ -4,6 +4,10 @@ function math.clamp(x, min, max)
     return math.min(math.max(x, min), max)
 end
 
+function math.round(n)
+    return math.floor(n + 0.5)
+end
+
 function love.filesystem.crawl(dir, _results)
     if not _results then
         _results = {}
@@ -42,7 +46,7 @@ function str.requirename(file)
     return nameParts[1]:gsub("/", ".")
 end
 
-function dump(o, pre, seen, args)
+function _dump(o, pre, seen, args)
     args = args or { sep = '\n' }
     seen = seen or {}
     pre = pre or ''
@@ -59,10 +63,22 @@ function dump(o, pre, seen, args)
             else
                 k = ''
             end
-            s = s .. args.sep .. '  ' .. pre .. k .. dump(v, pre .. '  ', seen, args) .. ','
+            s = s .. args.sep .. ' ' .. pre .. k .. _dump(v, pre .. ' ', seen, args) .. ','
         end
         return s .. args.sep .. pre .. '}'
     else
         return tostring(o)
+    end
+end
+
+function dump(o, args)
+    return _dump(o, "", {}, args)
+end
+
+function table.index(table, obj)
+    for i, x in ipairs(table) do
+        if x == obj then
+            return i
+        end
     end
 end
