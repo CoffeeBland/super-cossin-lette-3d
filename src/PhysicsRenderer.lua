@@ -64,7 +64,7 @@ local function draw_body(body)
         love.graphics.print("z" .. math.round(entity.pos.z) .. ":" .. entity.pos.height, 0, 0, 0, 3, 3)
     end
 
-    love.graphics.setPointSize(8)
+    love.graphics.setPointSize(3)
     love.graphics.points(0, 0)
     love.graphics.pop()
 end

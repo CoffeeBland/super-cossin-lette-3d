@@ -5,6 +5,7 @@ require "src.states.StateMachine"
 local pressActions = {
     escape = "escape",
     enter = "action",
+    f5 = "refresh",
     f12 = "toggleDebug"
 }
 
@@ -69,6 +70,17 @@ function love.load()
                     obj.posX, obj.posY = getObjectPos(data.objectalignment, obj)
                     objects.byId[obj.id] = obj
                     objects.byName[obj.name] = obj
+
+                    if obj.shadow then
+                        local shadowTexture = textures[obj.shadow]
+                        obj.shadow = {
+                            name = obj.shadow,
+                            anchor = {
+                                x = shadowTexture:getWidth() / 2,
+                                y = shadowTexture:getHeight() / 2
+                            }
+                        }
+                    end
 
                     -- Collisions!!!
                     if objData.objectGroup and objData.objectGroup.objects then

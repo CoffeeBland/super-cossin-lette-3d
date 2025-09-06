@@ -690,7 +690,8 @@ return {
       properties = {
         ["fruit"] = "apple",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-1.png",
       width = 128,
@@ -730,7 +731,8 @@ return {
       properties = {
         ["fruit"] = "banana",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-2.png",
       width = 128,
@@ -770,7 +772,8 @@ return {
       properties = {
         ["fruit"] = "pineapple",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-3.png",
       width = 128,
@@ -810,7 +813,8 @@ return {
       properties = {
         ["fruit"] = "pear",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-4.png",
       width = 128,
@@ -850,7 +854,8 @@ return {
       properties = {
         ["fruit"] = "tomato",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-5.png",
       width = 128,
@@ -890,7 +895,8 @@ return {
       properties = {
         ["fruit"] = "orange",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-6.png",
       width = 128,
@@ -930,7 +936,8 @@ return {
       properties = {
         ["fruit"] = "mushroom",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-7.png",
       width = 128,
@@ -970,7 +977,8 @@ return {
       properties = {
         ["fruit"] = "grape",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-8.png",
       width = 128,
@@ -1010,7 +1018,8 @@ return {
       properties = {
         ["fruit"] = "durian",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-9.png",
       width = 128,
@@ -1050,7 +1059,8 @@ return {
       properties = {
         ["fruit"] = "peach",
         ["offsetX"] = 64,
-        ["offsetY"] = 150
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-10.png",
       width = 128,
@@ -1090,7 +1100,8 @@ return {
       properties = {
         ["fruit"] = "radish",
         ["offsetX"] = 64,
-        ["offsetY"] = 175
+        ["offsetY"] = 170,
+        ["shadow"] = "fruitOmbre"
       },
       image = "../img/Fruit-11.png",
       width = 128,

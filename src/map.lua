@@ -60,7 +60,7 @@ function map:createEntity(entities, data, id, flipX, flipY)
     local x = (tx - ty) * self._data.tilewidth / 2 + object.offsetX + (object.posX or 0)
     local y = (tx + ty) * self._data.tileheight / 2 + object.offsetY + (object.posY or 0) + z
     local shape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
-    local shadow = object.shadow and{
+    local shadow = object.shadow and {
         name = object.shadow.name,
         anchor = object.shadow.anchor,
         flipX = flipX,
@@ -84,10 +84,6 @@ function map:createEntity(entities, data, id, flipX, flipY)
     }
     entity.shadow = shadow
     if object.fruit then
-        entity.shadow = shadow or {
-            name = "fruitOmbre",
-            anchor = { x = 0, y = 0 }
-        }
         entity.body = shape and
             { preshape = shape, type = "dynamic" } or
             { shape = "circle", size = 64 }

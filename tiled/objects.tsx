@@ -20,8 +20,8 @@
     <properties>
      <property name="id" type="int" value="88"/>
      <property name="objectId" type="int" value="88"/>
-     <property name="posX" type="float" value="40"/>
-     <property name="posY" type="float" value="-360"/>
+     <property name="posX" type="float" value="36"/>
+     <property name="posY" type="float" value="-355"/>
     </properties>
    </property>
   </properties>
@@ -243,7 +243,8 @@
   <properties>
    <property name="fruit" value="apple"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-1.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -256,7 +257,8 @@
   <properties>
    <property name="fruit" value="banana"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-2.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -269,7 +271,8 @@
   <properties>
    <property name="fruit" value="pineapple"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-3.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -282,7 +285,8 @@
   <properties>
    <property name="fruit" value="pear"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-4.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -295,7 +299,8 @@
   <properties>
    <property name="fruit" value="tomato"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-5.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -308,7 +313,8 @@
   <properties>
    <property name="fruit" value="orange"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-6.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -321,7 +327,8 @@
   <properties>
    <property name="fruit" value="mushroom"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-7.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -334,7 +341,8 @@
   <properties>
    <property name="fruit" value="grape"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-8.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -347,7 +355,8 @@
   <properties>
    <property name="fruit" value="durian"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-9.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -360,7 +369,8 @@
   <properties>
    <property name="fruit" value="peach"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="150"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-10.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">
@@ -373,7 +383,8 @@
   <properties>
    <property name="fruit" value="radish"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="175"/>
+   <property name="offsetY" type="float" value="170"/>
+   <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-11.png" width="128" height="192"/>
   <objectgroup draworder="index" id="2">

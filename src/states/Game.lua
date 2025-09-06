@@ -72,7 +72,7 @@ function Game:enter()
                 pickupForce = 0.7,
                 pickupJumpSpeed = 140,
                 pickupAnimFrames = 20,
-                firstOffset = { x = 0, y = 0, z = 165 },
+                firstOffset = { x = 0, y = 0, z = 150 },
                 otherOffset = { x = 0, y = 0, z = 90 },
                 dropForce = 240,
                 dropJumpSpeed = 60,
@@ -254,7 +254,7 @@ function Game:update(dt)
 
         -- Handling physics and the dread Z axis
         if entity.physics then
-            entity.pos.x, entity.pos.y = entity.physics.body:getWorldCenter()
+            entity.pos.x, entity.pos.y = entity.physics.body:getPosition()
             if entity.velocity then
                 local wasOnGround = false
                 -- Establish floor and ceiling
