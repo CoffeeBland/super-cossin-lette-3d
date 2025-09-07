@@ -314,10 +314,15 @@ function Game:update(dt)
                 for _, otherEntity in pairs(self:getOverlappingEntities(entity)) do
                     if Game:shouldEntitiesContact(entity, otherEntity) then
                         local sz = otherEntity.pos.z
-                        local ez = otherEntity.pos.z + (otherEntity.pos.height)
-                        if ez < entity.pos.z + DELTA and ez > floorZ then
-                            floorEntity = otherEntity
-                            floorZ = ez
+                        local ez = otherEntity.pos.z + otherEntity.pos.height
+                        if ez < entity.pos.z + DELTA and ez + DELTA > floorZ then
+                            -- If the floors are close enough, pick the one with most render priority
+                            if not floorEntity or
+                                (math.abs(floorZ - ez) < DELTA and otherEntity.pos.y > floorEntity.pos.y)
+                            then
+                                floorEntity = otherEntity
+                            end
+                            floorZ = math.max(floorZ, ez)
                         end
                         if sz > entity.pos.z + entity.pos.height - DELTA and sz < ceilingZ then
                             ceilingEntity = otherEntity
@@ -571,26 +576,6 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
                     end
                 end
             end
-        end
-    end
-end
-
-function Game:check(fix1, fix2, contact)
-    local body1 = fix1:getBody()
-    local body2 = fix2:getBody()
-
-    local otherEntity =
-        (body1 ~= entity.physics.body and body1:getUserData()) or
-        (body2 ~= entity.physics.body and body2:getUserData()) or
-        nil
-    if otherEntity and (
-        contact:isTouching() or
-        otherEntity.physics.fixture:testPoint(entity.pos.x, entity.pos.y))
-    then
-        local ez = otherEntity.pos.z + (otherEntity.pos.height)
-        if ez < entity.pos.z + DELTA and ez > floorZ then
-            floorEntity = otherEntity
-            floorZ = ez
         end
     end
 end
