@@ -242,13 +242,17 @@ function love.load(args)
             for spriteName, sprite in pairs(data.sprites) do
                 local texture = textures[spriteName]
                 for animName, anim in pairs(sprite) do
+                    anim.triggers = {}
                     for i, tile in ipairs(anim.tiles) do
-                        anim.tiles[i] = love.graphics.newQuad(
-                            tile[1] * data.tileWidth,
-                            tile[2] * data.tileHeight,
-                            data.tileWidth,
-                            data.tileHeight,
-                            texture)
+                        anim.tiles[i] = {
+                            quad = love.graphics.newQuad(
+                                tile[1] * data.tileWidth,
+                                tile[2] * data.tileHeight,
+                                data.tileWidth,
+                                data.tileHeight,
+                                texture),
+                            trigger = tile[3]
+                        }
                     end
                 end
                 sprites[spriteName] = sprite

@@ -1,13 +1,13 @@
 local bit = require("bit")
-map = {}
-map.__index = map
+Map = {}
+Map.__index = Map
 
-function map.load(name)
+function Map.load(name)
     local instance = { name = name, _data = loadfile("maps/" .. name .. ".lua")() }
-    return setmetatable(instance, map)
+    return setmetatable(instance, Map)
 end
 
-function map:getEntities(entities)
+function Map:getEntities(entities)
     entities = entities or {}
 
     local mapObjectsByGid = {}
@@ -39,7 +39,7 @@ function map:getEntities(entities)
     return entities
 end
 
-function map:createEntity(entities, data, id, flipX, flipY)
+function Map:createEntity(entities, data, id, flipX, flipY)
     local object = objects.byId[id]
 
     local fsx = flipX and -1 or 1
@@ -105,7 +105,7 @@ function map:createEntity(entities, data, id, flipX, flipY)
     return entity
 end
 
-function map:drawChunk(batch, time, layer, chunk)
+function Map:drawChunk(batch, time, layer, chunk)
     for i, tile in ipairs(chunk.data) do
         if tile > 0 then
             local og = tile
@@ -138,7 +138,7 @@ function map:drawChunk(batch, time, layer, chunk)
     end
 end
 
-function map:drawTiles(batch, time)
+function Map:drawTiles(batch, time)
     for _, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks or {}) do

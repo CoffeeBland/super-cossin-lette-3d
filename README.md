@@ -4,7 +4,6 @@
 * Eau
 * Sons
 * Intro
-* Fruits qui tombent quand ya de la hauteur
 * End state
 * Highlight pour les cas cachés
 * Prio d'affichage des arches

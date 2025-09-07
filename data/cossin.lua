@@ -3,6 +3,7 @@ return {
     tileHeight = 256,
     sprites = {
         cossinCorps = {
+            -- Idle
             {
                 name = "idle",
                 dirs = { "b" },
@@ -62,6 +63,7 @@ return {
                 flipX = true,
                 tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
             },
+            -- Walk
             {
                 name = "walk",
                 dirs = { "b" },
@@ -233,7 +235,7 @@ return {
                 oneShot = true,
                 tiles = {
                     { 2, 7 }, { 3, 7 }, { 4, 7 },
-                    { 0, 8 }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8 }
+                    { 0, 8, "throwFruit" }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8, "eatFruit" }
                 }
             },
             {
@@ -244,11 +246,12 @@ return {
                 oneShot = true,
                 tiles = {
                     { 2, 7 }, { 3, 7 }, { 4, 7 },
-                    { 0, 8 }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8 }
+                    { 0, 8, "throwFruit" }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8, "eatFruit" }
                 }
             }
         },
         cossinPiedBack = {
+            -- Idle
             {
                 name = "idle",
                 dirs = { "b" },
@@ -306,6 +309,7 @@ return {
                 fps = 0,
                 tiles = { { 2, 0 } }
             },
+            -- Walk
             {
                 name = "walk",
                 dirs = { "b" },
@@ -468,67 +472,10 @@ return {
                 dirs = { "t" },
                 fps = 0,
                 tiles = { { 4, 5 } }
-            },
-            -- Eat
-            {
-                name = "eat",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 2, 0 } }
-            },
-            {
-                name = "eat",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 2, 1 } }
-            },
-            {
-                name = "eat",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 2 } }
-            },
-            {
-                name = "eat",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 2, 3 } }
-            },
-            {
-                name = "eat",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 2, 4 } }
-            },
-            {
-                name = "eat",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 3 } }
-            },
-            {
-                name = "eat",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 2 } }
-            },
-            {
-                name = "eat",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 1 } }
-            },
-            {
-                name = "eat",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 2, 0 } }
-            },
+            }
         },
         cossinPiedFront = {
+            -- Idle
             {
                 name = "idle",
                 dirs = { "b" },
@@ -580,6 +527,13 @@ return {
                 flipX = true,
                 tiles = { { 2, 1 } }
             },
+            {
+                name = "idle",
+                dirs = { "b" },
+                fps = 0,
+                tiles = { { 2, 0 } }
+            },
+            -- Walk
             {
                 name = "walk",
                 dirs = { "b" },
@@ -742,65 +696,7 @@ return {
                 dirs = { "t" },
                 fps = 0,
                 tiles = { { 4, 5 } }
-            },
-            -- Eat
-            {
-                name = "eat",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 2, 0 } }
-            },
-            {
-                name = "eat",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 2, 1 } }
-            },
-            {
-                name = "eat",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 2 } }
-            },
-            {
-                name = "eat",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 2, 3 } }
-            },
-            {
-                name = "eat",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 2, 4 } }
-            },
-            {
-                name = "eat",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 3 } }
-            },
-            {
-                name = "eat",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 2 } }
-            },
-            {
-                name = "eat",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 1 } }
-            },
-            {
-                name = "eat",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 2, 0 } }
-            },
+            }
         }
     }
 }
