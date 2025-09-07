@@ -7,7 +7,7 @@ local airFriction = 0.975
 local groundDamping = 16
 local slidingDamping = 1
 local jumpMultiplier = 0.5
-local speedMultiplier = METER_SCALE * 10
+local speedMultiplier = 20
 local eatCooldown = 600
 --   2
 --  1 3
@@ -228,8 +228,8 @@ function Game:update(dt)
                     not (entity.fruitStack and entity.fruitStack.eating) and
                     not entity.actions.prejump
                 then
-                    local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * dt * speedMultiplier
-                    local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * dt * speedMultiplier
+                    local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * speedMultiplier
+                    local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * speedMultiplier
                     entity.physics.body:applyForce(dx, dy)
                 end
 
