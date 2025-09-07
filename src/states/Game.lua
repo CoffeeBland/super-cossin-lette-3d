@@ -79,6 +79,37 @@ function Game:enter(args)
                 dropJumpSpeed = 60,
                 dropCooldown = 60,
                 eatCooldown = 600
+            },
+            soundEmitter = {
+                playing = {},
+                triggers = {
+                    ["eat:start"] = {
+                        name = "Ooh"
+                    },
+                    --throwFruit = {
+                    --    name = "Shoop"
+                    --},
+                    eatFruit = {
+                        name = "Gulp"
+                    },
+                    ["jump:start"] = {
+                        name = "Ooh",
+                        stopOn = "jump:stop"
+                    },
+                    --["jump:stop"] = {
+                    --    name = "Poof"
+                    --},
+                    step = {
+                        name = "Step",
+                        volumeRange = { 0.3, 0.4 },
+                        pitchRange = { 0.8, 1.2 }
+                    },
+                    ["squish:start"] = {
+                        name = "Gnieh",
+                        loop = true,
+                        stopOn = "squish:stop"
+                    }
+                }
             }
         }
     }
@@ -393,6 +424,31 @@ function Game:update(dt)
             end
         end
 
+        -- SOUND!
+        if entity.soundEmitter then
+            for name, sound in pairs(entity.soundEmitter.playing) do
+                local source = sounds[sound.name]
+                if source:isPlaying() then
+                    if sound.stopOn and entity.anim:isTriggered(sound.stopOn) then
+                        source:stop()
+                    end
+                else
+                    entity.soundEmitter.playing[name] = nil
+                end
+            end
+            for trigger, sound in pairs(entity.soundEmitter.triggers) do
+                if entity.anim:isTriggered(trigger) then
+                    local source = sounds[sound.name]
+                    source:setVolume(sound.volumeRange and math.randomRange(sound.volumeRange) or sound.volume or 1)
+                    source:setPitch(sound.pitchRange and math.randomRange(sound.pitchRange) or sound.pitch or 1)
+                    source:setLooping(sound.loop or false)
+
+                    entity.soundEmitter.playing[sound.name] = sound
+                    love.audio.play(source)
+                end
+            end
+        end
+
         -- Animating things
         if entity.anim then
             for _, request in pairs(entity.anim.requested) do
@@ -596,7 +652,6 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
 end
 
 function Game:findAnim(spriteData, entityAnim)
-    --print(dump(entityAnim))
     local foundAnim = nil
     local foundRequest = EMPTY_REQUEST
     for _, anim in ipairs(spriteData) do

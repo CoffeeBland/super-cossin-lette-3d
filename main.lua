@@ -53,6 +53,12 @@ function love.load(args)
         textures[name] = love.graphics.newImage(file)
     end
 
+    for _,file in ipairs(love.filesystem.crawl("audio")) do
+        local name = str.filename(file)
+        print(name, file)
+        sounds[name] = love.audio.newSource(file, "static")
+    end
+
     for _,file in ipairs(love.filesystem.crawl("data")) do
         local name = str.filename(file)
         local data = require(str.requirename(file))

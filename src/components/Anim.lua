@@ -36,6 +36,7 @@ function Anim:getRequest(name, createIfMissing)
         end
         free.name = name
         free.time = 0
+        self:trigger(name .. ":start")
         return free
     end
 end
@@ -49,6 +50,7 @@ end
 function Anim:release(name)
     local request = self:getRequest(name)
     if request then
+        self:trigger(name .. ":stop")
         request.name = nil
         request.time = 0
         request.priority = 0
@@ -68,7 +70,6 @@ function Anim:isTriggered(name)
 end
 
 function Anim:trigger(name)
-    print(name)
     self.triggers[name] = true
 end
 

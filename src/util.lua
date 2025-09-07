@@ -136,3 +136,7 @@ function love.physics.sampleShape(thingymagig, count)
     end
     return result
 end
+
+function math.randomRange(range)
+    return range[1] + math.random() * (range[2] - range[1])
+end
