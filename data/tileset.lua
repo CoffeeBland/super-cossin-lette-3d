@@ -5,7 +5,7 @@ return {
   name = "tileset",
   class = "",
   tilewidth = 256,
-  tileheight = 148,
+  tileheight = 222,
   spacing = 0,
   margin = 0,
   columns = 0,
@@ -64,7 +64,15 @@ return {
         },
         {
           color = { 170, 170, 127 },
-          name = "Falaise niv1",
+          name = "falaise niv1",
+          class = "",
+          probability = 1,
+          tile = -1,
+          properties = {}
+        },
+        {
+          color = { 112, 112, 83 },
+          name = "falaise niv2",
           class = "",
           probability = 1,
           tile = -1,
@@ -655,11 +663,143 @@ return {
         {
           wangid = { 0, 5, 0, 5, 0, 5, 0, 5 },
           tileid = 233
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+          tileid = 234
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+          tileid = 235
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+          tileid = 236
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+          tileid = 237
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+          tileid = 238
+        },
+        {
+          wangid = { 0, 0, 0, 6, 0, 0, 0, 0 },
+          tileid = 239
+        },
+        {
+          wangid = { 0, 0, 0, 6, 0, 0, 0, 0 },
+          tileid = 240
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 6, 0, 0 },
+          tileid = 241
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 6, 0, 0 },
+          tileid = 242
+        },
+        {
+          wangid = { 0, 6, 0, 0, 0, 0, 0, 0 },
+          tileid = 243
+        },
+        {
+          wangid = { 0, 6, 0, 0, 0, 0, 0, 0 },
+          tileid = 244
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 0, 0, 6 },
+          tileid = 245
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 0, 0, 6 },
+          tileid = 246
+        },
+        {
+          wangid = { 0, 0, 0, 6, 0, 6, 0, 0 },
+          tileid = 247
+        },
+        {
+          wangid = { 0, 0, 0, 6, 0, 6, 0, 0 },
+          tileid = 248
+        },
+        {
+          wangid = { 0, 0, 0, 6, 0, 6, 0, 0 },
+          tileid = 249
+        },
+        {
+          wangid = { 0, 0, 0, 6, 0, 6, 0, 0 },
+          tileid = 250
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 6, 0, 6 },
+          tileid = 251
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 6, 0, 6 },
+          tileid = 252
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 6, 0, 6 },
+          tileid = 253
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 6, 0, 6 },
+          tileid = 254
+        },
+        {
+          wangid = { 0, 6, 0, 0, 0, 0, 0, 6 },
+          tileid = 255
+        },
+        {
+          wangid = { 0, 6, 0, 0, 0, 0, 0, 6 },
+          tileid = 256
+        },
+        {
+          wangid = { 0, 6, 0, 0, 0, 0, 0, 6 },
+          tileid = 257
+        },
+        {
+          wangid = { 0, 6, 0, 0, 0, 0, 0, 6 },
+          tileid = 258
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 0, 0, 0 },
+          tileid = 259
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 0, 0, 0 },
+          tileid = 260
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 0, 0, 0 },
+          tileid = 261
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 0, 0, 0 },
+          tileid = 262
+        },
+        {
+          wangid = { 0, 6, 0, 0, 0, 6, 0, 6 },
+          tileid = 263
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 0, 0, 6 },
+          tileid = 264
+        },
+        {
+          wangid = { 0, 0, 0, 6, 0, 6, 0, 6 },
+          tileid = 265
+        },
+        {
+          wangid = { 0, 6, 0, 6, 0, 6, 0, 0 },
+          tileid = 266
         }
       }
     }
   },
-  tilecount = 201,
+  tilecount = 234,
   tiles = {
     {
       id = 96,
@@ -3703,39 +3843,231 @@ return {
       height = 148
     },
     {
-      id = 83,
-      properties = {
-        ["type"] = "eau"
-      },
-      image = "../img/Tiles/Tuile_eau-29.png",
+      id = 234,
+      image = "../img/Tiles/Niveau2-1.png",
       width = 128,
-      height = 74,
-      animation = {
-        {
-          tileid = 83,
-          duration = 200
-        },
-        {
-          tileid = 82,
-          duration = 200
-        },
-        {
-          tileid = 81,
-          duration = 200
-        },
-        {
-          tileid = 80,
-          duration = 200
-        },
-        {
-          tileid = 81,
-          duration = 200
-        },
-        {
-          tileid = 82,
-          duration = 200
-        }
-      }
+      height = 222,
+      probability = 0.6
+    },
+    {
+      id = 235,
+      image = "../img/Tiles/Niveau2-2.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 236,
+      image = "../img/Tiles/Niveau2-3.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 237,
+      image = "../img/Tiles/Niveau2-4.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 238,
+      image = "../img/Tiles/Niveau2-5.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 239,
+      image = "../img/Tiles/Niveau2-6.png",
+      width = 128,
+      height = 222,
+      probability = 0.5
+    },
+    {
+      id = 240,
+      image = "../img/Tiles/Niveau2-7.png",
+      width = 128,
+      height = 222,
+      probability = 0.5
+    },
+    {
+      id = 241,
+      image = "../img/Tiles/Niveau2-8.png",
+      width = 128,
+      height = 222,
+      probability = 0.5
+    },
+    {
+      id = 242,
+      image = "../img/Tiles/Niveau2-9.png",
+      width = 128,
+      height = 222,
+      probability = 0.5
+    },
+    {
+      id = 243,
+      image = "../img/Tiles/Niveau2-10.png",
+      width = 128,
+      height = 222,
+      probability = 0.5
+    },
+    {
+      id = 244,
+      image = "../img/Tiles/Niveau2-11.png",
+      width = 128,
+      height = 222,
+      probability = 0.5
+    },
+    {
+      id = 245,
+      image = "../img/Tiles/Niveau2-12.png",
+      width = 128,
+      height = 222,
+      probability = 0.5
+    },
+    {
+      id = 246,
+      image = "../img/Tiles/Niveau2-13.png",
+      width = 128,
+      height = 222,
+      probability = 0.5
+    },
+    {
+      id = 247,
+      image = "../img/Tiles/Niveau2-14.png",
+      width = 128,
+      height = 222,
+      probability = 0.7
+    },
+    {
+      id = 248,
+      image = "../img/Tiles/Niveau2-15.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 249,
+      image = "../img/Tiles/Niveau2-16.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 250,
+      image = "../img/Tiles/Niveau2-17.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 251,
+      image = "../img/Tiles/Niveau2-18.png",
+      width = 128,
+      height = 222,
+      probability = 0.7
+    },
+    {
+      id = 252,
+      image = "../img/Tiles/Niveau2-19.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 253,
+      image = "../img/Tiles/Niveau2-20.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 254,
+      image = "../img/Tiles/Niveau2-21.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 255,
+      image = "../img/Tiles/Niveau2-22.png",
+      width = 128,
+      height = 222,
+      probability = 0.7
+    },
+    {
+      id = 256,
+      image = "../img/Tiles/Niveau2-23.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 258,
+      image = "../img/Tiles/Niveau2-25.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 257,
+      image = "../img/Tiles/Niveau2-24.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 259,
+      image = "../img/Tiles/Niveau2-26.png",
+      width = 128,
+      height = 222,
+      probability = 0.7
+    },
+    {
+      id = 262,
+      image = "../img/Tiles/Niveau2-29.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 260,
+      image = "../img/Tiles/Niveau2-27.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 261,
+      image = "../img/Tiles/Niveau2-28.png",
+      width = 128,
+      height = 222,
+      probability = 0.1
+    },
+    {
+      id = 263,
+      image = "../img/Tiles/Niveau2-30.png",
+      width = 128,
+      height = 222
+    },
+    {
+      id = 264,
+      image = "../img/Tiles/Niveau2-31.png",
+      width = 128,
+      height = 222
+    },
+    {
+      id = 265,
+      image = "../img/Tiles/Niveau2-32.png",
+      width = 128,
+      height = 222
+    },
+    {
+      id = 266,
+      image = "../img/Tiles/Niveau2-33.png",
+      width = 128,
+      height = 222
     },
     {
       id = 87,
@@ -3768,6 +4100,41 @@ return {
         },
         {
           tileid = 86,
+          duration = 200
+        }
+      }
+    },
+    {
+      id = 83,
+      properties = {
+        ["type"] = "eau"
+      },
+      image = "../img/Tiles/Tuile_eau-29.png",
+      width = 128,
+      height = 74,
+      animation = {
+        {
+          tileid = 83,
+          duration = 200
+        },
+        {
+          tileid = 82,
+          duration = 200
+        },
+        {
+          tileid = 81,
+          duration = 200
+        },
+        {
+          tileid = 80,
+          duration = 200
+        },
+        {
+          tileid = 81,
+          duration = 200
+        },
+        {
+          tileid = 82,
           duration = 200
         }
       }

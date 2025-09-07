@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="148" tilecount="201" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="222" tilecount="234" columns="0">
  <editorsettings>
   <export target="../data/tileset.lua" format="lua"/>
  </editorsettings>
@@ -918,19 +918,104 @@
  <tile id="201">
   <image source="../img/Tiles/Niveau1-1.png" width="128" height="148"/>
  </tile>
- <tile id="83">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
-  <image source="../img/Tiles/Tuile_eau-29.png" width="128" height="74"/>
-  <animation>
-   <frame tileid="83" duration="200"/>
-   <frame tileid="82" duration="200"/>
-   <frame tileid="81" duration="200"/>
-   <frame tileid="80" duration="200"/>
-   <frame tileid="81" duration="200"/>
-   <frame tileid="82" duration="200"/>
-  </animation>
+ <tile id="234" probability="0.6">
+  <image source="../img/Tiles/Niveau2-1.png" width="128" height="222"/>
+ </tile>
+ <tile id="235" probability="0.1">
+  <image source="../img/Tiles/Niveau2-2.png" width="128" height="222"/>
+ </tile>
+ <tile id="236" probability="0.1">
+  <image source="../img/Tiles/Niveau2-3.png" width="128" height="222"/>
+ </tile>
+ <tile id="237" probability="0.1">
+  <image source="../img/Tiles/Niveau2-4.png" width="128" height="222"/>
+ </tile>
+ <tile id="238" probability="0.1">
+  <image source="../img/Tiles/Niveau2-5.png" width="128" height="222"/>
+ </tile>
+ <tile id="239" probability="0.5">
+  <image source="../img/Tiles/Niveau2-6.png" width="128" height="222"/>
+ </tile>
+ <tile id="240" probability="0.5">
+  <image source="../img/Tiles/Niveau2-7.png" width="128" height="222"/>
+ </tile>
+ <tile id="241" probability="0.5">
+  <image source="../img/Tiles/Niveau2-8.png" width="128" height="222"/>
+ </tile>
+ <tile id="242" probability="0.5">
+  <image source="../img/Tiles/Niveau2-9.png" width="128" height="222"/>
+ </tile>
+ <tile id="243" probability="0.5">
+  <image source="../img/Tiles/Niveau2-10.png" width="128" height="222"/>
+ </tile>
+ <tile id="244" probability="0.5">
+  <image source="../img/Tiles/Niveau2-11.png" width="128" height="222"/>
+ </tile>
+ <tile id="245" probability="0.5">
+  <image source="../img/Tiles/Niveau2-12.png" width="128" height="222"/>
+ </tile>
+ <tile id="246" probability="0.5">
+  <image source="../img/Tiles/Niveau2-13.png" width="128" height="222"/>
+ </tile>
+ <tile id="247" probability="0.7">
+  <image source="../img/Tiles/Niveau2-14.png" width="128" height="222"/>
+ </tile>
+ <tile id="248" probability="0.1">
+  <image source="../img/Tiles/Niveau2-15.png" width="128" height="222"/>
+ </tile>
+ <tile id="249" probability="0.1">
+  <image source="../img/Tiles/Niveau2-16.png" width="128" height="222"/>
+ </tile>
+ <tile id="250" probability="0.1">
+  <image source="../img/Tiles/Niveau2-17.png" width="128" height="222"/>
+ </tile>
+ <tile id="251" probability="0.7">
+  <image source="../img/Tiles/Niveau2-18.png" width="128" height="222"/>
+ </tile>
+ <tile id="252" probability="0.1">
+  <image source="../img/Tiles/Niveau2-19.png" width="128" height="222"/>
+ </tile>
+ <tile id="253" probability="0.1">
+  <image source="../img/Tiles/Niveau2-20.png" width="128" height="222"/>
+ </tile>
+ <tile id="254" probability="0.1">
+  <image source="../img/Tiles/Niveau2-21.png" width="128" height="222"/>
+ </tile>
+ <tile id="255" probability="0.7">
+  <image source="../img/Tiles/Niveau2-22.png" width="128" height="222"/>
+ </tile>
+ <tile id="256" probability="0.1">
+  <image source="../img/Tiles/Niveau2-23.png" width="128" height="222"/>
+ </tile>
+ <tile id="258" probability="0.1">
+  <image source="../img/Tiles/Niveau2-25.png" width="128" height="222"/>
+ </tile>
+ <tile id="257" probability="0.1">
+  <image source="../img/Tiles/Niveau2-24.png" width="128" height="222"/>
+ </tile>
+ <tile id="259" probability="0.7">
+  <image source="../img/Tiles/Niveau2-26.png" width="128" height="222"/>
+ </tile>
+ <tile id="262" probability="0.1">
+  <image source="../img/Tiles/Niveau2-29.png" width="128" height="222"/>
+ </tile>
+ <tile id="260" probability="0.1">
+  <image source="../img/Tiles/Niveau2-27.png" width="128" height="222"/>
+ </tile>
+ <tile id="261" probability="0.1">
+  <image source="../img/Tiles/Niveau2-28.png" width="128" height="222"/>
+ </tile>
+ <tile id="263">
+  <image source="../img/Tiles/Niveau2-30.png" width="128" height="222"/>
+ </tile>
+ <tile id="264">
+  <image source="../img/Tiles/Niveau2-31.png" width="128" height="222"/>
+ </tile>
+ <tile id="265">
+  <image source="../img/Tiles/Niveau2-32.png" width="128" height="222"/>
+ </tile>
+ <tile id="266">
+  <image source="../img/Tiles/Niveau2-33.png" width="128" height="222"/>
  </tile>
  <tile id="87">
   <properties>
@@ -944,6 +1029,20 @@
    <frame tileid="84" duration="200"/>
    <frame tileid="85" duration="200"/>
    <frame tileid="86" duration="200"/>
+  </animation>
+ </tile>
+ <tile id="83">
+  <properties>
+   <property name="type" value="eau"/>
+  </properties>
+  <image source="../img/Tiles/Tuile_eau-29.png" width="128" height="74"/>
+  <animation>
+   <frame tileid="83" duration="200"/>
+   <frame tileid="82" duration="200"/>
+   <frame tileid="81" duration="200"/>
+   <frame tileid="80" duration="200"/>
+   <frame tileid="81" duration="200"/>
+   <frame tileid="82" duration="200"/>
   </animation>
  </tile>
  <tile id="90">
@@ -1073,7 +1172,8 @@
    <wangcolor name="chemin" color="#ffff7f" tile="-1" probability="1"/>
    <wangcolor name="eau" color="#0000ff" tile="-1" probability="1"/>
    <wangcolor name="gazon" color="#00aa00" tile="-1" probability="1"/>
-   <wangcolor name="Falaise niv1" color="#aaaa7f" tile="-1" probability="1"/>
+   <wangcolor name="falaise niv1" color="#aaaa7f" tile="-1" probability="1"/>
+   <wangcolor name="falaise niv2" color="#707053" tile="-1" probability="1"/>
    <wangtile tileid="1" wangid="0,2,0,0,0,2,0,2"/>
    <wangtile tileid="2" wangid="0,2,0,2,0,0,0,2"/>
    <wangtile tileid="3" wangid="0,0,0,2,0,2,0,2"/>
@@ -1220,6 +1320,39 @@
    <wangtile tileid="231" wangid="0,5,0,5,0,5,0,5"/>
    <wangtile tileid="232" wangid="0,5,0,5,0,5,0,5"/>
    <wangtile tileid="233" wangid="0,5,0,5,0,5,0,5"/>
+   <wangtile tileid="234" wangid="0,6,0,6,0,6,0,6"/>
+   <wangtile tileid="235" wangid="0,6,0,6,0,6,0,6"/>
+   <wangtile tileid="236" wangid="0,6,0,6,0,6,0,6"/>
+   <wangtile tileid="237" wangid="0,6,0,6,0,6,0,6"/>
+   <wangtile tileid="238" wangid="0,6,0,6,0,6,0,6"/>
+   <wangtile tileid="239" wangid="0,0,0,6,0,0,0,0"/>
+   <wangtile tileid="240" wangid="0,0,0,6,0,0,0,0"/>
+   <wangtile tileid="241" wangid="0,0,0,0,0,6,0,0"/>
+   <wangtile tileid="242" wangid="0,0,0,0,0,6,0,0"/>
+   <wangtile tileid="243" wangid="0,6,0,0,0,0,0,0"/>
+   <wangtile tileid="244" wangid="0,6,0,0,0,0,0,0"/>
+   <wangtile tileid="245" wangid="0,0,0,0,0,0,0,6"/>
+   <wangtile tileid="246" wangid="0,0,0,0,0,0,0,6"/>
+   <wangtile tileid="247" wangid="0,0,0,6,0,6,0,0"/>
+   <wangtile tileid="248" wangid="0,0,0,6,0,6,0,0"/>
+   <wangtile tileid="249" wangid="0,0,0,6,0,6,0,0"/>
+   <wangtile tileid="250" wangid="0,0,0,6,0,6,0,0"/>
+   <wangtile tileid="251" wangid="0,0,0,0,0,6,0,6"/>
+   <wangtile tileid="252" wangid="0,0,0,0,0,6,0,6"/>
+   <wangtile tileid="253" wangid="0,0,0,0,0,6,0,6"/>
+   <wangtile tileid="254" wangid="0,0,0,0,0,6,0,6"/>
+   <wangtile tileid="255" wangid="0,6,0,0,0,0,0,6"/>
+   <wangtile tileid="256" wangid="0,6,0,0,0,0,0,6"/>
+   <wangtile tileid="257" wangid="0,6,0,0,0,0,0,6"/>
+   <wangtile tileid="258" wangid="0,6,0,0,0,0,0,6"/>
+   <wangtile tileid="259" wangid="0,6,0,6,0,0,0,0"/>
+   <wangtile tileid="260" wangid="0,6,0,6,0,0,0,0"/>
+   <wangtile tileid="261" wangid="0,6,0,6,0,0,0,0"/>
+   <wangtile tileid="262" wangid="0,6,0,6,0,0,0,0"/>
+   <wangtile tileid="263" wangid="0,6,0,0,0,6,0,6"/>
+   <wangtile tileid="264" wangid="0,6,0,6,0,0,0,6"/>
+   <wangtile tileid="265" wangid="0,0,0,6,0,6,0,6"/>
+   <wangtile tileid="266" wangid="0,6,0,6,0,6,0,0"/>
   </wangset>
  </wangsets>
 </tileset>
