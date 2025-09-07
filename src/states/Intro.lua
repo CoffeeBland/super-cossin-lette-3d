@@ -13,7 +13,7 @@ end
 function Intro:update(dt)
     self.splashFrame = self.splashFrame + 1
     if self.splashFrame >= splashFrames or actions.escape then
-        StateMachine:change(Game)
+        StateMachine:change(Game, { map = "map_mymp" })
     end
 end
 

@@ -19,7 +19,11 @@ local v2 = { x = 0, y = 0 }
 
 Game = {}
 
-function Game:enter()
+function Game:refresh()
+    StateMachine:change(Game, { map = self.map.name })
+end
+
+function Game:enter(args)
     self.physics = love.physics.newWorld(0, 0, true)
     self.physics:setContactFilter(
         function(fix1, fix2)
@@ -32,7 +36,7 @@ function Game:enter()
         end)
     self.camera = { x = 0, y = 0 }
     self.time = 0
-    self.map = map.load("map_mymp")
+    self.map = map.load(args.map)
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {
         {

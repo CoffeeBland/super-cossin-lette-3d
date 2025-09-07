@@ -22,7 +22,9 @@ end
 
 debug = { physics = false }
 
-function love.load()
+function love.load(args)
+    local requestedMap = args[1]
+
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.window.setTitle("Super Cossin Lette 3D")
     love.window.setMode(1024, 768, { resizable = true })
@@ -254,7 +256,11 @@ function love.load()
         end
     end
 
-    StateMachine:change(Game)
+    if requestedMap then
+        StateMachine:change(Game, { map = requestedMap })
+    else
+        StateMachine:change(Intro)
+    end
 
     love.keyboard.keyPressed = {}
 end
@@ -307,6 +313,10 @@ function love.update(dt)
     if actions.toggleDebug then
         debug.physics = not debug.physics
         debug.fps = not debug.fps
+    end
+
+    if actions.refresh and StateMachine.current.refresh then
+        StateMachine.current:refresh()
     end
 
     for key, action in pairs(pressActions) do

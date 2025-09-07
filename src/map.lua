@@ -3,7 +3,7 @@ map = {}
 map.__index = map
 
 function map.load(name)
-    local instance = { _data = require("maps." .. "." .. name) }
+    local instance = { name = name, _data = loadfile("maps/" .. name .. ".lua")() }
     return setmetatable(instance, map)
 end
 
@@ -42,13 +42,16 @@ end
 function map:createEntity(entities, data, id, flipX, flipY)
     local object = objects.byId[id]
 
+    local fsx = flipX and -1 or 1
+    local fsy = flipY and -1 or 1
+
     if object.replaceTo then
         for _, replacement in pairs(object.replaceTo) do
             local entity = self:createEntity(entities, data, replacement.id or 0, flipX, flipY)
             -- TODO sub replacements aren't supported
             -- Also this can blow up if data is recursive (oops!)
-            entity.pos.x = entity.pos.x + (replacement.posX or 0)
-            entity.pos.y = entity.pos.y + (replacement.posY or 0)
+            entity.pos.x = entity.pos.x + fsx * (replacement.posX or 0)
+            entity.pos.y = entity.pos.y + fsy * (replacement.posY or 0)
             entity.pos.z = entity.pos.z + (replacement.posZ or 0)
         end
         return
@@ -57,8 +60,8 @@ function map:createEntity(entities, data, id, flipX, flipY)
     local tx = data.x / self._data.tileheight
     local ty = data.y / self._data.tileheight
     local z = (data.properties.posZ or 0) + (object.posZ or 0)
-    local x = (tx - ty) * self._data.tilewidth / 2 + object.offsetX + (object.posX or 0)
-    local y = (tx + ty) * self._data.tileheight / 2 + object.offsetY + (object.posY or 0) + z
+    local x = (tx - ty) * self._data.tilewidth / 2 + fsx * (object.offsetX + (object.posX or 0))
+    local y = (tx + ty) * self._data.tileheight / 2 + fsy * (object.offsetY + (object.posY or 0)) + z
     local shape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
     local shadow = object.shadow and {
         name = object.shadow.name,
