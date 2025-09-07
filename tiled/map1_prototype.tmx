@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="39" nextobjectid="2248">
  <editorsettings>
-  <export format="lua"/>
+  <export target="../maps/map1_prototype.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" source="objects.tsx"/>
  <tileset firstgid="91" source="Fruits.tsx"/>
