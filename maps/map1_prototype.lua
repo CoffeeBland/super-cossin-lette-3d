@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 39,
-  nextobjectid = 2223,
+  nextobjectid = 2248,
   properties = {},
   tilesets = {
     {
@@ -708,36 +708,7 @@ return {
           },
           image = "../img/Fruit-1.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 3,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 6.5,
-                y = 82,
-                width = 110,
-                height = 110,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 33,
@@ -749,36 +720,7 @@ return {
           },
           image = "../img/Fruit-2.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 2,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 2.5,
-                y = 66.5,
-                width = 122,
-                height = 122,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 34,
@@ -790,36 +732,7 @@ return {
           },
           image = "../img/Fruit-3.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 2,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 5.5,
-                y = 63.5,
-                width = 124,
-                height = 124,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 35,
@@ -831,36 +744,7 @@ return {
           },
           image = "../img/Fruit-4.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 2,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 6.5,
-                y = 82,
-                width = 110,
-                height = 110,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 36,
@@ -872,36 +756,7 @@ return {
           },
           image = "../img/Fruit-5.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 2,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 4.5,
-                y = 80,
-                width = 114,
-                height = 114,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 37,
@@ -913,36 +768,7 @@ return {
           },
           image = "../img/Fruit-6.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 2,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 4,
-                y = 74.5,
-                width = 118,
-                height = 118,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 38,
@@ -954,36 +780,7 @@ return {
           },
           image = "../img/Fruit-7.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 2,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 0.5,
-                y = 57,
-                width = 126,
-                height = 126,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 39,
@@ -995,36 +792,7 @@ return {
           },
           image = "../img/Fruit-8.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 2,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 0,
-                y = 56.5,
-                width = 127,
-                height = 127,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 40,
@@ -1036,36 +804,7 @@ return {
           },
           image = "../img/Fruit-9.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 2,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 1,
-                y = 71,
-                width = 116,
-                height = 116,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 41,
@@ -1077,36 +816,7 @@ return {
           },
           image = "../img/Fruit-10.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 1,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 3.5,
-                y = 84.5,
-                width = 120,
-                height = 102.5,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 42,
@@ -1118,36 +828,7 @@ return {
           },
           image = "../img/Fruit-11.png",
           width = 128,
-          height = 192,
-          objectGroup = {
-            type = "objectgroup",
-            draworder = "index",
-            id = 2,
-            name = "",
-            class = "",
-            visible = true,
-            opacity = 1,
-            offsetx = 0,
-            offsety = 0,
-            parallaxx = 1,
-            parallaxy = 1,
-            properties = {},
-            objects = {
-              {
-                id = 2,
-                name = "",
-                type = "",
-                shape = "ellipse",
-                x = 25,
-                y = 122.5,
-                width = 71,
-                height = 71,
-                rotation = 0,
-                visible = true,
-                properties = {}
-              }
-            }
-          }
+          height = 192
         },
         {
           id = 43,
@@ -1800,7 +1481,8 @@ return {
           properties = {
             ["height"] = 80,
             ["offsetX"] = 302.5,
-            ["offsetY"] = 300
+            ["offsetY"] = 300,
+            ["picnic"] = 600
           },
           image = "../img/Picnic.png",
           width = 605,
@@ -2769,7 +2451,7 @@ return {
       firstgid = 96,
       class = "",
       tilewidth = 256,
-      tileheight = 148,
+      tileheight = 222,
       spacing = 0,
       margin = 0,
       columns = 0,
@@ -2828,7 +2510,15 @@ return {
             },
             {
               color = { 170, 170, 127 },
-              name = "Falaise niv1",
+              name = "falaise niv1",
+              class = "",
+              probability = 1,
+              tile = -1,
+              properties = {}
+            },
+            {
+              color = { 112, 112, 83 },
+              name = "falaise niv2",
               class = "",
               probability = 1,
               tile = -1,
@@ -3419,11 +3109,143 @@ return {
             {
               wangid = { 0, 5, 0, 5, 0, 5, 0, 5 },
               tileid = 233
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+              tileid = 234
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+              tileid = 235
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+              tileid = 236
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+              tileid = 237
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 6, 0, 6 },
+              tileid = 238
+            },
+            {
+              wangid = { 0, 0, 0, 6, 0, 0, 0, 0 },
+              tileid = 239
+            },
+            {
+              wangid = { 0, 0, 0, 6, 0, 0, 0, 0 },
+              tileid = 240
+            },
+            {
+              wangid = { 0, 0, 0, 0, 0, 6, 0, 0 },
+              tileid = 241
+            },
+            {
+              wangid = { 0, 0, 0, 0, 0, 6, 0, 0 },
+              tileid = 242
+            },
+            {
+              wangid = { 0, 6, 0, 0, 0, 0, 0, 0 },
+              tileid = 243
+            },
+            {
+              wangid = { 0, 6, 0, 0, 0, 0, 0, 0 },
+              tileid = 244
+            },
+            {
+              wangid = { 0, 0, 0, 0, 0, 0, 0, 6 },
+              tileid = 245
+            },
+            {
+              wangid = { 0, 0, 0, 0, 0, 0, 0, 6 },
+              tileid = 246
+            },
+            {
+              wangid = { 0, 0, 0, 6, 0, 6, 0, 0 },
+              tileid = 247
+            },
+            {
+              wangid = { 0, 0, 0, 6, 0, 6, 0, 0 },
+              tileid = 248
+            },
+            {
+              wangid = { 0, 0, 0, 6, 0, 6, 0, 0 },
+              tileid = 249
+            },
+            {
+              wangid = { 0, 0, 0, 6, 0, 6, 0, 0 },
+              tileid = 250
+            },
+            {
+              wangid = { 0, 0, 0, 0, 0, 6, 0, 6 },
+              tileid = 251
+            },
+            {
+              wangid = { 0, 0, 0, 0, 0, 6, 0, 6 },
+              tileid = 252
+            },
+            {
+              wangid = { 0, 0, 0, 0, 0, 6, 0, 6 },
+              tileid = 253
+            },
+            {
+              wangid = { 0, 0, 0, 0, 0, 6, 0, 6 },
+              tileid = 254
+            },
+            {
+              wangid = { 0, 6, 0, 0, 0, 0, 0, 6 },
+              tileid = 255
+            },
+            {
+              wangid = { 0, 6, 0, 0, 0, 0, 0, 6 },
+              tileid = 256
+            },
+            {
+              wangid = { 0, 6, 0, 0, 0, 0, 0, 6 },
+              tileid = 257
+            },
+            {
+              wangid = { 0, 6, 0, 0, 0, 0, 0, 6 },
+              tileid = 258
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 0, 0, 0 },
+              tileid = 259
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 0, 0, 0 },
+              tileid = 260
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 0, 0, 0 },
+              tileid = 261
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 0, 0, 0 },
+              tileid = 262
+            },
+            {
+              wangid = { 0, 6, 0, 0, 0, 6, 0, 6 },
+              tileid = 263
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 0, 0, 6 },
+              tileid = 264
+            },
+            {
+              wangid = { 0, 0, 0, 6, 0, 6, 0, 6 },
+              tileid = 265
+            },
+            {
+              wangid = { 0, 6, 0, 6, 0, 6, 0, 0 },
+              tileid = 266
             }
           }
         }
       },
-      tilecount = 201,
+      tilecount = 234,
       tiles = {
         {
           id = 96,
@@ -6467,39 +6289,231 @@ return {
           height = 148
         },
         {
-          id = 83,
-          properties = {
-            ["type"] = "eau"
-          },
-          image = "../img/Tiles/Tuile_eau-29.png",
+          id = 234,
+          image = "../img/Tiles/Niveau2-1.png",
           width = 128,
-          height = 74,
-          animation = {
-            {
-              tileid = 83,
-              duration = 200
-            },
-            {
-              tileid = 82,
-              duration = 200
-            },
-            {
-              tileid = 81,
-              duration = 200
-            },
-            {
-              tileid = 80,
-              duration = 200
-            },
-            {
-              tileid = 81,
-              duration = 200
-            },
-            {
-              tileid = 82,
-              duration = 200
-            }
-          }
+          height = 222,
+          probability = 0.6
+        },
+        {
+          id = 235,
+          image = "../img/Tiles/Niveau2-2.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 236,
+          image = "../img/Tiles/Niveau2-3.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 237,
+          image = "../img/Tiles/Niveau2-4.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 238,
+          image = "../img/Tiles/Niveau2-5.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 239,
+          image = "../img/Tiles/Niveau2-6.png",
+          width = 128,
+          height = 222,
+          probability = 0.5
+        },
+        {
+          id = 240,
+          image = "../img/Tiles/Niveau2-7.png",
+          width = 128,
+          height = 222,
+          probability = 0.5
+        },
+        {
+          id = 241,
+          image = "../img/Tiles/Niveau2-8.png",
+          width = 128,
+          height = 222,
+          probability = 0.5
+        },
+        {
+          id = 242,
+          image = "../img/Tiles/Niveau2-9.png",
+          width = 128,
+          height = 222,
+          probability = 0.5
+        },
+        {
+          id = 243,
+          image = "../img/Tiles/Niveau2-10.png",
+          width = 128,
+          height = 222,
+          probability = 0.5
+        },
+        {
+          id = 244,
+          image = "../img/Tiles/Niveau2-11.png",
+          width = 128,
+          height = 222,
+          probability = 0.5
+        },
+        {
+          id = 245,
+          image = "../img/Tiles/Niveau2-12.png",
+          width = 128,
+          height = 222,
+          probability = 0.5
+        },
+        {
+          id = 246,
+          image = "../img/Tiles/Niveau2-13.png",
+          width = 128,
+          height = 222,
+          probability = 0.5
+        },
+        {
+          id = 247,
+          image = "../img/Tiles/Niveau2-14.png",
+          width = 128,
+          height = 222,
+          probability = 0.7
+        },
+        {
+          id = 248,
+          image = "../img/Tiles/Niveau2-15.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 249,
+          image = "../img/Tiles/Niveau2-16.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 250,
+          image = "../img/Tiles/Niveau2-17.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 251,
+          image = "../img/Tiles/Niveau2-18.png",
+          width = 128,
+          height = 222,
+          probability = 0.7
+        },
+        {
+          id = 252,
+          image = "../img/Tiles/Niveau2-19.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 253,
+          image = "../img/Tiles/Niveau2-20.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 254,
+          image = "../img/Tiles/Niveau2-21.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 255,
+          image = "../img/Tiles/Niveau2-22.png",
+          width = 128,
+          height = 222,
+          probability = 0.7
+        },
+        {
+          id = 256,
+          image = "../img/Tiles/Niveau2-23.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 258,
+          image = "../img/Tiles/Niveau2-25.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 257,
+          image = "../img/Tiles/Niveau2-24.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 259,
+          image = "../img/Tiles/Niveau2-26.png",
+          width = 128,
+          height = 222,
+          probability = 0.7
+        },
+        {
+          id = 262,
+          image = "../img/Tiles/Niveau2-29.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 260,
+          image = "../img/Tiles/Niveau2-27.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 261,
+          image = "../img/Tiles/Niveau2-28.png",
+          width = 128,
+          height = 222,
+          probability = 0.1
+        },
+        {
+          id = 263,
+          image = "../img/Tiles/Niveau2-30.png",
+          width = 128,
+          height = 222
+        },
+        {
+          id = 264,
+          image = "../img/Tiles/Niveau2-31.png",
+          width = 128,
+          height = 222
+        },
+        {
+          id = 265,
+          image = "../img/Tiles/Niveau2-32.png",
+          width = 128,
+          height = 222
+        },
+        {
+          id = 266,
+          image = "../img/Tiles/Niveau2-33.png",
+          width = 128,
+          height = 222
         },
         {
           id = 87,
@@ -6532,6 +6546,41 @@ return {
             },
             {
               tileid = 86,
+              duration = 200
+            }
+          }
+        },
+        {
+          id = 83,
+          properties = {
+            ["type"] = "eau"
+          },
+          image = "../img/Tiles/Tuile_eau-29.png",
+          width = 128,
+          height = 74,
+          animation = {
+            {
+              tileid = 83,
+              duration = 200
+            },
+            {
+              tileid = 82,
+              duration = 200
+            },
+            {
+              tileid = 81,
+              duration = 200
+            },
+            {
+              tileid = 80,
+              duration = 200
+            },
+            {
+              tileid = 81,
+              duration = 200
+            },
+            {
+              tileid = 82,
               duration = 200
             }
           }
@@ -7967,34 +8016,6 @@ return {
       properties = {},
       objects = {
         {
-          id = 1531,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3330,
-          y = 2146,
-          width = 1152,
-          height = 1024,
-          rotation = 0,
-          gid = 2147483649,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 1530,
-          name = "Arche_avant",
-          type = "",
-          shape = "rectangle",
-          x = 3330,
-          y = 2146,
-          width = 1152,
-          height = 1024,
-          rotation = 0,
-          gid = 2147483650,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 1392,
           name = "",
           type = "",
@@ -8216,34 +8237,6 @@ return {
           rotation = 0,
           gid = 25,
           visible = false,
-          properties = {}
-        },
-        {
-          id = 1444,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1702,
-          y = 2664,
-          width = 1152,
-          height = 1024,
-          rotation = 0,
-          gid = 1,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 1445,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1702,
-          y = 2664,
-          width = 1152,
-          height = 1024,
-          rotation = 0,
-          gid = 2,
-          visible = true,
           properties = {}
         },
         {
@@ -12911,6 +12904,244 @@ return {
           height = 74,
           rotation = 0,
           gid = 68,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2226,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4662,
+          y = 1998,
+          width = 128,
+          height = 148,
+          rotation = 0,
+          gid = 317,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2228,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4588,
+          y = 1998,
+          width = 128,
+          height = 148,
+          rotation = 0,
+          gid = 319,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2231,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4662,
+          y = 1924,
+          width = 128,
+          height = 148,
+          rotation = 0,
+          gid = 311,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2232,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4588,
+          y = 1924,
+          width = 128,
+          height = 148,
+          rotation = 0,
+          gid = 302,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2233,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4662,
+          y = 1850,
+          width = 128,
+          height = 148,
+          rotation = 0,
+          gid = 322,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2234,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4588,
+          y = 1850,
+          width = 128,
+          height = 148,
+          rotation = 0,
+          gid = 323,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2235,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1702,
+          y = 2516,
+          width = 1152,
+          height = 1024,
+          rotation = 0,
+          gid = 1,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2239,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1850,
+          y = 2590,
+          width = 1152,
+          height = 1024,
+          rotation = 0,
+          gid = 2,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2237,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1332,
+          y = 2146,
+          width = 961,
+          height = 622,
+          rotation = 0,
+          gid = 89,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2240,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4366,
+          y = 1036,
+          width = 605,
+          height = 459,
+          rotation = 0,
+          gid = 74,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2243,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 3552,
+          y = 2220,
+          width = 1152,
+          height = 1024,
+          rotation = 0,
+          gid = 2147483649,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2241,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 3552,
+          y = 2294,
+          width = 1152,
+          height = 1024,
+          rotation = 0,
+          gid = 2147483650,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2242,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 3108,
+          y = 1850,
+          width = 961,
+          height = 622,
+          rotation = 0,
+          gid = 2147483737,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2244,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4144,
+          y = 2146,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 41,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2245,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4144,
+          y = 1998,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 41,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2246,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4144,
+          y = 1850,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 41,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2247,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4144,
+          y = 1702,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 41,
           visible = true,
           properties = {}
         }
