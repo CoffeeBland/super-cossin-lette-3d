@@ -94,3 +94,45 @@ function table.setHandlingTable(o, key, value)
 
     o[key] = value
 end
+
+function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
+    --local points = {}
+    --for i = 1,segments do
+--
+    --end
+end
+
+function love.physics.fancyTouchy(body, sensor, otherFix)
+    for _, contact in pairs(body:getContacts()) do
+        local fix1, fix2 = contact:getFixtures()
+        if (fix1 == sensor or fix2 == sensor) and
+            (fix1 == otherFix or fix2 == otherFix) and
+            contact:isTouching() then
+            return true
+        end
+    end
+
+    return false
+end
+
+function love.physics.sampleShape(thingymagig, count)
+    count = count or 1
+    local tlx, tly, brx, bry = thingymagig:computeAABB(0, 0, 0)
+    local result = {}
+    for i = 1, count * 1000 do
+        local ptx = tlx + math.random() * (brx - tlx)
+        local pty = tly + math.random() * (bry - tly)
+        if thingymagig:testPoint(0, 0, 0, ptx, pty) then
+            table.insert(result, ptx)
+            table.insert(result, pty)
+            if #result >= count * 2 then
+                return result
+            end
+        end
+    end
+    for i = #result, count do
+        result[i] = 0
+        result[i] = 0
+    end
+    return result
+end

@@ -32,7 +32,7 @@ function Game:enter()
         end)
     self.camera = { x = 0, y = 0 }
     self.time = 0
-    self.map = map.load("map1_prototype")
+    self.map = map.load("map_mymp")
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {
         {
@@ -68,7 +68,7 @@ function Game:enter()
             },
             fruitStack = {
                 fruits = {},
-                pickupRange = 100,
+                pickupRange = 160,
                 pickupForce = 0.7,
                 pickupJumpSpeed = 140,
                 pickupAnimFrames = 20,
@@ -142,6 +142,7 @@ function Game:update(dt)
             local heightSensor = love.physics.newFixture(body, shape, 0)
             heightSensor:setSensor(true)
             heightSensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+            heightSensor:setUserData(HEIGHT_SENSOR);
 
             local fixture = love.physics.newFixture(body, shape, 1)
 
@@ -191,11 +192,14 @@ function Game:update(dt)
 
                     if entity.fruitStack.eating == 6 then
                         local eaten = entity.fruitStack.fruits[1]
-                        eaten.toRemove = true
-                        table.remove(entity.fruitStack.fruits, 1)
-                        local nextFruitEntity = entity.fruitStack.fruits[1]
-                        if nextFruitEntity then
-                            nextFruitEntity.fruit.stackEntity = entity
+                        if eaten then
+                            eaten.toRemove = true
+                            table.remove(entity.fruitStack.fruits, 1)
+                            local nextFruitEntity = entity.fruitStack.fruits[1]
+                            if nextFruitEntity then
+                                nextFruitEntity.fruit.stackEntity = entity
+                                nextFruitEntity.fruit.offset = entity.fruitStack.firstOffset
+                            end
                         end
                     end
 
@@ -252,7 +256,48 @@ function Game:update(dt)
             end
         end
 
-        -- Handling physics and the dread Z axis
+        -- Picnic at the disco
+        if entity.picnic then
+            if entity.physics and not entity.picnic.sensor then
+                local shape = love.physics.newCircleShape(entity.picnic.dropRange / 2)
+                local sensor = love.physics.newFixture(entity.physics.body, shape, 0)
+                sensor:setSensor(true)
+                sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+                entity.picnic.sensor = sensor
+            end
+
+            for _, otherEntity in pairs(self:getOverlappingEntities(entity, entity.picnic.sensor)) do
+                if otherEntity.fruitStack then
+                    if #otherEntity.fruitStack.fruits > 0 then
+                        otherEntity.velocity.z = 60
+                        otherEntity.physics.body:setLinearVelocity(0, 0)
+                    end
+                    local dropPoints = love.physics.sampleShape(
+                        entity.physics.shape,
+                        #otherEntity.fruitStack.fruits)
+                    for i = #otherEntity.fruitStack.fruits, 1, -1 do
+                        local fruitEntity = otherEntity.fruitStack.fruits[i]
+                        otherEntity.fruitStack.fruits[i] = nil
+                        otherEntity.fruitStack.cooldown = nil
+                        otherEntity.fruitStack.eating = nil
+
+                        fruitEntity.fruit.stackEntity = entity
+                        fruitEntity.fruit.animFrames = 20
+                        fruitEntity.fruit.offset = {
+                            x = dropPoints[(i - 1) * 2 + 1],
+                            y = dropPoints[(i - 1) * 2 + 2],
+                            z = 0
+                        }
+                        fruitEntity.fruit.reachedStack = false
+                        fruitEntity.fruit.cooldown = nil
+                        fruitEntity.velocity.z = 150 * jumpMultiplier
+                        table.insert(entity.picnic.fruits, fruitEntity)
+                    end
+                end
+            end
+        end
+
+        -- Handling physics and the dreaded Z axis
         if entity.physics then
             entity.pos.x, entity.pos.y = entity.physics.body:getPosition()
             if entity.velocity then
@@ -315,15 +360,12 @@ function Game:update(dt)
                 while stackRootEntity.fruit and stackRootEntity.fruit.stackEntity do
                     stackRootEntity = stackRootEntity.fruit.stackEntity
                 end
-                local offset = parentEntity == stackRootEntity and
-                    stackRootEntity.fruitStack.firstOffset or
-                    stackRootEntity.fruitStack.otherOffset
-                local targetX = parentEntity.pos.x + offset.x
-                local targetY = parentEntity.pos.y + offset.y
-                local targetZ = parentEntity.pos.z + offset.z
+                local targetX = parentEntity.pos.x + entity.fruit.offset.x
+                local targetY = parentEntity.pos.y + entity.fruit.offset.y
+                local targetZ = parentEntity.pos.z + entity.fruit.offset.z
 
                 if entity.fruit.animFrames > 0 then
-                    local p = entity.fruit.animFrames / stackRootEntity.fruitStack.pickupAnimFrames
+                    local p = 1 - 1 / entity.fruit.animFrames
                     entity.physics.body:setPosition(
                         entity.pos.x * p + targetX * (1 - p),
                         entity.pos.y * p + targetY * (1 - p))
@@ -332,9 +374,10 @@ function Game:update(dt)
                         entity.fruit.reachedStack = true
                     end
                 else
+                    local pickupForce = stackRootEntity.fruitStack and stackRootEntity.fruitStack.pickupForce or 0.7
                     entity.physics.body:setPosition(
-                        entity.pos.x * (1 - stackRootEntity.fruitStack.pickupForce) + targetX * stackRootEntity.fruitStack.pickupForce,
-                        entity.pos.y * (1 - stackRootEntity.fruitStack.pickupForce) + targetY * stackRootEntity.fruitStack.pickupForce)
+                        entity.pos.x * (1 - pickupForce) + targetX * pickupForce,
+                        entity.pos.y * (1 - pickupForce) + targetY * pickupForce)
                 end
                 if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z <= targetZ then
                     entity.pos.z = targetZ
@@ -343,7 +386,9 @@ function Game:update(dt)
                     entity.pos.floorZ = targetZ
                 end
 
-                self:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
+                if stackRootEntity.fruitStack then
+                    self:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
+                end
             end
             if entity.fruit.cooldown then
                 entity.fruit.cooldown = entity.fruit.cooldown - 1
@@ -477,7 +522,10 @@ function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
         fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
         fruitStackEntity
     fruitEntity.fruit.animFrames = fruitStackEntity.fruitStack.pickupAnimFrames
-    fruitEntity.shadow = nil
+    fruitEntity.fruit.offset = fruitEntity.fruit.stackEntity == fruitStackEntity and
+        fruitStackEntity.fruitStack.firstOffset or
+        fruitStackEntity.fruitStack.otherOffset
+    fruitEntity.fruit.reachedStack = false
     fruitEntity.physics.body:setType("static")
     fruitEntity.velocity.z =
         math.max(fruitStackEntity.velocity.z, fruitStackEntity.fruitStack.pickupJumpSpeed) *
@@ -506,7 +554,6 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
                     fruitEntity.fruit.animFrames = nil
                     fruitEntity.fruit.reachedStack = false
                     fruitEntity.fruit.cooldown = stackRootEntity.fruitStack.dropCooldown
-                    fruitEntity.shadow = { name = "fruitOmbre", anchor = { x = 67, y = 0 } }
                     fruitEntity.velocity.z = stackRootEntity.fruitStack.dropJumpSpeed * jumpMultiplier
                     fruitEntity.physics.body:setType("dynamic")
                     fruitEntity.physics.body:setLinearDamping(0)
@@ -514,6 +561,10 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
                     fruitEntity.pos.onGround = false
                     fruitEntity.pos.floorEntity = nil
                     fruitEntity.pos.ceilingEntity = nil
+
+                    if fruitEntity == entity then
+                        return
+                    end
                 end
             end
         end
@@ -570,33 +621,40 @@ function Game:findFloorEntity(entity)
     return entity, y
 end
 
-Game.overlappingEntitiesCheckResult = nil
+Game.overlappingEntitiesCheckEntity = nil
+Game.overlappingEntitiesCheckSensor = nil
 Game.overlappingEntitiesCheckResult = {}
+
 function Game:getOverlappingEntities(entity, sensor)
-    Game.overlappingEntitiesCheckEntity = entity
     sensor = sensor or entity.physics.heightSensor
+
+    Game.overlappingEntitiesCheckEntity = entity
+    Game.overlappingEntitiesCheckSensor = sensor
+
     local tlx, tly, brx, bry = sensor:getBoundingBox()
-    self.physics:queryBoundingBox(
-        tlx, tly, brx, bry,
-        Game.onOverlappingEntitiesCheck)
+    self.physics:queryBoundingBox(tlx, tly, brx, bry, Game.onOverlappingEntitiesCheck)
+
     Game.overlappingEntitiesCheckEntity = nil
+    Game.overlappingEntitiesCheckSensor = nil
     local result = Game.overlappingEntitiesCheckResult
     if #Game.overlappingEntitiesCheckResult > 0 then
         Game.overlappingEntitiesCheckResult = {}
     end
+
     return result
 end
 
 function Game.onOverlappingEntitiesCheck(fix)
     local entity = Game.overlappingEntitiesCheckEntity
+    local sensor = Game.overlappingEntitiesCheckSensor
     local result = Game.overlappingEntitiesCheckResult
     local otherEntity = fix:getBody():getUserData()
     if entity.id == otherEntity.id then
         return true
     end
-    if fix:isSensor() and
-        (entity.physics.body:isTouching(otherEntity.physics.body) or
-            fix:testPoint(entity.pos.x, entity.pos.y))
+    if (fix:getUserData() == HEIGHT_SENSOR and
+        (love.physics.fancyTouchy(entity.physics.body, sensor, fix) or
+            fix:testPoint(entity.pos.x, entity.pos.y)))
     then
         table.insert(result, otherEntity)
     end

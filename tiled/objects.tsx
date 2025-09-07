@@ -247,11 +247,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-1.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="3" x="6.5" y="82" width="110" height="110">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="33">
   <properties>
@@ -261,11 +256,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-2.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="2.5" y="66.5" width="122" height="122">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="34">
   <properties>
@@ -275,11 +265,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-3.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="5.5" y="63.5" width="124" height="124">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="35">
   <properties>
@@ -289,11 +274,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-4.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="6.5" y="82" width="110" height="110">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="36">
   <properties>
@@ -303,11 +283,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-5.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="4.5" y="80" width="114" height="114">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="37">
   <properties>
@@ -317,11 +292,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-6.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="4" y="74.5" width="118" height="118">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="38">
   <properties>
@@ -331,11 +301,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-7.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="0.5" y="57" width="126" height="126">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="39">
   <properties>
@@ -345,11 +310,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-8.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="0" y="56.5" width="127" height="127">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="40">
   <properties>
@@ -359,11 +319,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-9.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="1" y="71" width="116" height="116">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="41">
   <properties>
@@ -373,11 +328,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-10.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="3.5" y="84.5" width="120" height="102.5">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="42">
   <properties>
@@ -387,11 +337,6 @@
    <property name="shadow" value="fruitOmbre"/>
   </properties>
   <image source="../img/Fruit-11.png" width="128" height="192"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="25" y="122.5" width="71" height="71">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="43">
   <properties>
@@ -639,6 +584,7 @@
    <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="302.5"/>
    <property name="offsetY" type="float" value="300"/>
+   <property name="picnic" type="float" value="600"/>
   </properties>
   <image source="../img/Picnic.png" width="605" height="459"/>
   <objectgroup draworder="index" id="3">

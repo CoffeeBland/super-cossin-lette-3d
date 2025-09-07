@@ -695,36 +695,7 @@ return {
       },
       image = "../img/Fruit-1.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 3,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 6.5,
-            y = 82,
-            width = 110,
-            height = 110,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 33,
@@ -736,36 +707,7 @@ return {
       },
       image = "../img/Fruit-2.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 2.5,
-            y = 66.5,
-            width = 122,
-            height = 122,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 34,
@@ -777,36 +719,7 @@ return {
       },
       image = "../img/Fruit-3.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 5.5,
-            y = 63.5,
-            width = 124,
-            height = 124,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 35,
@@ -818,36 +731,7 @@ return {
       },
       image = "../img/Fruit-4.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 6.5,
-            y = 82,
-            width = 110,
-            height = 110,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 36,
@@ -859,36 +743,7 @@ return {
       },
       image = "../img/Fruit-5.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 4.5,
-            y = 80,
-            width = 114,
-            height = 114,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 37,
@@ -900,36 +755,7 @@ return {
       },
       image = "../img/Fruit-6.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 4,
-            y = 74.5,
-            width = 118,
-            height = 118,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 38,
@@ -941,36 +767,7 @@ return {
       },
       image = "../img/Fruit-7.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 0.5,
-            y = 57,
-            width = 126,
-            height = 126,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 39,
@@ -982,36 +779,7 @@ return {
       },
       image = "../img/Fruit-8.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 0,
-            y = 56.5,
-            width = 127,
-            height = 127,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 40,
@@ -1023,36 +791,7 @@ return {
       },
       image = "../img/Fruit-9.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 1,
-            y = 71,
-            width = 116,
-            height = 116,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 41,
@@ -1064,36 +803,7 @@ return {
       },
       image = "../img/Fruit-10.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 1,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 3.5,
-            y = 84.5,
-            width = 120,
-            height = 102.5,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 42,
@@ -1105,36 +815,7 @@ return {
       },
       image = "../img/Fruit-11.png",
       width = 128,
-      height = 192,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "ellipse",
-            x = 25,
-            y = 122.5,
-            width = 71,
-            height = 71,
-            rotation = 0,
-            visible = true,
-            properties = {}
-          }
-        }
-      }
+      height = 192
     },
     {
       id = 43,
@@ -1787,7 +1468,8 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 302.5,
-        ["offsetY"] = 300
+        ["offsetY"] = 300,
+        ["picnic"] = 600
       },
       image = "../img/Picnic.png",
       width = 605,

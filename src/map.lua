@@ -84,19 +84,17 @@ function map:createEntity(entities, data, id, flipX, flipY)
     }
     entity.shadow = shadow
     if object.fruit then
-        entity.body = shape and
-            { preshape = shape, type = "dynamic" } or
-            { shape = "circle", size = 64 }
-        entity.fruit = {
-            type = object.fruit,
-            z = z
-        }
+        entity.body = { shape = "circle", size = 80, type = "dynamic" }
+        entity.fruit = { type = object.fruit }
         entity.velocity = { z = 0 }
     else
         entity.body = shape and { preshape = shape, type = "static" }
     end
     if object.picnic then
-        entity.picnic = 300
+        entity.picnic = {
+            dropRange = object.picnic,
+            fruits = {}
+        }
     end
 
     table.insert(entities, entity)

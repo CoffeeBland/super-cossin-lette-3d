@@ -18,3 +18,4 @@ MASK_SHADER = love.graphics.newShader[[
 ]]
 
 STATIC_SHADOW_SLOP = 10
+HEIGHT_SENSOR = 42
