@@ -42,6 +42,13 @@ end
 function Map:createEntity(entities, data, id, flipX, flipY)
     local object = objects.byId[id]
 
+    if object.cossin then
+        local entity = loadfile("data/cossin.lua")()
+        table.insert(entities, entity)
+        entity.id = #entities
+        return entity
+    end
+
     local fsx = flipX and -1 or 1
     local fsy = flipY and -1 or 1
 

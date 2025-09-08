@@ -244,7 +244,7 @@ function love.load(args)
             end
         end
 
-        if data.sprites then
+        if data.tileWidth and data.tileHeight and data.sprites then
             for spriteName, sprite in pairs(data.sprites) do
                 local texture = textures[spriteName]
                 for animName, anim in pairs(sprite) do

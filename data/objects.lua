@@ -2184,17 +2184,17 @@ return {
             name = "",
             type = "",
             shape = "polygon",
-            x = 954,
-            y = 466,
+            x = 953,
+            y = 477.121,
             width = 0,
             height = 0,
             rotation = 0,
             visible = true,
             polygon = {
               { x = -74, y = -124 },
-              { x = -335, y = 35 },
-              { x = -946, y = -272 },
-              { x = -648, y = -392 }
+              { x = -395.606, y = 65.303 },
+              { x = -894.485, y = -193.212 },
+              { x = -635.879, y = -379.879 }
             },
             properties = {}
           }
@@ -2204,7 +2204,7 @@ return {
     {
       id = 0,
       properties = {
-        ["height"] = 480,
+        ["height"] = 400,
         ["offsetX"] = 280,
         ["offsetY"] = 560
       },
@@ -2238,7 +2238,7 @@ return {
             visible = true,
             polygon = {
               { x = -4, y = 1 },
-              { x = 164, y = 104 },
+              { x = 167.03, y = 113.091 },
               { x = 448, y = -31 },
               { x = 251, y = -143 }
             },
@@ -2250,7 +2250,7 @@ return {
     {
       id = 1,
       properties = {
-        ["height"] = 480,
+        ["height"] = 400,
         ["offsetX"] = 860,
         ["offsetY"] = 830
       },
