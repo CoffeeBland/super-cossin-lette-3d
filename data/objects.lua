@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -679,11 +679,12 @@ return {
       id = 24,
       properties = {
         ["offsetX"] = 0,
-        ["offsetY"] = 0
+        ["offsetY"] = 0,
+        ["prefab"] = "cossin"
       },
       image = "../img/cossin.png",
-      width = 960,
-      height = 512
+      width = 192,
+      height = 256
     },
     {
       id = 32,
@@ -691,7 +692,7 @@ return {
         ["fruit"] = "apple",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-1.png",
       width = 128,
@@ -703,7 +704,7 @@ return {
         ["fruit"] = "banana",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-2.png",
       width = 128,
@@ -715,7 +716,7 @@ return {
         ["fruit"] = "pineapple",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-3.png",
       width = 128,
@@ -727,7 +728,7 @@ return {
         ["fruit"] = "pear",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-4.png",
       width = 128,
@@ -739,7 +740,7 @@ return {
         ["fruit"] = "tomato",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-5.png",
       width = 128,
@@ -751,7 +752,7 @@ return {
         ["fruit"] = "orange",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-6.png",
       width = 128,
@@ -763,7 +764,7 @@ return {
         ["fruit"] = "mushroom",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-7.png",
       width = 128,
@@ -775,7 +776,7 @@ return {
         ["fruit"] = "grape",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-8.png",
       width = 128,
@@ -787,7 +788,7 @@ return {
         ["fruit"] = "durian",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-9.png",
       width = 128,
@@ -799,7 +800,7 @@ return {
         ["fruit"] = "peach",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-10.png",
       width = 128,
@@ -811,7 +812,7 @@ return {
         ["fruit"] = "radish",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-11.png",
       width = 128,
@@ -1466,10 +1467,11 @@ return {
     {
       id = 73,
       properties = {
+        ["dropRange"] = 600,
         ["height"] = 80,
         ["offsetX"] = 302.5,
         ["offsetY"] = 300,
-        ["picnic"] = 600
+        ["prefab"] = "picnic"
       },
       image = "../img/Picnic.png",
       width = 605,
@@ -2184,17 +2186,17 @@ return {
             name = "",
             type = "",
             shape = "polygon",
-            x = 953,
-            y = 477.121,
+            x = 954,
+            y = 466,
             width = 0,
             height = 0,
             rotation = 0,
             visible = true,
             polygon = {
               { x = -74, y = -124 },
-              { x = -395.606, y = 65.303 },
-              { x = -894.485, y = -193.212 },
-              { x = -635.879, y = -379.879 }
+              { x = -335, y = 35 },
+              { x = -946, y = -272 },
+              { x = -648, y = -392 }
             },
             properties = {}
           }
@@ -2204,7 +2206,7 @@ return {
     {
       id = 0,
       properties = {
-        ["height"] = 400,
+        ["height"] = 480,
         ["offsetX"] = 280,
         ["offsetY"] = 560
       },
@@ -2238,7 +2240,7 @@ return {
             visible = true,
             polygon = {
               { x = -4, y = 1 },
-              { x = 167.03, y = 113.091 },
+              { x = 164, y = 104 },
               { x = 448, y = -31 },
               { x = 251, y = -143 }
             },
@@ -2250,7 +2252,7 @@ return {
     {
       id = 1,
       properties = {
-        ["height"] = 400,
+        ["height"] = 480,
         ["offsetX"] = 860,
         ["offsetY"] = 830
       },

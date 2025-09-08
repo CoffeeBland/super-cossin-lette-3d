@@ -42,6 +42,7 @@ function Game:enter(args)
     self.entities = {}
 
     self.map:getEntities(self.entities)
+    self:update(0)
 end
 
 function Game:exit()

@@ -32,7 +32,7 @@ function Map:getEntities(entities)
             if id then
                 self:createEntity(entities, data, id, flipX, flipY)
             else
-                print("unknown object gid!", data.gid, gid)
+                print("Unknown object gid!", data.gid, gid)
             end
         end
     end
@@ -41,13 +41,6 @@ end
 
 function Map:createEntity(entities, data, id, flipX, flipY)
     local object = objects.byId[id]
-
-    if object.cossin then
-        local entity = loadfile("data/cossin.lua")()
-        table.insert(entities, entity)
-        entity.id = #entities
-        return entity
-    end
 
     local fsx = flipX and -1 or 1
     local fsy = flipY and -1 or 1
@@ -69,21 +62,18 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     local z = (data.properties.posZ or 0) + (object.posZ or 0)
     local x = (tx - ty) * self._data.tilewidth / 2 + fsx * (object.offsetX + (object.posX or 0))
     local y = (tx + ty) * self._data.tileheight / 2 + fsy * (object.offsetY + (object.posY or 0)) + z
-    local shape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
-    local shadow = object.shadow and {
-        name = object.shadow.name,
-        anchor = object.shadow.anchor,
-        flipX = flipX,
-        flipY = flipY
-    }
-    local entity = {
-        pos = {
-            x = x,
-            y = y,
-            z = z,
-            height = object.height or HEIGHT_SLICE
-        },
-        sprites = {
+
+    local entity = object.prefab and prefabs[object.prefab](object) or {}
+    -- Global props
+    entity.pos = entity.pos or {}
+    entity.pos.x = x
+    entity.pos.y = y
+    entity.pos.z = z
+    if object.height or not entity.pos.height then
+        entity.pos.height = object.height or HEIGHT_SLICE
+    end
+    if not entity.sprites then
+        entity.sprites = {
             {
                 name = object.name,
                 anchor = { x = object.offsetX, y = object.offsetY },
@@ -91,20 +81,25 @@ function Map:createEntity(entities, data, id, flipX, flipY)
                 flipY = flipY
             }
         }
-    }
-    entity.shadow = shadow
-    if object.fruit then
-        entity.body = { shape = "circle", size = 80, type = "dynamic" }
-        entity.fruit = { type = object.fruit }
-        entity.velocity = { z = 0 }
-    else
-        entity.body = shape and { preshape = shape, type = "static" }
     end
-    if object.picnic then
-        entity.picnic = {
-            dropRange = object.picnic,
-            fruits = {}
+    if object.shadow then
+        entity.shadow = {
+            name = object.shadow.name,
+            anchor = object.shadow.anchor,
+            flipX = flipX,
+            flipY = flipY
         }
+    end
+    if entity.shadow and not entity.shadow.anchor then
+        local texture = textures[entity.shadow.name]
+        entity.shadow.anchor = {
+            x = texture:getWidth() / 2,
+            y = texture:getHeight() / 2
+        }
+    end
+    local objectShape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
+    if objectShape then
+        entity.body = objectShape and { preshape = objectShape, type = "static" }
     end
 
     table.insert(entities, entity)
