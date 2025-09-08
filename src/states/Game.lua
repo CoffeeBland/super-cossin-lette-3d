@@ -20,8 +20,13 @@ local v2 = { x = 0, y = 0 }
 
 Game = {}
 
-function Game:refresh()
-    StateMachine:change(Game, { map = self.map.name })
+function Game:refresh(force)
+    local path = "maps/" .. self.map.name .. ".lua"
+    local info = love.filesystem.getInfo(path, "file")
+    if force or (timestamps[path] and timestamps[path].modtime < info.modtime) then
+        timestamps[path] = info
+        StateMachine:change(Game, { map = self.map.name })
+    end
 end
 
 function Game:enter(args)

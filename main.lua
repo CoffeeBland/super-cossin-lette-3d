@@ -254,27 +254,29 @@ function love.loadData(name, file)
     end
 end
 
-function love.gogogadget()
-    print("crawl images")
+function love.crawlFiles()
+    local updated = false
     for _,file in ipairs(love.filesystem.crawl("img")) do
         print("image", file)
         local name = str.filename(file)
         textures[name] = love.graphics.newImage(file)
+        updated = true
     end
 
-    print("crawl audio")
     for _,file in ipairs(love.filesystem.crawl("audio")) do
         print("audio", file)
         local name = str.filename(file)
         sounds[name] = love.audio.newSource(file, "static")
+        updated = true
     end
 
-    print("crawl data")
     for _,file in ipairs(love.filesystem.crawl("data")) do
         print("data", file)
         local name = str.filename(file)
         love.loadData(name, file)
+        updated = true
     end
+    return updated
 end
 
 function love.load(args)
@@ -286,7 +288,7 @@ function love.load(args)
     love.window.setVSync(1)
     love.physics.setMeter(METER_SCALE)
 
-    love.gogogadget()
+    love.crawlFiles()
 
     if requestedMap then
         StateMachine:change(Game, { map = requestedMap })
@@ -347,9 +349,9 @@ function love.update(dt)
         debug.fps = not debug.fps
     end
 
-    if actions.refresh and StateMachine.current.refresh then
-        love.gogogadget()
-        StateMachine.current:refresh()
+    local requiresRefresh = love.crawlFiles() or (actions.refresh and StateMachine.current.refresh)
+    if StateMachine.current.refresh then
+        StateMachine.current:refresh(requiresRefresh)
     end
 
     for key, action in pairs(pressActions) do

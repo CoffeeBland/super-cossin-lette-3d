@@ -3,7 +3,11 @@ Map = {}
 Map.__index = Map
 
 function Map.load(name)
-    local instance = { name = name, _data = loadfile("maps/" .. name .. ".lua")() }
+    local path = "maps/" .. name .. ".lua"
+    local info = love.filesystem.getInfo(path, "file")
+    local instance = { name = name, _data = loadfile(path)() }
+    print("map", path)
+    timestamps[path] = info
     return setmetatable(instance, Map)
 end
 

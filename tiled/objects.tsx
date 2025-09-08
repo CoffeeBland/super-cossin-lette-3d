@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.1" name="objects" tilewidth="1152" tileheight="1286" tilecount="75" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="75" columns="0">
  <editorsettings>
   <export target="../data/objects.lua" format="lua"/>
  </editorsettings>
@@ -234,8 +234,8 @@
  </tile>
  <tile id="24">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="96"/>
+   <property name="offsetY" type="float" value="236"/>
    <property name="prefab" value="cossin"/>
   </properties>
   <image source="../img/cossin.png" width="192" height="256"/>
@@ -582,7 +582,7 @@
  </tile>
  <tile id="73">
   <properties>
-   <property name="dropRange" type="float" value="600"/>
+   <property name="dropRange" type="float" value="80"/>
    <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="302.5"/>
    <property name="offsetY" type="float" value="300"/>

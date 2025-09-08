@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -678,8 +678,8 @@ return {
     {
       id = 24,
       properties = {
-        ["offsetX"] = 0,
-        ["offsetY"] = 0,
+        ["offsetX"] = 96,
+        ["offsetY"] = 236,
         ["prefab"] = "cossin"
       },
       image = "../img/cossin.png",
@@ -1467,7 +1467,7 @@ return {
     {
       id = 73,
       properties = {
-        ["dropRange"] = 600,
+        ["dropRange"] = 800,
         ["height"] = 80,
         ["offsetX"] = 302.5,
         ["offsetY"] = 300,
