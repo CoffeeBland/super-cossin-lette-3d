@@ -254,27 +254,33 @@ function love.loadData(name, file)
     end
 end
 
-function love.crawlFiles()
+function love.crawlFiles(frame)
     local updated = false
-    for _,file in ipairs(love.filesystem.crawl("img")) do
-        print("image", file)
-        local name = str.filename(file)
-        textures[name] = love.graphics.newImage(file)
-        updated = true
+    if not frame or (frame % 3) == 0 then
+        for _,file in ipairs(love.filesystem.crawl("img")) do
+            print("image", file)
+            local name = str.filename(file)
+            textures[name] = love.graphics.newImage(file)
+            updated = true
+        end
     end
 
-    for _,file in ipairs(love.filesystem.crawl("audio")) do
-        print("audio", file)
-        local name = str.filename(file)
-        sounds[name] = love.audio.newSource(file, "static")
-        updated = true
+    if not frame or (frame % 3) == 1 then
+        for _,file in ipairs(love.filesystem.crawl("audio")) do
+            print("audio", file)
+            local name = str.filename(file)
+            sounds[name] = love.audio.newSource(file, "static")
+            updated = true
+        end
     end
 
-    for _,file in ipairs(love.filesystem.crawl("data")) do
-        print("data", file)
-        local name = str.filename(file)
-        love.loadData(name, file)
-        updated = true
+    if not frame or (frame % 3) == 2 then
+        for _,file in ipairs(love.filesystem.crawl("data")) do
+            print("data", file)
+            local name = str.filename(file)
+            love.loadData(name, file)
+            updated = true
+        end
     end
     return updated
 end
@@ -309,6 +315,7 @@ function love.keypressed(key)
 end
 
 local avgDt = 1 / 60
+local frame = 0
 
 function love.update(dt)
     actions.movement.x = 0
@@ -349,7 +356,7 @@ function love.update(dt)
         debug.fps = not debug.fps
     end
 
-    local requiresRefresh = love.crawlFiles() or (actions.refresh and StateMachine.current.refresh)
+    local requiresRefresh = love.crawlFiles(frame) or (actions.refresh and StateMachine.current.refresh)
     if StateMachine.current.refresh then
         StateMachine.current:refresh(requiresRefresh)
     end
@@ -359,6 +366,7 @@ function love.update(dt)
     end
 
     avgDt = avgDt * 0.9 + dt * 0.1
+    frame = frame + 1
 end
 
 function love.draw()
