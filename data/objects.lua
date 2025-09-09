@@ -678,12 +678,13 @@ return {
     {
       id = 24,
       properties = {
-        ["offsetX"] = 0,
-        ["offsetY"] = 0
+        ["offsetX"] = 96,
+        ["offsetY"] = 236,
+        ["prefab"] = "cossin"
       },
       image = "../img/cossin.png",
-      width = 960,
-      height = 512
+      width = 192,
+      height = 256
     },
     {
       id = 32,
@@ -691,7 +692,7 @@ return {
         ["fruit"] = "apple",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-1.png",
       width = 128,
@@ -703,7 +704,7 @@ return {
         ["fruit"] = "banana",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-2.png",
       width = 128,
@@ -715,7 +716,7 @@ return {
         ["fruit"] = "pineapple",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-3.png",
       width = 128,
@@ -727,7 +728,7 @@ return {
         ["fruit"] = "pear",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-4.png",
       width = 128,
@@ -739,7 +740,7 @@ return {
         ["fruit"] = "tomato",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-5.png",
       width = 128,
@@ -751,7 +752,7 @@ return {
         ["fruit"] = "orange",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-6.png",
       width = 128,
@@ -763,7 +764,7 @@ return {
         ["fruit"] = "mushroom",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-7.png",
       width = 128,
@@ -775,7 +776,7 @@ return {
         ["fruit"] = "grape",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-8.png",
       width = 128,
@@ -787,7 +788,7 @@ return {
         ["fruit"] = "durian",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-9.png",
       width = 128,
@@ -799,7 +800,7 @@ return {
         ["fruit"] = "peach",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-10.png",
       width = 128,
@@ -811,7 +812,7 @@ return {
         ["fruit"] = "radish",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-11.png",
       width = 128,
@@ -1466,10 +1467,11 @@ return {
     {
       id = 73,
       properties = {
+        ["dropRange"] = 800,
         ["height"] = 80,
         ["offsetX"] = 302.5,
         ["offsetY"] = 300,
-        ["picnic"] = 600
+        ["prefab"] = "picnic"
       },
       image = "../img/Picnic.png",
       width = 605,

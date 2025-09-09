@@ -1,4 +1,6 @@
-require "src.map"
+require "src.Map"
+require "src.components.Anim"
+
 local PhysicsRenderer = require "src.PhysicsRenderer"
 
 local bit = require("bit")
@@ -8,7 +10,6 @@ local groundDamping = 16
 local slidingDamping = 1
 local jumpMultiplier = 0.5
 local speedMultiplier = 20
-local eatCooldown = 600
 --   2
 --  1 3
 -- 8   4
@@ -19,8 +20,13 @@ local v2 = { x = 0, y = 0 }
 
 Game = {}
 
-function Game:refresh()
-    StateMachine:change(Game, { map = self.map.name })
+function Game:refresh(force)
+    local path = "maps/" .. self.map.name .. ".lua"
+    local info = love.filesystem.getInfo(path, "file")
+    if force or (timestamps[path] and timestamps[path].modtime < info.modtime) then
+        timestamps[path] = info
+        StateMachine:change(Game, { map = self.map.name })
+    end
 end
 
 function Game:enter(args)
@@ -36,56 +42,12 @@ function Game:enter(args)
         end)
     self.camera = { x = 0, y = 0 }
     self.time = 0
-    self.map = map.load(args.map)
+    self.map = Map.load(args.map)
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
-    self.entities = {
-        {
-            id = 1,
-            input = true,
-            camera = true,
-            actor = { walkSpeed = 250, jumpSpeed = 225 },
-            pos = { x = 0, y = 0, z = 0, height = HEIGHT_SLICE },
-            velocity = { z = 0 },
-            body = { shape = "circle", size = 80, type = "dynamic" },
-            anim = {
-                name = "walk",
-                dir = "tr",
-                time = 0
-            },
-            sprites = {
-                {
-                    name = "cossinPiedBack",
-                    anchor = { x = 96, y = 236 }
-                },
-                {
-                    name = "cossinCorps",
-                    anchor = { x = 96, y = 236 }
-                },
-                {
-                    name = "cossinPiedFront",
-                    anchor = { x = 96, y = 236 }
-                }
-            },
-            shadow = {
-                name = "cossinOmbre",
-                anchor = { x = 96, y = 46 }
-            },
-            fruitStack = {
-                fruits = {},
-                pickupRange = 160,
-                pickupForce = 0.7,
-                pickupJumpSpeed = 140,
-                pickupAnimFrames = 20,
-                firstOffset = { x = 0, y = 0, z = 150 },
-                otherOffset = { x = 0, y = 0, z = 90 },
-                dropForce = 240,
-                dropJumpSpeed = 60,
-                dropCooldown = 60,
-            }
-        }
-    }
+    self.entities = {}
 
     self.map:getEntities(self.entities)
+    self:update(0)
 end
 
 function Game:exit()
@@ -174,46 +136,39 @@ function Game:update(dt)
                 sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
                 entity.fruitStack.sensor = sensor
             end
+
             if #entity.fruitStack.fruits > 0 then
                 if not entity.fruitStack.cooldown then
-                    entity.fruitStack.cooldown = eatCooldown
+                    entity.fruitStack.cooldown = entity.fruitStack.eatCooldown
                 else
                     entity.fruitStack.cooldown = entity.fruitStack.cooldown - 1
                 end
+            end
 
-                if entity.fruitStack.cooldown == 0 then
-                    entity.fruitStack.eating = 48
+            if entity.fruitStack.cooldown == 0 then
+                entity.anim:request("eat")
+            end
+
+            if entity.anim:isTriggered("throwFruit") then
+                for _, fruitEntity in ipairs(entity.fruitStack.fruits) do
+                    fruitEntity.velocity.z = entity.fruitStack.pickupJumpSpeed * jumpMultiplier
                 end
+            end
 
-                if entity.fruitStack.eating then
-                    entity.fruitStack.eating = entity.fruitStack.eating - 1
-
-                    if entity.fruitStack.eating == 30 then
-                        for _, fruitEntity in ipairs(entity.fruitStack.fruits) do
-                            fruitEntity.velocity.z = entity.fruitStack.pickupJumpSpeed * jumpMultiplier
-                        end
-                    end
-
-                    if entity.fruitStack.eating == 6 then
-                        local eaten = entity.fruitStack.fruits[1]
-                        if eaten then
-                            eaten.toRemove = true
-                            table.remove(entity.fruitStack.fruits, 1)
-                            local nextFruitEntity = entity.fruitStack.fruits[1]
-                            if nextFruitEntity then
-                                nextFruitEntity.fruit.stackEntity = entity
-                                nextFruitEntity.fruit.offset = entity.fruitStack.firstOffset
-                            end
-                        end
-                    end
-
-                    if entity.fruitStack.eating == 0 then
-                        entity.fruitStack.eating = nil
-                        entity.fruitStack.cooldown = nil
+            if entity.anim:isTriggered("eatFruit") then
+                local eaten = entity.fruitStack.fruits[1]
+                if eaten then
+                    eaten.toRemove = true
+                    table.remove(entity.fruitStack.fruits, 1)
+                    local nextFruitEntity = entity.fruitStack.fruits[1]
+                    if nextFruitEntity then
+                        nextFruitEntity.fruit.stackEntity = entity
+                        nextFruitEntity.fruit.offset = entity.fruitStack.firstOffset
                     end
                 end
-            else
-                entity.fruitStack.eating = nil
+            end
+
+            if #entity.fruitStack.fruits == 0 or entity.anim:isTriggered("eat:finished") then
                 entity.fruitStack.cooldown = nil
             end
 
@@ -227,37 +182,33 @@ function Game:update(dt)
         -- Actor! Shit this is sketch.
         if entity.actor then
             entity.pos.sliding = false
-            if entity.actions.movement.angle and entity.physics then
-                if entity.pos.onGround and
-                    not (entity.fruitStack and entity.fruitStack.eating) and
-                    not entity.actions.prejump
-                then
+            if entity.actions.movement.angle then
+                -- RIP
+                local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
+                entity.anim.dir = dirs[a];
+            end
+            if entity.actions.movement.angle and entity.anim:highestPriority() <= Anim.priorities.walk then
+                if entity.pos.onGround then
                     local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * speedMultiplier
                     local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * speedMultiplier
                     entity.physics.body:applyForce(dx, dy)
                 end
 
-                -- RIP
-                local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
-                entity.anim.dir = dirs[a];
-                entity.anim.name = "walk"
-            end
-            if (entity.fruitStack and entity.fruitStack.eating) and entity.pos.onGround then
-                entity.anim.name = "eat"
+                entity.anim:release("idle")
+                entity.anim:request("walk")
             else
-                if entity.actions.jump and entity.pos.onGround then
+                entity.anim:release("walk")
+                entity.anim:request("idle")
+            end
+            if entity.pos.onGround and entity.anim:highestPriority() <= Anim.priorities.squish then
+                if entity.actions.jump then
                     entity.velocity.z = entity.velocity.z + entity.actor.jumpSpeed * jumpMultiplier
                     entity.pos.onGround = false
                 end
-                if entity.actions.prejump and entity.pos.onGround then
-                    entity.pos.sliding = true
-                    entity.anim.name = "squish"
-                elseif not entity.pos.onGround then
-                    entity.anim.name = "jump"
-                elseif not entity.actions.movement.angle then
-                    entity.anim.name = "idle"
-                end
+                entity.pos.sliding = entity.actions.prejump
+                entity.anim:toggle("squish", entity.actions.prejump)
             end
+            entity.anim:toggle("jump", not entity.pos.onGround)
         end
 
         -- Picnic at the disco
@@ -283,7 +234,7 @@ function Game:update(dt)
                         local fruitEntity = otherEntity.fruitStack.fruits[i]
                         otherEntity.fruitStack.fruits[i] = nil
                         otherEntity.fruitStack.cooldown = nil
-                        otherEntity.fruitStack.eating = nil
+                        otherEntity.anim:release("eat")
 
                         fruitEntity.fruit.stackEntity = entity
                         fruitEntity.fruit.animFrames = 20
@@ -305,7 +256,6 @@ function Game:update(dt)
         if entity.physics then
             entity.pos.x, entity.pos.y = entity.physics.body:getPosition()
             if entity.velocity then
-                local wasOnGround = false
                 -- Establish floor and ceiling
                 local floorEntity = nil
                 local ceilingEntity = nil
@@ -407,13 +357,67 @@ function Game:update(dt)
             end
         end
 
-        -- Animating things (this is also sketch!)
+        -- SOUND!
+        if entity.soundEmitter then
+            for name, sound in pairs(entity.soundEmitter.playing) do
+                local source = sounds[sound.name]
+                if source:isPlaying() then
+                    if sound.stopOn and entity.anim:isTriggered(sound.stopOn) then
+                        source:stop()
+                    end
+                else
+                    entity.soundEmitter.playing[name] = nil
+                end
+            end
+            for trigger, sound in pairs(entity.soundEmitter.triggers) do
+                if entity.anim:isTriggered(trigger) then
+                    local source = sounds[sound.name]
+                    source:setVolume(sound.volumeRange and math.randomRange(sound.volumeRange) or sound.volume or 1)
+                    source:setPitch(sound.pitchRange and math.randomRange(sound.pitchRange) or sound.pitch or 1)
+                    source:setLooping(sound.loop or false)
+
+                    entity.soundEmitter.playing[sound.name] = sound
+                    love.audio.play(source)
+                end
+            end
+        end
+
+        -- Animating things
         if entity.anim then
-            entity.anim.time = entity.anim.time + dt
-            if entity.anim.name ~= entity.anim.prevName then
-                entity.anim.time = 0
-                entity.anim.finished = false
-                entity.anim.prevName = entity.anim.name
+            for _, request in pairs(entity.anim.requested) do
+                request.time = request.time + dt
+            end
+            entity.anim:clearTriggers()
+            for _, sprite in pairs(entity.sprites) do
+                local spriteData = sprites[sprite.name]
+                if spriteData then
+                    local animData, animRequest = self:findAnim(spriteData, entity.anim)
+
+                    -- Moi je trouve que Oui.
+                    local frame = math.floor(animData.fps * animRequest.time)
+                    if animData.oneShot and frame > #animData.tiles then
+                        entity.anim:trigger(animData.name .. ":finished")
+                        entity.anim:release(animData.name)
+                    end
+                    if animData.pingPong then
+                        local tileCount = #animData.tiles * 2 - 2
+                        frame = frame % tileCount
+                        if frame >= #animData.tiles then
+                            frame = tileCount - frame
+                        end
+                    else
+                        frame = frame % #animData.tiles
+                    end
+                    frame = frame + 1
+
+                    local trigger = animData.tiles[frame].trigger
+                    if sprite.frame ~= frame and trigger then
+                        entity.anim:trigger(trigger)
+                    end
+
+                    sprite.animData = animData
+                    sprite.frame = frame
+                end
             end
         end
 
@@ -581,20 +585,25 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
 end
 
 function Game:findAnim(spriteData, entityAnim)
+    local foundAnim = nil
+    local foundRequest = EMPTY_REQUEST
     for _, anim in ipairs(spriteData) do
-        if anim.name == entityAnim.name then
+        local request = entityAnim:getRequest(anim.name)
+        if request and request.priority >= foundRequest.priority then
             if anim.dirs then
                 for _, dir in ipairs(anim.dirs) do
                     if dir == entityAnim.dir then
-                        return anim
+                        foundAnim = anim
+                        foundRequest = request
                     end
                 end
             else
-                return anim
+                foundAnim = anim
+                foundRequest = request
             end
         end
     end
-    return spriteData[#spriteData]
+    return foundAnim or spriteData[#spriteData], foundRequest or EMPTY_REQUEST
 end
 
 function Game:findFloorEntity(entity)
@@ -652,28 +661,12 @@ end
 
 function Game:drawEntitySprites(entity)
     for _, sprite in ipairs(entity.sprites) do
-        local spriteData = sprites[sprite.name]
-        if spriteData then
-            local animData = self:findAnim(spriteData, entity.anim)
-
-            -- Moi je trouve que Oui.
-            local frame = math.floor(animData.fps * entity.anim.time)
-            if animData.oneShot and frame >= #animData.tiles then
-                entity.anim.finished = true
-            end
-            if animData.pingPong then
-                local tileCount = #animData.tiles * 2 - 2
-                frame = frame % tileCount
-                if frame >= #animData.tiles then
-                    frame = tileCount - frame
-                end
-            else
-                frame = frame % #animData.tiles
-            end
-
+        local animData = sprite.animData
+        local frame = sprite.frame
+        if animData and frame then
             love.graphics.draw(
                 textures[sprite.name],
-                animData.tiles[frame + 1],
+                animData.tiles[frame].quad,
                 entity.pos.x,
                 (entity.pos.y - entity.pos.z),
                 0,

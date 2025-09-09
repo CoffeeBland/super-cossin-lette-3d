@@ -1,13 +1,17 @@
 local bit = require("bit")
-map = {}
-map.__index = map
+Map = {}
+Map.__index = Map
 
-function map.load(name)
-    local instance = { name = name, _data = loadfile("maps/" .. name .. ".lua")() }
-    return setmetatable(instance, map)
+function Map.load(name)
+    local path = "maps/" .. name .. ".lua"
+    local info = love.filesystem.getInfo(path, "file")
+    local instance = { name = name, _data = loadfile(path)() }
+    print("map", path)
+    timestamps[path] = info
+    return setmetatable(instance, Map)
 end
 
-function map:getEntities(entities)
+function Map:getEntities(entities)
     entities = entities or {}
 
     local mapObjectsByGid = {}
@@ -32,14 +36,14 @@ function map:getEntities(entities)
             if id then
                 self:createEntity(entities, data, id, flipX, flipY)
             else
-                print("unknown object gid!", data.gid, gid)
+                print("Unknown object gid!", data.gid, gid)
             end
         end
     end
     return entities
 end
 
-function map:createEntity(entities, data, id, flipX, flipY)
+function Map:createEntity(entities, data, id, flipX, flipY)
     local object = objects.byId[id]
 
     local fsx = flipX and -1 or 1
@@ -62,21 +66,18 @@ function map:createEntity(entities, data, id, flipX, flipY)
     local z = (data.properties.posZ or 0) + (object.posZ or 0)
     local x = (tx - ty) * self._data.tilewidth / 2 + fsx * (object.offsetX + (object.posX or 0))
     local y = (tx + ty) * self._data.tileheight / 2 + fsy * (object.offsetY + (object.posY or 0)) + z
-    local shape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
-    local shadow = object.shadow and {
-        name = object.shadow.name,
-        anchor = object.shadow.anchor,
-        flipX = flipX,
-        flipY = flipY
-    }
-    local entity = {
-        pos = {
-            x = x,
-            y = y,
-            z = z,
-            height = object.height or HEIGHT_SLICE
-        },
-        sprites = {
+
+    local entity = object.prefab and prefabs[object.prefab](object) or {}
+    -- Global props
+    entity.pos = entity.pos or {}
+    entity.pos.x = x
+    entity.pos.y = y
+    entity.pos.z = z
+    if object.height or not entity.pos.height then
+        entity.pos.height = object.height or HEIGHT_SLICE
+    end
+    if not entity.sprites then
+        entity.sprites = {
             {
                 name = object.name,
                 anchor = { x = object.offsetX, y = object.offsetY },
@@ -84,20 +85,25 @@ function map:createEntity(entities, data, id, flipX, flipY)
                 flipY = flipY
             }
         }
-    }
-    entity.shadow = shadow
-    if object.fruit then
-        entity.body = { shape = "circle", size = 80, type = "dynamic" }
-        entity.fruit = { type = object.fruit }
-        entity.velocity = { z = 0 }
-    else
-        entity.body = shape and { preshape = shape, type = "static" }
     end
-    if object.picnic then
-        entity.picnic = {
-            dropRange = object.picnic,
-            fruits = {}
+    if object.shadow then
+        entity.shadow = {
+            name = object.shadow.name,
+            anchor = object.shadow.anchor,
+            flipX = flipX,
+            flipY = flipY
         }
+    end
+    if entity.shadow and not entity.shadow.anchor then
+        local texture = textures[entity.shadow.name]
+        entity.shadow.anchor = {
+            x = texture:getWidth() / 2,
+            y = texture:getHeight() / 2
+        }
+    end
+    local objectShape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
+    if objectShape then
+        entity.body = objectShape and { preshape = objectShape, type = "static" }
     end
 
     table.insert(entities, entity)
@@ -105,7 +111,7 @@ function map:createEntity(entities, data, id, flipX, flipY)
     return entity
 end
 
-function map:drawChunk(batch, time, layer, chunk)
+function Map:drawChunk(batch, time, layer, chunk)
     for i, tile in ipairs(chunk.data) do
         if tile > 0 then
             local og = tile
@@ -138,7 +144,7 @@ function map:drawChunk(batch, time, layer, chunk)
     end
 end
 
-function map:drawTiles(batch, time)
+function Map:drawTiles(batch, time)
     for _, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks or {}) do

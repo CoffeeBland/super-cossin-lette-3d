@@ -234,17 +234,18 @@
  </tile>
  <tile id="24">
   <properties>
-   <property name="offsetX" type="float" value="0"/>
-   <property name="offsetY" type="float" value="0"/>
+   <property name="offsetX" type="float" value="96"/>
+   <property name="offsetY" type="float" value="236"/>
+   <property name="prefab" value="cossin"/>
   </properties>
-  <image source="../img/cossin.png" width="960" height="512"/>
+  <image source="../img/cossin.png" width="192" height="256"/>
  </tile>
  <tile id="32">
   <properties>
    <property name="fruit" value="apple"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-1.png" width="128" height="192"/>
  </tile>
@@ -253,7 +254,7 @@
    <property name="fruit" value="banana"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-2.png" width="128" height="192"/>
  </tile>
@@ -262,7 +263,7 @@
    <property name="fruit" value="pineapple"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-3.png" width="128" height="192"/>
  </tile>
@@ -271,7 +272,7 @@
    <property name="fruit" value="pear"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-4.png" width="128" height="192"/>
  </tile>
@@ -280,7 +281,7 @@
    <property name="fruit" value="tomato"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-5.png" width="128" height="192"/>
  </tile>
@@ -289,7 +290,7 @@
    <property name="fruit" value="orange"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-6.png" width="128" height="192"/>
  </tile>
@@ -298,7 +299,7 @@
    <property name="fruit" value="mushroom"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-7.png" width="128" height="192"/>
  </tile>
@@ -307,7 +308,7 @@
    <property name="fruit" value="grape"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-8.png" width="128" height="192"/>
  </tile>
@@ -316,7 +317,7 @@
    <property name="fruit" value="durian"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-9.png" width="128" height="192"/>
  </tile>
@@ -325,7 +326,7 @@
    <property name="fruit" value="peach"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-10.png" width="128" height="192"/>
  </tile>
@@ -334,7 +335,7 @@
    <property name="fruit" value="radish"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
-   <property name="shadow" value="fruitOmbre"/>
+   <property name="prefab" value="fruit"/>
   </properties>
   <image source="../img/Fruit-11.png" width="128" height="192"/>
  </tile>
@@ -581,10 +582,11 @@
  </tile>
  <tile id="73">
   <properties>
+   <property name="dropRange" type="float" value="80"/>
    <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="302.5"/>
    <property name="offsetY" type="float" value="300"/>
-   <property name="picnic" type="float" value="600"/>
+   <property name="prefab" value="picnic"/>
   </properties>
   <image source="../img/Picnic.png" width="605" height="459"/>
   <objectgroup draworder="index" id="3">

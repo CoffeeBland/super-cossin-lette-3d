@@ -1,4 +1,5 @@
 str = {}
+timestamps = {}
 
 function math.clamp(x, min, max)
     return math.min(math.max(x, min), max)
@@ -20,7 +21,12 @@ function love.filesystem.crawl(dir, _results)
         if not extension then
             love.filesystem.crawl(dir .. "/" .. name, _results)
         else
-            table.insert(_results, dir .. "/" .. file)
+            local path = dir .. "/" .. file
+            local info = love.filesystem.getInfo(path, "file")
+            if not timestamps[path] or timestamps[path].modtime < info.modtime then
+                timestamps[path] = info
+                table.insert(_results, path)
+            end
         end
     end
 
@@ -135,4 +141,8 @@ function love.physics.sampleShape(thingymagig, count)
         result[i] = 0
     end
     return result
+end
+
+function math.randomRange(range)
+    return range[1] + math.random() * (range[2] - range[1])
 end
