@@ -47,6 +47,7 @@ function Game:enter(args)
     self.entities = {}
 
     self.map:getEntities(self.entities)
+    self.map:getTilesGogogadget(self.physics)
     self:update(0)
 end
 

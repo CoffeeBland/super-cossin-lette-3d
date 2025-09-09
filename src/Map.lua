@@ -111,6 +111,53 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     return entity
 end
 
+function Map:getChunkGogogadget(physics, layer, chunk)
+    for i, tile in ipairs(chunk.data) do
+        if tile > 0 then
+            local og = tile
+            local flipX = bit.band(tile, TILE_FLIP_H) ~= 0
+            local flipY = bit.band(tile, TILE_FLIP_V) ~= 0
+            tile = bit.band(tile, TILE_ID_MASK) - self._data.tilesetFirstGid
+            local tx = layer.x + chunk.x + ((i - 1) % chunk.width) + 1
+            local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width) + 1
+            local x = (tx - ty) * self._data.tilewidth / 2
+            local y = (tx + ty) * self._data.tileheight / 2
+            if not tileset.tiles[tile] then
+                print("Unknown tile gid!", tile, og)
+            end
+            local tileShape = tileset.shapes[tile]
+            if tileShape then
+                local body = love.physics.newBody(physics,
+                    x,
+                    y,
+                    "static")
+                local shape = (flipX and tileShape.flipX) or (flipY and tileShape.flipY) or tileShape.default
+                local fixture = love.physics.newFixture(body, shape, 0)
+                body:setUserData({ id = -1 })
+            end
+        end
+    end
+end
+
+function Map:getTilesGogogadget(physics)
+    for _, layer in ipairs(self._data.layers) do
+        if layer.type == "tilelayer" then
+            for _, chunk in ipairs(layer.chunks or {}) do
+                self:getChunkGogogadget(physics, layer, chunk)
+            end
+            if layer.data then
+                self:getChunkGogogadget(physics, layer, {
+                    data = layer.data,
+                    x = 0,
+                    y = 0,
+                    width = layer.width,
+                    height = layer.height
+                })
+            end
+        end
+    end
+end
+
 function Map:drawChunk(batch, time, layer, chunk)
     for i, tile in ipairs(chunk.data) do
         if tile > 0 then
@@ -151,14 +198,13 @@ function Map:drawTiles(batch, time)
                 self:drawChunk(batch, time, layer, chunk)
             end
             if layer.data then
-                local chunk = {
+                self:drawChunk(batch, time, layer, {
                     data = layer.data,
                     x = 0,
                     y = 0,
                     width = layer.width,
                     height = layer.height
-                }
-                self:drawChunk(batch, time, layer, chunk)
+                })
             end
         end
     end

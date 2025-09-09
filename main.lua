@@ -13,11 +13,21 @@ local releaseActions = {
     space = "jump"
 }
 
-function getObjectPos(alignment, obj)
-    local texture = textures[obj.name]
+function getTexturePos(alignment, texture)
     if alignment == "unspecified" or alignment == "bottom" then
         return -texture:getWidth() / 2, -texture:getHeight()
     end
+end
+
+function getObjectPos(alignment, obj)
+    local texture = textures[obj.name]
+    return getTexturePos(alignment, texture)
+end
+
+function getTilePos(alignment, tile)
+    local tileName = str.filename(tile.image)
+    local texture = textures[tileName]
+    return getTexturePos(alignment, texture)
 end
 
 fonts = {}
@@ -159,6 +169,7 @@ function love.loadData(name, file)
         if data.name == "tileset" then
             tileset.tiles = {}
             tileset.anims = {}
+            tileset.shapes = {}
             tileset.tilewidth = data.tilewidth
             tileset.tileheight = data.tileheight
             if data.image then
@@ -222,6 +233,44 @@ function love.loadData(name, file)
                                 fps = 1000 / tile.animation[1].duration,
                                 ids = ids
                             }
+                        end
+                        if tile.objectGroup and tile.objectGroup.objects then
+                            for _, subobject in ipairs(tile.objectGroup.objects) do
+                                if subobject.shape == "polygon" then
+                                    local posX, posY = getTilePos(data.objectalignment, tile)
+                                    local vertices = {}
+                                    local verticesFlipX = {}
+                                    local verticesFlipY = {}
+                                    local minX, minY, maxX, maxY
+                                    for _, point in ipairs(subobject.polygon) do
+                                        local x = point.x + subobject.x + posX
+                                        local y = point.y + subobject.y + posY
+                                        minX = minX and math.min(x, minX) or x
+                                        maxX = maxX and math.max(x, maxX) or x
+                                        minY = minY and math.min(y, minY) or y
+                                        maxY = maxY and math.max(y, maxY) or y
+                                        table.insert(vertices, x)
+                                        table.insert(vertices, y)
+                                        table.insert(verticesFlipX, -x)
+                                        table.insert(verticesFlipX, y)
+                                        table.insert(verticesFlipY, x)
+                                        table.insert(verticesFlipY, -y)
+                                    end
+                                    if #vertices > 8 then
+                                        tileset.shapes[tile.id] = {
+                                            default = love.physics.newChainShape(true, vertices),
+                                            flipX = love.physics.newChainShape(true, verticesFlipX),
+                                            flipY = love.physics.newChainShape(true, verticesFlipY)
+                                        }
+                                    else
+                                        tileset.shapes[tile.id] = {
+                                            default = love.physics.newPolygonShape(vertices),
+                                            flipX = love.physics.newPolygonShape(verticesFlipX),
+                                            flipY = love.physics.newPolygonShape(verticesFlipY)
+                                        }
+                                    end
+                                end
+                            end
                         end
                         x = x + tile.width
                     end

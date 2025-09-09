@@ -17,5 +17,23 @@ MASK_SHADER = love.graphics.newShader[[
     }
 ]]
 
+SPARKLY_SHADER = love.graphics.newShader[[
+    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+        vec4 tex = Texel(texture, texture_coords);
+        float luminosity = sqrt(
+            0.299 * pow(tex.r, 2) +
+            0.587 * pow(tex.g, 2) +
+            0.114 * pow(tex.b, 2));
+        if (luminosity == 0) {
+            discard;
+        }
+        float lumalpha = (color.a - (1 - luminosity)) / luminosity;
+        float alpha = lumalpha * 0.5 + color.a * 0.5;
+        if (alpha >= 0) {
+            return tex * vec4(vec3(color), alpha);
+        }
+    }
+]]
+
 STATIC_SHADOW_SLOP = 10
 HEIGHT_SENSOR = 42
