@@ -54,11 +54,11 @@ function Physics:newSensor(shape, type)
 end
 
 function Physics:beginContact(fix, otherFix, otherEntity)
-    self.overlaps[fix:getUserData().id][otherFix:getUserData().id] = otherFix
+    self.overlaps[fix:getUserData().id][otherEntity.id .. ":" .. otherFix:getUserData().id] = otherFix
 end
 
 function Physics:endContact(fix, otherFix, otherEntity)
-    self.staleOverlaps[fix:getUserData().id][otherFix:getUserData().id] = otherFix
+    self.staleOverlaps[fix:getUserData().id][otherEntity.id .. ":" .. otherFix:getUserData().id] = otherFix
 end
 
 function Physics:clearStaleOverlaps()
@@ -86,10 +86,9 @@ Physics.overlappingCheckFunction = function()
     local overlapFix
     Physics.overlappingCheckKey, overlapFix =
         Physics.overlappingCheckPairs(Physics.overlappingCheckTable, Physics.overlappingCheckKey)
-    if not Physics.overlappingCheckKey then
+    if not Physics.overlappingCheckKey or overlapFix:isDestroyed() then
         return nil
     end
-    print(Physics.overlappingCheckType, overlapFix:getUserData().type)
     if overlapFix:getUserData().type == Physics.overlappingCheckType then
         local overlapEntity = overlapFix:getBody():getUserData()
         if Physics.overlappingCheckStartZ then
