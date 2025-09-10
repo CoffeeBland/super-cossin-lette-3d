@@ -1,9 +1,9 @@
 ## TODO
 
-* Collisions de tilesets
+* Collisions de tilesets (iiish oui)
 * Eau
-* Sons
-* Intro
+* Sons (ya le support, pas les setups)
+* Intro (partiellement fait)
 * End state
 * Highlight pour les cas cachés
 * Prio d'affichage des arches

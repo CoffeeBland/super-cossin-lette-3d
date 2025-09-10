@@ -8,7 +8,8 @@ Anim.priorities = {
     walk = 1,
     squish = 2,
     eat = 3,
-    jump = 4
+    jump = 4,
+    drown = 5
 }
 
 function Anim.new()

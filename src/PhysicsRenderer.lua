@@ -5,8 +5,8 @@ local rng = love.math.newRandomGenerator(seed)
 
 local function fixture_fill_color(fixture)
     if fixture:isSensor() then
-        if fixture:getUserData() == HEIGHT_SENSOR then
-            return 0.5, 0, 0, 0.4
+        if fixture:getUserData().type == HEIGHT_SENSOR then
+            return 0.5, 0.5, 0.5, 0.2
         else
             return 0, 0, 0.5, 0.4
         end

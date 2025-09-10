@@ -1,5 +1,6 @@
 require "src.Map"
 require "src.components.Anim"
+require "src.components.Physics"
 
 local PhysicsRenderer = require "src.PhysicsRenderer"
 
@@ -40,6 +41,31 @@ function Game:enter(args)
             local e2 = fix2:getBody():getUserData()
             return self:shouldEntitiesContact(e1, e2)
         end)
+    self.physics:setCallbacks(
+        function(fix1, fix2) -- beginContact
+            local body1 = fix1:getBody()
+            local entity1 = body1:getUserData()
+            local body2 = fix2:getBody()
+            local entity2 = body2:getUserData()
+            if entity1.physics and entity1.physics.overlaps then
+                entity1.physics:beginContact(fix1, fix2, entity2)
+            end
+            if entity2.physics and entity2.physics.overlaps then
+                entity2.physics:beginContact(fix2, fix1, entity1)
+            end
+        end,
+        function(fix1, fix2) -- endContact
+            local body1 = fix1:getBody()
+            local entity1 = body1:getUserData()
+            local body2 = fix2:getBody()
+            local entity2 = body2:getUserData()
+            if entity1.physics and entity1.physics.overlaps then
+                entity1.physics:endContact(fix1, fix2, entity2)
+            end
+            if entity2.physics and entity2.physics.overlaps then
+                entity2.physics:endContact(fix2, fix1, entity1)
+            end
+        end)
     self.camera = { x = 0, y = 0 }
     self.time = 0
     self.map = Map.load(args.map)
@@ -56,40 +82,6 @@ function Game:exit()
     self.physics = nil
 end
 
-function Game:updateHeightSlices(entity)
-    local startZ = entity.pos.z
-    local endZ = startZ + (entity.pos.height)
-    local sliceStart = math.clamp(1 + math.ceil(startZ / HEIGHT_SLICE), 1, 16)
-    local sliceEnd = math.clamp(1 + math.floor((endZ - 1) / HEIGHT_SLICE), 1, 16)
-    sliceEnd = math.max(sliceStart, sliceEnd)
-    if sliceStart ~= entity.physics.sliceStart or sliceEnd ~= entity.physics.sliceEnd then
-        -- Categories
-        local categories = {}
-        for i = sliceStart,sliceEnd do
-            table.insert(categories, i)
-        end
-        entity.physics.fixture:setCategory(unpack(categories))
-
-        -- Masks
-        local masks = {}
-        if sliceStart > 1 then
-            for i = 1, sliceStart - 1 do
-                table.insert(masks, i)
-            end
-        end
-        if sliceEnd < 16 then
-            for i = sliceEnd + 1, 16 do
-                table.insert(masks, i)
-            end
-        end
-
-        entity.physics.fixture:setMask(unpack(masks))
-
-        entity.physics.sliceStart = sliceStart
-        entity.physics.sliceEnd = sliceEnd
-    end
-end
-
 function Game:update(dt)
     self.physics:update(dt)
     self.time = self.time + dt
@@ -97,30 +89,48 @@ function Game:update(dt)
     for _, entity in ipairs(self.entities) do
         -- Create physics
         if entity.body and not entity.physics then
-            local body = love.physics.newBody(self.physics, entity.pos.x, entity.pos.y, entity.body.type)
-            body:setUserData(entity)
-            local shape
-            if entity.body.shape == "circle" then
-                shape = love.physics.newCircleShape(entity.body.size / 2)
-            elseif entity.body.preshape then
-                shape = entity.body.preshape
+            entity.physics = Physics.new(self.physics, entity)
+        end
+
+        if entity.water then
+            if not entity.water.sampleSensors then
+                entity.water.sampleSensors = {}
+                for i, sample in ipairs(entity.water.samples) do
+                    local shape = love.physics.newCircleShape(unpack(sample))
+                    local fixture = entity.physics:newSensor(shape, WATER_SENSOR)
+                    entity.water.sampleSensors[i] = fixture
+                end
             end
-
-            local heightSensor = love.physics.newFixture(body, shape, 0)
-            heightSensor:setSensor(true)
-            heightSensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-            heightSensor:setUserData(HEIGHT_SENSOR);
-
-            local fixture = love.physics.newFixture(body, shape, 1)
-
-            entity.physics = {
-                body = body,
-                shape = shape,
-                fixture = fixture,
-                heightSensor = heightSensor
-            }
-
-            self:updateHeightSlices(entity)
+            if entity.water.remainingDrownFrames then
+                entity.water.remainingDrownFrames = entity.water.remainingDrownFrames - 1
+                if entity.water.remainingDrownFrames <= 0 then
+                    entity.water.remainingDrownFrames = nil
+                    entity.anim:release("drown")
+                    entity.pos.x = entity.pos.lastGoodX
+                    entity.pos.y = entity.pos.lastGoodY
+                    entity.pos.z = entity.pos.lastGoodZ
+                    entity.physics:setPosition(entity.pos.x, entity.pos.y)
+                    entity.physics.body:setLinearVelocity(0, 0)
+                    entity.velocity.z = 100
+                end
+            else
+                entity.water.sensorsInWater = 0
+                for _, sensor in pairs(entity.water.sampleSensors) do
+                    if entity.physics:getFirstOverlappingOfType(sensor, WATER_SENSOR, entity.pos) then
+                        entity.water.sensorsInWater = entity.water.sensorsInWater + 1
+                    end
+                end
+                if entity.water.sensorsInWater == #entity.water.sampleSensors then
+                    entity.water.remainingDrownFrames = entity.water.drownFrames
+                    entity.anim:request("drown")
+                    entity.physics.body:setLinearVelocity(0, 0)
+                end
+                if entity.pos.onGround and entity.water.sensorsInWater == 0 then
+                    entity.pos.lastGoodX = entity.pos.x
+                    entity.pos.lastGoodY = entity.pos.y
+                    entity.pos.lastGoodZ = entity.pos.z
+                end
+            end
         end
 
         -- Eat input
@@ -132,8 +142,7 @@ function Game:update(dt)
         if entity.fruitStack then
             if not entity.fruitStack.sensor and entity.physics then
                 local shape = love.physics.newCircleShape(entity.fruitStack.pickupRange / 2)
-                local sensor = love.physics.newFixture(entity.physics.body, shape, 0)
-                sensor:setSensor(true)
+                local sensor = entity.physics:newSensor(shape, 0) -- TODO ISH
                 sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
                 entity.fruitStack.sensor = sensor
             end
@@ -173,7 +182,7 @@ function Game:update(dt)
                 entity.fruitStack.cooldown = nil
             end
 
-            for _, other in pairs(self:getOverlappingEntities(entity, entity.fruitStack.sensor)) do
+            for _, other in entity.physics:getAllOverlappingOfType(entity.fruitStack.sensor, HEIGHT_SENSOR) do
                 if other.fruit then
                     self:checkFruitPickup(entity, other)
                 end
@@ -216,8 +225,7 @@ function Game:update(dt)
         if entity.picnic then
             if entity.physics and not entity.picnic.sensor then
                 local shape = love.physics.newCircleShape(entity.picnic.dropRange / 2)
-                local sensor = love.physics.newFixture(entity.physics.body, shape, 0)
-                sensor:setSensor(true)
+                local sensor = entity.physics:newSensor(shape, 0)
                 sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
                 entity.picnic.sensor = sensor
             end
@@ -303,7 +311,7 @@ function Game:update(dt)
                     entity.velocity.z = 0
                 end
 
-                self:updateHeightSlices(entity)
+                entity.physics:updateHeightSlices(entity.pos)
             end
             entity.physics.body:setLinearDamping(entity.pos.onGround and (entity.pos.sliding and slidingDamping or groundDamping) or 0)
         end
@@ -326,7 +334,7 @@ function Game:update(dt)
 
                 if entity.fruit.animFrames > 0 then
                     local p = 1 - 1 / entity.fruit.animFrames
-                    entity.physics.body:setPosition(
+                    entity.physics:setPosition(
                         entity.pos.x * p + targetX * (1 - p),
                         entity.pos.y * p + targetY * (1 - p))
                     entity.fruit.animFrames = entity.fruit.animFrames - 1
@@ -335,7 +343,7 @@ function Game:update(dt)
                     end
                 else
                     local pickupForce = stackRootEntity.fruitStack and stackRootEntity.fruitStack.pickupForce or 0.7
-                    entity.physics.body:setPosition(
+                    entity.physics:setPosition(
                         entity.pos.x * (1 - pickupForce) + targetX * pickupForce,
                         entity.pos.y * (1 - pickupForce) + targetY * pickupForce)
                 end
@@ -420,6 +428,10 @@ function Game:update(dt)
                     sprite.frame = frame
                 end
             end
+        end
+
+        if entity.physics and entity.physics.staleOverlaps then
+            entity.physics:clearStaleOverlaps()
         end
 
         -- Updating the camera

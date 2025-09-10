@@ -38,6 +38,15 @@ return function()
             dropCooldown = 60,
             eatCooldown = 600
         },
+        water = {
+            drownFrames = 60,
+            samples = {
+                { 0, 40, 10 },
+                { 0, -40, 10 },
+                { 40, 0, 10 },
+                { -40, 0, 10 }
+            }
+        },
         soundEmitter = {
             playing = {},
             triggers = {

@@ -131,9 +131,13 @@ function Map:getChunkGogogadget(physics, layer, chunk)
                     x,
                     y,
                     "static")
-                local shape = (flipX and tileShape.flipX) or (flipY and tileShape.flipY) or tileShape.default
+                local shape =
+                    (flipX and tileShape.flipX) or
+                    (flipY and tileShape.flipY) or tileShape.default
                 local fixture = love.physics.newFixture(body, shape, 0)
-                body:setUserData({ id = -1 })
+                fixture:setSensor(true)
+                fixture:setUserData({ id = tx .. ":" .. ty, type = WATER_SENSOR })
+                body:setUserData({ id = -1, pos = { z = 0, height = 1 } })
             end
         end
     end

@@ -248,7 +248,23 @@ return {
                     { 2, 7 }, { 3, 7 }, { 4, 7 },
                     { 0, 8, "throwFruit" }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8, "eatFruit" }
                 }
-            }
+            },
+            -- Noyer
+            {
+                name = "drown",
+                dirs = { "l", "tl", "bl", "b" },
+                fps = 10,
+                pingPong = true,
+                tiles = { { 1, 8 }, { 2, 8 }, { 3, 8 } }
+            },
+            {
+                name = "drown",
+                dirs = { "r", "tr", "br", "t" },
+                fps = 10,
+                flipX = true,
+                pingPong = true,
+                tiles = { { 1, 8 }, { 2, 8 }, { 3, 8 } }
+            },
         },
         cossinPiedBack = {
             -- Idle

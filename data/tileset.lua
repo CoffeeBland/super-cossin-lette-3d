@@ -1440,7 +1440,42 @@ return {
       },
       image = "../img/Tiles/Tuile_eau-1.png",
       width = 128,
-      height = 74
+      height = 74,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 2,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 64,
+            y = 0,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 64, y = 37 },
+              { x = 0, y = 74 },
+              { x = -64, y = 37 }
+            },
+            properties = {}
+          }
+        }
+      }
     },
     {
       id = 75,
