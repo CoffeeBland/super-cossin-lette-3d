@@ -53,28 +53,73 @@ function Physics:newSensor(shape, type)
     return sensor
 end
 
-function Physics:beginContact(fix, otherFix, otherEntity)
-    self.overlaps[fix:getUserData().id][otherEntity.id .. ":" .. otherFix:getUserData().id] = otherFix
-end
-
-function Physics:endContact(fix, otherFix, otherEntity)
-    self.staleOverlaps[fix:getUserData().id][otherEntity.id .. ":" .. otherFix:getUserData().id] = otherFix
-end
-
-function Physics:clearStaleOverlaps()
-    for sensorType, forSensor in pairs(self.staleOverlaps) do
-        for id in pairs(forSensor) do
-            self.overlaps[sensorType][id] = nil
-            forSensor[id] = nil
-        end
-    end
-end
-
 function Physics:setPosition(x, y)
     self.body:setAwake(false)
     self.body:setPosition(x, y)
     self.body:setAwake(true)
 end
+
+
+Physics.overlappingCheckSensor = nil
+Physics.overlappingCheckType = nil
+Physics.overlappingCheckStartZ = nil
+Physics.overlappingCheckEndZ = nil
+Physics.overlappingCheckResult = {}
+
+function Physics:getAllOverlappingOfType(sensor, type, pos)
+    Physics.overlappingCheckSensor = sensor
+    Physics.overlappingCheckType = type or HEIGHT_SENSOR
+    Physics.overlappingCheckStartZ = pos and pos.z
+    Physics.overlappingCheckEndZ = pos and (pos.z + pos.height)
+
+    local tlx, tly, brx, bry = sensor:getBoundingBox()
+    self.physics:queryBoundingBox(tlx, tly, brx, bry, Physics.onOverlappingEntitiesCheck)
+
+    Physics.overlappingEntitiesCheckSensor = nil
+    Physics.overlappingCheckType = nil
+    Physics.overlappingCheckStartZ = nil
+    Physics.overlappingCheckEndZ = nil
+    local result = Physics.overlappingEntitiesCheckResult
+    if #Physics.overlappingEntitiesCheckResult > 0 then
+        Physics.overlappingEntitiesCheckResult = {}
+    end
+
+    return result
+end
+
+function Physics.onOverlappingEntitiesCheck(fix)
+    local sensor = Physics.overlappingEntitiesCheckSensor
+    local typeToCheck = Physics.overlappingCheckType
+    local body = sensor:getBody()
+    local entity = body:getUserData()
+    local result = Physics.overlappingEntitiesCheckResult
+    local otherEntity = fix:getBody():getUserData()
+
+    if entity.id == otherEntity.id or
+        (typeToCheck and fix:getUserData() ~= typeToCheck) or
+        (not love.physics.fancyTouchy(body, sensor, fix) and
+            not fix:testPoint(entity.pos.x, entity.pos.y))
+    then
+        return true
+    end
+
+    if Physics.overlappingCheckStartZ then
+        if overlapEntity.pos then
+            local sz2 = overlapEntity.pos.z
+            local ez2 = overlapEntity.pos.z + overlapEntity.pos.height
+            if Physics.overlappingCheckStartZ < ez2 + DELTA and
+                sz2 < Physics.overlappingCheckEndZ + DELTA
+            then
+                table.insert(result, overlapFix)
+            end
+        end
+    else
+        table.insert(result, overlapFix)
+    end
+
+    return true
+end
+
 
 Physics.overlappingCheckPairs = nil
 Physics.overlappingCheckTable = nil
@@ -105,20 +150,6 @@ Physics.overlappingCheckFunction = function()
             return overlapFix, overlapEntity
         end
     end
-end
-
-function Physics:getFirstOverlappingOfType(sensor, type, pos)
-    return self:getAllOverlappingOfType(sensor, type, pos)()
-end
-
-function Physics:getAllOverlappingOfType(sensor, type, pos)
-    Physics.overlappingCheckPairs, Physics.overlappingCheckTable =
-        pairs(self.overlaps[sensor:getUserData().id])
-    Physics.overlappingCheckKey = nil
-    Physics.overlappingCheckType = type
-    Physics.overlappingCheckStartZ = pos and pos.z
-    Physics.overlappingCheckEndZ = pos and (pos.z + pos.height)
-    return Physics.overlappingCheckFunction;
 end
 
 function Physics:updateHeightSlices(pos)

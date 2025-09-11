@@ -41,31 +41,6 @@ function Game:enter(args)
             local e2 = fix2:getBody():getUserData()
             return self:shouldEntitiesContact(e1, e2)
         end)
-    self.physics:setCallbacks(
-        function(fix1, fix2) -- beginContact
-            local body1 = fix1:getBody()
-            local entity1 = body1:getUserData()
-            local body2 = fix2:getBody()
-            local entity2 = body2:getUserData()
-            if entity1.physics and entity1.physics.overlaps then
-                entity1.physics:beginContact(fix1, fix2, entity2)
-            end
-            if entity2.physics and entity2.physics.overlaps then
-                entity2.physics:beginContact(fix2, fix1, entity1)
-            end
-        end,
-        function(fix1, fix2) -- endContact
-            local body1 = fix1:getBody()
-            local entity1 = body1:getUserData()
-            local body2 = fix2:getBody()
-            local entity2 = body2:getUserData()
-            if entity1.physics and entity1.physics.overlaps then
-                entity1.physics:endContact(fix1, fix2, entity2)
-            end
-            if entity2.physics and entity2.physics.overlaps then
-                entity2.physics:endContact(fix2, fix1, entity1)
-            end
-        end)
     self.camera = { x = 0, y = 0 }
     self.time = 0
     self.map = Map.load(args.map)
@@ -182,7 +157,7 @@ function Game:update(dt)
                 entity.fruitStack.cooldown = nil
             end
 
-            for _, other in entity.physics:getAllOverlappingOfType(entity.fruitStack.sensor, HEIGHT_SENSOR) do
+            for _, other in entity.physics:getAllOverlappingOfType(entity.fruitStack.sensor) do
                 if other.fruit then
                     self:checkFruitPickup(entity, other)
                 end
@@ -630,46 +605,6 @@ function Game:findFloorEntity(entity)
         end
     end
     return entity, y
-end
-
-Game.overlappingEntitiesCheckEntity = nil
-Game.overlappingEntitiesCheckSensor = nil
-Game.overlappingEntitiesCheckResult = {}
-
-function Game:getOverlappingEntities(entity, sensor)
-    sensor = sensor or entity.physics.heightSensor
-
-    Game.overlappingEntitiesCheckEntity = entity
-    Game.overlappingEntitiesCheckSensor = sensor
-
-    local tlx, tly, brx, bry = sensor:getBoundingBox()
-    self.physics:queryBoundingBox(tlx, tly, brx, bry, Game.onOverlappingEntitiesCheck)
-
-    Game.overlappingEntitiesCheckEntity = nil
-    Game.overlappingEntitiesCheckSensor = nil
-    local result = Game.overlappingEntitiesCheckResult
-    if #Game.overlappingEntitiesCheckResult > 0 then
-        Game.overlappingEntitiesCheckResult = {}
-    end
-
-    return result
-end
-
-function Game.onOverlappingEntitiesCheck(fix)
-    local entity = Game.overlappingEntitiesCheckEntity
-    local sensor = Game.overlappingEntitiesCheckSensor
-    local result = Game.overlappingEntitiesCheckResult
-    local otherEntity = fix:getBody():getUserData()
-    if entity.id == otherEntity.id then
-        return true
-    end
-    if (fix:getUserData() == HEIGHT_SENSOR and
-        (love.physics.fancyTouchy(entity.physics.body, sensor, fix) or
-            fix:testPoint(entity.pos.x, entity.pos.y)))
-    then
-        table.insert(result, otherEntity)
-    end
-    return true
 end
 
 function Game:drawEntitySprites(entity)
