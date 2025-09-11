@@ -654,6 +654,8 @@ end
 
 -- OVERLAPS!
 
+local overlappingCheckEntity = nil
+local overlappingCheckBody = nil
 local overlappingCheckSensor = nil
 local overlappingCheckType = nil
 local overlappingCheckStartZ = nil
@@ -661,14 +663,12 @@ local overlappingCheckEndZ = nil
 local overlappingCheckStopOnFirst = false
 local overlappingCheckResult = {}
 local function onOverlappingEntitiesCheck(fix)
-    local body = overlappingCheckSensor:getBody()
-    local entity = body:getUserData()
     local otherEntity = fix:getBody():getUserData()
 
-    if entity.id == otherEntity.id or
+    if overlappingCheckEntity.id == otherEntity.id or
         (overlappingCheckType and fix:getUserData().type ~= overlappingCheckType) or
-        (not love.physics.fancyTouchy(body, overlappingCheckSensor, fix) and
-            not fix:testPoint(entity.pos.x, entity.pos.y))
+        (not love.physics.fancyTouchy(overlappingCheckBody, overlappingCheckSensor, fix) and
+            not fix:testPoint(overlappingCheckEntity.pos.x, overlappingCheckEntity.pos.y))
     then
         return true
     end
@@ -692,6 +692,8 @@ end
 
 function Game:getAllOverlappingOfType(sensor, type, pos)
     overlappingCheckSensor = sensor
+    overlappingCheckBody = overlappingCheckSensor:getBody()
+    overlappingCheckEntity = overlappingCheckBody:getUserData()
     overlappingCheckType = type or HEIGHT_SENSOR
     overlappingCheckStartZ = pos and pos.z
     overlappingCheckEndZ = pos and (pos.z + pos.height)
@@ -700,6 +702,8 @@ function Game:getAllOverlappingOfType(sensor, type, pos)
     self.physics:queryBoundingBox(tlx, tly, brx, bry, onOverlappingEntitiesCheck)
 
     overlappingCheckSensor = nil
+    overlappingCheckBody = nil
+    overlappingCheckEntity = nil
     overlappingCheckType = nil
     overlappingCheckStartZ = nil
     overlappingCheckEndZ = nil
