@@ -582,7 +582,7 @@
  </tile>
  <tile id="73">
   <properties>
-   <property name="dropRange" type="float" value="80"/>
+   <property name="dropRange" type="float" value="860"/>
    <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="302.5"/>
    <property name="offsetY" type="float" value="300"/>

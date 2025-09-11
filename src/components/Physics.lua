@@ -13,16 +13,12 @@ function Physics.new(world, entity)
     end
 
     local fixture = love.physics.newFixture(body, shape, 1)
-    fixture:setUserData({
-        id = 1,
-        type = FIXBODY
-    })
+    fixture:setUserData({ type = FIXBODY })
 
     local instance = setmetatable({
         body = body,
         shape = shape,
         fixture = fixture,
-        nextSensorId = 2
     }, Physics)
 
     instance.heightSensor = instance:newSensor(shape, HEIGHT_SENSOR);
@@ -36,11 +32,7 @@ end
 function Physics:newSensor(shape, type)
     local sensor = love.physics.newFixture(self.body, shape, 0)
     sensor:setSensor(true)
-    sensor:setUserData({
-        id = self.nextSensorId,
-        type = type
-    });
-    self.nextSensorId = self.nextSensorId + 1
+    sensor:setUserData({ type = type });
     return sensor
 end
 

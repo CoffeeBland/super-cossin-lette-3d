@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="60" height="60" tilewidth="128" tileheight="74" infinite="0" nextlayerid="11" nextobjectid="142">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="60" height="60" tilewidth="128" tileheight="74" infinite="0" nextlayerid="11" nextobjectid="143">
  <editorsettings>
   <export target="../maps/map_mymp.lua" format="lua"/>
  </editorsettings>
@@ -128,8 +128,8 @@
 0,224,213,213,203,232,232,233,231,217,0,0,0,0,0,7,2,27,0,0,0,0,0,260,236,236,264,246,228,218,227,0,0,0,29,3,4,31,0,71,57,59,45,61,0,0,0,76,58,60,66,0,0,0,0,0,0,0,71,57,
 0,0,0,0,209,232,234,234,231,217,0,0,0,0,0,9,17,0,0,0,0,0,0,244,265,235,252,228,202,234,217,0,0,0,0,29,3,4,31,0,71,68,57,59,78,45,78,58,60,66,0,0,0,0,0,0,0,0,0,71,
 0,0,0,0,224,203,234,234,234,215,0,0,0,0,0,6,17,0,0,0,0,0,0,0,245,257,247,209,231,231,204,226,0,0,0,0,28,3,4,31,0,0,71,37,70,67,70,37,66,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,225,203,232,205,223,0,0,0,0,0,10,20,0,0,0,0,0,0,0,0,0,0,225,203,205,212,223,0,0,0,0,0,29,3,4,31,0,0,0,0,0,0,0,0,0,0,76,79,61,0,0,0,0,0,0,
-0,0,0,0,0,0,225,210,222,0,0,0,0,0,0,10,17,0,0,0,0,0,0,0,0,0,0,0,224,223,0,0,0,0,0,0,0,0,29,3,4,31,0,0,0,0,0,0,0,0,76,58,96,59,45,61,0,0,0,0,
+0,0,0,0,0,225,203,232,205,223,0,0,0,0,0,10,20,0,0,0,0,0,0,0,0,228,221,202,234,205,212,223,0,0,0,0,0,29,3,4,31,0,0,0,0,0,0,0,0,0,0,76,79,61,0,0,0,0,0,0,
+0,0,0,0,0,0,225,210,222,0,0,0,0,0,0,10,17,0,0,0,0,0,0,0,0,225,213,213,213,223,0,0,0,0,0,0,0,0,29,3,4,31,0,0,0,0,0,0,0,0,76,58,96,59,45,61,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,29,3,4,30,0,0,0,0,0,0,0,72,96,96,96,96,59,61,0,0,0
 </data>
  </layer>
@@ -290,18 +290,35 @@
   <object id="136" gid="357" x="814" y="1110" width="1152" height="1024"/>
   <object id="137" gid="357" x="1628" y="2516" width="1152" height="1024"/>
   <object id="138" gid="356" x="1292" y="2137" width="961" height="622"/>
-  <object id="139" gid="287" x="2070.38" y="4003.63" width="128" height="74"/>
-  <object id="140" gid="288" x="1712.69" y="3937.31" width="128" height="74"/>
+  <object id="139" gid="287" x="2070.38" y="4003.63" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="75"/>
+   </properties>
+  </object>
+  <object id="140" gid="288" x="1712.69" y="3937.31" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="150"/>
+   </properties>
+  </object>
+  <object id="142" gid="292" x="1406" y="3256" width="192" height="256"/>
  </objectgroup>
  <objectgroup id="5" name="Calque d'Objets 2">
   <object id="18" gid="272" x="181.292" y="1430.04" width="1024" height="1286"/>
   <object id="19" gid="272" x="3445.15" y="2170.19" width="1024" height="1286"/>
   <object id="20" gid="2147483918" x="3095.04" y="1024.96" width="1024" height="1286"/>
-  <object id="25" gid="302" x="527.042" y="1350.29" width="128" height="192"/>
-  <object id="26" gid="301" x="1001.79" y="462.208" width="128" height="192"/>
+  <object id="25" gid="302" x="527.042" y="1350.29" width="128" height="192">
+   <properties>
+    <property name="posZ" type="float" value="80"/>
+   </properties>
+  </object>
+  <object id="26" gid="301" x="1001.79" y="462.208" width="128" height="192">
+   <properties>
+    <property name="posZ" type="float" value="80"/>
+   </properties>
+  </object>
   <object id="27" gid="305" x="1962.4" y="1004.26" width="128" height="192"/>
   <object id="30" gid="271" x="705.104" y="1788.9" width="1024" height="1286"/>
-  <object id="48" gid="309" x="3468.23" y="3423.28" width="128" height="192"/>
+  <object id="48" gid="309" x="3482.43" y="3451.5" width="128" height="192"/>
   <object id="57" gid="300" x="3709.94" y="2285.58" width="128" height="192"/>
   <object id="61" gid="271" x="3713.56" y="1095.95" width="1024" height="1286"/>
   <object id="62" gid="272" x="3541.03" y="1656.48" width="1024" height="1286"/>
@@ -319,13 +336,21 @@
   <object id="120" gid="342" x="1216.9" y="2765.7" width="313" height="321"/>
   <object id="121" gid="347" x="1092.28" y="3005.47" width="313" height="321"/>
   <object id="123" gid="308" x="1381.3" y="2513.73" width="128" height="192"/>
-  <object id="124" gid="307" x="272.72" y="3829.34" width="128" height="192"/>
+  <object id="124" gid="307" x="272.72" y="3829.34" width="128" height="192">
+   <properties>
+    <property name="posZ" type="float" value="80"/>
+   </properties>
+  </object>
   <object id="125" gid="310" x="1583.05" y="918.036" width="128" height="192"/>
   <object id="126" gid="271" x="778.859" y="3590.47" width="1024" height="1286"/>
   <object id="128" gid="279" x="678.625" y="3654.04" width="384" height="216"/>
   <object id="129" gid="279" x="817.167" y="3715.5" width="384" height="216"/>
   <object id="130" gid="280" x="746.448" y="3818.22" width="256" height="148"/>
   <object id="131" gid="280" x="870.667" y="3460.67" width="256" height="148"/>
-  <object id="141" gid="304" x="1738.94" y="3797.06" width="128" height="192"/>
+  <object id="141" gid="304" x="1738.94" y="3797.06" width="128" height="192">
+   <properties>
+    <property name="posZ" type="float" value="150"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

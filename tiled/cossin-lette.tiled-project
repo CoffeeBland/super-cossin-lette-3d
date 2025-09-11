@@ -38,6 +38,16 @@
                 "object",
                 "project"
             ]
+        },
+        {
+            "id": 2,
+            "name": "tileType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "water"
+            ],
+            "valuesAsFlags": false
         }
     ]
 }

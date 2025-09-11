@@ -46,7 +46,7 @@ objects = {
     byName = {}
 }
 prefabs = {}
-debug = { physics = false }
+debug = { cycle = 0, physics = false, fps = false }
 
 function love.loadData(name, file)
     local loaded, error = loadfile(file)
@@ -222,7 +222,9 @@ function love.loadData(name, file)
                         tileset.tiles[tile.id] = {
                             quad = love.graphics.newQuad(x, y, tile.width, tile.height, canvas),
                             originX = 0,
-                            originY = tile.height
+                            originY = tile.height,
+                            type = tile.properties and tile.properties.type,
+                            height = tile.properties and tile.properties.height,
                         }
                         if tile.animation and #tile.animation > 1 then
                             local ids = {}
@@ -244,7 +246,7 @@ function love.loadData(name, file)
                                     local minX, minY, maxX, maxY
                                     for _, point in ipairs(subobject.polygon) do
                                         local x = point.x + subobject.x + posX
-                                        local y = point.y + subobject.y + posY
+                                        local y = point.y + subobject.y + posY + 74 / 2
                                         minX = minX and math.min(x, minX) or x
                                         maxX = maxX and math.max(x, maxX) or x
                                         minY = minY and math.min(y, minY) or y
@@ -401,8 +403,9 @@ function love.update(dt)
     end
 
     if actions.toggleDebug then
-        debug.physics = not debug.physics
-        debug.fps = not debug.fps
+        debug.cycle = (debug.cycle + 1) % 3
+        debug.physics = debug.cycle >= 2
+        debug.fps = debug.cycle >= 1
     end
 
     local requiresRefresh = love.crawlFiles(frame) or (actions.refresh and StateMachine.current.refresh)

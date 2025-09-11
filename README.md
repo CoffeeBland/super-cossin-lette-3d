@@ -1,7 +1,7 @@
 ## TODO
 
 * Collisions de tilesets (iiish oui)
-* Eau
+* Eau (iiish oui)
 * Sons (ya le support, pas les setups)
 * Intro (partiellement fait)
 * End state

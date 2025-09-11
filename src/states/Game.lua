@@ -48,7 +48,7 @@ function Game:enter(args)
     self.entities = {}
 
     self.map:getEntities(self.entities)
-    self.map:getTilesGogogadget(self.physics)
+    self.map:getTilesGogogadget(self.physics, self.entities)
     self:update(0)
 end
 
@@ -287,8 +287,8 @@ function Game:update(dt)
                 end
 
                 entity.physics:updateHeightSlices(entity.pos)
+                entity.physics.body:setLinearDamping(entity.pos.onGround and (entity.pos.sliding and slidingDamping or groundDamping) or 0)
             end
-            entity.physics.body:setLinearDamping(entity.pos.onGround and (entity.pos.sliding and slidingDamping or groundDamping) or 0)
         end
 
         -- Fruit being
@@ -325,8 +325,8 @@ function Game:update(dt)
                 if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z <= targetZ then
                     entity.pos.z = targetZ
                     entity.velocity.z = 0
-                    entity.pos.floorEntity = parentEntity
                     entity.pos.floorZ = targetZ
+                    entity.pos.floorEntity = parentEntity
                 end
 
                 if stackRootEntity.fruitStack then
@@ -449,7 +449,7 @@ function Game:render(dt)
     -- Camera
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(0.33)
+    love.graphics.scale(0.5)
     love.graphics.translate(-self.camera.x, -self.camera.y)
     love.graphics.clear(0.2, 0.5, 0.4)
 
@@ -464,7 +464,7 @@ function Game:render(dt)
     love.graphics.setBlendMode("multiply", "premultiplied")
     for _, entity in ipairs(self.entities) do
         if entity.shadow then
-            Game:drawEntityShadow(entity)
+            self:drawEntityShadow(entity)
         end
     end
     love.graphics.setBlendMode("alpha")
@@ -476,21 +476,19 @@ function Game:render(dt)
             love.graphics.stencil(
                 function()
                     love.graphics.setShader(MASK_SHADER)
-                    Game:drawEntitySprites(entity.pos.floorEntity)
+                    self:drawEntity(entity.pos.floorEntity)
                     love.graphics.setShader()
                 end,
                 "replace",
                 1)
             love.graphics.setStencilTest("greater", 0)
             love.graphics.setBlendMode("multiply", "premultiplied")
-            Game:drawEntityShadow(entity, entity.pos.floorZ)
+            self:drawEntityShadow(entity, entity.pos.floorZ)
             love.graphics.setBlendMode("alpha")
             love.graphics.setStencilTest()
         end
         -- Sprites
-        if entity.sprites then
-            Game:drawEntitySprites(entity)
-        end
+        self:drawEntity(entity)
     end
 
     -- Debug
@@ -536,7 +534,7 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
         HEIGHT_SENSOR,
         entity.pos))
     do
-        if Game:shouldEntitiesContact(entity, otherEntity) then
+        if self:shouldEntitiesContact(entity, otherEntity) then
             entity.pos.x = prevX
             entity.pos.y = prevY
             entity.pos.z = prevZ
@@ -603,32 +601,50 @@ function Game:findFloorEntity(entity)
     return entity, y
 end
 
-function Game:drawEntitySprites(entity)
-    for _, sprite in ipairs(entity.sprites) do
-        local animData = sprite.animData
-        local frame = sprite.frame
-        if animData and frame then
-            love.graphics.draw(
-                textures[sprite.name],
-                animData.tiles[frame].quad,
-                entity.pos.x,
-                (entity.pos.y - entity.pos.z),
-                0,
-                (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1),
-                (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1),
-                sprite.anchor.x,
-                sprite.anchor.y)
-        else
-            love.graphics.draw(
-                textures[sprite.name],
-                entity.pos.x,
-                (entity.pos.y - entity.pos.z),
-                0,
-                sprite.flipX and -1 or 1,
-                sprite.flipY and -1 or 1,
-                sprite.anchor.x,
-                sprite.anchor.y)
+function Game:drawEntity(entity)
+    if entity.sprites then
+        for _, sprite in ipairs(entity.sprites) do
+            local animData = sprite.animData
+            local frame = sprite.frame
+            if animData and frame then
+                love.graphics.draw(
+                    textures[sprite.name],
+                    animData.tiles[frame].quad,
+                    entity.pos.x,
+                    (entity.pos.y - entity.pos.z),
+                    0,
+                    (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1),
+                    (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1),
+                    sprite.anchor.x,
+                    sprite.anchor.y)
+            else
+                love.graphics.draw(
+                    textures[sprite.name],
+                    entity.pos.x,
+                    (entity.pos.y - entity.pos.z),
+                    0,
+                    sprite.flipX and -1 or 1,
+                    sprite.flipY and -1 or 1,
+                    sprite.anchor.x,
+                    sprite.anchor.y)
+            end
         end
+    end
+    if entity.tileSprite then
+        local sprite = entity.tileSprite
+        local tileData = tileset.tiles[sprite.tile]
+        love.graphics.setBlendMode("alpha", "premultiplied")
+        love.graphics.draw(
+            textures.tileset,
+            tileData.quad,
+            entity.pos.x,
+            (entity.pos.y - entity.pos.z),
+            0,
+            sprite.flipX and -1 or 1,
+            sprite.flipY and -1 or 1,
+            sprite.anchor.x,
+            sprite.anchor.y)
+        love.graphics.setBlendMode("alpha")
     end
 end
 

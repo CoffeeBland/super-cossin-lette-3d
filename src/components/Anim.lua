@@ -14,7 +14,7 @@ Anim.priorities = {
 
 function Anim.new()
     local instance = {
-        dir = "tr",
+        dir = "b",
         triggers = {},
         requested = {}
     }

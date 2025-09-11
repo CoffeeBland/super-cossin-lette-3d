@@ -111,7 +111,7 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     return entity
 end
 
-function Map:getChunkGogogadget(physics, layer, chunk)
+function Map:getChunkGogogadget(physics, entities, layer, chunk)
     for i, tile in ipairs(chunk.data) do
         if tile > 0 then
             local og = tile
@@ -121,36 +121,64 @@ function Map:getChunkGogogadget(physics, layer, chunk)
             local tx = layer.x + chunk.x + ((i - 1) % chunk.width) + 1
             local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width) + 1
             local x = (tx - ty) * self._data.tilewidth / 2
-            local y = (tx + ty) * self._data.tileheight / 2
+            -- Remove 1 half tile to center the position for z-sorting purposes.
+            local y = (tx + ty - 1) * self._data.tileheight / 2
             if not tileset.tiles[tile] then
                 print("Unknown tile gid!", tile, og)
             end
+            local tileData = tileset.tiles[tile]
             local tileShape = tileset.shapes[tile]
             if tileShape then
-                local body = love.physics.newBody(physics,
-                    x,
-                    y,
-                    "static")
                 local shape =
                     (flipX and tileShape.flipX) or
                     (flipY and tileShape.flipY) or tileShape.default
-                local fixture = love.physics.newFixture(body, shape, 0)
-                fixture:setSensor(true)
-                fixture:setUserData({ id = tx .. ":" .. ty, type = WATER_SENSOR })
-                body:setUserData({ id = -1, pos = { z = 0, height = 1 } })
+                if tileData.type == "water" then
+                    local body = love.physics.newBody(physics,
+                        x,
+                        y,
+                        "static")
+                    local fixture = love.physics.newFixture(body, shape, 0)
+                    fixture:setSensor(true)
+                    fixture:setUserData({ type = WATER_SENSOR })
+                    body:setUserData({ id = -1, pos = { z = 0, height = 1 } })
+                else
+                    local entity = {
+                        pos = {
+                            x = x,
+                            y = y,
+                            z = 0,
+                            height = tileData.height or HEIGHT_SLICE
+                        },
+                        body = {
+                            preshape = shape,
+                            type = "static"
+                        },
+                        tileSprite = {
+                            tile = tile,
+                            flipX = flipX,
+                            flipY = flipY,
+                            anchor = {
+                                x = tileData.originX + self._data.tilewidth / 2,
+                                y = tileData.originY - self._data.tileheight / 2
+                            }
+                        }
+                    }
+                    table.insert(entities, entity)
+                    entity.id = #entities
+                end
             end
         end
     end
 end
 
-function Map:getTilesGogogadget(physics)
+function Map:getTilesGogogadget(physics, entities)
     for _, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks or {}) do
-                self:getChunkGogogadget(physics, layer, chunk)
+                self:getChunkGogogadget(physics, entities, layer, chunk)
             end
             if layer.data then
-                self:getChunkGogogadget(physics, layer, {
+                self:getChunkGogogadget(physics, entities, layer, {
                     data = layer.data,
                     x = 0,
                     y = 0,
@@ -178,19 +206,23 @@ function Map:drawChunk(batch, time, layer, chunk)
             local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width) + 1
             local x = (tx - ty) * self._data.tilewidth / 2
             local y = (tx + ty) * self._data.tileheight / 2
-            if not tileset.tiles[tile] then
+            local tileData = tileset.tiles[tile]
+            if not tileData then
                 print("Unknown tile gid!", tile, og)
             end
-            local tileData = tileset.tiles[tile]
-            batch:add(
-                tileData.quad,
-                x + self._data.tilewidth / 2,
-                y,
-                0,
-                flipX and -1 or 1,
-                flipY and -1 or 1,
-                tileData.originX + self._data.tilewidth / 2,
-                tileData.originY - self._data.tileheight / 2)
+            -- Tiles with heights are handled as entities
+            if not tileData.height then
+                local tileData = tileData
+                batch:add(
+                    tileData.quad,
+                    x + self._data.tilewidth / 2,
+                    y,
+                    0,
+                    flipX and -1 or 1,
+                    flipY and -1 or 1,
+                    tileData.originX + self._data.tilewidth / 2,
+                    tileData.originY - self._data.tileheight / 2)
+            end
         end
     end
 end
