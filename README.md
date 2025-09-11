@@ -1,12 +1,17 @@
 ## TODO
 
-* Collisions de tilesets (iiish oui)
-* Eau (iiish oui)
-* Sons (ya le support, pas les setups)
+* Collisions de tilesets
+    * Manque d'auto stacker les choses
+    * Manque de supporter des tuiles par-dessus des tuiles en hauteur
+* Eau
+    * Manque de l'aniiiim
+* Particle emitters!
+* Sons
+    * Y'a le support mais l'actuel est triiiissssssss
 * Intro (partiellement fait)
+* God rays
 * End state
 * Highlight pour les cas cachés
-* Prio d'affichage des arches
 
 ## BUGS
 
