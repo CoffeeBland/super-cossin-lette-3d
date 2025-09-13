@@ -219,10 +219,11 @@ function love.loadData(name, file)
                     for _, tile in ipairs(row.tiles) do
                         local tileName = str.filename(tile.image)
                         love.graphics.draw(textures[tileName], x, y)
+                        local posX, posY = getTilePos(data.objectalignment, tile)
                         tileset.tiles[tile.id] = {
                             quad = love.graphics.newQuad(x, y, tile.width, tile.height, canvas),
-                            originX = 0,
-                            originY = tile.height,
+                            originX = -posX,
+                            originY = -posY,
                             type = tile.properties and tile.properties.type,
                             height = tile.properties and tile.properties.height,
                         }
@@ -239,7 +240,6 @@ function love.loadData(name, file)
                         if tile.objectGroup and tile.objectGroup.objects then
                             for _, subobject in ipairs(tile.objectGroup.objects) do
                                 if subobject.shape == "polygon" then
-                                    local posX, posY = getTilePos(data.objectalignment, tile)
                                     local vertices = {}
                                     local verticesFlipX = {}
                                     local verticesFlipY = {}

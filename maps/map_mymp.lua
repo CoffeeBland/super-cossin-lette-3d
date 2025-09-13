@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -1527,9 +1527,7 @@ return {
           rotation = 0,
           gid = 287,
           visible = true,
-          properties = {
-            ["posZ"] = 75
-          }
+          properties = {}
         },
         {
           id = 140,
@@ -1543,9 +1541,7 @@ return {
           rotation = 0,
           gid = 288,
           visible = true,
-          properties = {
-            ["posZ"] = 150
-          }
+          properties = {}
         },
         {
           id = 142,
@@ -1943,9 +1939,7 @@ return {
           rotation = 0,
           gid = 307,
           visible = true,
-          properties = {
-            ["posZ"] = 80
-          }
+          properties = {}
         },
         {
           id = 125,
@@ -2036,16 +2030,14 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 1738.94,
-          y = 3797.06,
+          x = 1737.82,
+          y = 3792.85,
           width = 128,
           height = 192,
           rotation = 0,
           gid = 304,
           visible = true,
-          properties = {
-            ["posZ"] = 150
-          }
+          properties = {}
         }
       }
     }

@@ -63,9 +63,10 @@ function Map:createEntity(entities, data, id, flipX, flipY)
 
     local tx = data.x / self._data.tileheight
     local ty = data.y / self._data.tileheight
-    local z = (data.properties.posZ or 0) + (object.posZ or 0)
     local x = (tx - ty) * self._data.tilewidth / 2 + fsx * (object.offsetX + (object.posX or 0))
-    local y = (tx + ty) * self._data.tileheight / 2 + fsy * (object.offsetY + (object.posY or 0)) + z
+    local y = (tx + ty) * self._data.tileheight / 2 + fsy * (object.offsetY + (object.posY or 0))
+    local z = (data.properties.posZ or self:getPointHeight(x, y)) + (object.posZ or 0)
+    y = y + z -- Offset by z to match visually with the editor.
 
     local entity = object.prefab and prefabs[object.prefab](object) or {}
     -- Global props
@@ -109,6 +110,10 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     table.insert(entities, entity)
     entity.id = #entities
     return entity
+end
+
+function Map:getPointHeight(x, y)
+    return 0
 end
 
 function Map:getChunkGogogadget(physics, entities, layer, chunk)
@@ -158,7 +163,7 @@ function Map:getChunkGogogadget(physics, entities, layer, chunk)
                             flipX = flipX,
                             flipY = flipY,
                             anchor = {
-                                x = tileData.originX + self._data.tilewidth / 2,
+                                x = tileData.originX,
                                 y = tileData.originY - self._data.tileheight / 2
                             }
                         }
@@ -202,7 +207,7 @@ function Map:drawChunk(batch, time, layer, chunk)
                 local frame = math.floor(time * anim.fps) % #anim.ids
                 tile = anim.ids[frame + 1]
             end
-            local tx = layer.x + chunk.x + ((i - 1) % chunk.width)
+            local tx = layer.x + chunk.x + ((i - 1) % chunk.width) + 1
             local ty = layer.y + chunk.y + math.floor((i - 1) / chunk.width) + 1
             local x = (tx - ty) * self._data.tilewidth / 2
             local y = (tx + ty) * self._data.tileheight / 2
@@ -215,13 +220,13 @@ function Map:drawChunk(batch, time, layer, chunk)
                 local tileData = tileData
                 batch:add(
                     tileData.quad,
-                    x + self._data.tilewidth / 2,
+                    x,
                     y,
                     0,
                     flipX and -1 or 1,
                     flipY and -1 or 1,
-                    tileData.originX + self._data.tilewidth / 2,
-                    tileData.originY - self._data.tileheight / 2)
+                    tileData.originX,
+                    tileData.originY)
             end
         end
     end

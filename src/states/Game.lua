@@ -449,7 +449,7 @@ function Game:render(dt)
     -- Camera
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(0.5)
+    love.graphics.scale(0.33)
     love.graphics.translate(-self.camera.x, -self.camera.y)
     love.graphics.clear(0.2, 0.5, 0.4)
 
