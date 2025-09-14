@@ -18,6 +18,25 @@ function Map:chunkTiles(layer, chunk)
     return self.chunkIterator, chunk, 0
 end
 
+function Map:getTile(layer, tx, ty)
+    if not layer or not layer.chunks then
+        return
+    end
+    for _, chunk in ipairs(layer.chunks) do
+        if chunk.x < tx and tx <= chunk.x + chunk.width and
+            chunk.y < ty and ty <= chunk.y + chunk.height then
+            local chunkx = tx - chunk.x
+            local chunky = ty - chunk.y
+            local tile = chunk.data[chunkx + (chunky - 1) * chunk.width]
+            local og = tile
+            local flipX = bit.band(tile, TILE_FLIP_H) ~= 0
+            local flipY = bit.band(tile, TILE_FLIP_V) ~= 0
+            tile = bit.band(tile, TILE_ID_MASK) - self._data.tilesetFirstGid
+            return tile, flipX, flipY
+        end
+    end
+end
+
 function Map:init()
     -- Chunk iterator. Gotta capture self to simplify things...
     function self.chunkIterator(chunk, i)
@@ -35,7 +54,8 @@ function Map:init()
             if tile > 0 then
                 local tx = self.iteratorLayer.x + chunk.x + ((i - 1) % chunk.width) + 1
                 local ty = self.iteratorLayer.y + chunk.y + math.floor((i - 1) / chunk.width) + 1
-                return i, tile, tx, ty, flipX, flipY, og
+                local globali = tx + ty * self.width
+                return i, tile, tx, ty, globali, flipX, flipY, og
             end
         end
     end
@@ -55,9 +75,12 @@ function Map:init()
     end
 
     self.heightMarkers = {}
+    self.heightMarkersByLayer = {}
+    self.tileEntities = {}
     local minx, miny, maxx, maxy = nil, nil, nil, nil
-    for _, layer in ipairs(self._data.layers) do
+    for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
+            self.heightMarkersByLayer[layeri] = {}
             -- Make data into chunks for uniformity
             layer.chunks = layer.chunks or {}
             if layer.data then
@@ -81,19 +104,26 @@ function Map:init()
     end
     self.width, self.height = maxx - minx, maxy - miny
     -- Collate tileset height markers
-    for _, layer in ipairs(self._data.layers) do
+    for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
-                for i, tile, tx, ty in self:chunkTiles(layer, chunk) do
+                for i, tile, tx, ty, globali in self:chunkTiles(layer, chunk) do
                     local tileData = tileset.tiles[tile]
                     if not tileData then
                         print("Unknown tile gid!", tile, og)
                     end
                     local height = tileData.height or 0
-                    for i = 0, math.ceil(height / TILE_HEIGHT) do
-                        local globali = (tx - i) + (ty - i) * self.width
+                    if self.heightMarkersByLayer[layeri] then
+                        local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
+                        height = height + layerHeight
+                    end
+                    for i = 0, math.floor(height / TILE_HEIGHT) do
+                        globali = (tx - i) + (ty - i) * self.width
                         local current = self.heightMarkers[globali]
                         local new = math.max(current or 0, height)
+                        if self.heightMarkersByLayer[layeri + 1] then
+                            self.heightMarkersByLayer[layeri + 1][globali] = new
+                        end
                         self.heightMarkers[globali] = new
                     end
                 end
@@ -206,94 +236,117 @@ function Map:getPointHeight(x, y)
     return self.heightMarkers[globali] or 0
 end
 
-function Map:getChunkGogogadget(physics, entities, layer, chunk)
-    for i, tile, tx, ty, flipX, flipY, og in self:chunkTiles(layer, chunk) do
-        -- Remove 1 half tile to center the position for z-sorting purposes.
-        local x, y = Map.TileToPosMat:transformPoint(tx - 0.5, ty - 0.5)
-        local tileData = tileset.tiles[tile]
-        local tileShape = tileset.shapes[tile]
-        if tileShape then
-            local shape =
-                (flipX and tileShape.flipX) or
-                (flipY and tileShape.flipY) or tileShape.default
-            if tileData.type == "water" then
-                local body = love.physics.newBody(physics,
-                    x,
-                    y,
-                    "static")
-                local fixture = love.physics.newFixture(body, shape, 0)
-                fixture:setSensor(true)
-                fixture:setUserData({ type = WATER_SENSOR })
-                body:setUserData({ id = -1, pos = { z = 0, height = 1 } })
-            else
-                local entity = {
-                    pos = {
-                        x = x,
-                        y = y,
-                        z = 0,
-                        height = tileData.height or HEIGHT_SLICE
-                    },
-                    body = {
-                        preshape = shape,
-                        type = "static"
-                    },
-                    tileSprite = {
-                        tile = tile,
-                        flipX = flipX,
-                        flipY = flipY,
-                        anchor = {
-                            x = tileData.originX,
-                            y = tileData.originY - TILE_HEIGHT / 2
-                        }
-                    }
-                }
-                table.insert(entities, entity)
-                entity.id = #entities
-            end
-        end
-    end
-end
-
 function Map:getTilesGogogadget(physics, entities)
-    for _, layer in ipairs(self._data.layers) do
+    for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
-                self:getChunkGogogadget(physics, entities, layer, chunk)
-            end
-        end
-    end
-end
+                for i, tile, tx, ty, globali, flipX, flipY, og in self:chunkTiles(layer, chunk) do
+                    -- Remove 1 half tile to center the position for z-sorting purposes.
+                    local x, y = Map.TileToPosMat:transformPoint(tx - 0.5, ty - 0.5)
+                    local tileData = tileset.tiles[tile]
+                    local tileShape = tileset.shapes[tile]
+                    local shape = tileShape and (
+                        (flipX and tileShape.flipX) or
+                        (flipY and tileShape.flipY) or tileShape.default)
+                    if tileData.type == "water" then
+                        local body = love.physics.newBody(physics,
+                            x,
+                            y,
+                            "static")
+                        local fixture = love.physics.newFixture(body, shape, 0)
+                        fixture:setSensor(true)
+                        fixture:setUserData({ type = WATER_SENSOR })
+                        body:setUserData({ id = -1, pos = { z = 0, height = 1 } })
+                    end
+                    local height = tileData.height or 0
+                    local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
+                    if height > 0 then
+                        local entity = {
+                            pos = {
+                                x = x,
+                                y = y + layerHeight,
+                                z = layerHeight,
+                                height = height
+                            },
+                            body = shape and {
+                                preshape = shape,
+                                type = "static"
+                            },
+                            tileSprites = {
+                                {
+                                    tile = tile,
+                                    flipX = flipX,
+                                    flipY = flipY,
+                                    anchor = {
+                                        x = tileData.originX,
+                                        y = tileData.originY - TILE_HEIGHT / 2
+                                    }
+                                }
+                            }
+                        }
+                        -- Hunt for tiles to display on top
+                        local topOffset = math.floor(height / TILE_HEIGHT)
+                        local topx, topy = tx - topOffset, ty - topOffset
+                        local topglobali = topx + topy * self.width
+                        for nextlayeri = layeri + 1, #self._data.layers do
+                            local nextlayer = self._data.layers[nextlayeri]
+                            local toptile, topflipX, topflipY = self:getTile(nextlayer, topx, topy)
+                            if toptile and toptile > 0 then
+                                local toptileData = tileset.tiles[toptile]
+                                local topheight = toptileData.height or 0
+                                local toplayerHeight = self.heightMarkersByLayer[nextlayeri][topglobali] or 0
+                                if topheight == 0 and toplayerHeight ~= 0 then
+                                    table.insert(entity.tileSprites, {
+                                        tile = toptile,
+                                        flipX = topflipX,
+                                        flipY = topflipY,
+                                        anchor = {
+                                            x = toptileData.originX,
+                                            y = toptileData.originY - TILE_HEIGHT / 2 + height
+                                        }
+                                    })
+                                end
+                            end
+                        end
+                        table.insert(entities, entity)
+                        entity.id = #entities
 
-function Map:drawChunk(batch, time, layer, chunk)
-    for i, tile, tx, ty, flipX, flipY, og in self:chunkTiles(layer, chunk) do
-        local anim = tileset.anims[tile]
-        if anim then
-            local frame = math.floor(time * anim.fps) % #anim.ids
-            tile = anim.ids[frame + 1]
-        end
-        local x, y = Map.TileToPosMat:transformPoint(tx, ty)
-        local tileData = tileset.tiles[tile]
-        -- Tiles with heights are handled as entities
-        if not tileData.height then
-            local tileData = tileData
-            batch:add(
-                tileData.quad,
-                x,
-                y,
-                0,
-                flipX and -1 or 1,
-                flipY and -1 or 1,
-                tileData.originX,
-                tileData.originY)
+                        self.tileEntities[tx + ty * self.width] = entity
+                    end
+                end
+            end
         end
     end
 end
 
 function Map:drawTiles(batch, time)
-    for _, layer in ipairs(self._data.layers) do
+    for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
-                self:drawChunk(batch, time, layer, chunk)
+                for i, tile, tx, ty, globali, flipX, flipY, og in self:chunkTiles(layer, chunk) do
+                    local anim = tileset.anims[tile]
+                    if anim then
+                        local frame = math.floor(time * anim.fps) % #anim.ids
+                        tile = anim.ids[frame + 1]
+                    end
+                    local x, y = Map.TileToPosMat:transformPoint(tx, ty)
+                    local tileData = tileset.tiles[tile]
+                    -- Tiles with heights are handled as entities
+                    local height = tileData.height or 0
+                    local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
+                    if height == 0 and layerHeight == 0 then
+                        local tileData = tileData
+                        batch:add(
+                            tileData.quad,
+                            x,
+                            y,
+                            0,
+                            flipX and -1 or 1,
+                            flipY and -1 or 1,
+                            tileData.originX,
+                            tileData.originY)
+                    end
+                end
             end
         end
     end

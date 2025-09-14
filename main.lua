@@ -143,13 +143,15 @@ function love.loadData(name, file)
                             local centerX = (maxX + minX) / 2
                             local centerY = (maxY + minY) / 2
 
-                            obj.shadow = {
-                                name = shadowName,
-                                anchor = {
-                                    x = shadowW / 2 - centerX,
-                                    y = shadowH / 2 - centerY
+                            if obj.autoshadow then
+                                obj.shadow = {
+                                    name = shadowName,
+                                    anchor = {
+                                        x = shadowW / 2 - centerX,
+                                        y = shadowH / 2 - centerY
+                                    }
                                 }
-                            }
+                            end
                         elseif subobject.shape == "ellipse" then
                             -- Oops, all circles!
                             obj.shape = love.physics.newCircleShape(

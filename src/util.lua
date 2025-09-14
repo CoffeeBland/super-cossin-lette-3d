@@ -81,6 +81,19 @@ function dump(o, args)
     return _dump(o, "", {}, args)
 end
 
+function dumpTable(o, args)
+    local args = args or { sep = '\n' }
+    local seen = {}
+    local s = '{'
+    for j = 1, args.height do
+        s = s .. args.sep .. '  '
+        for i = 1, args.width do
+            s = s .. tostring(o[i + (j - 1) * args.width]) .. ','
+        end
+    end
+    return s .. args.sep .. '}'
+end
+
 function table.index(table, obj)
     for i, x in ipairs(table) do
         if x == obj then

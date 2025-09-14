@@ -40,6 +40,7 @@ return function()
         },
         water = {
             drownFrames = 60,
+            respawnJumpSpeed = 100,
             samples = {
                 { 0, 40, 10 },
                 { 0, -40, 10 },

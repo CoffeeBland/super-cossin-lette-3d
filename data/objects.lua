@@ -1467,6 +1467,7 @@ return {
     {
       id = 73,
       properties = {
+        ["autoshadow"] = true,
         ["dropRange"] = 800,
         ["height"] = 80,
         ["offsetX"] = 302.5,
@@ -2159,10 +2160,11 @@ return {
     {
       id = 88,
       properties = {
-        ["height"] = 120,
+        ["autoshadow"] = true,
+        ["height"] = 160,
         ["offsetX"] = 400,
-        ["offsetY"] = 300,
-        ["posZ"] = 360
+        ["offsetY"] = 400,
+        ["posZ"] = 320
       },
       image = "../img/Arche_top.png",
       width = 961,
@@ -2193,10 +2195,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -178, y = -174.667 },
-              { x = -517.667, y = 12.3333 },
-              { x = -900.667, y = -212 },
-              { x = -653.333, y = -368 }
+              { x = -74, y = -124 },
+              { x = -384.333, y = 64.3333 },
+              { x = -975.333, y = -252 },
+              { x = -648, y = -392 }
             },
             properties = {}
           }

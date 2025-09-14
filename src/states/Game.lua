@@ -58,9 +58,9 @@ function Game:enter(args)
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {}
 
-    self.map:getEntities(self.entities)
     self.map:getTilesGogogadget(self.physics, self.entities)
-    self:update(0)
+    self.map:getEntities(self.entities)
+    self:handleCreation()
 end
 
 function Game:exit()
@@ -68,18 +68,20 @@ function Game:exit()
     self.physics = nil
 end
 
-function Game:update(dt)
-    self.physics:update(dt)
-    self.time = self.time + dt
-
+function Game:handleCreation()
     for _, entity in ipairs(self.entities) do
         -- Create physics
         if entity.body and not entity.physics then
             entity.physics = Physics.new(self.physics, entity)
+
+            -- Tiles sorta fucked for floor and ceiling purposes
+            if not entity.tileSprites and not entity.velocity then
+                self:findFloorAndCeiling(entity)
+            end
         end
 
-        if entity.water then
-            if not entity.water.sampleSensors then
+        if entity.physics then
+            if entity.water and not entity.water.sampleSensors then
                 entity.water.sampleSensors = {}
                 for i, sample in ipairs(entity.water.samples) do
                     local shape = love.physics.newCircleShape(unpack(sample))
@@ -87,6 +89,34 @@ function Game:update(dt)
                     entity.water.sampleSensors[i] = fixture
                 end
             end
+
+            -- Fruit stack haver
+            if entity.fruitStack and not entity.fruitStack.sensor then
+                local shape = love.physics.newCircleShape(entity.fruitStack.pickupRange / 2)
+                local sensor = entity.physics:newSensor(shape, 0) -- TODO ISH
+                sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+                entity.fruitStack.sensor = sensor
+            end
+
+
+            if entity.picnic and not entity.picnic.sensor then
+                local shape = love.physics.newCircleShape(entity.picnic.dropRange / 2)
+                local sensor = entity.physics:newSensor(shape, 0)
+                sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+                entity.picnic.sensor = sensor
+            end
+        end
+    end
+end
+
+function Game:update(dt)
+    self.physics:update(dt)
+    self:handleCreation()
+
+    self.time = self.time + dt
+
+    for _, entity in ipairs(self.entities) do
+        if entity.water then
             if entity.water.remainingDrownFrames then
                 entity.water.remainingDrownFrames = entity.water.remainingDrownFrames - 1
                 if entity.water.remainingDrownFrames <= 0 then
@@ -97,7 +127,7 @@ function Game:update(dt)
                     entity.pos.z = entity.pos.lastGoodZ
                     entity.physics.body:setPosition(entity.pos.x, entity.pos.y)
                     entity.physics.body:setLinearVelocity(0, 0)
-                    entity.velocity.z = 100
+                    entity.velocity.z = entity.water.respawnJumpSpeed
                 end
             else
                 entity.water.sensorsInWater = 0
@@ -126,13 +156,6 @@ function Game:update(dt)
 
         -- Fruit stack haver
         if entity.fruitStack then
-            if not entity.fruitStack.sensor and entity.physics then
-                local shape = love.physics.newCircleShape(entity.fruitStack.pickupRange / 2)
-                local sensor = entity.physics:newSensor(shape, 0) -- TODO ISH
-                sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-                entity.fruitStack.sensor = sensor
-            end
-
             if #entity.fruitStack.fruits > 0 then
                 if not entity.fruitStack.cooldown then
                     entity.fruitStack.cooldown = entity.fruitStack.eatCooldown
@@ -209,13 +232,6 @@ function Game:update(dt)
 
         -- Picnic at the disco
         if entity.picnic then
-            if entity.physics and not entity.picnic.sensor then
-                local shape = love.physics.newCircleShape(entity.picnic.dropRange / 2)
-                local sensor = entity.physics:newSensor(shape, 0)
-                sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-                entity.picnic.sensor = sensor
-            end
-
             for _, otherEntity in ipairs(self:getAllOverlappingOfType(entity.picnic.sensor)) do
                 if otherEntity.fruitStack then
                     if #otherEntity.fruitStack.fruits > 0 then
@@ -250,8 +266,8 @@ function Game:update(dt)
         -- Handling physics and the dreaded Z axis
         if entity.physics then
             entity.pos.x, entity.pos.y = entity.physics.body:getPosition()
-            self:findFloorAndCeiling(entity)
             if entity.velocity then
+                self:findFloorAndCeiling(entity)
                 -- Speed! Movement! Wee!
                 entity.velocity.z = (entity.velocity.z - g * dt) * airFriction
                 entity.pos.z = entity.pos.z + entity.velocity.z
@@ -432,7 +448,7 @@ function Game:render(dt)
     -- Camera
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(0.33)
+    love.graphics.scale(0.5)
     love.graphics.translate(-self.camera.x, -self.camera.y)
     love.graphics.clear(0.2, 0.5, 0.4)
 
@@ -577,10 +593,6 @@ function Game:findAnim(spriteData, entityAnim)
 end
 
 function Game:findFloorAndCeiling(entity)
-    if not entity.velocity then
-        return
-    end
-
     local floorEntity = nil
     local floorZ = 0
     local ceilingZ = SKY_LIMIT
@@ -590,15 +602,13 @@ function Game:findFloorAndCeiling(entity)
             local ez = other.pos.z + other.pos.height
             if ez < entity.pos.z + DELTA and ez + DELTA > floorZ then
                 -- If the floors are close enough, pick the one with most render priority
-                if not floorEntity or
-                    (math.abs(floorZ - ez) < DELTA and other.pos.y > floorEntity.pos.y)
-                then
+                if not floorEntity or other.pos.y > floorEntity.pos.y then
                     floorEntity = other
                 end
                 floorZ = math.max(floorZ, ez)
             end
             if sz > entity.pos.z + entity.pos.height - DELTA and sz < ceilingZ then
-                ceilingZ = sz
+                ceilingZ = other.pos.z
             end
         end
     end
@@ -649,20 +659,21 @@ function Game:drawEntity(entity)
             end
         end
     end
-    if entity.tileSprite then
-        local sprite = entity.tileSprite
-        local tileData = tileset.tiles[sprite.tile]
+    if entity.tileSprites then
         love.graphics.setBlendMode("alpha", "premultiplied")
-        love.graphics.draw(
-            textures.tileset,
-            tileData.quad,
-            entity.pos.x,
-            (entity.pos.y - entity.pos.z),
-            0,
-            sprite.flipX and -1 or 1,
-            sprite.flipY and -1 or 1,
-            sprite.anchor.x,
-            sprite.anchor.y)
+        for _, sprite in ipairs(entity.tileSprites) do
+            local tileData = tileset.tiles[sprite.tile]
+            love.graphics.draw(
+                textures.tileset,
+                tileData.quad,
+                entity.pos.x,
+                (entity.pos.y - entity.pos.z),
+                0,
+                sprite.flipX and -1 or 1,
+                sprite.flipY and -1 or 1,
+                sprite.anchor.x,
+                sprite.anchor.y)
+        end
         love.graphics.setBlendMode("alpha")
     end
 end
