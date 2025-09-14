@@ -122,9 +122,17 @@ function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
 end
 
 function love.physics.overlap(entity, sensor, other, otherFix)
-    return
-        otherFix:testPoint(entity.pos.x, entity.pos.y) or
-        otherFix:rayCast(entity.pos.x, entity.pos.y, other.pos.x, other.pos.y, 1)
+    if otherFix:testPoint(entity.pos.x, entity.pos.y) then
+        return true
+    end
+    local _, _, frac = otherFix:rayCast(entity.pos.x, entity.pos.y, other.pos.x, other.pos.y, 1)
+    if frac then
+        local x = entity.pos.x + (other.pos.x - entity.pos.x) * frac
+        local y = entity.pos.y + (other.pos.y - entity.pos.y) * frac
+        if sensor:testPoint(x, y) then
+            return true
+        end
+    end
 end
 
 function love.physics.sampleShape(thingymagig, count)
