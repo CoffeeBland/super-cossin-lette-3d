@@ -256,7 +256,7 @@ function Map:getTilesGogogadget(physics, entities)
                         local fixture = love.physics.newFixture(body, shape, 0)
                         fixture:setSensor(true)
                         fixture:setUserData({ type = WATER_SENSOR })
-                        body:setUserData({ id = -1, pos = { z = 0, height = 1 } })
+                        body:setUserData({ id = -1, pos = { x = x, y = y, z = 0, height = 1 } })
                     end
                     local height = tileData.height or 0
                     local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0

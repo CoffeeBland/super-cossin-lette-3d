@@ -122,7 +122,6 @@ function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
 end
 
 function love.physics.overlap(entity, sensor, other, otherFix)
-    local a, b, c, d = otherFix:getBoundingBox()
     return
         otherFix:testPoint(entity.pos.x, entity.pos.y) or
         otherFix:rayCast(entity.pos.x, entity.pos.y, other.pos.x, other.pos.y, 1)
