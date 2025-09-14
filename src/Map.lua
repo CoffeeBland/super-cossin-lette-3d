@@ -14,6 +14,7 @@ function Map.load(name)
 end
 
 function Map:chunkTiles(layer, chunk)
+    self.iteratorLayer = layer
     return self.chunkIterator, chunk, 0
 end
 
@@ -32,8 +33,8 @@ function Map:init()
             local flipY = bit.band(tile, TILE_FLIP_V) ~= 0
             tile = bit.band(tile, TILE_ID_MASK) - self._data.tilesetFirstGid
             if tile > 0 then
-                local tx = chunk.x + chunk.x + ((i - 1) % chunk.width) + 1
-                local ty = chunk.y + chunk.y + math.floor((i - 1) / chunk.width) + 1
+                local tx = self.iteratorLayer.x + chunk.x + ((i - 1) % chunk.width) + 1
+                local ty = self.iteratorLayer.y + chunk.y + math.floor((i - 1) / chunk.width) + 1
                 return i, tile, tx, ty, flipX, flipY, og
             end
         end

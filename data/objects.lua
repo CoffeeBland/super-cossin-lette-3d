@@ -2161,7 +2161,7 @@ return {
       properties = {
         ["height"] = 120,
         ["offsetX"] = 400,
-        ["offsetY"] = 400,
+        ["offsetY"] = 300,
         ["posZ"] = 360
       },
       image = "../img/Arche_top.png",
@@ -2193,10 +2193,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -74, y = -124 },
-              { x = -384.333, y = 64.3333 },
-              { x = -975.333, y = -252 },
-              { x = -648, y = -392 }
+              { x = -178, y = -174.667 },
+              { x = -517.667, y = 12.3333 },
+              { x = -900.667, y = -212 },
+              { x = -653.333, y = -368 }
             },
             properties = {}
           }
@@ -2254,7 +2254,7 @@ return {
       properties = {
         ["height"] = 480,
         ["offsetX"] = 860,
-        ["offsetY"] = 835
+        ["offsetY"] = 830
       },
       image = "../img/Arche_avant.png",
       width = 1152,
@@ -2285,10 +2285,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -7, y = 3 },
+              { x = -40.3333, y = -7.66667 },
               { x = 192, y = 99 },
               { x = 519, y = -76 },
-              { x = 324, y = -180 }
+              { x = 297.333, y = -200 }
             },
             properties = {}
           }

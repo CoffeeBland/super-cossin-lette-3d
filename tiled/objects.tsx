@@ -207,28 +207,28 @@
  <tile id="19">
   <properties>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="55"/>
+   <property name="offsetY" type="float" value="60"/>
   </properties>
   <image source="../img/Champignons-1.png" width="128" height="74"/>
  </tile>
  <tile id="20">
   <properties>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="55"/>
+   <property name="offsetY" type="float" value="60"/>
   </properties>
   <image source="../img/Champignons-2.png" width="128" height="74"/>
  </tile>
  <tile id="21">
   <properties>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="55"/>
+   <property name="offsetY" type="float" value="60"/>
   </properties>
   <image source="../img/Champignons-3.png" width="128" height="74"/>
  </tile>
  <tile id="22">
   <properties>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="55"/>
+   <property name="offsetY" type="float" value="60"/>
   </properties>
   <image source="../img/Champignons-4.png" width="128" height="74"/>
  </tile>
@@ -582,7 +582,7 @@
  </tile>
  <tile id="73">
   <properties>
-   <property name="dropRange" type="float" value="860"/>
+   <property name="dropRange" type="float" value="800"/>
    <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="302.5"/>
    <property name="offsetY" type="float" value="300"/>
@@ -781,13 +781,13 @@
   <properties>
    <property name="height" type="float" value="120"/>
    <property name="offsetX" type="float" value="400"/>
-   <property name="offsetY" type="float" value="400"/>
+   <property name="offsetY" type="float" value="300"/>
    <property name="posZ" type="float" value="360"/>
   </properties>
   <image source="../img/Arche_top.png" width="961" height="622"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="954" y="466">
-    <polygon points="-74,-124 -335,35 -946,-272 -648,-392"/>
+    <polygon points="-74,-124 -384.333,64.3333 -975.333,-252 -648,-392"/>
    </object>
   </objectgroup>
  </tile>
@@ -813,7 +813,7 @@
   <image source="../img/Arche_avant.png" width="1152" height="1024"/>
   <objectgroup draworder="index" id="2">
    <object id="2" x="588" y="884">
-    <polygon points="-7,3 192,99 519,-76 324,-180"/>
+    <polygon points="-40.3333,-7.66667 192,99 519,-76 297.333,-200"/>
    </object>
   </objectgroup>
  </tile>

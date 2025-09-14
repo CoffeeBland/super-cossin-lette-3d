@@ -19,6 +19,17 @@ local speedMultiplier = 20
 local dirs = { "tl", "t", "tr", "r", "br", "b", "bl", "l" }
 local v2 = { x = 0, y = 0 }
 
+-- Overlap iterator state (iiish it's all global and sad)
+local overlappingCheckEntity = nil
+local overlappingCheckBody = nil
+local overlappingCheckSensor = nil
+local overlappingCheckType = nil
+local overlappingCheckStartZ = nil
+local overlappingCheckEndZ = nil
+local overlappingCheckSlop = nil
+local overlappingCheckStopOnFirst = false
+local overlappingCheckResult = {}
+
 Game = {}
 
 function Game:refresh(force)
@@ -239,50 +250,22 @@ function Game:update(dt)
         -- Handling physics and the dreaded Z axis
         if entity.physics then
             entity.pos.x, entity.pos.y = entity.physics.body:getPosition()
+            self:findFloorAndCeiling(entity)
             if entity.velocity then
-                -- Establish floor and ceiling
-                local floorEntity = nil
-                local ceilingEntity = nil
-                local floorZ = 0
-                local ceilingZ = SKY_LIMIT
-                for _, other in ipairs(self:getAllOverlappingOfType(entity.physics.heightSensor)) do
-                    if Game:shouldEntitiesContact(entity, other) then
-                        local sz = other.pos.z
-                        local ez = other.pos.z + other.pos.height
-                        if ez < entity.pos.z + DELTA and ez + DELTA > floorZ then
-                            -- If the floors are close enough, pick the one with most render priority
-                            if not floorEntity or
-                                (math.abs(floorZ - ez) < DELTA and other.pos.y > floorEntity.pos.y)
-                            then
-                                floorEntity = other
-                            end
-                            floorZ = math.max(floorZ, ez)
-                        end
-                        if sz > entity.pos.z + entity.pos.height - DELTA and sz < ceilingZ then
-                            ceilingEntity = other
-                            ceilingZ = sz
-                        end
-                    end
-                end
-                entity.pos.floorEntity = floorEntity
-                entity.pos.floorZ = floorZ
-                entity.pos.ceilingEntity = ceilingEntity
-                entity.pos.ceilingZ = ceilingZ
-
                 -- Speed! Movement! Wee!
                 entity.velocity.z = (entity.velocity.z - g * dt) * airFriction
                 entity.pos.z = entity.pos.z + entity.velocity.z
 
                 -- Check ground (squish!)
-                entity.pos.onGround = entity.pos.z < floorZ + DELTA
+                entity.pos.onGround = entity.pos.z < entity.pos.floorZ + DELTA
                 if entity.pos.onGround then
-                    entity.pos.z = floorZ
+                    entity.pos.z = entity.pos.floorZ
                     entity.velocity.z = 0
                 end
 
                 -- Check head (ouch!)
-                if entity.pos.z + entity.pos.height > ceilingZ then
-                    entity.pos.z = ceilingZ - entity.pos.height - DELTA
+                if entity.pos.z + entity.pos.height > entity.pos.ceilingZ then
+                    entity.pos.z = entity.pos.ceilingZ - entity.pos.height - DELTA
                     entity.velocity.z = 0
                 end
 
@@ -428,8 +411,8 @@ function Game:update(dt)
         function (a, b)
             local ay = a.y
 
-            local floorA, ay = self:findFloorEntity(a)
-            local floorB, by = self:findFloorEntity(b)
+            local floorA, ay = self:findFloorY(a)
+            local floorB, by = self:findFloorY(b)
 
             if math.abs(ay - by) < DELTA then
                 if math.abs(a.pos.y - b.pos.y) < DELTA then
@@ -476,7 +459,13 @@ function Game:render(dt)
             love.graphics.stencil(
                 function()
                     love.graphics.setShader(MASK_SHADER)
-                    self:drawEntity(entity.pos.floorEntity)
+                    overlappingCheckSlop = SHADOW_OVERLAP_SLOP
+                    for _, other in ipairs(self:getAllOverlappingOfType(entity.physics.heightSensor)) do
+                        local ez = other.pos.z + other.pos.height
+                        if entity.pos.z + DELTA > other.pos.z then
+                            self:drawEntity(other)
+                        end
+                    end
                     love.graphics.setShader()
                 end,
                 "replace",
@@ -556,7 +545,6 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
                 fruitEntity.physics.body:applyLinearImpulse(dx, dy)
                 fruitEntity.pos.onGround = false
                 fruitEntity.pos.floorEntity = nil
-                fruitEntity.pos.ceilingEntity = nil
 
                 if fruitEntity == entity then
                     return
@@ -588,7 +576,38 @@ function Game:findAnim(spriteData, entityAnim)
     return foundAnim or spriteData[#spriteData], foundRequest or EMPTY_REQUEST
 end
 
-function Game:findFloorEntity(entity)
+function Game:findFloorAndCeiling(entity)
+    if not entity.velocity then
+        return
+    end
+
+    local floorEntity = nil
+    local floorZ = 0
+    local ceilingZ = SKY_LIMIT
+    for _, other in ipairs(self:getAllOverlappingOfType(entity.physics.heightSensor)) do
+        if Game:shouldEntitiesContact(entity, other) then
+            local sz = other.pos.z
+            local ez = other.pos.z + other.pos.height
+            if ez < entity.pos.z + DELTA and ez + DELTA > floorZ then
+                -- If the floors are close enough, pick the one with most render priority
+                if not floorEntity or
+                    (math.abs(floorZ - ez) < DELTA and other.pos.y > floorEntity.pos.y)
+                then
+                    floorEntity = other
+                end
+                floorZ = math.max(floorZ, ez)
+            end
+            if sz > entity.pos.z + entity.pos.height - DELTA and sz < ceilingZ then
+                ceilingZ = sz
+            end
+        end
+    end
+    entity.pos.floorEntity = floorEntity
+    entity.pos.floorZ = floorZ
+    entity.pos.ceilingZ = ceilingZ
+end
+
+function Game:findFloorY(entity)
     local y = entity.pos.y
     for i = 1, 10 do
         if entity.pos.floorEntity then
@@ -670,20 +689,13 @@ end
 
 -- OVERLAPS!
 
-local overlappingCheckEntity = nil
-local overlappingCheckBody = nil
-local overlappingCheckSensor = nil
-local overlappingCheckType = nil
-local overlappingCheckStartZ = nil
-local overlappingCheckEndZ = nil
-local overlappingCheckStopOnFirst = false
-local overlappingCheckResult = {}
 local function onOverlappingEntitiesCheck(fix)
     local otherEntity = fix:getBody():getUserData()
 
     if overlappingCheckEntity.id == otherEntity.id or
         (overlappingCheckType and fix:getUserData().type ~= overlappingCheckType) or
-        (not love.physics.fancyTouchy(overlappingCheckBody, overlappingCheckSensor, fix) and
+        (not overlappingCheckSlop and
+            not love.physics.fancyTouchy(overlappingCheckBody, overlappingCheckSensor, fix) and
             not fix:testPoint(overlappingCheckEntity.pos.x, overlappingCheckEntity.pos.y))
     then
         return true
@@ -713,9 +725,10 @@ function Game:getAllOverlappingOfType(sensor, type, pos)
     overlappingCheckType = type or HEIGHT_SENSOR
     overlappingCheckStartZ = pos and pos.z
     overlappingCheckEndZ = pos and (pos.z + pos.height)
+    local slop = overlappingCheckSlop or 0
 
     local tlx, tly, brx, bry = sensor:getBoundingBox()
-    self.physics:queryBoundingBox(tlx, tly, brx, bry, onOverlappingEntitiesCheck)
+    self.physics:queryBoundingBox(tlx - slop, tly - slop, brx + slop, bry + slop, onOverlappingEntitiesCheck)
 
     overlappingCheckSensor = nil
     overlappingCheckBody = nil
@@ -723,6 +736,7 @@ function Game:getAllOverlappingOfType(sensor, type, pos)
     overlappingCheckType = nil
     overlappingCheckStartZ = nil
     overlappingCheckEndZ = nil
+    overlappingCheckSlop = nil
     local result = overlappingCheckResult
     if #overlappingCheckResult > 0 then
         overlappingCheckResult = {}
