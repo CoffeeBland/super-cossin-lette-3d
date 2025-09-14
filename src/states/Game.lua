@@ -600,15 +600,15 @@ function Game:findFloorAndCeiling(entity)
         if Game:shouldEntitiesContact(entity, other) then
             local sz = other.pos.z
             local ez = other.pos.z + other.pos.height
-            if ez < entity.pos.z + DELTA and ez + DELTA > floorZ then
+            if other.physics.sliceEnd < entity.physics.sliceStart then
                 -- If the floors are close enough, pick the one with most render priority
                 if not floorEntity or other.pos.y > floorEntity.pos.y then
                     floorEntity = other
                 end
                 floorZ = math.max(floorZ, ez)
             end
-            if sz > entity.pos.z + entity.pos.height - DELTA and sz < ceilingZ then
-                ceilingZ = other.pos.z
+            if other.physics.sliceStart > entity.physics.sliceEnd then
+                ceilingZ = math.min(ceilingZ, sz)
             end
         end
     end
