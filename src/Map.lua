@@ -245,21 +245,29 @@ function Map:getTilesGogogadget(physics, entities)
                     local x, y = Map.TileToPosMat:transformPoint(tx - 0.5, ty - 0.5)
                     local tileData = tileset.tiles[tile]
                     local tileShape = tileset.shapes[tile]
+                    local height = tileData.height or 0
+                    local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
                     local shape = tileShape and (
                         (flipX and tileShape.flipX) or
                         (flipY and tileShape.flipY) or tileShape.default)
                     if tileData.type == "water" then
                         local body = love.physics.newBody(physics,
                             x,
-                            y,
+                            y + layerHeight,
                             "static")
                         local fixture = love.physics.newFixture(body, shape, 0)
                         fixture:setSensor(true)
                         fixture:setUserData({ type = WATER_SENSOR })
-                        body:setUserData({ id = -1, pos = { x = x, y = y, z = 0, height = 1 } })
+                        body:setUserData({
+                            id = -1,
+                            pos = {
+                                x = x,
+                                y = y + layerHeight,
+                                z = layerHeight,
+                                height = 1
+                            }
+                        })
                     end
-                    local height = tileData.height or 0
-                    local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
                     if height > 0 then
                         local entity = {
                             pos = {
