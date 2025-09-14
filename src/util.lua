@@ -121,17 +121,11 @@ function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
     --end
 end
 
-function love.physics.fancyTouchy(body, sensor, otherFix)
-    for _, contact in pairs(body:getContacts()) do
-        local fix1, fix2 = contact:getFixtures()
-        if (fix1 == sensor or fix2 == sensor) and
-            (fix1 == otherFix or fix2 == otherFix) and
-            contact:isTouching() then
-            return true
-        end
-    end
-
-    return false
+function love.physics.overlap(entity, sensor, other, otherFix)
+    local a, b, c, d = otherFix:getBoundingBox()
+    return
+        otherFix:testPoint(entity.pos.x, entity.pos.y) or
+        otherFix:rayCast(entity.pos.x, entity.pos.y, other.pos.x, other.pos.y, 1)
 end
 
 function love.physics.sampleShape(thingymagig, count)

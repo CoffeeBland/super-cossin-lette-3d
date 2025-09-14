@@ -108,7 +108,7 @@ function love.loadData(name, file)
                                 table.insert(verticesFlipY, x)
                                 table.insert(verticesFlipY, -y)
                             end
-                            if #vertices > 8 then
+                            if #vertices > 16 then
                                 obj.shape = love.physics.newChainShape(true, vertices)
                                 obj.shapeFlipX = love.physics.newChainShape(true, verticesFlipX)
                                 obj.shapeFlipY = love.physics.newChainShape(true, verticesFlipY)
@@ -256,7 +256,7 @@ function love.loadData(name, file)
                                         table.insert(verticesFlipY, x)
                                         table.insert(verticesFlipY, -y)
                                     end
-                                    if #vertices > 8 then
+                                    if #vertices > 16 then
                                         tileset.shapes[tile.id] = {
                                             default = love.physics.newChainShape(true, vertices),
                                             flipX = love.physics.newChainShape(true, verticesFlipX),

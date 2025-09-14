@@ -705,9 +705,7 @@ local function onOverlappingEntitiesCheck(fix)
 
     if overlappingCheckEntity.id == otherEntity.id or
         (overlappingCheckType and fix:getUserData().type ~= overlappingCheckType) or
-        (not overlappingCheckSlop and
-            not love.physics.fancyTouchy(overlappingCheckBody, overlappingCheckSensor, fix) and
-            not fix:testPoint(overlappingCheckEntity.pos.x, overlappingCheckEntity.pos.y))
+        not (overlappingCheckSlop or love.physics.overlap(overlappingCheckEntity, overlappingCheckSensor, otherEntity, fix))
     then
         return true
     end

@@ -23,6 +23,10 @@ local function fixture_line_color(fixture)
     end
 end
 
+local function fixture_aabb_color(fixture)
+    return 1, 0, 0, 1
+end
+
 local function draw_fixture(fixture)
     local shape = fixture:getShape()
     local shapeType = shape:getType()
@@ -50,6 +54,17 @@ end
 local function draw_body(body)
     local bx, by = body:getPosition()
     local bodyAngle = body:getAngle()
+    local fixtures = body:getFixtures()
+
+    --for i = 1, #fixtures do
+    --    love.graphics.setColor(fixture_aabb_color(fixture))
+    --    local tlx, tly, brx, bry = fixtures[i]:getBoundingBox()
+    --    love.graphics.polygon("line",
+    --        tlx, tly,
+    --        brx, tly,
+    --        brx, bry,
+    --        tlx, bry)
+    --end
 
     love.graphics.push()
     love.graphics.translate(bx, by)
@@ -57,7 +72,6 @@ local function draw_body(body)
 
     rng:setSeed(seed)
 
-    local fixtures = body:getFixtures()
     for i = 1, #fixtures do
         draw_fixture(fixtures[i])
     end
@@ -69,6 +83,7 @@ local function draw_body(body)
     end
 
     love.graphics.setPointSize(3)
+    love.graphics.setColor(1, 0, 0, 1)
     love.graphics.points(0, 0)
     love.graphics.pop()
 end
