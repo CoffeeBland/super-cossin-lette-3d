@@ -639,7 +639,7 @@ return {
       id = 19,
       properties = {
         ["offsetX"] = 64,
-        ["offsetY"] = 55
+        ["offsetY"] = 60
       },
       image = "../img/Champignons-1.png",
       width = 128,
@@ -649,7 +649,7 @@ return {
       id = 20,
       properties = {
         ["offsetX"] = 64,
-        ["offsetY"] = 55
+        ["offsetY"] = 60
       },
       image = "../img/Champignons-2.png",
       width = 128,
@@ -659,7 +659,7 @@ return {
       id = 21,
       properties = {
         ["offsetX"] = 64,
-        ["offsetY"] = 55
+        ["offsetY"] = 60
       },
       image = "../img/Champignons-3.png",
       width = 128,
@@ -669,7 +669,7 @@ return {
       id = 22,
       properties = {
         ["offsetX"] = 64,
-        ["offsetY"] = 55
+        ["offsetY"] = 60
       },
       image = "../img/Champignons-4.png",
       width = 128,
@@ -2194,8 +2194,8 @@ return {
             visible = true,
             polygon = {
               { x = -74, y = -124 },
-              { x = -335, y = 35 },
-              { x = -946, y = -272 },
+              { x = -384.333, y = 64.3333 },
+              { x = -975.333, y = -252 },
               { x = -648, y = -392 }
             },
             properties = {}
@@ -2254,7 +2254,7 @@ return {
       properties = {
         ["height"] = 480,
         ["offsetX"] = 860,
-        ["offsetY"] = 830
+        ["offsetY"] = 835
       },
       image = "../img/Arche_avant.png",
       width = 1152,

@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 11,
-  nextobjectid = 143,
+  nextobjectid = 144,
   properties = {},
   tilesets = {
     {
@@ -713,9 +713,7 @@ return {
           rotation = 0,
           gid = 2147483997,
           visible = true,
-          properties = {
-            ["posZ"] = 160
-          }
+          properties = {}
         },
         {
           id = 50,
@@ -1380,8 +1378,8 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 1666.38,
-          y = 3559.13,
+          x = 1541.67,
+          y = 3527.33,
           width = 128,
           height = 74,
           rotation = 0,
@@ -1520,8 +1518,8 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 2070.38,
-          y = 4003.63,
+          x = 1936.33,
+          y = 3786.33,
           width = 128,
           height = 74,
           rotation = 0,
@@ -1534,8 +1532,8 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 1712.69,
-          y = 3937.31,
+          x = 1726.67,
+          y = 3946.67,
           width = 128,
           height = 74,
           rotation = 0,
@@ -1932,8 +1930,8 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 272.72,
-          y = 3829.34,
+          x = 481,
+          y = 4020.67,
           width = 128,
           height = 192,
           rotation = 0,
@@ -2030,8 +2028,8 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 1737.82,
-          y = 3792.85,
+          x = 1751.33,
+          y = 3798.67,
           width = 128,
           height = 192,
           rotation = 0,
