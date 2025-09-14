@@ -13,21 +13,19 @@ local releaseActions = {
     space = "jump"
 }
 
-function getTexturePos(alignment, texture)
+function getObjectPos(alignment, obj)
+    local texture = textures[obj.name]
     if alignment == "unspecified" or alignment == "bottom" then
         return -texture:getWidth() / 2, -texture:getHeight()
     end
 end
 
-function getObjectPos(alignment, obj)
-    local texture = textures[obj.name]
-    return getTexturePos(alignment, texture)
-end
-
 function getTilePos(alignment, tile)
     local tileName = str.filename(tile.image)
     local texture = textures[tileName]
-    return getTexturePos(alignment, texture)
+    if alignment == "unspecified" or alignment == "bottom" then
+        return -TILE_WIDTH / 2, -texture:getHeight()
+    end
 end
 
 fonts = {}
@@ -170,8 +168,6 @@ function love.loadData(name, file)
             tileset.tiles = {}
             tileset.anims = {}
             tileset.shapes = {}
-            tileset.tilewidth = data.tilewidth
-            tileset.tileheight = data.tileheight
             if data.image then
                 local name = str.filename(data.image)
                 for i = 1, data.tilecount do
@@ -372,16 +368,16 @@ function love.update(dt)
     actions.movement.x = 0
     actions.movement.y = 0
     if love.keyboard.isDown('left') then
-        actions.movement.x = actions.movement.x - tileset.tilewidth
+        actions.movement.x = actions.movement.x - TILE_WIDTH
     end
     if love.keyboard.isDown('right') then
-        actions.movement.x = actions.movement.x + tileset.tilewidth
+        actions.movement.x = actions.movement.x + TILE_WIDTH
     end
     if love.keyboard.isDown('up') then
-        actions.movement.y = actions.movement.y - tileset.tileheight
+        actions.movement.y = actions.movement.y - TILE_HEIGHT
     end
     if love.keyboard.isDown('down') then
-        actions.movement.y = actions.movement.y + tileset.tileheight
+        actions.movement.y = actions.movement.y + TILE_HEIGHT
     end
     if actions.movement.x ~= 0 or actions.movement.y ~= 0 then
         actions.movement.angle = math.atan2(actions.movement.y, actions.movement.x)

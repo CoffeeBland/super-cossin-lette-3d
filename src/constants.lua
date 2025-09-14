@@ -1,5 +1,6 @@
 local bit = require("bit")
 
+EMPTY = {}
 METER_SCALE = 128
 TILE_FLIP_H = math.pow(2, 31)
 TILE_FLIP_V = math.pow(2, 30)
@@ -39,3 +40,6 @@ STATIC_SHADOW_SLOP = 10
 FIXBODY = 41
 HEIGHT_SENSOR = 42
 WATER_SENSOR = 43
+
+TILE_WIDTH = 128
+TILE_HEIGHT = 74
