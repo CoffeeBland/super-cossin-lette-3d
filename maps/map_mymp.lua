@@ -1570,20 +1570,6 @@ return {
           properties = {}
         },
         {
-          id = 145,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1874.67,
-          y = 1356.67,
-          width = 322,
-          height = 319,
-          rotation = 0,
-          gid = 353,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 147,
           name = "",
           type = "",

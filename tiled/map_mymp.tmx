@@ -275,7 +275,7 @@
   <object id="103" gid="3221225802" x="3209.13" y="1900.39" width="256" height="148"/>
   <object id="107" gid="279" x="1884.12" y="2659.16" width="384" height="216"/>
   <object id="113" gid="355" x="2794.31" y="2192.36" width="322" height="319"/>
-  <object id="114" gid="355" x="1545.54" y="3683.55" width="322" height="319"/>
+  <object id="114" gid="355" x="1445.69" y="3788.74" width="322" height="319"/>
   <object id="115" gid="322" x="1541.67" y="3527.33" width="128" height="74"/>
   <object id="116" gid="317" x="2055.66" y="3668.1" width="128" height="148"/>
   <object id="117" gid="316" x="1803.1" y="4327.93" width="128" height="148"/>
@@ -290,7 +290,6 @@
   <object id="140" gid="288" x="1726.67" y="3946.67" width="128" height="74"/>
   <object id="142" gid="292" x="1406" y="3256" width="192" height="256"/>
   <object id="144" gid="315" x="1961" y="1369" width="128" height="148"/>
-  <object id="145" gid="353" x="1874.67" y="1356.67" width="322" height="319"/>
   <object id="147" gid="303" x="1578.67" y="1282.67" width="128" height="192"/>
  </objectgroup>
  <objectgroup id="5" name="Calque d'Objets 2">
