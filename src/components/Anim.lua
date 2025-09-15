@@ -7,8 +7,8 @@ Anim.priorities = {
     idle = 1,
     walk = 1,
     squish = 2,
-    eat = 3,
-    jump = 4,
+    jump = 3,
+    eat = 4,
     drown = 5
 }
 

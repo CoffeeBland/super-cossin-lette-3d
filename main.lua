@@ -60,6 +60,10 @@ function love.loadData(name, file)
         return
     end
 
+    if file == "data/gameConstants.lua" then
+        Game.constants = data
+    end
+
     if data.tiledversion then
         if data.name == "objects" then
             for _, objData in ipairs(data.tiles) do

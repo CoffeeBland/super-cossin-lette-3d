@@ -2163,7 +2163,7 @@ return {
         ["autoshadow"] = true,
         ["height"] = 160,
         ["offsetX"] = 400,
-        ["offsetY"] = 400,
+        ["offsetY"] = 360,
         ["posZ"] = 320
       },
       image = "../img/Arche_top.png",
@@ -2195,10 +2195,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -74, y = -124 },
-              { x = -384.333, y = 64.3333 },
-              { x = -975.333, y = -252 },
-              { x = -648, y = -392 }
+              { x = -148.667, y = -125.333 },
+              { x = -487, y = 75 },
+              { x = -915.333, y = -171 },
+              { x = -661.333, y = -322.667 }
             },
             properties = {}
           }

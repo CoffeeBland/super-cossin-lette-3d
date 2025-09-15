@@ -5,12 +5,6 @@ require "src.components.Physics"
 local PhysicsRenderer = require "src.PhysicsRenderer"
 
 local bit = require("bit")
-local g = 3 * METER_SCALE
-local airFriction = 0.975
-local groundDamping = 16
-local slidingDamping = 1
-local jumpMultiplier = 0.5
-local speedMultiplier = 20
 --   2
 --  1 3
 -- 8   4
@@ -159,18 +153,21 @@ function Game:update(dt)
             if #entity.fruitStack.fruits > 0 then
                 if not entity.fruitStack.cooldown then
                     entity.fruitStack.cooldown = entity.fruitStack.eatCooldown
-                else
+                elseif entity.fruitStack.cooldown > 0 then
                     entity.fruitStack.cooldown = entity.fruitStack.cooldown - 1
                 end
             end
 
-            if entity.fruitStack.cooldown == 0 then
+            if entity.fruitStack.cooldown == 0 and entity.anim:highestPriority() < Anim.priorities.jump then
                 entity.anim:request("eat")
+                entity.fruitStack.cooldown = -1
             end
 
             if entity.anim:isTriggered("throwFruit") then
                 for _, fruitEntity in ipairs(entity.fruitStack.fruits) do
-                    fruitEntity.velocity.z = entity.fruitStack.pickupJumpSpeed * jumpMultiplier
+                    fruitEntity.velocity.z =
+                        entity.fruitStack.pickupJumpSpeed *
+                        Game.constants.jumpMultiplier
                 end
             end
 
@@ -206,12 +203,25 @@ function Game:update(dt)
                 local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
                 entity.anim.dir = dirs[a];
             end
-            if entity.actions.movement.angle and entity.anim:highestPriority() <= Anim.priorities.walk then
-                if entity.pos.onGround then
-                    local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * speedMultiplier
-                    local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * speedMultiplier
-                    entity.physics.body:applyForce(dx, dy)
+            if entity.pos.onGround and entity.anim:highestPriority() <= Anim.priorities.squish then
+                if entity.actions.jump then
+                    entity.velocity.z =
+                        entity.velocity.z +
+                        entity.actor.jumpSpeed * Game.constants.jumpMultiplier
+                    entity.pos.onGround = false
                 end
+                entity.pos.sliding = entity.actions.prejump
+                entity.anim:toggle("squish", entity.actions.prejump)
+            end
+            entity.anim:toggle("jump", not entity.pos.onGround)
+            if entity.actions.movement.angle and entity.anim:highestPriority() <= Anim.priorities.jump then
+                local speed = (entity.pos.sliding and entity.actor.slidingSpeed) or
+                    (entity.pos.onGround and entity.actor.walkSpeed) or
+                    entity.actor.airSpeed or
+                    0
+                local dx = speed * math.cos(entity.actions.movement.angle) * Game.constants.speedMultiplier
+                local dy = speed * math.sin(entity.actions.movement.angle) * Game.constants.speedMultiplier
+                entity.physics.body:applyForce(dx, dy)
 
                 entity.anim:release("idle")
                 entity.anim:request("walk")
@@ -219,15 +229,6 @@ function Game:update(dt)
                 entity.anim:release("walk")
                 entity.anim:request("idle")
             end
-            if entity.pos.onGround and entity.anim:highestPriority() <= Anim.priorities.squish then
-                if entity.actions.jump then
-                    entity.velocity.z = entity.velocity.z + entity.actor.jumpSpeed * jumpMultiplier
-                    entity.pos.onGround = false
-                end
-                entity.pos.sliding = entity.actions.prejump
-                entity.anim:toggle("squish", entity.actions.prejump)
-            end
-            entity.anim:toggle("jump", not entity.pos.onGround)
         end
 
         -- Picnic at the disco
@@ -235,7 +236,7 @@ function Game:update(dt)
             for _, otherEntity in ipairs(self:getAllOverlappingOfType(entity.picnic.sensor)) do
                 if otherEntity.fruitStack then
                     if #otherEntity.fruitStack.fruits > 0 then
-                        otherEntity.velocity.z = 60
+                        otherEntity.velocity.z = entity.picnic.stackDropJumpSpeed
                         otherEntity.physics.body:setLinearVelocity(0, 0)
                     end
                     local dropPoints = love.physics.sampleShape(
@@ -248,7 +249,7 @@ function Game:update(dt)
                         otherEntity.anim:release("eat")
 
                         fruitEntity.fruit.stackEntity = entity
-                        fruitEntity.fruit.animFrames = 20
+                        fruitEntity.fruit.animFrames = entity.picnic.pickupAnimFrames
                         fruitEntity.fruit.offset = {
                             x = dropPoints[(i - 1) * 2 + 1],
                             y = dropPoints[(i - 1) * 2 + 2],
@@ -256,7 +257,7 @@ function Game:update(dt)
                         }
                         fruitEntity.fruit.reachedStack = false
                         fruitEntity.fruit.cooldown = nil
-                        fruitEntity.velocity.z = 150 * jumpMultiplier
+                        fruitEntity.velocity.z = entity.picnic.pickupJumpSpeed * Game.constants.jumpMultiplier
                         table.insert(entity.picnic.fruits, fruitEntity)
                     end
                 end
@@ -269,7 +270,7 @@ function Game:update(dt)
             if entity.velocity then
                 self:findFloorAndCeiling(entity)
                 -- Speed! Movement! Wee!
-                entity.velocity.z = (entity.velocity.z - g * dt) * airFriction
+                entity.velocity.z = (entity.velocity.z - Game.constants.g * dt) * Game.constants.airFriction
                 entity.pos.z = entity.pos.z + entity.velocity.z
 
                 -- Check ground (squish!)
@@ -286,7 +287,11 @@ function Game:update(dt)
                 end
 
                 entity.physics:updateHeightSlices(entity.pos)
-                entity.physics.body:setLinearDamping(entity.pos.onGround and (entity.pos.sliding and slidingDamping or groundDamping) or 0)
+                entity.physics.body:setLinearDamping(
+                    entity.pos.onGround and
+                        (entity.pos.sliding and Game.constants.slidingDamping or
+                        Game.constants.groundDamping) or
+                    Game.constants.airDamping)
             end
         end
 
@@ -471,7 +476,7 @@ function Game:render(dt)
     -- Entities
     for _, entity in ipairs(self.entities) do
         -- Stacked entities shadows
-        if entity.shadow and entity.pos.floorEntity then
+        if entity.shadow and (entity.pos.floorZ or 0) > 0 then
             love.graphics.stencil(
                 function()
                     love.graphics.setShader(MASK_SHADER)
@@ -530,7 +535,7 @@ function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
     fruitEntity.velocity.z =
         math.max(fruitStackEntity.velocity.z, fruitStackEntity.fruitStack.pickupJumpSpeed) *
         math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) *
-        jumpMultiplier
+        Game.constants.jumpMultiplier
 end
 
 function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
@@ -555,7 +560,7 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
                 fruitEntity.fruit.animFrames = nil
                 fruitEntity.fruit.reachedStack = false
                 fruitEntity.fruit.cooldown = stackRootEntity.fruitStack.dropCooldown
-                fruitEntity.velocity.z = stackRootEntity.fruitStack.dropJumpSpeed * jumpMultiplier
+                fruitEntity.velocity.z = stackRootEntity.fruitStack.dropJumpSpeed * Game.constants.jumpMultiplier
                 fruitEntity.physics.body:setType("dynamic")
                 fruitEntity.physics.body:setLinearDamping(0)
                 fruitEntity.physics.body:applyLinearImpulse(dx, dy)
@@ -597,7 +602,7 @@ function Game:findFloorAndCeiling(entity)
     local floorZ = 0
     local ceilingZ = SKY_LIMIT
     for _, other in ipairs(self:getAllOverlappingOfType(entity.physics.heightSensor)) do
-        if Game:shouldEntitiesContact(entity, other) then
+        if (entity.velocity or not other.velocity) and Game:shouldEntitiesContact(entity, other) then
             local sz = other.pos.z
             local ez = other.pos.z + other.pos.height
             if other.physics.sliceEnd < entity.physics.sliceStart then

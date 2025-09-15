@@ -2,7 +2,12 @@ return function()
     return {
         input = true,
         camera = true,
-        actor = { walkSpeed = 250, jumpSpeed = 225 },
+        actor = {
+            walkSpeed = 150,
+            slidingSpeed = 0,
+            airSpeed = 25,
+            jumpSpeed = 200
+        },
         pos = { height = HEIGHT_SLICE },
         velocity = { z = 0 },
         body = { shape = "circle", size = 80, type = "dynamic" },
@@ -42,10 +47,10 @@ return function()
             drownFrames = 60,
             respawnJumpSpeed = 100,
             samples = {
-                { 0, 40, 10 },
-                { 0, -40, 10 },
-                { 40, 0, 10 },
-                { -40, 0, 10 }
+                { 0, 50, 10 },
+                { 0, -50, 10 },
+                { 50, 0, 10 },
+                { -50, 0, 10 }
             }
         },
         soundEmitter = {
