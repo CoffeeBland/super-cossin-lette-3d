@@ -8,6 +8,7 @@ TILE_ID_MASK = bit.bnot(bit.bor(TILE_FLIP_H, TILE_FLIP_V))
 DELTA = 0.01
 SKY_LIMIT = METER_SCALE * 16
 HEIGHT_SLICE = 80
+BIG_NUMBER = 999999
 
 MASK_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {

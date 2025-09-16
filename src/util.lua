@@ -24,8 +24,7 @@ function love.filesystem.crawl(dir, _results)
             local path = dir .. "/" .. file
             local info = love.filesystem.getInfo(path, "file")
             if not timestamps[path] or timestamps[path].modtime < info.modtime then
-                timestamps[path] = info
-                table.insert(_results, path)
+                _results[path] = info
             end
         end
     end

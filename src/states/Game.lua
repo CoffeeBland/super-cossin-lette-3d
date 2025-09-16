@@ -108,12 +108,14 @@ function Game:update(dt)
     self:handleCreation()
 
     self.time = self.time + dt
+    local airFrictionForFrame = Game.constants.airFriction ^ dt
+    local framePart = dt / (1 / 60)
 
     for _, entity in ipairs(self.entities) do
         if entity.water then
             if entity.water.remainingDrownFrames then
-                entity.water.remainingDrownFrames = entity.water.remainingDrownFrames - 1
-                if entity.water.remainingDrownFrames <= 0 then
+                entity.water.remainingDrownFrames = entity.water.remainingDrownFrames - framePart
+                if entity.water.remainingDrownFrames < DELTA then
                     entity.water.remainingDrownFrames = nil
                     entity.anim:release("drown")
                     entity.pos.x = entity.pos.lastGoodX
@@ -154,13 +156,16 @@ function Game:update(dt)
                 if not entity.fruitStack.cooldown then
                     entity.fruitStack.cooldown = entity.fruitStack.eatCooldown
                 elseif entity.fruitStack.cooldown > 0 then
-                    entity.fruitStack.cooldown = entity.fruitStack.cooldown - 1
+                    entity.fruitStack.cooldown = entity.fruitStack.cooldown - framePart
                 end
             end
 
-            if entity.fruitStack.cooldown == 0 and entity.anim:highestPriority() < Anim.priorities.jump then
+            if entity.fruitStack.cooldown and
+                entity.fruitStack.cooldown <= 0 and
+                entity.anim:highestPriority() < Anim.priorities.jump
+            then
                 entity.anim:request("eat")
-                entity.fruitStack.cooldown = -1
+                entity.fruitStack.cooldown = BIG_NUMBER
             end
 
             if entity.anim:isTriggered("throwFruit") then
@@ -236,7 +241,7 @@ function Game:update(dt)
             for _, otherEntity in ipairs(self:getAllOverlappingOfType(entity.picnic.sensor)) do
                 if otherEntity.fruitStack then
                     if #otherEntity.fruitStack.fruits > 0 then
-                        otherEntity.velocity.z = entity.picnic.stackDropJumpSpeed
+                        otherEntity.velocity.z = entity.picnic.stackDropJumpSpeed * Game.constants.jumpMultiplier
                         otherEntity.physics.body:setLinearVelocity(0, 0)
                     end
                     local dropPoints = love.physics.sampleShape(
@@ -270,8 +275,8 @@ function Game:update(dt)
             if entity.velocity then
                 self:findFloorAndCeiling(entity)
                 -- Speed! Movement! Wee!
-                entity.velocity.z = (entity.velocity.z - Game.constants.g * dt) * Game.constants.airFriction
-                entity.pos.z = entity.pos.z + entity.velocity.z
+                entity.velocity.z = entity.velocity.z * airFrictionForFrame - Game.constants.g * dt
+                entity.pos.z = entity.pos.z + entity.velocity.z * dt
 
                 -- Check ground (squish!)
                 entity.pos.onGround = entity.pos.z < entity.pos.floorZ + DELTA
@@ -312,16 +317,17 @@ function Game:update(dt)
                 local targetZ = parentEntity.pos.z + entity.fruit.offset.z
 
                 if entity.fruit.animFrames > 0 then
-                    local p = 1 - 1 / entity.fruit.animFrames
+                    local p = 1 - 1 / math.max(entity.fruit.animFrames, 1)
                     entity.physics.body:setPosition(
                         entity.pos.x * p + targetX * (1 - p),
                         entity.pos.y * p + targetY * (1 - p))
-                    entity.fruit.animFrames = entity.fruit.animFrames - 1
+                    entity.fruit.animFrames = entity.fruit.animFrames - framePart
                     if entity.pos.z > targetZ then
                         entity.fruit.reachedStack = true
                     end
                 else
-                    local pickupForce = stackRootEntity.fruitStack and stackRootEntity.fruitStack.pickupForce or 0.7
+                    local pickupForce = stackRootEntity.fruitStack and stackRootEntity.fruitStack.pickupForce or 1
+                    pickupForce = pickupForce ^ dt
                     entity.physics.body:setPosition(
                         entity.pos.x * (1 - pickupForce) + targetX * pickupForce,
                         entity.pos.y * (1 - pickupForce) + targetY * pickupForce)
@@ -338,7 +344,7 @@ function Game:update(dt)
                 end
             end
             if entity.fruit.cooldown then
-                entity.fruit.cooldown = entity.fruit.cooldown - 1
+                entity.fruit.cooldown = entity.fruit.cooldown - framePart
                 if entity.fruit.cooldown < 0 then
                     entity.fruit.cooldown = nil
                 end
@@ -482,7 +488,6 @@ function Game:render(dt)
                     love.graphics.setShader(MASK_SHADER)
                     overlappingCheckSlop = SHADOW_OVERLAP_SLOP
                     for _, other in ipairs(self:getAllOverlappingOfType(entity.physics.heightSensor)) do
-                        local ez = other.pos.z + other.pos.height
                         if entity.pos.z + DELTA > other.pos.z then
                             self:drawEntity(other)
                         end

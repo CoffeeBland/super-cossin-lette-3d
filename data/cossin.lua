@@ -47,10 +47,10 @@ return function()
             drownFrames = 60,
             respawnJumpSpeed = 100,
             samples = {
-                { 0, 50, 10 },
-                { 0, -50, 10 },
-                { 50, 0, 10 },
-                { -50, 0, 10 }
+                { 0, 50, 5 },
+                { 0, -50, 5 },
+                { 50, 0, 5 },
+                { -50, 0, 5 }
             }
         },
         soundEmitter = {

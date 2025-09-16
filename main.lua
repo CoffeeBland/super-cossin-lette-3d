@@ -309,29 +309,37 @@ end
 
 function love.crawlFiles(frame)
     local updated = false
-    if not frame or (frame % 3) == 0 then
-        for _,file in ipairs(love.filesystem.crawl("img")) do
+    if not frame or (frame % 30) == 0 then
+        for file, info in pairs(love.filesystem.crawl("img")) do
             print("image", file)
             local name = str.filename(file)
-            textures[name] = love.graphics.newImage(file)
-            updated = true
+            local ok, img = pcall(love.graphics.newImage, file)
+            if ok then
+                textures[name] = img
+                timestamps[file] = info
+                updated = true
+            else
+                print("Could not read file", img)
+            end
         end
     end
 
-    if not frame or (frame % 3) == 1 then
-        for _,file in ipairs(love.filesystem.crawl("audio")) do
+    if not frame or (frame % 30) == 10 then
+        for file, info in pairs(love.filesystem.crawl("audio")) do
             print("audio", file)
             local name = str.filename(file)
             sounds[name] = love.audio.newSource(file, "static")
+            timestamps[file] = info
             updated = true
         end
     end
 
-    if not frame or (frame % 3) == 2 then
-        for _,file in ipairs(love.filesystem.crawl("data")) do
+    if not frame or (frame % 30) == 20 then
+        for file, info in pairs(love.filesystem.crawl("data")) do
             print("data", file)
             local name = str.filename(file)
             love.loadData(name, file)
+            timestamps[file] = info
             updated = true
         end
     end
@@ -369,6 +377,8 @@ end
 
 local avgDt = 1 / 60
 local frame = 0
+local frameTime = 0
+local frameDuration = 1 / 60
 
 function love.update(dt)
     actions.movement.x = 0
@@ -391,7 +401,11 @@ function love.update(dt)
         actions.movement.angle = nil
     end
 
-    StateMachine:update(dt)
+    frameTime = frameTime + dt
+    while frameTime + DELTA > frameDuration do
+        frameTime = frameTime - frameDuration
+        StateMachine:update(frameDuration)
+    end
 
     for key, action in pairs(releaseActions) do
         local preaction = "pre" .. action
