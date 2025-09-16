@@ -46,11 +46,20 @@ function Game:enter(args)
             local e2 = fix2:getBody():getUserData()
             return self:shouldEntitiesContact(e1, e2)
         end)
-    self.camera = { x = 0, y = 0 }
+    self.camera = {
+        x = 0,
+        y = 0,
+        panFrames = 0,
+        target = nil
+    }
+    self.input = {
+        target = nil
+    }
     self.time = 0
     self.map = Map.load(args.map)
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {}
+    self.entitiesByName = {}
 
     self.map:getTilesGogogadget(self.physics, self.entities)
     self.map:getEntities(self.entities)
@@ -100,6 +109,10 @@ function Game:handleCreation()
                 entity.picnic.sensor = sensor
             end
         end
+
+        if entity.name then
+            self.entitiesByName[entity.name] = entity
+        end
     end
 end
 
@@ -110,6 +123,11 @@ function Game:update(dt)
     self.time = self.time + dt
     local airFrictionForFrame = Game.constants.airFriction ^ dt
     local framePart = dt / (1 / 60)
+    local remainingFruits = 0
+
+    if self.input.target then
+        self.input.target.actions = actions
+    end
 
     for _, entity in ipairs(self.entities) do
         if entity.water then
@@ -145,11 +163,6 @@ function Game:update(dt)
             end
         end
 
-        -- Eat input
-        if entity.input then
-            entity.actions = actions
-        end
-
         -- Fruit stack haver
         if entity.fruitStack then
             if #entity.fruitStack.fruits > 0 then
@@ -181,6 +194,7 @@ function Game:update(dt)
                 if eaten then
                     eaten.toRemove = true
                     table.remove(entity.fruitStack.fruits, 1)
+                    table.insert(entity.fruitStack.eaten, eaten.fruit.type)
                     local nextFruitEntity = entity.fruitStack.fruits[1]
                     if nextFruitEntity then
                         nextFruitEntity.fruit.stackEntity = entity
@@ -192,6 +206,8 @@ function Game:update(dt)
             if #entity.fruitStack.fruits == 0 or entity.anim:isTriggered("eat:finished") then
                 entity.fruitStack.cooldown = nil
             end
+
+            remainingFruits = remainingFruits + #entity.fruitStack.fruits
 
             for _, other in ipairs(self:getAllOverlappingOfType(entity.fruitStack.sensor)) do
                 if other.fruit then
@@ -342,6 +358,8 @@ function Game:update(dt)
                 if stackRootEntity.fruitStack then
                     self:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
                 end
+            else
+                remainingFruits = remainingFruits + 1
             end
             if entity.fruit.cooldown then
                 entity.fruit.cooldown = entity.fruit.cooldown - framePart
@@ -415,14 +433,21 @@ function Game:update(dt)
             end
         end
 
-        -- Updating the camera
-        if entity.camera then
-            self.camera.x = entity.pos.x
-            self.camera.y = entity.pos.y
+        -- Auto-attaching the input
+        if entity.input and not self.input.target then
+            self.input.target = entity
+        end
+
+        -- Auto-attaching the camera
+        if entity.camera and not self.camera.target then
+            self.camera.target = entity
         end
     end
 
     -- Removing dead entities, but we maybe shouldn't!?
+    -- TODO: Support finding entities by id, having deletable ids
+    -- not using direct references ever, and yadi yada yada.
+    -- Is all sketch.
     for i = #self.entities, 1, -1 do
         local entity = self.entities[i]
         if entity.toRemove then
@@ -453,6 +478,20 @@ function Game:update(dt)
 
             return ay < by
         end)
+
+    -- Camera
+    if self.camera.target then
+        self.camera.x = math.interp(self.camera.panFrames, self.camera.x, self.camera.target.pos.x)
+        self.camera.y = math.interp(self.camera.panFrames, self.camera.y, self.camera.target.pos.y)
+        if self.camera.panFrames and self.camera.panFrames > 0 then
+            self.camera.panFrames = self.camera.panFrames - framePart
+        end
+    end
+
+    if remainingFruits == 0 then
+        self.camera.target = self.entitiesByName.picnic
+        self.camera.panFrames = 60
+    end
 end
 
 function Game:render(dt)

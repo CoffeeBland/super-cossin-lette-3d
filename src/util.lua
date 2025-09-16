@@ -9,6 +9,11 @@ function math.round(n)
     return math.floor(n + 0.5)
 end
 
+function math.interp(frames, current, target)
+    local p = 1 - 1 / math.max(frames or 1, 1)
+    return current * p + target * (1 - p)
+end
+
 function love.filesystem.crawl(dir, _results)
     if not _results then
         _results = {}

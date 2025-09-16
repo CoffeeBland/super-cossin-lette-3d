@@ -1,5 +1,6 @@
 return function()
     return {
+        name = "cossin",
         input = true,
         camera = true,
         actor = {
@@ -32,6 +33,7 @@ return function()
         },
         fruitStack = {
             fruits = {},
+            eaten = {},
             pickupRange = 160,
             pickupForce = 0.7,
             pickupJumpSpeed = 140,

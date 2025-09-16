@@ -1,5 +1,6 @@
 return function(object)
     return {
+        name = "picnic",
         picnic = {
             dropRange = object.dropRange,
             fruits = {},
