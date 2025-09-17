@@ -207,17 +207,17 @@ function Game:update(dt)
                 entity.fruitStack.cooldown = nil
             end
 
-            remainingFruits = remainingFruits + #entity.fruitStack.fruits
-
             for _, other in ipairs(self:getAllOverlappingOfType(entity.fruitStack.sensor)) do
                 if other.fruit then
                     self:checkFruitPickup(entity, other)
                 end
             end
+
+            remainingFruits = remainingFruits + #entity.fruitStack.fruits
         end
 
         -- Actor! Shit this is sketch.
-        if entity.actor then
+        if entity.actor and entity.actions then
             entity.pos.sliding = false
             if entity.actions.movement.angle then
                 -- RIP
@@ -333,10 +333,9 @@ function Game:update(dt)
                 local targetZ = parentEntity.pos.z + entity.fruit.offset.z
 
                 if entity.fruit.animFrames > 0 then
-                    local p = 1 - 1 / math.max(entity.fruit.animFrames, 1)
                     entity.physics.body:setPosition(
-                        entity.pos.x * p + targetX * (1 - p),
-                        entity.pos.y * p + targetY * (1 - p))
+                        math.interp(entity.fruit.animFrames, entity.pos.x, targetX),
+                        math.interp(entity.fruit.animFrames, entity.pos.y, targetY))
                     entity.fruit.animFrames = entity.fruit.animFrames - framePart
                     if entity.pos.z > targetZ then
                         entity.fruit.reachedStack = true
@@ -431,6 +430,10 @@ function Game:update(dt)
                     sprite.frame = frame
                 end
             end
+        end
+
+        if entity.bubble then
+            entity.bubble:update(framePart)
         end
 
         -- Auto-attaching the input
@@ -543,6 +546,15 @@ function Game:render(dt)
         end
         -- Sprites
         self:drawEntity(entity)
+    end
+
+    for _, entity in ipairs(self.entities) do
+        if entity.bubble then
+            love.graphics.push()
+            love.graphics.translate(entity.pos.x, entity.pos.y - entity.pos.z)
+            entity.bubble:draw()
+            love.graphics.pop()
+        end
     end
 
     -- Debug

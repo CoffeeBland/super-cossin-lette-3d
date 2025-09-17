@@ -10,8 +10,8 @@ function math.round(n)
 end
 
 function math.interp(frames, current, target)
-    local p = 1 - 1 / math.max(frames or 1, 1)
-    return current * p + target * (1 - p)
+    local p = 1 / math.max(frames or 1, 1)
+    return current * (1 - p) + target * p
 end
 
 function love.filesystem.crawl(dir, _results)

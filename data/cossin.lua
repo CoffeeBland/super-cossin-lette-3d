@@ -55,6 +55,10 @@ return function()
                 { -50, 0, 5 }
             }
         },
+        bubble = Bubble.new({
+            anchor = { x = -40, y = -220 },
+            text = { 30, "!", 30, "!", 30, "!" }
+        }),
         soundEmitter = {
             playing = {},
             triggers = {
@@ -75,6 +79,11 @@ return function()
                 --    name = "Poof"
                 --},
                 step = {
+                    name = "Step",
+                    volumeRange = { 0.3, 0.4 },
+                    pitchRange = { 0.8, 1.2 }
+                },
+                speak = {
                     name = "Step",
                     volumeRange = { 0.3, 0.4 },
                     pitchRange = { 0.8, 1.2 }

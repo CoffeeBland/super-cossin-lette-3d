@@ -5,5 +5,17 @@ return {
     slidingDamping = 1,
     airDamping = 1,
     jumpMultiplier = 30,
-    speedMultiplier = 20
+    speedMultiplier = 20,
+    bubble = {
+        offset = { x = 0, y = 20 },
+        width = 110
+    },
+    icons = {
+        size = { w = 64, h = 64 },
+        list = {
+            "!",
+            "blonde",
+            "picnic"
+        }
+    }
 }

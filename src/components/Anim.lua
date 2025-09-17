@@ -1,7 +1,7 @@
 Anim = {}
 Anim.__index = Anim
 
-EMPTY_REQUEST = { priority = 0 }
+EMPTY_REQUEST = { priority = 0, time = 0 }
 
 Anim.priorities = {
     idle = 1,

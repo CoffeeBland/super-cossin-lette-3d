@@ -62,6 +62,19 @@ function love.loadData(name, file)
 
     if file == "data/gameConstants.lua" then
         Game.constants = data
+
+        local icons = Game.constants.icons
+        icons.byName = {}
+        local cols = math.floor(textures.Bubble_icons:getWidth() / icons.size.w)
+        for i, name in ipairs(icons.list) do
+            local imgi = i - 1
+            icons.byName[name] = love.graphics.newQuad(
+                (imgi % cols) * icons.size.w,
+                math.floor(imgi / cols) * icons.size.h,
+                icons.size.w,
+                icons.size.h,
+                textures.Bubble_icons)
+        end
     end
 
     if data.tiledversion then
