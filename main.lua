@@ -6,7 +6,8 @@ local pressActions = {
     escape = "escape",
     enter = "action",
     f5 = "refresh",
-    f12 = "toggleDebug"
+    f12 = "toggleDebug",
+    f11 = "gogogadget"
 }
 
 local releaseActions = {

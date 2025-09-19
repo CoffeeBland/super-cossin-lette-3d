@@ -3,12 +3,12 @@ return function()
         name = "cossin",
         input = true,
         camera = true,
-        actor = {
+        actor = Actor.new({
             walkSpeed = 150,
             slidingSpeed = 0,
             airSpeed = 25,
             jumpSpeed = 200
-        },
+        }),
         pos = { height = HEIGHT_SLICE },
         velocity = { z = 0 },
         body = { shape = "circle", size = 80, type = "dynamic" },
@@ -56,8 +56,7 @@ return function()
             }
         },
         bubble = Bubble.new({
-            anchor = { x = -40, y = -220 },
-            text = { 30, "!", 30, "!", 30, "!" }
+            anchor = { x = -40, y = -220 }
         }),
         soundEmitter = {
             playing = {},
@@ -81,11 +80,11 @@ return function()
                 step = {
                     name = "Step",
                     volumeRange = { 0.3, 0.4 },
-                    pitchRange = { 0.8, 1.2 }
+                    pitchRange = { 0.6, 0.8 }
                 },
                 speak = {
                     name = "Step",
-                    volumeRange = { 0.3, 0.4 },
+                    volumeRange = { 0.8, 1 },
                     pitchRange = { 0.8, 1.2 }
                 },
                 ["squish:start"] = {

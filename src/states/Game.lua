@@ -1,17 +1,11 @@
-require "src.Map"
+require "src.components.Actor"
 require "src.components.Anim"
+require "src.components.Bubble"
+require "src.components.Event"
 require "src.components.Physics"
+require "src.Map"
 
 local PhysicsRenderer = require "src.PhysicsRenderer"
-
-local bit = require("bit")
---   2
---  1 3
--- 8   4
---  7 5
---   6
-local dirs = { "tl", "t", "tr", "r", "br", "b", "bl", "l" }
-local v2 = { x = 0, y = 0 }
 
 -- Overlap iterator state (iiish it's all global and sad)
 local overlappingCheckEntity = nil
@@ -56,14 +50,28 @@ function Game:enter(args)
         target = nil
     }
     self.time = 0
+    self.endTriggered = false
     self.map = Map.load(args.map)
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {}
     self.entitiesByName = {}
+    self.event = Event.new()
+    self.anim = Anim.new()
 
     self.map:getTilesGogogadget(self.physics, self.entities)
     self.map:getEntities(self.entities)
     self:handleCreation()
+    for _, entity in ipairs(self.entities) do
+        -- Auto-attaching the input
+        if entity.input and not self.input.target then
+            self.input.target = entity
+        end
+
+        -- Auto-attaching the camera
+        if entity.camera and not self.camera.target then
+            self.camera.target = entity
+        end
+    end
 end
 
 function Game:exit()
@@ -125,11 +133,11 @@ function Game:update(dt)
     local framePart = dt / (1 / 60)
     local remainingFruits = 0
 
-    if self.input.target then
-        self.input.target.actions = actions
-    end
-
     for _, entity in ipairs(self.entities) do
+        if entity.anim then
+            entity.anim:clearTriggers()
+        end
+
         if entity.water then
             if entity.water.remainingDrownFrames then
                 entity.water.remainingDrownFrames = entity.water.remainingDrownFrames - framePart
@@ -217,39 +225,13 @@ function Game:update(dt)
         end
 
         -- Actor! Shit this is sketch.
-        if entity.actor and entity.actions then
-            entity.pos.sliding = false
-            if entity.actions.movement.angle then
-                -- RIP
-                local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
-                entity.anim.dir = dirs[a];
-            end
-            if entity.pos.onGround and entity.anim:highestPriority() <= Anim.priorities.squish then
-                if entity.actions.jump then
-                    entity.velocity.z =
-                        entity.velocity.z +
-                        entity.actor.jumpSpeed * Game.constants.jumpMultiplier
-                    entity.pos.onGround = false
-                end
-                entity.pos.sliding = entity.actions.prejump
-                entity.anim:toggle("squish", entity.actions.prejump)
-            end
-            entity.anim:toggle("jump", not entity.pos.onGround)
-            if entity.actions.movement.angle and entity.anim:highestPriority() <= Anim.priorities.jump then
-                local speed = (entity.pos.sliding and entity.actor.slidingSpeed) or
-                    (entity.pos.onGround and entity.actor.walkSpeed) or
-                    entity.actor.airSpeed or
-                    0
-                local dx = speed * math.cos(entity.actions.movement.angle) * Game.constants.speedMultiplier
-                local dy = speed * math.sin(entity.actions.movement.angle) * Game.constants.speedMultiplier
-                entity.physics.body:applyForce(dx, dy)
-
-                entity.anim:release("idle")
-                entity.anim:request("walk")
-            else
-                entity.anim:release("walk")
-                entity.anim:request("idle")
-            end
+        if entity.actor then
+            entity.actor:update(framePart,
+                entity.pos,
+                entity.velocity,
+                entity.physics,
+                self.input.target == entity and actions or nil,
+                entity.anim)
         end
 
         -- Picnic at the disco
@@ -388,6 +370,7 @@ function Game:update(dt)
                     source:setLooping(sound.loop or false)
 
                     entity.soundEmitter.playing[sound.name] = sound
+                    source:stop()
                     love.audio.play(source)
                 end
             end
@@ -398,7 +381,6 @@ function Game:update(dt)
             for _, request in pairs(entity.anim.requested) do
                 request.time = request.time + dt
             end
-            entity.anim:clearTriggers()
             for _, sprite in pairs(entity.sprites) do
                 local spriteData = sprites[sprite.name]
                 if spriteData then
@@ -433,17 +415,7 @@ function Game:update(dt)
         end
 
         if entity.bubble then
-            entity.bubble:update(framePart)
-        end
-
-        -- Auto-attaching the input
-        if entity.input and not self.input.target then
-            self.input.target = entity
-        end
-
-        -- Auto-attaching the camera
-        if entity.camera and not self.camera.target then
-            self.camera.target = entity
+            entity.bubble:update(framePart, entity.anim)
         end
     end
 
@@ -484,16 +456,72 @@ function Game:update(dt)
 
     -- Camera
     if self.camera.target then
-        self.camera.x = math.interp(self.camera.panFrames, self.camera.x, self.camera.target.pos.x)
-        self.camera.y = math.interp(self.camera.panFrames, self.camera.y, self.camera.target.pos.y)
-        if self.camera.panFrames and self.camera.panFrames > 0 then
-            self.camera.panFrames = self.camera.panFrames - framePart
+        if self.camera.panFrames then
+            self.camera.x = math.interp(self.camera.panFrames, self.camera.x, self.camera.target.pos.x)
+            self.camera.y = math.interp(self.camera.panFrames, self.camera.y, self.camera.target.pos.y)
+            self.anim:trigger("camera:finished")
+            self.camera.panFrames = math.max(self.camera.panFrames - framePart, 0)
+        else
+            self.camera.x = self.camera.target.pos.x
+            self.camera.y = self.camera.target.pos.y
         end
     end
 
-    if remainingFruits == 0 then
-        self.camera.target = self.entitiesByName.picnic
-        self.camera.panFrames = 60
+    -- Event
+    self.event:update(framePart, self)
+    self.anim:clearTriggers()
+
+    if (remainingFruits == 0 or actions.gogogadget) and not self.endTriggered then
+        self.endTriggered = true
+        self.event:execute({
+            { "input",
+                target = nil
+            },
+            { "lookAt",
+                entity = { byName = "cossin" },
+                point = { x = 1702, y = 814 }
+            },
+            { "bubble",
+                entity = { byName = "cossin" },
+                text = { 10, "!", 10, "!", 10, "!" }
+            },
+            { "waitForTrigger",
+                entity = { byName = "cossin" },
+                trigger = "speak:finished"
+            },
+            { "parallel",
+                {
+                    { "camera",
+                        target = { byName = "picnic" },
+                        panFrames = 60
+                    },
+                    { "waitForTrigger",
+                        trigger = "camera:finished"
+                    }
+                },
+                {
+                    { "walkToPoint",
+                        entity = { byName = "cossin" },
+                        point = { x = 1302, y = 1014 }
+                    },
+                    { "waitForTrigger",
+                        entity = { byName = "cossin" },
+                        trigger = "walkToPoint:finished"
+                    }
+                }
+            },
+            { -- THE GOGO, THE GOGO, THE NOOOOOO
+
+            },
+
+            -- FOR TEST
+            { "camera",
+                target = { byName = "cossin" }
+            },
+            { "input",
+                target = { byName = "cossin" }
+            },
+        })
     end
 end
 

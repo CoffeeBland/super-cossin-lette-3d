@@ -37,6 +37,13 @@ SPARKLY_SHADER = love.graphics.newShader[[
     }
 ]]
 
+--   2
+--  1 3
+-- 8   4
+--  7 5
+--   6
+DIRS = { "tl", "t", "tr", "r", "br", "b", "bl", "l" }
+
 STATIC_SHADOW_SLOP = 10
 SHADOW_OVERLAP_SLOP = 32
 FIXBODY = 41
