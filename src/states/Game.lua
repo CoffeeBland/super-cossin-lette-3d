@@ -477,17 +477,24 @@ function Game:update(dt)
             { "input",
                 target = nil
             },
-            { "lookAt",
+            { "move",
                 entity = { byName = "cossin" },
-                point = { x = 1702, y = 814 }
+                { "lookAt", point = { x = 1702, y = 814 } },
+                { "jump" }
             },
             { "bubble",
                 entity = { byName = "cossin" },
                 text = { 10, "!", 10, "!", 10, "!" }
             },
-            { "waitForTrigger",
-                entity = { byName = "cossin" },
-                trigger = "speak:finished"
+            { "waitForAll",
+                { "waitForTrigger",
+                    entity = { byName = "cossin" },
+                    trigger = "move:finished"
+                },
+                { "waitForTrigger",
+                    entity = { byName = "cossin" },
+                    trigger = "speak:finished"
+                },
             },
             { "parallel",
                 {
@@ -497,21 +504,26 @@ function Game:update(dt)
                     },
                     { "waitForTrigger",
                         trigger = "camera:finished"
-                    }
+                    },
+                    { "entity",
+                        entity = { byName = "blonde" },
+                        light = {
+                            alpha = 0,
+                            targetAlpha = 60,
+                            alphaFrames = 60
+                        }
+                    },
                 },
                 {
-                    { "walkToPoint",
+                    { "move",
                         entity = { byName = "cossin" },
-                        point = { x = 1302, y = 1014 }
+                        { "walkTo", point = { x = 1302, y = 1014 } }
                     },
                     { "waitForTrigger",
                         entity = { byName = "cossin" },
-                        trigger = "walkToPoint:finished"
+                        trigger = "move:finished"
                     }
                 }
-            },
-            { -- THE GOGO, THE GOGO, THE NOOOOOO
-
             },
 
             -- FOR TEST
@@ -574,8 +586,43 @@ function Game:render(dt)
         end
         -- Sprites
         self:drawEntity(entity)
+
+        if entity.light then
+            local radiusw = entity.light.radiusw or Game.constants.defaultLight.radiusw
+            local radiush = entity.light.radiush or Game.constants.defaultLight.radiush
+            local alpha = entity.light.alpha or Game.constants.defaultLight.alpha
+            local angle = entity.light.angle or Game.constants.defaultLight.angle
+            local _, topy = love.graphics.inverseTransformPoint(0, 0)
+            local rayHeight = entity.pos.y - topy
+            local rayOffset = rayHeight * math.tan(math.pi / 2 - angle)
+            local startx, starty = entity.pos.x + rayOffset + radiusw, entity.pos.y - rayHeight
+            local endx, endy = entity.pos.x + rayOffset - radiusw, entity.pos.y - rayHeight
+            LIGHT_POINTS[1] = startx
+            LIGHT_POINTS[2] = starty
+            local n = 8
+            for i = 1, n do
+                local x, y =  math.getEllipsePoint(
+                    entity.pos.x, entity.pos.y,
+                    radiusw, radiush,
+                    ((i - 1) / (n - 1)) * math.pi)
+                LIGHT_POINTS[i * 2 + 1] = x
+                LIGHT_POINTS[i * 2 + 2] = y
+            end
+            LIGHT_POINTS[#LIGHT_POINTS - 1] = endx
+            LIGHT_POINTS[#LIGHT_POINTS] = endy
+            love.graphics.setBlendMode("add")
+            love.graphics.setColor(
+                Game.constants.lightColor[1],
+                Game.constants.lightColor[2],
+                Game.constants.lightColor[3],
+                alpha)
+            love.graphics.polygon("fill", unpack(LIGHT_POINTS))
+            love.graphics.setColor(1, 1, 1, 1)
+            love.graphics.setBlendMode("alpha")
+        end
     end
 
+    -- Bubbles
     for _, entity in ipairs(self.entities) do
         if entity.bubble then
             love.graphics.push()

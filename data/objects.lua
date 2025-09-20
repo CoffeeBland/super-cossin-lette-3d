@@ -23,7 +23,7 @@ return {
   },
   properties = {},
   wangsets = {},
-  tilecount = 75,
+  tilecount = 76,
   tiles = {
     {
       id = 89,
@@ -2296,6 +2296,17 @@ return {
           }
         }
       }
+    },
+    {
+      id = 91,
+      properties = {
+        ["offsetX"] = 123,
+        ["offsetY"] = 368,
+        ["prefab"] = "blonde"
+      },
+      image = "../img/Blonde.png",
+      width = 224,
+      height = 404
     }
   }
 }

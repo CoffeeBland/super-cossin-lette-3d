@@ -146,7 +146,7 @@ function love.loadData(name, file)
 
                             love.graphics.push()
                             love.graphics.translate(-minX + STATIC_SHADOW_SLOP, -minY + STATIC_SHADOW_SLOP)
-                            love.graphics.setColor(0.875, 0.867, 0.941, 1)
+                            love.graphics.setColor(0.875, 0.867, 0.941, 1) -- TODO read game constants
                             love.graphics.setLineWidth(STATIC_SHADOW_SLOP)
                             love.graphics.setLineStyle("smooth")
                             love.graphics.polygon("line", obj.shape:getPoints())

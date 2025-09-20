@@ -118,6 +118,12 @@ function table.setHandlingTable(o, key, value)
     o[key] = value
 end
 
+function math.getEllipsePoint(x, y, radiusx, radiusy, angle)
+    local w = math.cos(angle) * radiusx
+    local h = math.sin(angle) * radiusy
+    return x + w, y + h
+end
+
 function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
     --local points = {}
     --for i = 1,segments do
