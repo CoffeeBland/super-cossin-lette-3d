@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 11,
-  nextobjectid = 173,
+  nextobjectid = 181,
   properties = {},
   tilesets = {
     {
@@ -1520,8 +1520,8 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 271.333,
-          y = 1554,
+          x = 234.333,
+          y = 1406,
           width = 1024,
           height = 1286,
           rotation = 0,
@@ -1624,6 +1624,48 @@ return {
           height = 1286,
           rotation = 0,
           gid = 360,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 173,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1887,
+          y = 3761.67,
+          width = 128,
+          height = 148,
+          rotation = 0,
+          gid = 285,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 175,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2121.33,
+          y = 4242.67,
+          width = 128,
+          height = 148,
+          rotation = 0,
+          gid = 284,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 176,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2183,
+          y = 4082.33,
+          width = 128,
+          height = 148,
+          rotation = 0,
+          gid = 282,
           visible = true,
           properties = {}
         }
@@ -1954,6 +1996,38 @@ return {
           gid = 360,
           visible = true,
           properties = {}
+        },
+        {
+          id = 179,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 111,
+          y = 838.667,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 300,
+          visible = true,
+          properties = {
+            ["posZ"] = 980
+          }
+        },
+        {
+          id = 180,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -814,
+          y = 419.333,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 300,
+          visible = true,
+          properties = {
+            ["posZ"] = 980
+          }
         }
       }
     }

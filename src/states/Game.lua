@@ -59,8 +59,13 @@ function Game:enter(args)
     self.camera = {
         x = 0,
         y = 0,
+        z = 0,
         panFrames = 0,
-        target = nil
+        target = nil,
+        shakeFrames = 0,
+        shakeAmplitude = 0,
+        offsetX = 0,
+        offsetY = 0
     }
     self.input = {
         target = nil
@@ -73,6 +78,7 @@ function Game:enter(args)
     self.entitiesByName = {}
     self.event = Event.new()
     self.anim = Anim.new()
+    self.vars = { eaten = 0 }
 
     self.map:getTilesGogogadget(self.physics, self.entities)
     self.map:getEntities(self.entities)
@@ -162,7 +168,7 @@ function Game:update(dt)
     self.time = self.time + dt
     local airFrictionForFrame = Game.constants.airFriction ^ dt
     local framePart = dt / (1 / 60)
-    local remainingFruits = 0
+    self.vars.remainingFruits = 0
 
     for _, entity in self:iterEntities() do
         if entity.water then
@@ -226,6 +232,11 @@ function Game:update(dt)
 
             if entity.anim:isTriggered("eatFruit") then
                 local eaten = entity.fruitStack.fruits[1]
+                self.vars.eaten = self.vars.eaten + 1
+                entity.anim.baseWiggle.x = entity.anim.baseWiggle.x + entity.fruitStack.sizePerFruit
+                entity.anim.baseWiggle.y = entity.anim.baseWiggle.y + entity.fruitStack.sizePerFruit
+                entity.actor.mass = entity.actor.mass + (eaten.fruit.mass or 0)
+                entity.anim:startWiggle(entity.fruitStack.eatWiggleAmplitude, entity.fruitStack.eatWiggleFrames)
                 if eaten then
                     eaten.disabled = true
                     table.remove(entity.fruitStack.fruits, 1)
@@ -248,7 +259,7 @@ function Game:update(dt)
                 end
             end
 
-            remainingFruits = remainingFruits + #entity.fruitStack.fruits
+            self.vars.remainingFruits = self.vars.remainingFruits + #entity.fruitStack.fruits
         end
 
         -- Actor! Shit this is sketch.
@@ -301,8 +312,12 @@ function Game:update(dt)
                 entity.pos.z = entity.pos.z + entity.velocity.z * dt
 
                 -- Check ground (squish!)
+                local wasOnGround = entity.pos.onGround
                 entity.pos.onGround = entity.pos.z < entity.pos.floorZ + DELTA
                 if entity.pos.onGround then
+                    if not wasOnGround and entity.anim then
+                        entity.anim:trigger("land", entity.velocity.z)
+                    end
                     entity.pos.z = entity.pos.floorZ
                     entity.velocity.z = 0
                 end
@@ -336,7 +351,8 @@ function Game:update(dt)
                 end
                 local targetX = parentEntity.pos.x + entity.fruit.offset.x
                 local targetY = parentEntity.pos.y + entity.fruit.offset.y
-                local targetZ = parentEntity.pos.z + entity.fruit.offset.z
+                local offsetZ = entity.fruit.offset.z * (parentEntity.anim and parentEntity.anim.baseWiggle.y or 1)
+                local targetZ = parentEntity.pos.z + offsetZ
 
                 if entity.fruit.animFrames > 0 then
                     entity.physics.body:setPosition(
@@ -364,7 +380,7 @@ function Game:update(dt)
                     self:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
                 end
             else
-                remainingFruits = remainingFruits + 1
+                self.vars.remainingFruits = self.vars.remainingFruits + 1
             end
             if entity.fruit.cooldown then
                 entity.fruit.cooldown = entity.fruit.cooldown - framePart
@@ -400,46 +416,18 @@ function Game:update(dt)
             end
         end
 
-        if entity.anim then
-            entity.anim:clearTriggers()
-        end
-
-        -- Animating things
-        if entity.anim then
-            for _, request in pairs(entity.anim.requested) do
-                request.time = request.time + dt
-            end
-            for _, sprite in pairs(entity.sprites) do
-                local spriteData = sprites[sprite.name]
-                if spriteData then
-                    local animData, animRequest = self:findAnim(spriteData, entity.anim)
-
-                    -- Moi je trouve que Oui.
-                    local frame = math.floor(animData.fps * animRequest.time)
-                    if animData.oneShot and frame > #animData.tiles then
-                        entity.anim:trigger(animData.name .. ":finished")
-                        entity.anim:release(animData.name)
-                    end
-                    if animData.pingPong then
-                        local tileCount = #animData.tiles * 2 - 2
-                        frame = frame % tileCount
-                        if frame >= #animData.tiles then
-                            frame = tileCount - frame
-                        end
-                    else
-                        frame = frame % #animData.tiles
-                    end
-                    frame = frame + 1
-
-                    local trigger = animData.tiles[frame].trigger
-                    if sprite.frame ~= frame and trigger then
-                        entity.anim:trigger(trigger)
-                    end
-
-                    sprite.animData = animData
-                    sprite.frame = frame
+        if entity.shakeEmitter then
+            for trigger, shake in pairs(entity.shakeEmitter.triggers) do
+                if (not shake.minimumMass or entity.actor.mass >= shake.minimumMass) and
+                    entity.anim:isTriggered(trigger) then
+                    self.camera.shakeAmplitude = shake.amplitude
+                    self.camera.shakeFrames = shake.frames
                 end
             end
+        end
+
+        if entity.anim then
+            entity.anim:update(dt, entity.sprites)
         end
 
         if entity.bubble then
@@ -454,8 +442,6 @@ function Game:update(dt)
     -- Sorting! Fun times!
     table.sort(self.entities,
         function (a, b)
-            local ay = a.y
-
             local floorA, ay = self:findFloorY(a)
             local floorB, by = self:findFloorY(b)
 
@@ -474,14 +460,26 @@ function Game:update(dt)
 
     -- Camera
     if self.camera.target then
-        if self.camera.panFrames then
+        if self.camera.panFrames > 0 then
             self.camera.x = math.interp(self.camera.panFrames, self.camera.x, self.camera.target.pos.x)
             self.camera.y = math.interp(self.camera.panFrames, self.camera.y, self.camera.target.pos.y)
-            self.anim:trigger("camera:finished")
+            self.camera.z = math.interp(60, self.camera.z, self.camera.target.pos.floorZ or 0)
             self.camera.panFrames = math.max(self.camera.panFrames - framePart, 0)
+            if self.camera.panFrames == 0 then
+                self.anim:trigger("camera:finished")
+            end
         else
             self.camera.x = self.camera.target.pos.x
             self.camera.y = self.camera.target.pos.y
+            self.camera.z = math.interp(60, self.camera.z, self.camera.target.pos.floorZ or 0)
+        end
+        if self.camera.shakeFrames > 0 then
+            self.camera.offsetX = (math.random() - 0.5) * self.camera.shakeAmplitude
+            self.camera.offsetY = (math.random() - 0.5) * self.camera.shakeAmplitude
+            self.camera.shakeFrames = math.max(self.camera.shakeFrames - framePart, 0)
+        else
+            self.camera.offsetX = 0
+            self.camera.offsetY = 0
         end
     end
 
@@ -489,7 +487,7 @@ function Game:update(dt)
     self.event:update(framePart, self)
     self.anim:clearTriggers()
 
-    if (remainingFruits == 0 or actions.gogogadget) and not self.endTriggered then
+    if (self.vars.remainingFruits == 0 or actions.gogogadget) and not self.endTriggered then
         self.endTriggered = true
         self.event:execute(Game.constants.endLevelCutscene)
     end
@@ -500,7 +498,9 @@ function Game:render(dt)
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
     love.graphics.scale(0.5)
-    love.graphics.translate(-self.camera.x, -self.camera.y)
+    love.graphics.translate(
+        -self.camera.x + self.camera.offsetX,
+        -self.camera.y + self.camera.offsetY + self.camera.z)
     love.graphics.clear(0.2, 0.5, 0.4)
 
     -- Tiles
@@ -672,28 +672,6 @@ function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY
     end
 end
 
-function Game:findAnim(spriteData, entityAnim)
-    local foundAnim = nil
-    local foundRequest = EMPTY_REQUEST
-    for _, anim in ipairs(spriteData) do
-        local request = entityAnim:getRequest(anim.name)
-        if request and request.priority >= foundRequest.priority then
-            if anim.dirs then
-                for _, dir in ipairs(anim.dirs) do
-                    if dir == entityAnim.dir then
-                        foundAnim = anim
-                        foundRequest = request
-                    end
-                end
-            else
-                foundAnim = anim
-                foundRequest = request
-            end
-        end
-    end
-    return foundAnim or spriteData[#spriteData], foundRequest or EMPTY_REQUEST
-end
-
 function Game:findFloorAndCeiling(entity)
     local floorEntity = nil
     local floorZ = 0
@@ -703,8 +681,9 @@ function Game:findFloorAndCeiling(entity)
             local sz = other.pos.z
             local ez = other.pos.z + other.pos.height
             if other.physics.sliceEnd < entity.physics.sliceStart then
+                local consideredEntity = floorEntity or entity
                 -- If the floors are close enough, pick the one with most render priority
-                if other.pos.y > (floorEntity or entity).pos.y then
+                if other.pos.y > consideredEntity.pos.y then
                     floorEntity = other
                 end
                 floorZ = math.max(floorZ, ez)
@@ -737,6 +716,12 @@ function Game:drawEntity(entity)
         for _, sprite in ipairs(entity.sprites) do
             local animData = sprite.animData
             local frame = sprite.frame
+            local spriteWiggleX = sprite.wiggle and sprite.wiggle.x or 0
+            local spriteWiggleY = sprite.wiggle and sprite.wiggle.y or 0
+            local wiggleX = spriteWiggleX * (entity.anim and entity.anim.wiggle.x or 1)
+            local wiggleY = spriteWiggleY * (entity.anim and entity.anim.wiggle.y or 1)
+            local scaleX = wiggleX + (1 - spriteWiggleX)
+            local scaleY = wiggleY + (1 - spriteWiggleY)
             if animData and frame then
                 love.graphics.draw(
                     textures[sprite.name],
@@ -744,8 +729,8 @@ function Game:drawEntity(entity)
                     entity.pos.x,
                     (entity.pos.y - entity.pos.z),
                     0,
-                    (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1),
-                    (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1),
+                    (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1) * scaleX,
+                    (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1) * scaleY,
                     sprite.anchor.x,
                     sprite.anchor.y)
             else

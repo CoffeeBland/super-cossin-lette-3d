@@ -19,7 +19,6 @@ return {
     },
     bubble = {
         offset = { x = 0, y = 20 },
-        width = 130,
         lingerFrames = 60
     },
     icons = {
@@ -27,10 +26,10 @@ return {
         list = {
             "!", 32,
             "blonde", 50,
-            "picnic", 64,
+            "picnic", 62,
             "<3", 52,
-            "mange", 48,
-            "?", 40,
+            "mange", 50,
+            "?", 44,
             ".", 28,
             "0", 36,
             "1", 36,

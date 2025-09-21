@@ -2192,7 +2192,7 @@ return {
         ["height"] = 230,
         ["offsetX"] = 510,
         ["offsetY"] = 470,
-        ["posZ"] = 750
+        ["posZ"] = 770
       },
       image = "../img/Feuillage2.png",
       width = 1024,
@@ -2234,7 +2234,7 @@ return {
         ["height"] = 230,
         ["offsetX"] = 510,
         ["offsetY"] = 470,
-        ["posZ"] = 750
+        ["posZ"] = 770
       },
       image = "../img/Feuillage3.png",
       width = 1024,
@@ -2272,7 +2272,7 @@ return {
     {
       id = 5,
       properties = {
-        ["height"] = 700,
+        ["height"] = 770,
         ["offsetX"] = 510,
         ["offsetY"] = 1210
       },
@@ -2320,7 +2320,7 @@ return {
     {
       id = 6,
       properties = {
-        ["height"] = 700,
+        ["height"] = 770,
         ["offsetX"] = 510,
         ["offsetY"] = 1210
       },
@@ -2368,7 +2368,7 @@ return {
     {
       id = 7,
       properties = {
-        ["height"] = 700,
+        ["height"] = 770,
         ["offsetX"] = 510,
         ["offsetY"] = 1210
       },

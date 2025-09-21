@@ -5,7 +5,8 @@ return function()
         sprites = {
             {
                 name = "Blonde",
-                anchor = { x = 123, y = 368 }
+                anchor = { x = 123, y = 368 },
+                wiggle = { x = 1, y = 1 }
             }
         },
         shadow = {

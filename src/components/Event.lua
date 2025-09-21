@@ -92,7 +92,7 @@ function Event:processEvent(framePart, game, event)
         local entity = game:findEntity(event.entity)
         entity.bubble:show(event.text, entity.anim)
     elseif type == "camera" then
-        game.camera.panFrames = event.panFrames
+        game.camera.panFrames = event.panFrames or 0
         game.camera.target = game:findEntity(event.target)
     elseif type == "input" then
         game.input.target = game:findEntity(event.target)

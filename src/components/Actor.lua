@@ -4,6 +4,7 @@ fancyTypes.actor = Actor
 
 function Actor.new(params)
     local instance = setmetatable(params or {}, Actor)
+    instance.mass = 1
     instance.autoActions = { movement = { x = 0, y = 0, angle = nil }, jump = false }
     instance.autoMoves = {}
     instance.autoMoveIndex = nil
@@ -107,11 +108,13 @@ function Actor:update(framePart, game, entity, actions)
     if pos.onGround and anim:highestPriority() <= Anim.priorities.squish then
         if actions.jump then
             local jumpSpeed = type(actions.jump) == "number" and actions.jump or self.jumpSpeed
-            velocity.z = velocity.z + jumpSpeed * Game.constants.jumpMultiplier
+            velocity.z = velocity.z + jumpSpeed * Game.constants.jumpMultiplier / self.mass
             pos.onGround = false
         end
         pos.sliding = actions.prejump
         anim:toggle("squish", actions.prejump)
+    else
+        anim:release("squish")
     end
     anim:toggle("jump", not pos.onGround)
     if actions.movement.angle and anim:highestPriority() <= Anim.priorities.jump then
@@ -119,8 +122,8 @@ function Actor:update(framePart, game, entity, actions)
             (pos.onGround and self.walkSpeed) or
             self.airSpeed or
             0
-        local dx = speed * math.cos(actions.movement.angle) * Game.constants.speedMultiplier
-        local dy = speed * math.sin(actions.movement.angle) * Game.constants.speedMultiplier
+        local dx = speed * math.cos(actions.movement.angle) * Game.constants.speedMultiplier / self.mass
+        local dy = speed * math.sin(actions.movement.angle) * Game.constants.speedMultiplier / self.mass
         physics.body:applyForce(dx, dy)
 
         anim:release("idle")

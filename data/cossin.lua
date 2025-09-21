@@ -20,7 +20,8 @@ return function()
             },
             {
                 name = "cossinCorps",
-                anchor = { x = 96, y = 236 }
+                anchor = { x = 96, y = 236 },
+                wiggle = { x = 1, y = 1 }
             },
             {
                 name = "cossinPiedFront",
@@ -43,7 +44,10 @@ return function()
             dropForce = 240,
             dropJumpSpeed = 60,
             dropCooldown = 60,
-            eatCooldown = 600
+            eatCooldown = 60,
+            eatWiggleAmplitude = 0.25,
+            eatWiggleFrames = 30,
+            sizePerFruit = 0.05
         },
         water = {
             drownFrames = 60,
@@ -57,6 +61,20 @@ return function()
         },
         bubble = {
             anchor = { x = -40, y = -220 }
+        },
+        shakeEmitter = {
+            triggers = {
+                land = {
+                    minimumMass = 1.25,
+                    amplitude = 10,
+                    frames = 15
+                },
+                step = {
+                    minimumMass = 1.5,
+                    amplitude = 5,
+                    frames = 10
+                }
+            }
         },
         soundEmitter = {
             playing = {},
