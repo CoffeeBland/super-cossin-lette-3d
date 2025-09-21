@@ -44,7 +44,7 @@ return function()
             dropForce = 240,
             dropJumpSpeed = 60,
             dropCooldown = 60,
-            eatCooldown = 60,
+            eatCooldown = 600,
             eatWiggleAmplitude = 0.25,
             eatWiggleFrames = 30,
             sizePerFruit = 0.05
