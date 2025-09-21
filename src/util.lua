@@ -14,6 +14,27 @@ function math.interp(frames, current, target)
     return current * (1 - p) + target * p
 end
 
+local byte0 = 48
+local byte9 = 57
+
+function math.parse(str)
+    if not str then
+        return nil
+    end
+    local n = 0
+    local digits = 0
+    local bytes = { string.byte(str, 1, string.len(str)) }
+    for i = #bytes, 1, -1 do
+        local byte = bytes[i]
+        if byte >= byte0 and byte <= byte9 then
+            local digit = byte - byte0
+            n = n + digit * (10^digits)
+            digits = digits + 1
+        end
+    end
+    return n
+end
+
 function love.filesystem.crawl(dir, _results)
     if not _results then
         _results = {}
@@ -118,17 +139,35 @@ function table.setHandlingTable(o, key, value)
     o[key] = value
 end
 
+function table.recset(dest, key, source)
+    if not dest[key] or type(source) ~= "table" then
+        dest[key] = source
+    else
+        for subkey, value in pairs(source) do
+            table.recset(dest[key], subkey, value)
+        end
+    end
+end
+
 function math.getEllipsePoint(x, y, radiusx, radiusy, angle)
     local w = math.cos(angle) * radiusx
     local h = math.sin(angle) * radiusy
     return x + w, y + h
 end
 
+function math.getEllipse(x, y, radiusx, radiusy, segments)
+    local points = {}
+    for i = 1,segments do
+        local angle = i / segments * 2 * math.pi
+        local x, y = math.getEllipsePoint(x, y, radiusx, radiusy, angle)
+        points[i * 2 - 1] = x
+        points[i * 2] = y
+    end
+    return points
+end
+
 function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
-    --local points = {}
-    --for i = 1,segments do
---
-    --end
+    return love.physics.newPolygonShape(unpack(math.getEllipse(x, y, radiusx, radiusy, segments)))
 end
 
 function love.physics.overlap(entity, sensor, other, otherFix)

@@ -3,16 +3,16 @@ return function()
         name = "cossin",
         input = true,
         camera = true,
-        actor = Actor.new({
+        actor = {
             walkSpeed = 150,
             slidingSpeed = 0,
             airSpeed = 25,
             jumpSpeed = 200
-        }),
+        },
         pos = { height = HEIGHT_SLICE },
         velocity = { z = 0 },
         body = { shape = "circle", size = 80, type = "dynamic" },
-        anim = Anim.new(),
+        anim = {},
         sprites = {
             {
                 name = "cossinPiedBack",
@@ -55,9 +55,9 @@ return function()
                 { -50, 0, 5 }
             }
         },
-        bubble = Bubble.new({
+        bubble = {
             anchor = { x = -40, y = -220 }
-        }),
+        },
         soundEmitter = {
             playing = {},
             triggers = {

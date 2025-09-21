@@ -1,5 +1,6 @@
 return function()
     return {
+        disabled = true,
         name = "blonde",
         sprites = {
             {
@@ -11,6 +12,14 @@ return function()
             name = "cossinOmbre",
             anchor = { x = 96, y = 46 }
         },
+        bubble = {
+            anchor = { x = -20, y = -400 }
+        },
+        anim = {},
         light = {},
+        soundEmitter = {
+            playing = {},
+            triggers = {}
+        }
     }
 end

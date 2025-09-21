@@ -151,6 +151,11 @@ function Map:getEntities(entities)
     return entities
 end
 
+function Map.getFlip(dataFlip)
+    return dataFlip == "true" or
+        (dataFlip == "random" and (math.random(1, 2) == 1))
+end
+
 function Map:createEntity(entities, data, id, flipX, flipY)
     local object = objects.byId[id]
 
@@ -159,11 +164,19 @@ function Map:createEntity(entities, data, id, flipX, flipY)
 
     if object.replaceTo then
         for _, replacement in pairs(object.replaceTo) do
-            local entity = self:createEntity(entities, data, replacement.id or 0, flipX, flipY)
+            local id = replacement.id or 0
+            if replacement.ids and #replacement.ids > 0 then
+                id = replacement.ids[math.random(#replacement.ids)]
+            end
+            local replacementFlipX = flipX ~= self.getFlip(replacement.flipX)
+            local replacementFlipY = flipY ~= self.getFlip(replacement.flipY)
+            local replacementFsx = replacementFlipX and -1 or 1
+            local replacementFsy = replacementFlipY and -1 or 1
+            local entity = self:createEntity(entities, data, id, replacementFlipX, replacementFlipY)
             -- TODO sub replacements aren't supported
             -- Also this can blow up if data is recursive (oops!)
-            entity.pos.x = entity.pos.x + fsx * (replacement.posX or 0)
-            entity.pos.y = entity.pos.y + fsy * (replacement.posY or 0)
+            entity.pos.x = entity.pos.x + replacementFsx * (replacement.posX or 0)
+            entity.pos.y = entity.pos.y + replacementFsy * (replacement.posY or 0)
             entity.pos.z = entity.pos.z + (replacement.posZ or 0)
         end
         return
@@ -213,6 +226,12 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     local objectShape = (flipX and object.shapeFlipX) or (flipY and object.shapeFlipY) or object.shape
     if objectShape then
         entity.body = objectShape and { preshape = objectShape, type = "static" }
+    end
+
+    for k, v in pairs(entity) do
+        if fancyTypes[k] then
+            entity[k] = fancyTypes[k].new(v)
+        end
     end
 
     table.insert(entities, entity)

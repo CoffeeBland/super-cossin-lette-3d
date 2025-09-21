@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="75" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="77" columns="0">
  <editorsettings>
   <export target="../data/objects.lua" format="lua"/>
  </editorsettings>
@@ -27,65 +27,26 @@
   </properties>
   <image source="../img/Arche.png" width="1152" height="1024"/>
  </tile>
- <tile id="2">
-  <properties>
-   <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="1220"/>
-  </properties>
-  <image source="../img/Feuillage1.png" width="1024" height="1286"/>
- </tile>
- <tile id="3">
-  <properties>
-   <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="1220"/>
-  </properties>
-  <image source="../img/Feuillage2.png" width="1024" height="1286"/>
- </tile>
- <tile id="4">
-  <properties>
-   <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="1220"/>
-  </properties>
-  <image source="../img/Feuillage3.png" width="1024" height="1286"/>
- </tile>
- <tile id="5">
+ <tile id="92">
   <properties>
    <property name="height" type="float" value="800"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
+   <property name="replaceTo[0]" type="class" propertytype="replaceTo">
+    <properties>
+     <property name="flipX" propertytype="flip" value="random"/>
+     <property name="ids" value="5,6,7"/>
+    </properties>
+   </property>
+   <property name="replaceTo[1]" type="class" propertytype="replaceTo">
+    <properties>
+     <property name="flipX" propertytype="flip" value="random"/>
+     <property name="ids" value="2,3,4"/>
+     <property name="posY" type="float" value="0"/>
+    </properties>
+   </property>
   </properties>
-  <image source="../img/Tronc1.png" width="1024" height="1286"/>
-  <objectgroup draworder="index" id="4">
-   <object id="6" x="394" y="1215">
-    <polygon points="0,0 70,29 161,25 222,2 170,-45 48,-44"/>
-   </object>
-  </objectgroup>
- </tile>
- <tile id="6">
-  <properties>
-   <property name="height" type="float" value="800"/>
-   <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="1210"/>
-  </properties>
-  <image source="../img/Tronc2.png" width="1024" height="1286"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="442" y="1207">
-    <polygon points="0,0 65.2703,29 150.122,25 207,2 158.514,-45 44.7568,-44"/>
-   </object>
-  </objectgroup>
- </tile>
- <tile id="7">
-  <properties>
-   <property name="height" type="float" value="800"/>
-   <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="1210"/>
-  </properties>
-  <image source="../img/Tronc3.png" width="1024" height="1286"/>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="357.765" y="1214.86">
-    <polygon points="14.2353,-1 85.6288,32.1351 196.946,27.7027 256.235,1.21622 207.956,-49.8649 58.7169,-48.7568"/>
-   </object>
-  </objectgroup>
+  <image source="../img/Arbre.png" width="1024" height="1286"/>
  </tile>
  <tile id="10">
   <properties>
@@ -582,6 +543,7 @@
  </tile>
  <tile id="73">
   <properties>
+   <property name="autoshadow" type="bool" value="true"/>
    <property name="dropRange" type="float" value="800"/>
    <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="302.5"/>
@@ -779,15 +741,16 @@
  </tile>
  <tile id="88">
   <properties>
-   <property name="height" type="float" value="120"/>
+   <property name="autoshadow" type="bool" value="true"/>
+   <property name="height" type="float" value="160"/>
    <property name="offsetX" type="float" value="400"/>
-   <property name="offsetY" type="float" value="300"/>
-   <property name="posZ" type="float" value="360"/>
+   <property name="offsetY" type="float" value="360"/>
+   <property name="posZ" type="float" value="320"/>
   </properties>
   <image source="../img/Arche_top.png" width="961" height="622"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="954" y="466">
-    <polygon points="-74,-124 -384.333,64.3333 -975.333,-252 -648,-392"/>
+    <polygon points="-148.667,-125.333 -487,75 -915.333,-171 -661.333,-322.667"/>
    </object>
   </objectgroup>
  </tile>
@@ -816,5 +779,97 @@
     <polygon points="-40.3333,-7.66667 192,99 519,-76 297.333,-200"/>
    </object>
   </objectgroup>
+ </tile>
+ <tile id="2">
+  <properties>
+   <property name="autoshadow" type="bool" value="true"/>
+   <property name="height" type="float" value="230"/>
+   <property name="offsetX" type="float" value="510"/>
+   <property name="offsetY" type="float" value="620"/>
+   <property name="posZ" type="float" value="600"/>
+  </properties>
+  <image source="../img/Feuillage1.png" width="1024" height="1286"/>
+  <objectgroup draworder="index" id="3">
+   <object id="2" x="170.667" y="214.333" width="682.667" height="428.667">
+    <ellipse/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="3">
+  <properties>
+   <property name="autoshadow" type="bool" value="true"/>
+   <property name="height" type="float" value="230"/>
+   <property name="offsetX" type="float" value="510"/>
+   <property name="offsetY" type="float" value="620"/>
+   <property name="posZ" type="float" value="600"/>
+  </properties>
+  <image source="../img/Feuillage2.png" width="1024" height="1286"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="170.667" y="214.333" width="682.667" height="428.667">
+    <ellipse/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="4">
+  <properties>
+   <property name="autoshadow" type="bool" value="true"/>
+   <property name="height" type="float" value="230"/>
+   <property name="offsetX" type="float" value="510"/>
+   <property name="offsetY" type="float" value="620"/>
+   <property name="posZ" type="float" value="600"/>
+  </properties>
+  <image source="../img/Feuillage3.png" width="1024" height="1286"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="170.667" y="214.333" width="682.667" height="428.667">
+    <ellipse/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="5">
+  <properties>
+   <property name="height" type="float" value="700"/>
+   <property name="offsetX" type="float" value="510"/>
+   <property name="offsetY" type="float" value="1210"/>
+  </properties>
+  <image source="../img/Tronc1.png" width="1024" height="1286"/>
+  <objectgroup draworder="index" id="4">
+   <object id="6" x="394" y="1215">
+    <polygon points="0,0 70,29 161,25 222,2 170,-45 48,-44"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="6">
+  <properties>
+   <property name="height" type="float" value="700"/>
+   <property name="offsetX" type="float" value="510"/>
+   <property name="offsetY" type="float" value="1210"/>
+  </properties>
+  <image source="../img/Tronc2.png" width="1024" height="1286"/>
+  <objectgroup draworder="index" id="2">
+   <object id="2" x="442" y="1207">
+    <polygon points="0,0 65.2703,29 150.122,25 207,2 158.514,-45 44.7568,-44"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="7">
+  <properties>
+   <property name="height" type="float" value="700"/>
+   <property name="offsetX" type="float" value="510"/>
+   <property name="offsetY" type="float" value="1210"/>
+  </properties>
+  <image source="../img/Tronc3.png" width="1024" height="1286"/>
+  <objectgroup draworder="index" id="2">
+   <object id="2" x="357.765" y="1214.86">
+    <polygon points="14.2353,-1 85.6288,32.1351 196.946,27.7027 256.235,1.21622 207.956,-49.8649 58.7169,-48.7568"/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="91">
+  <properties>
+   <property name="offsetX" type="float" value="123"/>
+   <property name="offsetY" type="float" value="368"/>
+   <property name="prefab" value="blonde"/>
+  </properties>
+  <image source="../img/Blonde.png" width="224" height="404"/>
  </tile>
 </tileset>

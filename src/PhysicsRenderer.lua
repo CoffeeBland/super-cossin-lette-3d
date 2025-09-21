@@ -80,6 +80,9 @@ local function draw_body(body)
     if entity and entity.pos then
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.print("z" .. math.round(entity.pos.z) .. ":" .. entity.pos.height, 0, 0, 0, 3, 3)
+        if entity.pos.floorZ and entity.pos.ceilingZ then
+            love.graphics.print("z" .. entity.pos.floorZ .. ":" .. entity.pos.ceilingZ, 0, 30, 0, 3, 3)
+        end
     end
 
     love.graphics.setPointSize(3)

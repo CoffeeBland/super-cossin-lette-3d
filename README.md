@@ -6,7 +6,6 @@
 * Sons
     * Y'a le support mais l'actuel est triiiissssssss
 * Intro (partiellement fait)
-* God rays
 * End state
 * Highlight pour les cas cachés
 * Le chemin vers des cutscene

@@ -1,8 +1,11 @@
+fancyTypes = {}
 require "src.components.Actor"
 require "src.components.Anim"
 require "src.components.Bubble"
 require "src.components.Event"
 require "src.components.Physics"
+require "src.components.Larp"
+
 require "src.Map"
 
 local PhysicsRenderer = require "src.PhysicsRenderer"
@@ -27,6 +30,19 @@ function Game:refresh(force)
         timestamps[path] = info
         StateMachine:change(Game, { map = self.map.name })
     end
+end
+
+function Game.entityIterator(entities, i)
+    for j = i, #entities do
+        local entity = entities[j]
+        if not entity.disabled then
+            return j + 1, entity
+        end
+    end
+end
+
+function Game:iterEntities()
+    return Game.entityIterator, self.entities, 1
 end
 
 function Game:enter(args)
@@ -61,7 +77,7 @@ function Game:enter(args)
     self.map:getTilesGogogadget(self.physics, self.entities)
     self.map:getEntities(self.entities)
     self:handleCreation()
-    for _, entity in ipairs(self.entities) do
+    for _, entity in self:iterEntities() do
         -- Auto-attaching the input
         if entity.input and not self.input.target then
             self.input.target = entity
@@ -82,12 +98,27 @@ end
 function Game:handleCreation()
     for _, entity in ipairs(self.entities) do
         -- Create physics
-        if entity.body and not entity.physics then
+        if not entity.disabled and entity.body and not entity.physics then
             entity.physics = Physics.new(self.physics, entity)
 
             -- Tiles sorta fucked for floor and ceiling purposes
             if not entity.tileSprites and not entity.velocity then
                 self:findFloorAndCeiling(entity)
+            end
+        end
+
+        if entity.physics and entity.disabled then
+            entity.physics:destroy()
+            entity.physics = nil
+
+            if entity.water then
+                entity.water.sampleSensors = nil
+            end
+            if entity.fruitStack then
+                entity.fruitStack.sensor = nil
+            end
+            if entity.picnic then
+                entity.picnic.sensor = nil
             end
         end
 
@@ -133,11 +164,7 @@ function Game:update(dt)
     local framePart = dt / (1 / 60)
     local remainingFruits = 0
 
-    for _, entity in ipairs(self.entities) do
-        if entity.anim then
-            entity.anim:clearTriggers()
-        end
-
+    for _, entity in self:iterEntities() do
         if entity.water then
             if entity.water.remainingDrownFrames then
                 entity.water.remainingDrownFrames = entity.water.remainingDrownFrames - framePart
@@ -200,7 +227,7 @@ function Game:update(dt)
             if entity.anim:isTriggered("eatFruit") then
                 local eaten = entity.fruitStack.fruits[1]
                 if eaten then
-                    eaten.toRemove = true
+                    eaten.disabled = true
                     table.remove(entity.fruitStack.fruits, 1)
                     table.insert(entity.fruitStack.eaten, eaten.fruit.type)
                     local nextFruitEntity = entity.fruitStack.fruits[1]
@@ -226,12 +253,9 @@ function Game:update(dt)
 
         -- Actor! Shit this is sketch.
         if entity.actor then
-            entity.actor:update(framePart,
-                entity.pos,
-                entity.velocity,
-                entity.physics,
-                self.input.target == entity and actions or nil,
-                entity.anim)
+            entity.actor:update(framePart, self,
+                entity,
+                self.input.target == entity and actions or nil)
         end
 
         -- Picnic at the disco
@@ -376,6 +400,10 @@ function Game:update(dt)
             end
         end
 
+        if entity.anim then
+            entity.anim:clearTriggers()
+        end
+
         -- Animating things
         if entity.anim then
             for _, request in pairs(entity.anim.requested) do
@@ -417,19 +445,9 @@ function Game:update(dt)
         if entity.bubble then
             entity.bubble:update(framePart, entity.anim)
         end
-    end
 
-    -- Removing dead entities, but we maybe shouldn't!?
-    -- TODO: Support finding entities by id, having deletable ids
-    -- not using direct references ever, and yadi yada yada.
-    -- Is all sketch.
-    for i = #self.entities, 1, -1 do
-        local entity = self.entities[i]
-        if entity.toRemove then
-            if entity.physics then
-                entity.physics.body:destroy()
-            end
-            table.remove(self.entities, i)
+        if entity.larp then
+            entity.larp:update(framePart, entity)
         end
     end
 
@@ -473,67 +491,7 @@ function Game:update(dt)
 
     if (remainingFruits == 0 or actions.gogogadget) and not self.endTriggered then
         self.endTriggered = true
-        self.event:execute({
-            { "input",
-                target = nil
-            },
-            { "move",
-                entity = { byName = "cossin" },
-                { "lookAt", point = { x = 1702, y = 814 } },
-                { "jump" }
-            },
-            { "bubble",
-                entity = { byName = "cossin" },
-                text = { 10, "!", 10, "!", 10, "!" }
-            },
-            { "waitForAll",
-                { "waitForTrigger",
-                    entity = { byName = "cossin" },
-                    trigger = "move:finished"
-                },
-                { "waitForTrigger",
-                    entity = { byName = "cossin" },
-                    trigger = "speak:finished"
-                },
-            },
-            { "parallel",
-                {
-                    { "camera",
-                        target = { byName = "picnic" },
-                        panFrames = 60
-                    },
-                    { "waitForTrigger",
-                        trigger = "camera:finished"
-                    },
-                    { "entity",
-                        entity = { byName = "blonde" },
-                        light = {
-                            alpha = 0,
-                            targetAlpha = 60,
-                            alphaFrames = 60
-                        }
-                    },
-                },
-                {
-                    { "move",
-                        entity = { byName = "cossin" },
-                        { "walkTo", point = { x = 1302, y = 1014 } }
-                    },
-                    { "waitForTrigger",
-                        entity = { byName = "cossin" },
-                        trigger = "move:finished"
-                    }
-                }
-            },
-
-            -- FOR TEST
-            { "camera",
-                target = { byName = "cossin" }
-            },
-            { "input",
-                target = { byName = "cossin" }
-            },
-        })
+        self.event:execute(Game.constants.endLevelCutscene)
     end
 end
 
@@ -554,15 +512,22 @@ function Game:render(dt)
 
     -- Shadows
     love.graphics.setBlendMode("multiply", "premultiplied")
-    for _, entity in ipairs(self.entities) do
+    for _, entity in self:iterEntities() do
         if entity.shadow then
+            if entity.color then
+                love.graphics.setColor(unpack(entity.color))
+            end
             self:drawEntityShadow(entity)
+            love.graphics.setColor(1, 1, 1, 1)
         end
     end
     love.graphics.setBlendMode("alpha")
 
     -- Entities
-    for _, entity in ipairs(self.entities) do
+    for _, entity in self:iterEntities() do
+        if entity.color then
+            love.graphics.setColor(unpack(entity.color))
+        end
         -- Stacked entities shadows
         if entity.shadow and (entity.pos.floorZ or 0) > 0 then
             love.graphics.stencil(
@@ -586,6 +551,7 @@ function Game:render(dt)
         end
         -- Sprites
         self:drawEntity(entity)
+        love.graphics.setColor(1, 1, 1, 1)
 
         if entity.light then
             local radiusw = entity.light.radiusw or Game.constants.defaultLight.radiusw
@@ -623,7 +589,7 @@ function Game:render(dt)
     end
 
     -- Bubbles
-    for _, entity in ipairs(self.entities) do
+    for _, entity in self:iterEntities() do
         if entity.bubble then
             love.graphics.push()
             love.graphics.translate(entity.pos.x, entity.pos.y - entity.pos.z)
@@ -733,7 +699,7 @@ function Game:findFloorAndCeiling(entity)
     local floorZ = 0
     local ceilingZ = SKY_LIMIT
     for _, other in ipairs(self:getAllOverlappingOfType(entity.physics.heightSensor)) do
-        if (entity.velocity or not other.velocity) and Game:shouldEntitiesContact(entity, other) then
+        if (entity.velocity or not other.velocity) and self:shouldEntitiesContact(entity, other) then
             local sz = other.pos.z
             local ez = other.pos.z + other.pos.height
             if other.physics.sliceEnd < entity.physics.sliceStart then
@@ -830,6 +796,34 @@ function Game:drawEntityShadow(entity, floorZ)
         entity.shadow.anchor.y)
 end
 
+function Game:findEntity(designation)
+    if not designation then
+        return nil
+    elseif designation.byName then
+        return self.entitiesByName[designation.byName]
+    end
+end
+
+function Game:findPoint(designation)
+    if not designation then
+        return nil
+    end
+    local x, y = nil, nil
+    if designation.byName then
+        local entity = self:findEntity(designation)
+        if entity and entity.pos then
+            x, y = entity.pos.x, entity.pos.y
+        end
+    elseif designation.pos then
+        x, y = designation.pos.x, designation.pos.y
+    end
+    if designation.offset then
+        x = x + designation.offset.x or 0
+        y = y + designation.offset.y or 0
+    end
+    return x, y
+end
+
 function Game:shouldEntitiesContact(e1, e2)
     return not ((e1.fruit or e1.fruitStack) and (e2.fruit or e2.fruitStack))
 end
@@ -838,6 +832,10 @@ end
 
 local function onOverlappingEntitiesCheck(fix)
     local otherEntity = fix:getBody():getUserData()
+
+    if otherEntity.disabled then
+        return true
+    end
 
     if overlappingCheckEntity.id == otherEntity.id or
         (overlappingCheckType and fix:getUserData().type ~= overlappingCheckType) or

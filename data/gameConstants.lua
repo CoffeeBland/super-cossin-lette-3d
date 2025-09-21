@@ -8,6 +8,9 @@ return {
     speedMultiplier = 20,
     shadowColor = { 0.875, 0.867, 0.941, 1 },
     lightColor = { 0.875, 0.867, 0.741, 1 },
+    autoWalkCutoffFrames = 600,
+    autoWalkJumpFrames = 120,
+    autoWalkCutoffDistance2 = 100,
     defaultLight = {
         angle = 0.4 * math.pi,
         radiusw = 140,
@@ -16,16 +19,158 @@ return {
     },
     bubble = {
         offset = { x = 0, y = 20 },
-        width = 110,
-        lingerFrames = 30
+        width = 130,
+        lingerFrames = 60
     },
     icons = {
         size = { w = 64, h = 64 },
         list = {
-            "!",
-            "blonde",
-            "picnic",
-            "<3"
+            "!", 32,
+            "blonde", 50,
+            "picnic", 64,
+            "<3", 52,
+            "mange", 48,
+            "?", 40,
+            ".", 28,
+            "0", 36,
+            "1", 36,
+            "2", 36,
+            "3", 36,
+            "4", 36,
+            "5", 36,
+            "6", 36,
+            "7", 36,
+            "8", 36,
+            "9", 36,
+            "fruit", 48,
         }
+    },
+    endLevelCutscene = {
+        { "input",
+            target = nil
+        },
+        { "move",
+            entity = { byName = "cossin" },
+            { "lookAt", point = { byName = "picnic" } },
+            { "jump", jumpSpeed = 100 }
+        },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 20, "!", 10, "!", 10, "!" }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin" }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin" }
+        },
+        { "move",
+            entity = { byName = "cossin" },
+            { "walkTo", point = { byName = "picnic", offset = { x = -360, y = 170 } } },
+            { "lookAt", point = { byName = "picnic" } },
+        },
+        { "camera",
+            target = { byName = "picnic" },
+            panFrames = 60
+        },
+        { "waitForPan" },
+        { "components",
+            entity = { byName = "blonde" },
+            disabled = false,
+            larp = {
+                ["light.alpha"] = { to = 0.3, frames = 60 },
+                ["color[4]"] = { to = 1, delay = 30, frames = 60 },
+                ["sprites[1].anchor.x"] = { startOffset = -150, toOffset = 0, delay = 30, frames = 120 },
+                ["pos.z"] = { to = 0, delay = 30, frames = 120 }
+            },
+            color = { 1, 1, 1, 0 },
+            light = { alpha = 0 },
+            pos = { z = 400 }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin" }
+        },
+        { "move",
+            entity = { byName = "cossin" },
+            { "waitFrames", 45 },
+            { "lookAt", point = { byName = "blonde" } },
+        },
+        { "waitForLarp",
+            entity = { byName = "blonde" }
+        },
+        { "components",
+            entity = { byName = "blonde" },
+            larp = {
+                ["light.alpha"] = { to = 0, frames = 60 }
+            }
+        },
+        { "bubble",
+            entity = { byName = "blonde" },
+            text = { 20, "picnic", 10, "<3" }
+        },
+        { "waitForLarp",
+            entity = { byName = "blonde" }
+        },
+        { "waitForBubble",
+            entity = { byName = "blonde" }
+        },
+        { "bubble",
+            entity = { byName = "blonde" },
+            text = { 10, "mange", 10, "?" }
+        },
+        { "waitForBubble",
+            entity = { byName = "blonde" }
+        },
+        { "move",
+            entity = { byName = "cossin" },
+            { "walkTo", point = { byName = "picnic", offset = { x = -380, y = 180 } } },
+        },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 10, ".", 10, ".", 10, "." }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin" }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin" }
+        },
+        { "move",
+            entity = { byName = "cossin" },
+            { "lookAt", point = { byName = "blonde" } },
+        },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 10, "1", 10, "2" }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin" }
+        },
+        { "bubble",
+            entity = { byName = "blonde" },
+            text = { 10, "picnic", 10, "fruit", 10, "?" }
+        },
+        { "waitForBubble",
+            entity = { byName = "blonde" }
+        },
+        { "move",
+            entity = { byName = "cossin" },
+            { "jump", jumpSpeed = 100 }
+        },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 10, "1", 10, "2", 10, "!" }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin" }
+        },
+
+        -- FOR TEST
+        { "camera",
+            target = { byName = "cossin" }
+        },
+        { "input",
+            target = { byName = "cossin" }
+        },
     }
 }

@@ -23,7 +23,7 @@ return {
   },
   properties = {},
   wangsets = {},
-  tilecount = 76,
+  tilecount = 77,
   tiles = {
     {
       id = 89,
@@ -48,178 +48,24 @@ return {
       height = 1024
     },
     {
-      id = 2,
-      properties = {
-        ["offsetX"] = 510,
-        ["offsetY"] = 1220
-      },
-      image = "../img/Feuillage1.png",
-      width = 1024,
-      height = 1286
-    },
-    {
-      id = 3,
-      properties = {
-        ["offsetX"] = 510,
-        ["offsetY"] = 1220
-      },
-      image = "../img/Feuillage2.png",
-      width = 1024,
-      height = 1286
-    },
-    {
-      id = 4,
-      properties = {
-        ["offsetX"] = 510,
-        ["offsetY"] = 1220
-      },
-      image = "../img/Feuillage3.png",
-      width = 1024,
-      height = 1286
-    },
-    {
-      id = 5,
+      id = 92,
       properties = {
         ["height"] = 800,
         ["offsetX"] = 510,
-        ["offsetY"] = 1210
-      },
-      image = "../img/Tronc1.png",
-      width = 1024,
-      height = 1286,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 4,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 6,
-            name = "",
-            type = "",
-            shape = "polygon",
-            x = 394,
-            y = 1215,
-            width = 0,
-            height = 0,
-            rotation = 0,
-            visible = true,
-            polygon = {
-              { x = 0, y = 0 },
-              { x = 70, y = 29 },
-              { x = 161, y = 25 },
-              { x = 222, y = 2 },
-              { x = 170, y = -45 },
-              { x = 48, y = -44 }
-            },
-            properties = {}
-          }
+        ["offsetY"] = 1210,
+        ["replaceTo[0]"] = {
+          ["flipX"] = "random",
+          ["ids"] = "5,6,7"
+        },
+        ["replaceTo[1]"] = {
+          ["flipX"] = "random",
+          ["ids"] = "2,3,4",
+          ["posY"] = 0
         }
-      }
-    },
-    {
-      id = 6,
-      properties = {
-        ["height"] = 800,
-        ["offsetX"] = 510,
-        ["offsetY"] = 1210
       },
-      image = "../img/Tronc2.png",
+      image = "../img/Arbre.png",
       width = 1024,
-      height = 1286,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "polygon",
-            x = 442,
-            y = 1207,
-            width = 0,
-            height = 0,
-            rotation = 0,
-            visible = true,
-            polygon = {
-              { x = 0, y = 0 },
-              { x = 65.2703, y = 29 },
-              { x = 150.122, y = 25 },
-              { x = 207, y = 2 },
-              { x = 158.514, y = -45 },
-              { x = 44.7568, y = -44 }
-            },
-            properties = {}
-          }
-        }
-      }
-    },
-    {
-      id = 7,
-      properties = {
-        ["height"] = 800,
-        ["offsetX"] = 510,
-        ["offsetY"] = 1210
-      },
-      image = "../img/Tronc3.png",
-      width = 1024,
-      height = 1286,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "polygon",
-            x = 357.765,
-            y = 1214.86,
-            width = 0,
-            height = 0,
-            rotation = 0,
-            visible = true,
-            polygon = {
-              { x = 14.2353, y = -1 },
-              { x = 85.6288, y = 32.1351 },
-              { x = 196.946, y = 27.7027 },
-              { x = 256.235, y = 1.21622 },
-              { x = 207.956, y = -49.8649 },
-              { x = 58.7169, y = -48.7568 }
-            },
-            properties = {}
-          }
-        }
-      }
+      height = 1286
     },
     {
       id = 10,
@@ -2291,6 +2137,276 @@ return {
               { x = 192, y = 99 },
               { x = 519, y = -76 },
               { x = 297.333, y = -200 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 2,
+      properties = {
+        ["autoshadow"] = true,
+        ["height"] = 230,
+        ["offsetX"] = 510,
+        ["offsetY"] = 470,
+        ["posZ"] = 750
+      },
+      image = "../img/Feuillage1.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 3,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 2,
+            name = "",
+            type = "",
+            shape = "ellipse",
+            x = 170.667,
+            y = 214.333,
+            width = 682.667,
+            height = 428.667,
+            rotation = 0,
+            visible = true,
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 3,
+      properties = {
+        ["autoshadow"] = true,
+        ["height"] = 230,
+        ["offsetX"] = 510,
+        ["offsetY"] = 470,
+        ["posZ"] = 750
+      },
+      image = "../img/Feuillage2.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "ellipse",
+            x = 170.667,
+            y = 214.333,
+            width = 682.667,
+            height = 428.667,
+            rotation = 0,
+            visible = true,
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 4,
+      properties = {
+        ["autoshadow"] = true,
+        ["height"] = 230,
+        ["offsetX"] = 510,
+        ["offsetY"] = 470,
+        ["posZ"] = 750
+      },
+      image = "../img/Feuillage3.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "ellipse",
+            x = 170.667,
+            y = 214.333,
+            width = 682.667,
+            height = 428.667,
+            rotation = 0,
+            visible = true,
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 5,
+      properties = {
+        ["height"] = 700,
+        ["offsetX"] = 510,
+        ["offsetY"] = 1210
+      },
+      image = "../img/Tronc1.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 4,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 6,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 394,
+            y = 1215,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 70, y = 29 },
+              { x = 161, y = 25 },
+              { x = 222, y = 2 },
+              { x = 170, y = -45 },
+              { x = 48, y = -44 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 6,
+      properties = {
+        ["height"] = 700,
+        ["offsetX"] = 510,
+        ["offsetY"] = 1210
+      },
+      image = "../img/Tronc2.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 2,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 442,
+            y = 1207,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 65.2703, y = 29 },
+              { x = 150.122, y = 25 },
+              { x = 207, y = 2 },
+              { x = 158.514, y = -45 },
+              { x = 44.7568, y = -44 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 7,
+      properties = {
+        ["height"] = 700,
+        ["offsetX"] = 510,
+        ["offsetY"] = 1210
+      },
+      image = "../img/Tronc3.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 2,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 357.765,
+            y = 1214.86,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 14.2353, y = -1 },
+              { x = 85.6288, y = 32.1351 },
+              { x = 196.946, y = 27.7027 },
+              { x = 256.235, y = 1.21622 },
+              { x = 207.956, y = -49.8649 },
+              { x = 58.7169, y = -48.7568 }
             },
             properties = {}
           }

@@ -11,14 +11,43 @@
     ],
     "propertyTypes": [
         {
+            "id": 3,
+            "name": "flip",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "false",
+                "true",
+                "random"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "color": "#ffa0a0a4",
             "drawFill": true,
             "id": 1,
             "members": [
                 {
+                    "name": "flipX",
+                    "propertyType": "flip",
+                    "type": "string",
+                    "value": "false"
+                },
+                {
+                    "name": "flipY",
+                    "propertyType": "flip",
+                    "type": "string",
+                    "value": "false"
+                },
+                {
                     "name": "id",
                     "type": "int",
                     "value": 0
+                },
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "value": ""
                 },
                 {
                     "name": "posX",

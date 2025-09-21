@@ -47,6 +47,48 @@ objects = {
 prefabs = {}
 debug = { cycle = 0, physics = false, fps = false }
 
+function love.createShadow(name, points)
+    local minX, minY, maxX, maxY
+    for i = 1, #points / 2 do
+        local x, y = points[i * 2 - 1], points[i * 2]
+        minX = minX and math.min(x, minX) or x
+        maxX = maxX and math.max(x, maxX) or x
+        minY = minY and math.min(y, minY) or y
+        maxY = maxY and math.max(y, maxY) or y
+    end
+    local shadowW = maxX - minX + STATIC_SHADOW_SLOP * 2
+    local shadowH = maxY - minY + STATIC_SHADOW_SLOP * 2
+    local shadowCanvas = love.graphics.newCanvas(shadowW, shadowH)
+    love.graphics.setCanvas(shadowCanvas)
+
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.rectangle("fill", 0, 0, shadowW, shadowH)
+
+    love.graphics.push()
+    love.graphics.translate(-minX + STATIC_SHADOW_SLOP, -minY + STATIC_SHADOW_SLOP)
+    love.graphics.setColor(0.875, 0.867, 0.941, 1) -- TODO read game constants
+    love.graphics.setLineWidth(STATIC_SHADOW_SLOP)
+    love.graphics.setLineStyle("smooth")
+    love.graphics.polygon("line", points)
+    love.graphics.polygon("fill", points)
+    love.graphics.pop()
+
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setCanvas()
+    local shadowName = "objectShadow" .. name;
+    textures[shadowName] = shadowCanvas
+
+    local centerX = (maxX + minX) / 2
+    local centerY = (maxY + minY) / 2
+    return {
+        name = shadowName,
+        anchor = {
+            x = shadowW / 2 - centerX,
+            y = shadowH / 2 - centerY
+        }
+    }
+end
+
 function love.loadData(name, file)
     local loaded, error = loadfile(file)
     if error then
@@ -67,14 +109,19 @@ function love.loadData(name, file)
         local icons = Game.constants.icons
         icons.byName = {}
         local cols = math.floor(textures.Bubble_icons:getWidth() / icons.size.w)
-        for i, name in ipairs(icons.list) do
+        for i = 1, #icons.list / 2 do
+            local name = icons.list[i * 2 - 1]
+            local width = icons.list[i * 2]
             local imgi = i - 1
-            icons.byName[name] = love.graphics.newQuad(
-                (imgi % cols) * icons.size.w,
-                math.floor(imgi / cols) * icons.size.h,
-                icons.size.w,
-                icons.size.h,
-                textures.Bubble_icons)
+            icons.byName[name] = {
+                quad = love.graphics.newQuad(
+                    (imgi % cols) * icons.size.w,
+                    math.floor(imgi / cols) * icons.size.h,
+                    icons.size.w,
+                    icons.size.h,
+                    textures.Bubble_icons),
+                width = width
+            }
         end
     end
 
@@ -90,6 +137,16 @@ function love.loadData(name, file)
                     table.setHandlingTable(obj, key, value)
                 end
                 obj.posX, obj.posY = getObjectPos(data.objectalignment, obj)
+                if obj.replaceTo then
+                    for _, replacement in pairs(obj.replaceTo) do
+                        if replacement.ids then
+                            replacement.ids = str.split(replacement.ids, ",")
+                            for i, id in ipairs(replacement.ids) do
+                                replacement.ids[i] = math.parse(id) or 0
+                            end
+                        end
+                    end
+                end
                 objects.byId[obj.id] = obj
                 objects.byName[obj.name] = obj
 
@@ -107,6 +164,7 @@ function love.loadData(name, file)
                 -- Collisions!!!
                 if objData.objectGroup and objData.objectGroup.objects then
                     for _, subobject in ipairs(objData.objectGroup.objects) do
+                        local shadow
                         if subobject.shape == "polygon" then
                             local vertices = {}
                             local verticesFlipX = {}
@@ -135,49 +193,22 @@ function love.loadData(name, file)
                                 obj.shapeFlipX = love.physics.newPolygonShape(verticesFlipX)
                                 obj.shapeFlipY = love.physics.newPolygonShape(verticesFlipY)
                             end
+                            shadow = love.createShadow(obj.name, vertices)
 
-                            local shadowW = maxX - minX + STATIC_SHADOW_SLOP * 2
-                            local shadowH = maxY - minY + STATIC_SHADOW_SLOP * 2
-                            local shadowCanvas = love.graphics.newCanvas(shadowW, shadowH)
-                            love.graphics.setCanvas(shadowCanvas)
-
-                            love.graphics.setColor(1, 1, 1, 1)
-                            love.graphics.rectangle("fill", 0, 0, shadowW, shadowH)
-
-                            love.graphics.push()
-                            love.graphics.translate(-minX + STATIC_SHADOW_SLOP, -minY + STATIC_SHADOW_SLOP)
-                            love.graphics.setColor(0.875, 0.867, 0.941, 1) -- TODO read game constants
-                            love.graphics.setLineWidth(STATIC_SHADOW_SLOP)
-                            love.graphics.setLineStyle("smooth")
-                            love.graphics.polygon("line", obj.shape:getPoints())
-                            love.graphics.polygon("fill", obj.shape:getPoints())
-                            love.graphics.pop()
-
-                            love.graphics.setColor(1, 1, 1, 1)
-                            love.graphics.setCanvas()
-                            local shadowName = "objectShadow" .. obj.name;
-                            textures[shadowName] = shadowCanvas
-
-                            local centerX = (maxX + minX) / 2
-                            local centerY = (maxY + minY) / 2
-
-                            if obj.autoshadow then
-                                obj.shadow = {
-                                    name = shadowName,
-                                    anchor = {
-                                        x = shadowW / 2 - centerX,
-                                        y = shadowH / 2 - centerY
-                                    }
-                                }
-                            end
                         elseif subobject.shape == "ellipse" then
-                            -- Oops, all circles!
-                            obj.shape = love.physics.newCircleShape(
-                                (subobject.x + subobject.width / 2 - obj.offsetX),
-                                (subobject.y + subobject.height / 2 - obj.offsetY),
-                                (subobject.width + subobject.height) / 4)
+                            local x = subobject.x + subobject.width / 2 - obj.offsetX
+                            local y = subobject.y + subobject.height / 2 - obj.offsetY
+                            local radiusx = subobject.width / 2
+                            local radiusy = subobject.height / 2
+                            obj.shape = love.physics.newEllipseShape(x, y, radiusx, radiusy, 8)
                             obj.shapeFlipX = obj.shape
                             obj.shapeFlipY = obj.shape
+
+                            local shadowPts = math.getEllipse(x, y, radiusx, radiusy, 32)
+                            shadow = love.createShadow(obj.name, shadowPts)
+                        end
+                        if shadow and obj.autoshadow then
+                            obj.shadow = shadow
                         end
                     end
                 end

@@ -1,5 +1,6 @@
 Bubble = {}
 Bubble.__index = Bubble
+fancyTypes.bubble = Bubble
 
 function Bubble.new(bubble)
     bubble = bubble or {}
@@ -27,22 +28,30 @@ function Bubble:draw()
     local n = #self.text / 2
 
     local iconStart = 0
-    local iconPart = 0
-    local space = Game.constants.bubble.width - Game.constants.icons.size.w * n
-    if space < 0 then
-        iconStart = (-Game.constants.bubble.width + Game.constants.icons.size.w) / 2
-        iconPart = (Game.constants.bubble.width - Game.constants.icons.size.w) / (n - 1)
+    local textWidth = 0
+    for i = 1, n do
+        local icon = self.text[i * 2]
+        local iconWidth = Game.constants.icons.byName[icon].width
+        if iconStart == 0 then
+            iconStart = iconWidth / 2
+        end
+        textWidth = textWidth + iconWidth
     end
+
+    local iconStart = iconStart - textWidth / 2
+    local x = iconStart
 
     for i = 1, self.textIndex or 0 do
         local icon = self.text[i * 2]
+        local iconData = Game.constants.icons.byName[icon]
         love.graphics.draw(
             textures.Bubble_icons,
-            Game.constants.icons.byName[icon],
-            iconStart + iconPart * (i - 1), 0, -- pos,
+            iconData.quad,
+            x, 0, -- pos,
             0, -- rot,
             1, 1, -- scale,
             Game.constants.icons.size.w / 2, Game.constants.icons.size.h / 2)
+        x = x + iconData.width
     end
 end
 

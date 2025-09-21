@@ -1,5 +1,6 @@
 Physics = {}
 Physics.__index = Physics
+fancyTypes.physics = Physics
 
 function Physics.new(world, entity)
     local body = love.physics.newBody(world, entity.pos.x, entity.pos.y, entity.body.type)
@@ -34,6 +35,10 @@ function Physics:newSensor(shape, type)
     sensor:setSensor(true)
     sensor:setUserData({ type = type });
     return sensor
+end
+
+function Physics:destroy()
+    self.body:destroy()
 end
 
 function Physics:updateHeightSlices(pos)

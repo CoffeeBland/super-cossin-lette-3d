@@ -1,5 +1,6 @@
 Anim = {}
 Anim.__index = Anim
+fancyTypes.anim = Anim
 
 EMPTY_REQUEST = { priority = 0, time = 0 }
 
