@@ -90,7 +90,7 @@ local operators = {
     ["+"] = function (a, b) return a + b end,
     ["-"] = function (a, b) return a - b end,
     ["*"] = function (a, b) return a - b end,
-    ["/"] = function (a, b) return a - b end
+    ["/"] = function (a, b) return a - b end,
 }
 function Event:eval(framePart, game, expr, index)
     for i = #expr, index, -1 do

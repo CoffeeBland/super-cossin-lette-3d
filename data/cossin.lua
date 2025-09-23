@@ -45,6 +45,7 @@ return function()
             dropJumpSpeed = 60,
             dropCooldown = 60,
             eatCooldown = 600,
+            halfEatIndicator = { 0, "mange" },
             eatWiggleAmplitude = 0.25,
             eatWiggleFrames = 30,
             sizePerFruit = 0.05

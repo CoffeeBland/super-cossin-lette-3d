@@ -24,11 +24,7 @@ function Actor:processMove(framePart, game, nextMove, entity, actions)
     local type = nextMove[1]
     if type == "lookAt" then
         local x, y = game:findPoint(nextMove.point)
-        local dx, dy = x - pos.x, y - pos.y
-        local angle = math.atan2(dy, dx)
-        -- RIP
-        local a = math.floor(angle / math.pi * 4 + 0.5) + 4
-        anim.dir = DIRS[a];
+        anim:setAngle(math.atan2(y - pos.y, x - pos.x))
         return true
     elseif type == "jump" then
         actions.jump = false
@@ -106,9 +102,7 @@ function Actor:update(framePart, game, entity, actions)
 
     pos.sliding = false
     if actions.movement.angle then
-        -- RIP
-        local a = math.floor(actions.movement.angle / math.pi * 4 + 0.5) + 4
-        anim.dir = DIRS[a];
+        anim:setAngle(actions.movement.angle)
     end
     if pos.onGround and anim:highestPriority() <= Anim.priorities.squish then
         if actions.jump then

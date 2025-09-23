@@ -26,6 +26,11 @@ function Anim.new()
     }, Anim)
 end
 
+function Anim:setAngle(angle)
+    local a = math.floor(angle / math.pi * 4 + 0.5) + 4
+    self.dir = DIRS[((a + 7) % 8 + 1)];
+end
+
 function Anim:getRequest(name, createIfMissing)
     local free
     for i, request in ipairs(self.requested) do

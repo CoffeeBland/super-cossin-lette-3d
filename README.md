@@ -8,13 +8,10 @@
 * Intro (partiellement fait)
 * End state
 * Highlight pour les cas cachés
-* Le chemin vers des cutscene
-    * Support de bulle de réaction
-    * Support de faire filer la camera à des endroits
-    * Support de faire des manipulations d'image (Flash? God ray? À voir)
-    * Support de faire apparaitre une entité
-    * Support de faire wiggle une entité (scale? skew? comment on peut modéliser ça?)
-* Transitions
-    * Kuwahara?
+* Les bulles ont besoin d'amour
+* Les transitions ont besoin d'amour
+* Y manque un win screen pis lose screen
+* Timer
+* On devrait avoir des fancy types pour toute (pe, probablement, y'en manque)
 
 ## BUGS

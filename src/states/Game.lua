@@ -218,7 +218,11 @@ function Game:update(dt)
                 if not entity.fruitStack.cooldown then
                     entity.fruitStack.cooldown = entity.fruitStack.eatCooldown
                 elseif entity.fruitStack.cooldown > 0 then
+                    local moreThanHalfWay = entity.fruitStack.cooldown > entity.fruitStack.eatCooldown / 2
                     entity.fruitStack.cooldown = entity.fruitStack.cooldown - framePart
+                    if entity.fruitStack.cooldown <= entity.fruitStack.eatCooldown / 2 and moreThanHalfWay then
+                        entity.bubble:show(self, entity.fruitStack.halfEatIndicator, entity.anim)
+                    end
                 end
             end
 
