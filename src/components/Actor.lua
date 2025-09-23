@@ -3,8 +3,13 @@ Actor.__index = Actor
 fancyTypes.actor = Actor
 
 function Actor.new(params)
-    local instance = setmetatable(params or {}, Actor)
-    instance.mass = 1
+    params = params or EMPTY
+    local instance = setmetatable({}, Actor)
+    instance.walkSpeed = params.walkSpeed or 0
+    instance.slidingSpeed = params.slidingSpeed or 0
+    instance.airSpeed = params.airSpeed or 0
+    instance.jumpSpeed = params.jumpSpeed or 0
+    instance.mass = params.mass or 1
     instance.autoActions = { movement = { x = 0, y = 0, angle = nil }, jump = false }
     instance.autoMoves = {}
     instance.autoMoveIndex = nil

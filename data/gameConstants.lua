@@ -42,11 +42,16 @@ return {
             "8", 36,
             "9", 36,
             "fruit", 48,
+            "argh", 48,
+            ")", 28,
+            ":", 28,
+            "^", 28,
+            "(", 28,
         }
     },
     endLevelCutscene = {
         { "input",
-            target = nil
+            entity = nil
         },
         { "move",
             entity = { byName = "cossin" },
@@ -69,22 +74,22 @@ return {
             { "lookAt", point = { byName = "picnic" } },
         },
         { "camera",
-            target = { byName = "picnic" },
+            entity = { byName = "picnic" },
             panFrames = 60
         },
         { "waitForPan" },
         { "components",
             entity = { byName = "blonde" },
             disabled = false,
-            larp = {
-                ["light.alpha"] = { to = 0.3, frames = 60 },
-                ["color[4]"] = { to = 1, delay = 30, frames = 60 },
-                ["sprites[1].anchor.x"] = { startOffset = -150, toOffset = 0, delay = 30, frames = 120 },
-                ["pos.z"] = { to = 0, delay = 30, frames = 120 }
-            },
-            color = { 1, 1, 1, 0 },
             light = { alpha = 0 },
-            pos = { z = 400 }
+            color = { 1, 1, 1, 0 }
+        },
+        { "larp",
+            entity = { byName = "blonde" },
+            ["light.alpha"] = { to = 0.3, frames = 60 },
+            ["color[4]"] = { to = 1, delay = 30, frames = 60 },
+            ["sprites[1].anchor.x"] = { startOffset = -150, toOffset = 0, delay = 30, frames = 120 },
+            ["pos.z"] = { from = 400, to = 0, delay = 30, frames = 120 }
         },
         { "waitForMove",
             entity = { byName = "cossin" }
@@ -97,11 +102,9 @@ return {
         { "waitForLarp",
             entity = { byName = "blonde" }
         },
-        { "components",
+        { "larp",
             entity = { byName = "blonde" },
-            larp = {
-                ["light.alpha"] = { to = 0, frames = 60 }
-            }
+            ["light.alpha"] = { to = 0, frames = 60 }
         },
         { "bubble",
             entity = { byName = "blonde" },
@@ -140,11 +143,20 @@ return {
         },
         { "bubble",
             entity = { byName = "cossin" },
-            text = { 10, "1", 10, "2" }
+            text = { 10, "[vars.eaten]" }
         },
         { "waitForBubble",
             entity = { byName = "cossin" }
         },
+        { "if", ">=", "[vars.eaten]", 5 },
+        { "bubble",
+            entity = { byName = "blonde" },
+            text = { 10, ".", 10, ".", 30, ".", 10, "argh" }
+        },
+        { "waitForBubble",
+            entity = { byName = "blonde" }
+        },
+        { "end" },
         { "bubble",
             entity = { byName = "blonde" },
             text = { 10, "picnic", 10, "fruit", 10, "?" }
@@ -158,18 +170,66 @@ return {
         },
         { "bubble",
             entity = { byName = "cossin" },
-            text = { 10, "1", 10, "2", 10, "!" }
+            text = { 10, "[vars.picnicFruits]", 10, "!" }
         },
         { "waitForBubble",
             entity = { byName = "cossin" }
         },
+        { "if", ">=", "[vars.picnicFruits]", "[vars.targetFruits]" },
+        { "bubble",
+            entity = { byName = "blonde" },
+            text = { 10, ":", 10, "^", 30, ")" }
+        },
+        { "waitForBubble",
+            entity = { byName = "blonde" }
+        },
+        { "bubble",
+            entity = { byName = "blonde" },
+            text = { 10, "<3" }
+        },
+        { "else" },
+        { "bubble",
+            entity = { byName = "blonde" },
+            text = { 10, ":", 10, "^", 30, "(" }
+        },
+        { "waitForBubble",
+            entity = { byName = "blonde" }
+        },
+        { "larp",
+            entity = { byName = "blonde" },
+            ["light.alpha"] = { to = 0.3, frames = 30 },
+            ["color[4]"] = { to = 0, delay = 30, frames = 30 },
+            ["sprites[1].anchor.x"] = { toOffset = -150, frames = 60 },
+            ["pos.z"] = { to = 400, frames = 60 }
+        },
+        { "waitForLarp",
+            entity = { byName = "blonde" }
+        },
+        { "larp",
+            entity = { byName = "blonde" },
+            ["light.alpha"] = { to = 0, frames = 30 }
+        },
+        { "waitForLarp",
+            entity = { byName = "blonde" }
+        },
+        { "components",
+            entity = { byName = "blonde" },
+            disabled = true
+        },
+        { "changeState",
+            Intro
+        },
+        { "end" },
+        { "waitForBubble",
+            entity = { byName = "blonde" }
+        },
 
         -- FOR TEST
         { "camera",
-            target = { byName = "cossin" }
+            entity = { byName = "cossin" }
         },
         { "input",
-            target = { byName = "cossin" }
+            entity = { byName = "cossin" }
         },
     }
 }

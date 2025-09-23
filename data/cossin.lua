@@ -62,6 +62,7 @@ return function()
         bubble = {
             anchor = { x = -40, y = -220 }
         },
+        larp = {},
         shakeEmitter = {
             triggers = {
                 land = {

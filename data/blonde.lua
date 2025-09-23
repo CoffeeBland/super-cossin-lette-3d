@@ -18,6 +18,7 @@ return function()
         },
         anim = {},
         light = {},
+        larp = {},
         soundEmitter = {
             playing = {},
             triggers = {}

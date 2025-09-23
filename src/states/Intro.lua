@@ -7,7 +7,10 @@ local sparkles = {
 }
 local sparkleFrames = 12
 
-Intro = {}
+Intro = {
+    fadeout = 0,
+    fadein = 0
+}
 
 function Intro:enter()
     self.splashFrame = 0

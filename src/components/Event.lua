@@ -3,15 +3,14 @@ Event.__index = Event
 fancyTypes.event = Event
 
 function Event.new()
-    local instance = setmetatable({
-        awaiting = {}
-    }, Event)
-
+    local instance = setmetatable({}, Event)
+    instance.awaiting = {}
     return instance
 end
 
 function Event:execute(list)
-    self.index = 0
+    self.index = 1
+    self.depth = 0
     self.list = list
     for _, event in ipairs(self.list) do
         if self:isWait(event) then
@@ -33,12 +32,8 @@ function Event:update(framePart, game)
     end
 
     if self.list then
-        local nextEvent = self.list[self.index + 1]
-        while nextEvent and self:processEvent(framePart, game, nextEvent) do
-            self.index = self.index + 1
-            nextEvent = self.list[self.index + 1]
-        end
-        if not nextEvent then
+        while self:processEvent(framePart, game, self.index) do end
+        if self.index > #self.list then
             self.list = nil
             self.index = nil
         end
@@ -78,42 +73,142 @@ function Event:isWaitDone(framePart, game, wait)
         wait.done = entity.larp:empty()
     elseif type == "waitForBubble" then
         local entity = game:findEntity(wait.entity)
-        wait.done = not entity.bubble.text
+        wait.done = entity.bubble.textLen == 0
     end
     return wait.done
 end
 
-function Event:processEvent(framePart, game, event)
+local evalStack = {}
+local evalStackLen = 0
+local operators = {
+    ["<"] = function (a, b) return a < b end,
+    ["<="] = function (a, b) return a <= b end,
+    [">"] = function (a, b) return a > b end,
+    [">="] = function (a, b) return a >= b end,
+    ["=="] = function (a, b) return a == b end,
+    ["~="] = function (a, b) return a ~= b end,
+    ["+"] = function (a, b) return a + b end,
+    ["-"] = function (a, b) return a - b end,
+    ["*"] = function (a, b) return a - b end,
+    ["/"] = function (a, b) return a - b end
+}
+function Event:eval(framePart, game, expr, index)
+    for i = #expr, index, -1 do
+        local atom = expr[i]
+        if operators[atom] then
+            if evalStackLen < 2 then
+                print("OHNO! THE EXPRESSION WAS BAD!", dump(expr), index)
+                return
+            end
+            local operand1 = evalStack[evalStackLen]
+            local operand2 = evalStack[evalStackLen - 1]
+            evalStackLen = evalStackLen - 1
+            evalStack[evalStackLen] = operators[atom](operand1, operand2)
+        else
+            evalStackLen = evalStackLen + 1
+            evalStack[evalStackLen] = game:eval(atom)
+        end
+    end
+    evalStackLen = 0
+    return evalStack[1]
+end
+
+function Event:findMarker(index, marker)
+    local depth = self.depth
+    for i = index, #self.list do
+        local e = self.list[i]
+        local t = e[1]
+        if (t == marker and depth == self.depth) or
+            (t == "end" and depth == self.depth) then
+            self.depth = self.depth - 1
+            return i + 1
+        end
+        if t == "if" then
+            self.depth = self.depth + 1
+        elseif t == "end" then
+            self.depth = self.depth - 1
+        end
+    end
+end
+
+function Event:processEvent(framePart, game, index)
+    local event = self.list[index]
+    if not event then
+        self.index = index + 1
+        return
+    end
     local type = event[1]
+
+    -- Wait
     if self:isWait(event) then
         self.wait = event
+        self.index = index + 1
         return self:isWaitDone(0, game, self.wait)
-    elseif type == "bubble" then
-        local entity = game:findEntity(event.entity)
-        entity.bubble:show(event.text, entity.anim)
+    end
+
+    -- Conditions
+    if type == "if" then
+        self.depth = self.depth + 1
+        if self:eval(framePart, game, event, 2) then
+            self.index = index + 1
+            return true
+        else
+            local depth = self.depth
+            self.index = self:findMarker(index + 1, "else")
+            return true
+        end
+    elseif type == "else" then
+        self.index = self:findMarker(index + 1, "end")
+        return true
+    elseif type == "end" then
+        self.depth = self.depth - 1
+        self.index = index + 1
+        return true
+    end
+
+    -- Regular old actions.
+    self.index = self.index + 1
+
+    local entity = event.entity and game:findEntity(event.entity)
+    if event.entity and not entity then
+        print("OHNO could not find entity", dump(event))
+        return true
+    end
+
+    -- Actions
+    if type == "bubble" then
+        entity.bubble:show(game, event.text, entity.anim)
     elseif type == "camera" then
         game.camera.panFrames = event.panFrames or 0
-        game.camera.target = game:findEntity(event.target)
+        game.camera.target = entity
     elseif type == "input" then
-        game.input.target = game:findEntity(event.target)
+        game.input.target = entity
     elseif type == "move" then
-        local entity = game:findEntity(event.entity)
         entity.actor:setMoveFromEvent(event)
-    elseif type == "components" then
-        local entity = game:findEntity(event.entity)
-        for key, component in pairs(event) do
-            if key ~= "entity" then
-                if entity[key] then
-                    table.recset(entity, key, component)
-                elseif fancyTypes[key] then
-                    entity[key] = fancyTypes[key].new(component)
-                else
-                    entity[key] = component
-                end
+    elseif type == "larp" then
+        for key, larp in pairs(event) do
+            if key ~= 1 and key ~= "entity" then
+                entity.larp:add(key, larp)
             end
         end
+    elseif type == "components" then
+        for key, component in pairs(event) do
+            if key ~= "entity" then
+                if not entity[key] then
+                    if fancyTypes[key] then
+                        entity[key] = fancyTypes[key].new()
+                    else
+                        entity[key] = {}
+                    end
+                end
+                table.recset(entity, key, component)
+            end
+        end
+    elseif type == "changeState" then
+        StateMachine:change(event[2])
     else
         print("OHNO", dump(event))
     end
+
     return true
 end

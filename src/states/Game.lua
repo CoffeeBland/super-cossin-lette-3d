@@ -21,7 +21,10 @@ local overlappingCheckSlop = nil
 local overlappingCheckStopOnFirst = false
 local overlappingCheckResult = {}
 
-Game = {}
+Game = {
+    fadeout = 15,
+    fadein = 15
+}
 
 function Game:refresh(force)
     local path = "maps/" .. self.map.name .. ".lua"
@@ -78,11 +81,15 @@ function Game:enter(args)
     self.entitiesByName = {}
     self.event = Event.new()
     self.anim = Anim.new()
-    self.vars = { eaten = 0 }
+    self.vars = {
+        remainingFruits = 0,
+        eaten = 0,
+        picnicFruits = 0,
+        targetFruits = 5
+    }
 
     self.map:getTilesGogogadget(self.physics, self.entities)
     self.map:getEntities(self.entities)
-    self:handleCreation()
     for _, entity in self:iterEntities() do
         -- Auto-attaching the input
         if entity.input and not self.input.target then
@@ -94,6 +101,7 @@ function Game:enter(args)
             self.camera.target = entity
         end
     end
+    self:update(0)
 end
 
 function Game:exit()
@@ -297,6 +305,7 @@ function Game:update(dt)
                         fruitEntity.fruit.cooldown = nil
                         fruitEntity.velocity.z = entity.picnic.pickupJumpSpeed * Game.constants.jumpMultiplier
                         table.insert(entity.picnic.fruits, fruitEntity)
+                        self.vars.picnicFruits = #entity.picnic.fruits
                     end
                 end
             end
@@ -463,7 +472,6 @@ function Game:update(dt)
         if self.camera.panFrames > 0 then
             self.camera.x = math.interp(self.camera.panFrames, self.camera.x, self.camera.target.pos.x)
             self.camera.y = math.interp(self.camera.panFrames, self.camera.y, self.camera.target.pos.y)
-            self.camera.z = math.interp(60, self.camera.z, self.camera.target.pos.floorZ or 0)
             self.camera.panFrames = math.max(self.camera.panFrames - framePart, 0)
             if self.camera.panFrames == 0 then
                 self.anim:trigger("camera:finished")
@@ -471,6 +479,9 @@ function Game:update(dt)
         else
             self.camera.x = self.camera.target.pos.x
             self.camera.y = self.camera.target.pos.y
+        end
+        if (self.camera.z < self.camera.target.pos.floorZ and self.camera.target.pos.z > self.camera.z) or
+            (self.camera.z > self.camera.target.pos.floorZ and self.camera.target.pos.z < self.camera.z) then
             self.camera.z = math.interp(60, self.camera.z, self.camera.target.pos.floorZ or 0)
         end
         if self.camera.shakeFrames > 0 then
@@ -878,4 +889,14 @@ function Game:getFirstOverlappingOfType(sensor, type, pos)
     local result = self:getAllOverlappingOfType(sensor, type, pos)[1]
     overlappingCheckStopOnFirst = false
     return result
+end
+
+function Game:eval(operand)
+    if type(operand) == "number" then
+        return operand
+    end
+    local type, name = operand:match"%[(%w+)%.(%w+)%]"
+    if type == "vars" then
+        return self.vars[name]
+    end
 end

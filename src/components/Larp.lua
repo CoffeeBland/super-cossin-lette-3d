@@ -4,10 +4,28 @@ Larp.get = {}
 Larp.set = {}
 fancyTypes.larp = Larp
 
-
 function Larp.new(params)
-    local instance = setmetatable(params or {}, Larp)
+    local instance = setmetatable({}, Larp)
+    for key, larp in pairs(params or EMPTY) do
+        instance:add(key, larp)
+    end
     return instance
+end
+
+function Larp:add(key, larp)
+    self[key] = {
+        from = larp.from,
+        to = larp.to,
+        frames = larp.frames,
+        delay = larp.delay,
+        startOffset = larp.startOffset,
+        toOffset = larp.toOffset
+    }
+
+    if not Larp.get[key] then
+        Larp.get[key] = loadstring("return function (entity) return entity." .. key .. " end")()
+        Larp.set[key] = loadstring("return function (entity, value) entity." .. key .. " = value end")()
+    end
 end
 
 function Larp:empty()
@@ -19,15 +37,16 @@ end
 
 function Larp:update(framePart, entity)
     for key, larp in pairs(self) do
-        if not Larp.get[key] then
-            Larp.get[key] = loadstring("return function (entity) return entity." .. key .. " end")()
-            Larp.set[key] = loadstring("return function (entity, value) entity." .. key .. " = value end")()
-        end
-
         local current = Larp.get[key](entity);
 
+        if larp.from then
+            current = larp.from
+            Larp.set[key](entity, current)
+            larp.from = nil
+        end
+
         if not larp.to then
-            larp.to = current + larp.toOffset
+            larp.to = current + (larp.toOffset or 0)
         end
 
         if larp.startOffset then

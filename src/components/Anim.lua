@@ -14,7 +14,7 @@ Anim.priorities = {
 }
 
 function Anim.new()
-    local instance = {
+    return setmetatable({
         dir = "b",
         triggers = {},
         requested = {},
@@ -23,8 +23,7 @@ function Anim.new()
         wiggleFrames = 0,
         wiggleTotalFrames = 0,
         wiggleAmplitude = 0
-    }
-    return setmetatable(instance, Anim)
+    }, Anim)
 end
 
 function Anim:getRequest(name, createIfMissing)
