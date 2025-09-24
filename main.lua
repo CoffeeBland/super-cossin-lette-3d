@@ -1,422 +1,24 @@
 require "src.util"
+require "src.load"
+require "src.input"
+require "src.input"
 require "src.constants"
 require "src.states.StateMachine"
 
-local pressActions = {
-    escape = "escape",
-    enter = "action",
-    f5 = "refresh",
-    f12 = "toggleDebug",
-    f11 = "gogogadget"
-}
-
-local releaseActions = {
-    space = "jump"
-}
-
-function getObjectPos(alignment, obj)
-    local texture = textures[obj.name]
-    if alignment == "unspecified" or alignment == "bottom" then
-        return -texture:getWidth() / 2, -texture:getHeight()
-    end
-end
-
-function getTilePos(alignment, tile)
-    local tileName = str.filename(tile.image)
-    local texture = textures[tileName]
-    if alignment == "unspecified" or alignment == "bottom" then
-        return -TILE_WIDTH / 2, -texture:getHeight()
-    end
-end
-
-fonts = {}
-textures = {}
-sounds = {}
-actions = {
-    escape = false,
-    action = false,
-    jump = false,
-    movement = { x = 0, y = 0 }
-}
-sprites = {}
-tileset = {}
-objects = {
-    byId = {},
-    byName = {}
-}
-prefabs = {}
 debug = { cycle = 0, physics = false, fps = false }
-
-function love.createShadow(name, points)
-    local minX, minY, maxX, maxY
-    for i = 1, #points / 2 do
-        local x, y = points[i * 2 - 1], points[i * 2]
-        minX = minX and math.min(x, minX) or x
-        maxX = maxX and math.max(x, maxX) or x
-        minY = minY and math.min(y, minY) or y
-        maxY = maxY and math.max(y, maxY) or y
-    end
-    local shadowW = maxX - minX + STATIC_SHADOW_SLOP * 2
-    local shadowH = maxY - minY + STATIC_SHADOW_SLOP * 2
-    local shadowCanvas = love.graphics.newCanvas(shadowW, shadowH)
-    love.graphics.setCanvas(shadowCanvas)
-
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.rectangle("fill", 0, 0, shadowW, shadowH)
-
-    love.graphics.push()
-    love.graphics.translate(-minX + STATIC_SHADOW_SLOP, -minY + STATIC_SHADOW_SLOP)
-    love.graphics.setColor(0.875, 0.867, 0.941, 1) -- TODO read game constants
-    love.graphics.setLineWidth(STATIC_SHADOW_SLOP)
-    love.graphics.setLineStyle("smooth")
-    love.graphics.polygon("line", points)
-    love.graphics.polygon("fill", points)
-    love.graphics.pop()
-
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.setCanvas()
-    local shadowName = "objectShadow" .. name;
-    textures[shadowName] = shadowCanvas
-
-    local centerX = (maxX + minX) / 2
-    local centerY = (maxY + minY) / 2
-    return {
-        name = shadowName,
-        anchor = {
-            x = shadowW / 2 - centerX,
-            y = shadowH / 2 - centerY
-        }
-    }
-end
-
-function love.loadData(name, file)
-    local loaded, error = loadfile(file)
-    if error then
-        print("Error in", file, ":", error)
-        return
-    end
-    local data = loaded()
-    local isPrefab = type(data) == "function"
-
-    if isPrefab then
-        prefabs[name] = data
-        return
-    end
-
-    if file == "data/gameConstants.lua" then
-        Game.constants = data
-
-        local icons = Game.constants.icons
-        icons.byName = {}
-        local cols = math.floor(textures.Bubble_icons:getWidth() / icons.size.w)
-        for i = 1, #icons.list / 2 do
-            local name = icons.list[i * 2 - 1]
-            local width = icons.list[i * 2]
-            local imgi = i - 1
-            icons.byName[name] = {
-                quad = love.graphics.newQuad(
-                    (imgi % cols) * icons.size.w,
-                    math.floor(imgi / cols) * icons.size.h,
-                    icons.size.w,
-                    icons.size.h,
-                    textures.Bubble_icons),
-                width = width
-            }
-        end
-    end
-
-    if data.tiledversion then
-        if data.name == "objects" then
-            for _, objData in ipairs(data.tiles) do
-                local obj = {}
-                obj.name = str.filename(objData.image)
-                obj.id = objData.id
-                obj.offsetX = 0
-                obj.offsetY = 0
-                for key, value in pairs(objData.properties) do
-                    table.setHandlingTable(obj, key, value)
-                end
-                obj.posX, obj.posY = getObjectPos(data.objectalignment, obj)
-                if obj.replaceTo then
-                    for _, replacement in pairs(obj.replaceTo) do
-                        if replacement.ids then
-                            replacement.ids = str.split(replacement.ids, ",")
-                            for i, id in ipairs(replacement.ids) do
-                                replacement.ids[i] = math.parse(id) or 0
-                            end
-                        end
-                    end
-                end
-                objects.byId[obj.id] = obj
-                objects.byName[obj.name] = obj
-
-                if obj.shadow then
-                    local shadowTexture = textures[obj.shadow]
-                    obj.shadow = {
-                        name = obj.shadow,
-                        anchor = {
-                            x = shadowTexture:getWidth() / 2,
-                            y = shadowTexture:getHeight() / 2
-                        }
-                    }
-                end
-
-                -- Collisions!!!
-                if objData.objectGroup and objData.objectGroup.objects then
-                    for _, subobject in ipairs(objData.objectGroup.objects) do
-                        local shadow
-                        if subobject.shape == "polygon" then
-                            local vertices = {}
-                            local verticesFlipX = {}
-                            local verticesFlipY = {}
-                            local minX, minY, maxX, maxY
-                            for _, point in ipairs(subobject.polygon) do
-                                local x = point.x + subobject.x - obj.offsetX
-                                local y = point.y + subobject.y - obj.offsetY
-                                minX = minX and math.min(x, minX) or x
-                                maxX = maxX and math.max(x, maxX) or x
-                                minY = minY and math.min(y, minY) or y
-                                maxY = maxY and math.max(y, maxY) or y
-                                table.insert(vertices, x)
-                                table.insert(vertices, y)
-                                table.insert(verticesFlipX, -x)
-                                table.insert(verticesFlipX, y)
-                                table.insert(verticesFlipY, x)
-                                table.insert(verticesFlipY, -y)
-                            end
-                            if #vertices > 16 then
-                                obj.shape = love.physics.newChainShape(true, vertices)
-                                obj.shapeFlipX = love.physics.newChainShape(true, verticesFlipX)
-                                obj.shapeFlipY = love.physics.newChainShape(true, verticesFlipY)
-                            else
-                                obj.shape = love.physics.newPolygonShape(vertices)
-                                obj.shapeFlipX = love.physics.newPolygonShape(verticesFlipX)
-                                obj.shapeFlipY = love.physics.newPolygonShape(verticesFlipY)
-                            end
-                            shadow = love.createShadow(obj.name, vertices)
-
-                        elseif subobject.shape == "ellipse" then
-                            local x = subobject.x + subobject.width / 2 - obj.offsetX
-                            local y = subobject.y + subobject.height / 2 - obj.offsetY
-                            local radiusx = subobject.width / 2
-                            local radiusy = subobject.height / 2
-                            obj.shape = love.physics.newEllipseShape(x, y, radiusx, radiusy, 8)
-                            obj.shapeFlipX = obj.shape
-                            obj.shapeFlipY = obj.shape
-
-                            local shadowPts = math.getEllipse(x, y, radiusx, radiusy, 32)
-                            shadow = love.createShadow(obj.name, shadowPts)
-                        end
-                        if shadow and obj.autoshadow then
-                            obj.shadow = shadow
-                        end
-                    end
-                end
-            end
-        end
-
-        if data.name == "tileset" then
-            tileset.tiles = {}
-            tileset.anims = {}
-            tileset.shapes = {}
-            if data.image then
-                local name = str.filename(data.image)
-                for i = 1, data.tilecount do
-                    tileset.tiles[i] = love.graphics.newQuad(
-                        ((i - 1) % data.columns) * data.tilewidth,
-                        math.floor((i - 1) / data.columns) * data.tileheight,
-                        data.tilewidth,
-                        data.tileheight,
-                        textures[name])
-                end
-            elseif data.tiles then
-                -- Tiles can be of non-uniform size.
-                -- As such, this is fucked.
-                -- Sort by greatest height first, make rows of the given height, and fuck being optimal
-                table.sort(data.tiles,
-                    function (a, b)
-                        return a.height > b.height
-                    end)
-
-                -- Use a width for fun.
-                local width = data.tilewidth * 8
-                local height = 0
-
-                -- Fill out rows so we can find out the height...
-                local rows = {}
-                local row = nil
-                for _, tile in ipairs(data.tiles) do
-                    if not row or row.remainingWidth < tile.width then
-                        row = { y = height, remainingWidth = width, height = tile.height, tiles = {} }
-                        height = height + tile.height
-                        table.insert(rows, row)
-                    end
-                    row.remainingWidth = row.remainingWidth - tile.width
-                    table.insert(row.tiles, tile)
-                end
-
-                local canvas = love.graphics.newCanvas(width, height)
-                textures[name] = canvas
-                love.graphics.setCanvas(canvas)
-
-                -- Gogo gadget.
-                for _, row in ipairs(rows) do
-                    local x = 0
-                    local y = row.y
-                    for _, tile in ipairs(row.tiles) do
-                        local tileName = str.filename(tile.image)
-                        love.graphics.draw(textures[tileName], x, y)
-                        local posX, posY = getTilePos(data.objectalignment, tile)
-                        tileset.tiles[tile.id] = {
-                            quad = love.graphics.newQuad(x, y, tile.width, tile.height, canvas),
-                            originX = -posX,
-                            originY = -posY,
-                            type = tile.properties and tile.properties.type,
-                            height = tile.properties and tile.properties.height,
-                        }
-                        if tile.animation and #tile.animation > 1 then
-                            local ids = {}
-                            for i, frame in ipairs(tile.animation) do
-                                ids[i] = frame.tileid
-                            end
-                            tileset.anims[tile.id] = {
-                                fps = 1000 / tile.animation[1].duration,
-                                ids = ids
-                            }
-                        end
-                        if tile.objectGroup and tile.objectGroup.objects then
-                            for _, subobject in ipairs(tile.objectGroup.objects) do
-                                if subobject.shape == "polygon" then
-                                    local vertices = {}
-                                    local verticesFlipX = {}
-                                    local verticesFlipY = {}
-                                    local minX, minY, maxX, maxY
-                                    for _, point in ipairs(subobject.polygon) do
-                                        local x = point.x + subobject.x + posX
-                                        local y = point.y + subobject.y + posY + 74 / 2
-                                        minX = minX and math.min(x, minX) or x
-                                        maxX = maxX and math.max(x, maxX) or x
-                                        minY = minY and math.min(y, minY) or y
-                                        maxY = maxY and math.max(y, maxY) or y
-                                        table.insert(vertices, x)
-                                        table.insert(vertices, y)
-                                        table.insert(verticesFlipX, -x)
-                                        table.insert(verticesFlipX, y)
-                                        table.insert(verticesFlipY, x)
-                                        table.insert(verticesFlipY, -y)
-                                    end
-                                    if #vertices > 16 then
-                                        tileset.shapes[tile.id] = {
-                                            default = love.physics.newChainShape(true, vertices),
-                                            flipX = love.physics.newChainShape(true, verticesFlipX),
-                                            flipY = love.physics.newChainShape(true, verticesFlipY)
-                                        }
-                                    else
-                                        tileset.shapes[tile.id] = {
-                                            default = love.physics.newPolygonShape(vertices),
-                                            flipX = love.physics.newPolygonShape(verticesFlipX),
-                                            flipY = love.physics.newPolygonShape(verticesFlipY)
-                                        }
-                                    end
-                                end
-                            end
-                        end
-                        x = x + tile.width
-                    end
-                end
-
-                love.graphics.setCanvas()
-            end
-        end
-    end
-
-    if data.tileWidth and data.tileHeight and data.sprites then
-        for spriteName, sprite in pairs(data.sprites) do
-            local texture = textures[spriteName]
-            for animName, anim in pairs(sprite) do
-                anim.triggers = {}
-                for i, tile in ipairs(anim.tiles) do
-                    anim.tiles[i] = {
-                        quad = love.graphics.newQuad(
-                            tile[1] * data.tileWidth,
-                            tile[2] * data.tileHeight,
-                            data.tileWidth,
-                            data.tileHeight,
-                            texture),
-                        trigger = tile[3]
-                    }
-                end
-            end
-            sprites[spriteName] = sprite
-        end
-    end
-end
-
-function love.crawlFiles(frame)
-    local updated = false
-    if not frame or (frame % 30) == 0 then
-        for file, info in pairs(love.filesystem.crawl("img")) do
-            print("image", file)
-            local name = str.filename(file)
-            local ok, img = pcall(love.graphics.newImage, file)
-            if ok then
-                textures[name] = img
-                timestamps[file] = info
-                updated = true
-            else
-                print("Could not read file", img)
-            end
-        end
-    end
-
-    if not frame or (frame % 30) == 10 then
-        for file, info in pairs(love.filesystem.crawl("audio")) do
-            print("audio", file)
-            local name = str.filename(file)
-            sounds[name] = love.audio.newSource(file, "static")
-            timestamps[file] = info
-            updated = true
-        end
-    end
-
-    if not frame or (frame % 30) == 20 then
-        for file, info in pairs(love.filesystem.crawl("data")) do
-            print("data", file)
-            local name = str.filename(file)
-            love.loadData(name, file)
-            timestamps[file] = info
-            updated = true
-        end
-    end
-    return updated
-end
 
 function love.load(args)
     local requestedMap = args[1]
 
     love.graphics.setDefaultFilter("nearest", "nearest")
-    love.window.setTitle("Super Cossin Lette 3D")
-    love.window.setMode(1024, 768, { resizable = true })
-    love.window.setVSync(1)
     love.physics.setMeter(METER_SCALE)
 
-    love.crawlFiles()
+    load.crawlFiles()
 
     if requestedMap then
         StateMachine:change(Game, { map = requestedMap })
     else
         StateMachine:change(Intro)
-    end
-
-    love.keyboard.keyPressed = {}
-end
-
-function love.resize(w, h)
-end
-
-function love.keypressed(key)
-    if pressActions[key] then
-        actions[pressActions[key]] = true
     end
 end
 
@@ -426,41 +28,12 @@ local frameTime = 0
 local frameDuration = 1 / 60
 
 function love.update(dt)
-    actions.movement.x = 0
-    actions.movement.y = 0
-    if love.keyboard.isDown('left') then
-        actions.movement.x = actions.movement.x - TILE_WIDTH
-    end
-    if love.keyboard.isDown('right') then
-        actions.movement.x = actions.movement.x + TILE_WIDTH
-    end
-    if love.keyboard.isDown('up') then
-        actions.movement.y = actions.movement.y - TILE_HEIGHT
-    end
-    if love.keyboard.isDown('down') then
-        actions.movement.y = actions.movement.y + TILE_HEIGHT
-    end
-    if actions.movement.x ~= 0 or actions.movement.y ~= 0 then
-        actions.movement.angle = math.atan2(actions.movement.y, actions.movement.x)
-    else
-        actions.movement.angle = nil
-    end
+    input.poll(dt)
 
     frameTime = frameTime + dt
     while frameTime + DELTA > frameDuration do
         frameTime = frameTime - frameDuration
         StateMachine:update(frameDuration)
-    end
-
-    for key, action in pairs(releaseActions) do
-        local preaction = "pre" .. action
-        actions[action] = false
-        if love.keyboard.isDown(key) then
-            actions[preaction] = true
-        elseif actions[preaction] then
-            actions[preaction] = false
-            actions[action] = true
-        end
     end
 
     if actions.toggleDebug then
@@ -469,14 +42,12 @@ function love.update(dt)
         debug.fps = debug.cycle >= 1
     end
 
-    local requiresRefresh = love.crawlFiles(frame) or (actions.refresh and StateMachine.current.refresh)
+    local requiresRefresh = load.crawlFiles(frame) or (actions.refresh and StateMachine.current.refresh)
     if StateMachine.current.refresh then
         StateMachine.current:refresh(requiresRefresh)
     end
 
-    for key, action in pairs(pressActions) do
-        actions[action] = false
-    end
+    input.afterUpdate(dt)
 
     avgDt = avgDt * 0.9 + dt * 0.1
     frame = frame + 1

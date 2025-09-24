@@ -45,6 +45,8 @@ function Actor:processMove(framePart, game, nextMove, entity, actions)
         self.autoWalkCutoffFrames = self.autoWalkCutoffFrames or Game.constants.autoWalkCutoffFrames
         if dx^2 + dy^2 > Game.constants.autoWalkCutoffDistance2 and self.autoWalkCutoffFrames > 0 then
             actions.movement.angle = math.atan2(dy, dx)
+            actions.movement.x = math.cos(actions.movement.angle)
+            actions.movement.y = math.sin(actions.movement.angle)
             actions.jump = self.autoWalkJumpFrames == 0
             if actions.jump then
                 self.autoWalkJumpFrames = Game.constants.autoWalkJumpFrames
@@ -66,6 +68,8 @@ function Actor:processMove(framePart, game, nextMove, entity, actions)
             end
             self.autoWalkJumpFrames = nil
             self.autoWalkCutoffFrames = nil
+            self.autoActions.movement.x = 0
+            self.autoActions.movement.y = 0
             self.autoActions.movement.angle = nil
             self.autoActions.jump = false
             return true
@@ -121,8 +125,8 @@ function Actor:update(framePart, game, entity, actions)
             (pos.onGround and self.walkSpeed) or
             self.airSpeed or
             0
-        local dx = speed * math.cos(actions.movement.angle) * Game.constants.speedMultiplier / self.mass
-        local dy = speed * math.sin(actions.movement.angle) * Game.constants.speedMultiplier / self.mass
+        local dx = speed * actions.movement.x * Game.constants.speedMultiplier / self.mass
+        local dy = speed * actions.movement.y * Game.constants.speedMultiplier / self.mass
         physics.body:applyForce(dx, dy)
 
         anim:release("idle")

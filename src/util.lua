@@ -35,6 +35,10 @@ function math.parse(str)
     return n
 end
 
+function math.randomRange(range)
+    return range[1] + math.random() * (range[2] - range[1])
+end
+
 function love.filesystem.crawl(dir, _results)
     if not _results then
         _results = {}
@@ -206,6 +210,11 @@ function love.physics.sampleShape(thingymagig, count)
     return result
 end
 
-function math.randomRange(range)
-    return range[1] + math.random() * (range[2] - range[1])
+function love.keyboard.isAnyDown(keys)
+    for _, key in pairs(keys) do
+        if love.keyboard.isDown(key) then
+            return true
+        end
+    end
+    return false
 end
