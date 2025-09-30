@@ -43,11 +43,13 @@ end
 function Event:isWait(event)
     local type = event[1]
     return type == "waitForAll" or
+        type == "waitFrames" or
         type == "waitForTrigger" or
         type == "waitForPan" or
         type == "waitForMove" or
         type == "waitForLarp" or
-        type == "waitForBubble"
+        type == "waitForBubble" or
+        type == "waitForVar"
 end
 
 function Event:isWaitDone(framePart, game, wait)
@@ -60,6 +62,14 @@ function Event:isWaitDone(framePart, game, wait)
             done = self:isWaitDone(framePart, game, wait[i]) and done
         end
         wait.done = done
+    elseif type == "waitFrames" then
+        self.waitFrames = self.waitFrames or wait[2]
+        if self.waitFrames > 0 then
+            self.waitFrames = math.max(self.waitFrames - framePart, 0)
+        else
+            self.waitFrames = nil
+            wait.done = true
+        end
     elseif type == "waitForTrigger" then
         local entity = game:findEntity(wait.entity)
         wait.done = (entity or game).anim:isTriggered(wait.trigger)
@@ -74,6 +84,8 @@ function Event:isWaitDone(framePart, game, wait)
     elseif type == "waitForBubble" then
         local entity = game:findEntity(wait.entity)
         wait.done = entity.bubble.textLen == 0
+    elseif type == "waitForVar" then
+        wait.done = self:eval(framePart, game, wait, 2)
     end
     return wait.done
 end
@@ -205,7 +217,11 @@ function Event:processEvent(framePart, game, index)
             end
         end
     elseif type == "changeState" then
-        StateMachine:change(event[2])
+        local args = {}
+        for key, value in pairs(event[3] or EMPTY) do
+            args[key] = game:eval(value)
+        end
+        StateMachine:change(event[2], args)
     else
         print("OHNO", dump(event))
     end

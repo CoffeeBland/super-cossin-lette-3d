@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="39" nextobjectid="2264">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="39" nextobjectid="2265">
  <editorsettings>
   <export target="../maps/map1_prototype.lua" format="lua"/>
  </editorsettings>
+ <properties>
+  <property name="vars.targetFruits" type="int" value="15"/>
+ </properties>
  <tileset firstgid="1" source="objects.tsx"/>
  <tileset firstgid="94" source="Fruits.tsx"/>
  <tileset firstgid="94" source="chemin.tsx"/>
@@ -1347,5 +1350,6 @@
   <object id="2261" gid="33" x="3774" y="962" width="128" height="192"/>
   <object id="2262" gid="33" x="3700" y="1036" width="128" height="192"/>
   <object id="2263" gid="33" x="3700" y="1184" width="128" height="192"/>
+  <object id="2264" gid="92" x="4403" y="1221" width="224" height="404"/>
  </objectgroup>
 </map>

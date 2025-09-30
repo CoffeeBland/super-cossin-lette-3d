@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="60" height="60" tilewidth="128" tileheight="74" infinite="0" nextlayerid="11" nextobjectid="148">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="60" height="60" tilewidth="128" tileheight="74" infinite="0" nextlayerid="11" nextobjectid="149">
  <editorsettings>
   <export target="../maps/map_mymp.lua" format="lua"/>
  </editorsettings>
+ <properties>
+  <property name="vars.nextMap" value="map1_prototype"/>
+  <property name="vars.targetFruits" type="int" value="8"/>
+ </properties>
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="268" source="objects.tsx"/>
  <layer id="1" name="fond" width="60" height="60">
@@ -291,6 +295,7 @@
   <object id="142" gid="292" x="1406" y="3256" width="192" height="256"/>
   <object id="144" gid="315" x="1961" y="1369" width="128" height="148"/>
   <object id="147" gid="303" x="1578.67" y="1282.67" width="128" height="192"/>
+  <object id="148" gid="359" x="1776" y="999" width="224" height="404"/>
  </objectgroup>
  <objectgroup id="5" name="Calque d'Objets 2">
   <object id="18" gid="272" x="181.292" y="1430.04" width="1024" height="1286"/>

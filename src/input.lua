@@ -58,7 +58,7 @@ actions = {
     escape = false,
     action = false,
     jump = false,
-    movement = { x = 0, y = 0 },
+    movement = { x = 0, y = 0, angle = nil },
     refresh = false,
     toggleDebug = false,
     gogogadget = false

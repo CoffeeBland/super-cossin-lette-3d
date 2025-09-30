@@ -35,7 +35,7 @@ function Intro:update(dt)
     if self.splashFrame >= splashFrames or actions.escape then
         love.audio.stop(sounds.IntroClick)
         love.audio.stop(sounds.Intro)
-        StateMachine:change(Game, { map = "map_mymp" })
+        StateMachine:change(Game, { map = Game.constants.firstLevel })
     end
 
     if self.splashFrame == 0 then

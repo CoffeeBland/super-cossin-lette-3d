@@ -308,18 +308,20 @@ function load.loadData(name, file)
         end
     end
 
-    if data.tileWidth and data.tileHeight and data.sprites then
+    if data.sprites then
         for spriteName, sprite in pairs(data.sprites) do
             local texture = textures[spriteName]
-            for animName, anim in pairs(sprite) do
+            for i, anim in ipairs(sprite) do
+                anim.tileWidth = data.tileWidth or sprite.tileWidth
+                anim.tileHeight = data.tileHeight or sprite.tileHeight
                 anim.triggers = {}
                 for i, tile in ipairs(anim.tiles) do
                     anim.tiles[i] = {
                         quad = love.graphics.newQuad(
-                            tile[1] * data.tileWidth,
-                            tile[2] * data.tileHeight,
-                            data.tileWidth,
-                            data.tileHeight,
+                            tile[1] * anim.tileWidth,
+                            tile[2] * anim.tileHeight,
+                            anim.tileWidth,
+                            anim.tileHeight,
                             texture),
                         trigger = tile[3]
                     }

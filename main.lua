@@ -30,16 +30,12 @@ local frameDuration = 1 / 60
 function love.update(dt)
     input.poll(dt)
 
-    frameTime = frameTime + dt
-    while frameTime + DELTA > frameDuration do
-        frameTime = frameTime - frameDuration
-        StateMachine:update(frameDuration)
-    end
-
     if actions.toggleDebug then
-        debug.cycle = (debug.cycle + 1) % 3
-        debug.physics = debug.cycle >= 2
+        debug.cycle = (debug.cycle + 1) % 4
+        debug.physics = debug.cycle == 2
+        debug.pointHeights = debug.cycle == 3
         debug.fps = debug.cycle >= 1
+        actions.toggleDebug = false
     end
 
     local requiresRefresh = load.crawlFiles(frame) or (actions.refresh and StateMachine.current.refresh)
@@ -47,7 +43,13 @@ function love.update(dt)
         StateMachine.current:refresh(requiresRefresh)
     end
 
-    input.afterUpdate(dt)
+    frameTime = frameTime + dt
+    while frameTime + DELTA > frameDuration do
+        frameTime = frameTime - frameDuration
+        StateMachine:update(frameDuration)
+
+        input.afterUpdate(dt)
+    end
 
     avgDt = avgDt * 0.9 + dt * 0.1
     frame = frame + 1

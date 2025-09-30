@@ -2,8 +2,6 @@ Anim = {}
 Anim.__index = Anim
 fancyTypes.anim = Anim
 
-EMPTY_REQUEST = { priority = 0, time = 0 }
-
 Anim.priorities = {
     idle = 1,
     walk = 1,
@@ -15,8 +13,10 @@ Anim.priorities = {
 
 function Anim.new()
     return setmetatable({
+        angle = 0,
         dir = "b",
         triggers = {},
+        emptyRequest = { priority = 0, time = 0 },
         requested = {},
         baseWiggle = { x = 1, y = 1 },
         wiggle = { x = 1, y = 1 },
@@ -28,6 +28,7 @@ end
 
 function Anim:setAngle(angle)
     local a = math.floor(angle / math.pi * 4 + 0.5) + 4
+    self.angle = angle
     self.dir = DIRS[((a + 7) % 8 + 1)];
 end
 
@@ -62,6 +63,15 @@ function Anim:release(name)
     local request = self:getRequest(name)
     if request then
         self:trigger(name .. ":stop")
+        request.name = nil
+        request.time = 0
+        request.priority = 0
+    end
+end
+
+function Anim:clear()
+    self.emptyRequest.time = 0
+    for _, request in ipairs(self.requested) do
         request.name = nil
         request.time = 0
         request.priority = 0
@@ -106,7 +116,7 @@ end
 
 function Anim:findAnim(spriteData)
     local foundAnim = nil
-    local foundRequest = EMPTY_REQUEST
+    local foundRequest = self.emptyRequest
     for _, anim in ipairs(spriteData) do
         local request = self:getRequest(anim.name)
         if request and request.priority >= foundRequest.priority then
@@ -123,7 +133,7 @@ function Anim:findAnim(spriteData)
             end
         end
     end
-    return foundAnim or spriteData[#spriteData], foundRequest or EMPTY_REQUEST
+    return foundAnim or spriteData[#spriteData], foundRequest or self.emptyRequest
 end
 
 function Anim:update(dt, entitySprites)
@@ -141,6 +151,7 @@ function Anim:update(dt, entitySprites)
     for _, request in pairs(self.requested) do
         request.time = request.time + dt
     end
+    self.emptyRequest.time = self.emptyRequest.time + dt
     for _, sprite in pairs(entitySprites) do
         local spriteData = sprites[sprite.name]
         if spriteData then
@@ -148,11 +159,13 @@ function Anim:update(dt, entitySprites)
 
             -- Moi je trouve que Oui.
             local frame = math.floor(animData.fps * animRequest.time)
-            if animData.oneShot and frame > #animData.tiles then
-                self:trigger(animData.name .. ":finished")
-                self:release(animData.name)
-            end
-            if animData.pingPong then
+            if animData.oneShot then
+                if frame >= #animData.tiles then
+                    self:trigger(animData.name .. ":finished")
+                    self:release(animData.name)
+                    frame = #animData.tiles - 1
+                end
+            elseif animData.pingPong then
                 local tileCount = #animData.tiles * 2 - 2
                 frame = frame % tileCount
                 if frame >= #animData.tiles then

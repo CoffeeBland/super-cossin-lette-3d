@@ -102,25 +102,26 @@ function Map:init()
             end
         end
     end
+    self.minx, self.miny, self.maxx, self.maxy = minx, miny, maxx, maxy
     self.width, self.height = maxx - minx, maxy - miny
     -- Collate tileset height markers
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
-                for i, tile, tx, ty, globali in self:chunkTiles(layer, chunk) do
+                for i, tile, tx, ty, globali, flipX, flipY, og in self:chunkTiles(layer, chunk) do
                     local tileData = tileset.tiles[tile]
                     if not tileData then
                         print("Unknown tile gid!", tile, og)
                     end
                     local height = tileData.height or 0
+                    local layerHeight = 0
                     if self.heightMarkersByLayer[layeri] then
-                        local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
-                        height = height + layerHeight
+                        layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
                     end
                     for i = 0, math.floor(height / TILE_HEIGHT) do
                         globali = (tx - i) + (ty - i) * self.width
                         local current = self.heightMarkers[globali]
-                        local new = math.max(current or 0, height)
+                        local new = math.max(current or 0, height + layerHeight)
                         if self.heightMarkersByLayer[layeri + 1] then
                             self.heightMarkersByLayer[layeri + 1][globali] = new
                         end
@@ -128,6 +129,14 @@ function Map:init()
                     end
                 end
             end
+        end
+    end
+
+    self.vars = {}
+    for key, value in pairs(self._data.properties) do
+        local path = str.split(key, ".")
+        if path[1] == "vars" then
+            self.vars[path[2]] = value
         end
     end
 end
@@ -195,6 +204,7 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     entity.pos.x = x
     entity.pos.y = y
     entity.pos.z = z
+    entity.pos.onGround = true
     if object.height or not entity.pos.height then
         entity.pos.height = object.height or HEIGHT_SLICE
     end
@@ -251,11 +261,14 @@ function Map:getPointHeight(x, y)
     local tx, ty = Map.PosToTileMat:transformPoint(x, y)
     tx = math.round(tx)
     ty = math.round(ty)
+    if tx < self.minx or tx > self.maxx or ty < self.miny or ty > self.maxy then
+        return 0
+    end
     local globali = tx + ty * self.width
     return self.heightMarkers[globali] or 0
 end
 
-function Map:getTilesGogogadget(physics, entities)
+function Map:getTileEntities(physics, entities)
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
@@ -346,7 +359,11 @@ function Map:getTilesGogogadget(physics, entities)
     end
 end
 
-function Map:drawTiles(batch, time)
+function Map:drawTiles(batch, time, sx, sy, ex, ey)
+    sx = sx - TILE_WIDTH
+    ex = ex + TILE_WIDTH
+    sy = sy - TILE_HEIGHT
+    ey = ey + TILE_HEIGHT
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
@@ -357,21 +374,23 @@ function Map:drawTiles(batch, time)
                         tile = anim.ids[frame + 1]
                     end
                     local x, y = Map.TileToPosMat:transformPoint(tx, ty)
-                    local tileData = tileset.tiles[tile]
-                    -- Tiles with heights are handled as entities
-                    local height = tileData.height or 0
-                    local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
-                    if height == 0 and layerHeight == 0 then
-                        local tileData = tileData
-                        batch:add(
-                            tileData.quad,
-                            x,
-                            y,
-                            0,
-                            flipX and -1 or 1,
-                            flipY and -1 or 1,
-                            tileData.originX,
-                            tileData.originY)
+                    if x >= sx and x <= ex and y >= sy and y <= ey then
+                        local tileData = tileset.tiles[tile]
+                        -- Tiles with heights are handled as entities
+                        local height = tileData.height or 0
+                        local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
+                        if height == 0 and layerHeight == 0 then
+                            local tileData = tileData
+                            batch:add(
+                                tileData.quad,
+                                x,
+                                y,
+                                0,
+                                flipX and -1 or 1,
+                                flipY and -1 or 1,
+                                tileData.originX,
+                                tileData.originY)
+                        end
                     end
                 end
             end

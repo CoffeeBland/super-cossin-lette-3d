@@ -35,8 +35,17 @@ function math.parse(str)
     return n
 end
 
-function math.randomRange(range)
-    return range[1] + math.random() * (range[2] - range[1])
+function math.randomSplitRange(rangePart, i, range, value)
+    if not range then
+        return value
+    end
+    local rangeExtent = (range[2] - range[1]) * rangePart
+    local rangePartStart = range[1] + (i - 1) * rangeExtent
+    return rangePartStart + math.random() * rangeExtent
+end
+
+function math.randomRange(range, value)
+    return range and (range[1] + math.random() * (range[2] - range[1])) or value
 end
 
 function love.filesystem.crawl(dir, _results)
@@ -174,14 +183,18 @@ function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
     return love.physics.newPolygonShape(unpack(math.getEllipse(x, y, radiusx, radiusy, segments)))
 end
 
-function love.physics.overlap(entity, sensor, other, otherFix)
-    if otherFix:testPoint(entity.pos.x, entity.pos.y) then
+function love.physics.overlap(sensor, otherFix)
+    local tlx, tly, brx, bry = sensor:getBoundingBox()
+    local ex, ey = (tlx + brx) / 2, (tly + bry) / 2
+    if otherFix:testPoint(ex, ey) then
         return true
     end
-    local _, _, frac = otherFix:rayCast(entity.pos.x, entity.pos.y, other.pos.x, other.pos.y, 1)
+    tlx, tly, brx, bry = otherFix:getBoundingBox()
+    local ox, oy = (tlx + brx) / 2, (tly + bry) / 2
+    local _, _, frac = otherFix:rayCast(ex, ey, ox, oy, 1)
     if frac then
-        local x = entity.pos.x + (other.pos.x - entity.pos.x) * frac
-        local y = entity.pos.y + (other.pos.y - entity.pos.y) * frac
+        local x = ex + (ox - ex) * frac
+        local y = ey + (oy - ey) * frac
         if sensor:testPoint(x, y) then
             return true
         end

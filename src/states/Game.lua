@@ -5,6 +5,7 @@ require "src.components.Bubble"
 require "src.components.Event"
 require "src.components.Physics"
 require "src.components.Larp"
+require "src.components.Water"
 
 require "src.Map"
 
@@ -48,6 +49,29 @@ function Game:iterEntities()
     return Game.entityIterator, self.entities, 1
 end
 
+local iteratorSx, iteratorSy, iteratorEx, iteratorEy
+function Game.entitiesAABBIterator(entities, i)
+    for j = i, #entities do
+        local entity = entities[j]
+        if not entity.disabled and
+            entity.pos.y >= sy and
+            entity.pos.y <= ey and
+            entity.pos.x >= sx and
+            entity.pos.x <= ex
+        then
+            return j + 1, entity
+        end
+    end
+end
+
+function Game:iterEntitiesAABB(sx, sy, ex, ey)
+    iteratorSx = sx
+    iteratorSy = sy
+    iteratorEx = ex
+    iteratorEy = ey
+    return Game.entitiesAABBIterator, self.entities, 1
+end
+
 function Game:enter(args)
     self.physics = love.physics.newWorld(0, 0, true)
     self.physics:setContactFilter(
@@ -79,16 +103,37 @@ function Game:enter(args)
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
     self.entities = {}
     self.entitiesByName = {}
+    self.particles = {}
+    self.nextFreeParticleIndex = 1
     self.event = Event.new()
     self.anim = Anim.new()
     self.vars = {
         remainingFruits = 0,
         eaten = 0,
         picnicFruits = 0,
-        targetFruits = 5
+        targetFruits = 1,
+        currentMap = args.map,
+        nextMap = nil
     }
+    for key, value in pairs(self.map.vars) do
+        self.vars[key] = value
+    end
 
-    self.map:getTilesGogogadget(self.physics, self.entities)
+    for i = 1, Game.constants.particleCount do
+        local particle = {
+            id = #self.entities + 1,
+            particleIndex = #self.particles + 1,
+            disabled = true,
+            sprites = { { anchor = { x = 0, y = 0 } } },
+            pos = { x = 0, y = 0, z = 0 },
+            velocity = { x = 0, y = 0, z = 0 },
+            anim = Anim:new()
+        }
+        table.insert(self.entities, particle)
+        table.insert(self.particles, particle)
+    end
+
+    self.map:getTileEntities(self.physics, self.entities)
     self.map:getEntities(self.entities)
     for _, entity in self:iterEntities() do
         -- Auto-attaching the input
@@ -126,7 +171,7 @@ function Game:handleCreation()
             entity.physics = nil
 
             if entity.water then
-                entity.water.sampleSensors = nil
+                entity.water:clearSensors()
             end
             if entity.fruitStack then
                 entity.fruitStack.sensor = nil
@@ -137,13 +182,8 @@ function Game:handleCreation()
         end
 
         if entity.physics then
-            if entity.water and not entity.water.sampleSensors then
-                entity.water.sampleSensors = {}
-                for i, sample in ipairs(entity.water.samples) do
-                    local shape = love.physics.newCircleShape(unpack(sample))
-                    local fixture = entity.physics:newSensor(shape, WATER_SENSOR)
-                    entity.water.sampleSensors[i] = fixture
-                end
+            if entity.water then
+                entity.water:createSensors(entity.physics)
             end
 
             -- Fruit stack haver
@@ -180,36 +220,7 @@ function Game:update(dt)
 
     for _, entity in self:iterEntities() do
         if entity.water then
-            if entity.water.remainingDrownFrames then
-                entity.water.remainingDrownFrames = entity.water.remainingDrownFrames - framePart
-                if entity.water.remainingDrownFrames < DELTA then
-                    entity.water.remainingDrownFrames = nil
-                    entity.anim:release("drown")
-                    entity.pos.x = entity.pos.lastGoodX
-                    entity.pos.y = entity.pos.lastGoodY
-                    entity.pos.z = entity.pos.lastGoodZ
-                    entity.physics.body:setPosition(entity.pos.x, entity.pos.y)
-                    entity.physics.body:setLinearVelocity(0, 0)
-                    entity.velocity.z = entity.water.respawnJumpSpeed
-                end
-            else
-                entity.water.sensorsInWater = 0
-                for _, sensor in pairs(entity.water.sampleSensors) do
-                    if self:getFirstOverlappingOfType(sensor, WATER_SENSOR, entity.pos) then
-                        entity.water.sensorsInWater = entity.water.sensorsInWater + 1
-                    end
-                end
-                if entity.water.sensorsInWater == #entity.water.sampleSensors then
-                    entity.water.remainingDrownFrames = entity.water.drownFrames
-                    entity.anim:request("drown")
-                    entity.physics.body:setLinearVelocity(0, 0)
-                end
-                if entity.pos.onGround and entity.water.sensorsInWater == 0 then
-                    entity.pos.lastGoodX = entity.pos.x
-                    entity.pos.lastGoodY = entity.pos.y
-                    entity.pos.lastGoodZ = entity.pos.z
-                end
-            end
+            entity.water:update(framePart, self, entity.pos, entity.velocity, entity.physics, entity.anim)
         end
 
         -- Fruit stack haver
@@ -218,9 +229,9 @@ function Game:update(dt)
                 if not entity.fruitStack.cooldown then
                     entity.fruitStack.cooldown = entity.fruitStack.eatCooldown
                 elseif entity.fruitStack.cooldown > 0 then
-                    local moreThanHalfWay = entity.fruitStack.cooldown > entity.fruitStack.eatCooldown / 2
-                    entity.fruitStack.cooldown = entity.fruitStack.cooldown - framePart
-                    if entity.fruitStack.cooldown <= entity.fruitStack.eatCooldown / 2 and moreThanHalfWay then
+                    local lessThanHalfWay = entity.fruitStack.cooldown > entity.fruitStack.eatCooldown / 2
+                    entity.fruitStack.cooldown = math.max(entity.fruitStack.cooldown - framePart, 0)
+                    if entity.fruitStack.cooldown <= entity.fruitStack.eatCooldown / 2 and lessThanHalfWay then
                         entity.bubble:show(self, entity.fruitStack.halfEatIndicator, entity.anim)
                     end
                 end
@@ -244,12 +255,14 @@ function Game:update(dt)
 
             if entity.anim:isTriggered("eatFruit") then
                 local eaten = entity.fruitStack.fruits[1]
-                self.vars.eaten = self.vars.eaten + 1
-                entity.anim.baseWiggle.x = entity.anim.baseWiggle.x + entity.fruitStack.sizePerFruit
-                entity.anim.baseWiggle.y = entity.anim.baseWiggle.y + entity.fruitStack.sizePerFruit
-                entity.actor.mass = entity.actor.mass + (eaten.fruit.mass or 0)
-                entity.anim:startWiggle(entity.fruitStack.eatWiggleAmplitude, entity.fruitStack.eatWiggleFrames)
                 if eaten then
+                    self.vars.eaten = self.vars.eaten + 1
+                    entity.anim.baseWiggle.x = entity.anim.baseWiggle.x + entity.fruitStack.sizePerFruit
+                    entity.anim.baseWiggle.y = entity.anim.baseWiggle.y + entity.fruitStack.sizePerFruit
+                    if entity.actor then
+                        entity.actor.mass = entity.actor.mass + (eaten.fruit.mass or 0)
+                    end
+                    entity.anim:startWiggle(entity.fruitStack.eatWiggleAmplitude, entity.fruitStack.eatWiggleFrames)
                     eaten.disabled = true
                     table.remove(entity.fruitStack.fruits, 1)
                     table.insert(entity.fruitStack.eaten, eaten.fruit.type)
@@ -283,33 +296,49 @@ function Game:update(dt)
 
         -- Picnic at the disco
         if entity.picnic then
+            if entity.picnic.dropFrames then
+                entity.picnic.dropFrames = math.max(entity.picnic.dropFrames - framePart, 0)
+            end
+
             for _, otherEntity in ipairs(self:getAllOverlappingOfType(entity.picnic.sensor)) do
                 if otherEntity.fruitStack then
-                    if #otherEntity.fruitStack.fruits > 0 then
+                    if otherEntity.fruitStack.picnicAction == "drop" and
+                        #otherEntity.fruitStack.fruits > 0
+                    then
                         otherEntity.velocity.z = entity.picnic.stackDropJumpSpeed * Game.constants.jumpMultiplier
                         otherEntity.physics.body:setLinearVelocity(0, 0)
-                    end
-                    local dropPoints = love.physics.sampleShape(
-                        entity.physics.shape,
-                        #otherEntity.fruitStack.fruits)
-                    for i = #otherEntity.fruitStack.fruits, 1, -1 do
-                        local fruitEntity = otherEntity.fruitStack.fruits[i]
-                        otherEntity.fruitStack.fruits[i] = nil
-                        otherEntity.fruitStack.cooldown = nil
-                        otherEntity.anim:release("eat")
+                        local dropPoints = love.physics.sampleShape(
+                            entity.physics.shape,
+                            #otherEntity.fruitStack.fruits)
+                        for i = #otherEntity.fruitStack.fruits, 1, -1 do
+                            local fruitEntity = otherEntity.fruitStack.fruits[i]
+                            otherEntity.fruitStack.fruits[i] = nil
+                            otherEntity.fruitStack.cooldown = nil
+                            otherEntity.anim:release("eat")
 
-                        fruitEntity.fruit.stackEntity = entity
-                        fruitEntity.fruit.animFrames = entity.picnic.pickupAnimFrames
-                        fruitEntity.fruit.offset = {
-                            x = dropPoints[(i - 1) * 2 + 1],
-                            y = dropPoints[(i - 1) * 2 + 2],
-                            z = 0
-                        }
-                        fruitEntity.fruit.reachedStack = false
-                        fruitEntity.fruit.cooldown = nil
-                        fruitEntity.velocity.z = entity.picnic.pickupJumpSpeed * Game.constants.jumpMultiplier
-                        table.insert(entity.picnic.fruits, fruitEntity)
+                            fruitEntity.fruit.stackEntity = entity
+                            fruitEntity.fruit.animFrames = entity.picnic.pickupAnimFrames
+                            fruitEntity.fruit.offset = {
+                                x = dropPoints[(i - 1) * 2 + 1],
+                                y = dropPoints[(i - 1) * 2 + 2],
+                                z = 0
+                            }
+                            fruitEntity.fruit.reachedStack = false
+                            fruitEntity.fruit.cooldown = nil
+                            fruitEntity.velocity.z = entity.picnic.pickupJumpSpeed * Game.constants.jumpMultiplier
+                            table.insert(entity.picnic.fruits, fruitEntity)
+                            self.vars.picnicFruits = #entity.picnic.fruits
+                        end
+                    elseif otherEntity.fruitStack.picnicAction == "pickup" and
+                        #entity.picnic.fruits > 0 and
+                        (not entity.picnic.dropFrames or entity.picnic.dropFrames == 0)
+                    then
+                        entity.picnic.dropFrames = entity.picnic.dropCooldown
+                        local i = math.random(#entity.picnic.fruits)
+                        local fruitEntity = entity.picnic.fruits[i]
+                        table.remove(entity.picnic.fruits, i)
                         self.vars.picnicFruits = #entity.picnic.fruits
+                        self:fruitPickup(otherEntity, fruitEntity)
                     end
                 end
             end
@@ -318,9 +347,13 @@ function Game:update(dt)
         -- Handling physics and the dreaded Z axis
         if entity.physics then
             entity.pos.x, entity.pos.y = entity.physics.body:getPosition()
+            if entity.anim then
+                entity.physics.body:setAngle(entity.anim.angle)
+            end
             if entity.velocity then
                 self:findFloorAndCeiling(entity)
                 -- Speed! Movement! Wee!
+                entity.velocity.x, entity.velocity.y = entity.physics.body:getLinearVelocity()
                 entity.velocity.z = entity.velocity.z * airFrictionForFrame - Game.constants.g * dt
                 entity.pos.z = entity.pos.z + entity.velocity.z * dt
 
@@ -348,6 +381,11 @@ function Game:update(dt)
                         Game.constants.groundDamping) or
                     Game.constants.airDamping)
             end
+        elseif entity.velocity then
+            -- Non-physics-backed velocity handling
+            entity.pos.x = entity.pos.x + entity.velocity.x * dt
+            entity.pos.y = entity.pos.y + entity.velocity.y * dt
+            entity.pos.z = entity.pos.z + entity.velocity.z * dt
         end
 
         -- Fruit being
@@ -429,6 +467,7 @@ function Game:update(dt)
             end
         end
 
+        -- SHAKE
         if entity.shakeEmitter then
             for trigger, shake in pairs(entity.shakeEmitter.triggers) do
                 if (not shake.minimumMass or entity.actor.mass >= shake.minimumMass) and
@@ -436,6 +475,36 @@ function Game:update(dt)
                     self.camera.shakeAmplitude = shake.amplitude
                     self.camera.shakeFrames = shake.frames
                 end
+            end
+        end
+
+        -- PARTICLE
+        if entity.particleEmitter then
+            for trigger, emit in pairs(entity.particleEmitter.triggers or EMPTY) do
+                if entity.anim:isTriggered(trigger) then
+                    self:emitParticle(framePart, entity, emit)
+                end
+            end
+            if entity.particleEmitter.conditions then
+                local drown = entity.particleEmitter.conditions.drown
+                if drown and entity.water and entity.water.remainingDrownFrames then
+                    self:emitParticle(framePart, entity, drown)
+                end
+
+                local light = entity.particleEmitter.conditions.light
+                if light and entity.light and entity.light.alpha >= light.minimumLight then
+                    self:emitParticle(framePart, entity, light)
+                end
+            end
+            if entity.particleEmitter.always then
+                self:emitParticle(framePart, entity, entity.particleEmitter.always)
+            end
+        end
+
+        if entity.particleDuration then
+            entity.particleDuration = math.max(entity.particleDuration - framePart, 0)
+            if entity.particleDuration <= 0 then
+                self:freeParticle(entity)
             end
         end
 
@@ -451,25 +520,6 @@ function Game:update(dt)
             entity.larp:update(framePart, entity)
         end
     end
-
-    -- Sorting! Fun times!
-    table.sort(self.entities,
-        function (a, b)
-            local floorA, ay = self:findFloorY(a)
-            local floorB, by = self:findFloorY(b)
-
-            if math.abs(ay - by) < DELTA then
-                if math.abs(a.pos.y - b.pos.y) < DELTA then
-                    if math.abs(a.pos.z - b.pos.z) < DELTA then
-                        return a.id < b.id
-                    end
-                    return a.pos.z < b.pos.z
-                end
-                return a.pos.y < b.pos.y
-            end
-
-            return ay < by
-        end)
 
     -- Camera
     if self.camera.target then
@@ -508,6 +558,8 @@ function Game:update(dt)
     end
 end
 
+local drawnEntities = {}
+
 function Game:render(dt)
     -- Camera
     local w, h = love.graphics.getDimensions()
@@ -516,18 +568,54 @@ function Game:render(dt)
     love.graphics.translate(
         -self.camera.x + self.camera.offsetX,
         -self.camera.y + self.camera.offsetY + self.camera.z)
+    local sx, sy = love.graphics.inverseTransformPoint(0, 0)
+    local ex, ey = love.graphics.inverseTransformPoint(0 + w, 0 + h)
     love.graphics.clear(0.2, 0.5, 0.4)
+
+    local i = 1
+    for _, entity in self:iterEntities() do
+        local entitysx = entity.pos.x - 800
+        local entitysy = entity.pos.y - 800
+        local entityex = entity.pos.x + 800
+        local entityey = entity.pos.y + 800
+        if  entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
+            drawnEntities[i] = entity
+            i = i + 1
+        end
+    end
+    for j = i, #drawnEntities do
+        drawnEntities[j] = nil
+    end
+
+    -- Sorting! Fun times!
+    table.sort(drawnEntities,
+        function (a, b)
+            local floorA, ay = self:findFloorY(a)
+            local floorB, by = self:findFloorY(b)
+
+            if math.abs(ay - by) < DELTA then
+                if math.abs(a.pos.y - b.pos.y) < DELTA then
+                    if math.abs(a.pos.z - b.pos.z) < DELTA then
+                        return a.id < b.id
+                    end
+                    return a.pos.z < b.pos.z
+                end
+                return a.pos.y < b.pos.y
+            end
+
+            return ay < by
+        end)
 
     -- Tiles
     love.graphics.setBlendMode("alpha", "premultiplied")
     self.tilesBatch:clear()
-    self.map:drawTiles(self.tilesBatch, self.time)
+    self.map:drawTiles(self.tilesBatch, self.time, sx, sy, ex, ey)
     love.graphics.draw(self.tilesBatch, 0, 0)
     love.graphics.setBlendMode("alpha")
 
     -- Shadows
     love.graphics.setBlendMode("multiply", "premultiplied")
-    for _, entity in self:iterEntities() do
+    for _, entity in ipairs(drawnEntities) do
         if entity.shadow then
             if entity.color then
                 love.graphics.setColor(unpack(entity.color))
@@ -539,7 +627,7 @@ function Game:render(dt)
     love.graphics.setBlendMode("alpha")
 
     -- Entities
-    for _, entity in self:iterEntities() do
+    for _, entity in ipairs(drawnEntities) do
         if entity.color then
             love.graphics.setColor(unpack(entity.color))
         end
@@ -568,13 +656,12 @@ function Game:render(dt)
         self:drawEntity(entity)
         love.graphics.setColor(1, 1, 1, 1)
 
-        if entity.light then
+        if entity.light and entity.light.alpha > DELTA then
             local radiusw = entity.light.radiusw or Game.constants.defaultLight.radiusw
             local radiush = entity.light.radiush or Game.constants.defaultLight.radiush
             local alpha = entity.light.alpha or Game.constants.defaultLight.alpha
             local angle = entity.light.angle or Game.constants.defaultLight.angle
-            local _, topy = love.graphics.inverseTransformPoint(0, 0)
-            local rayHeight = entity.pos.y - topy
+            local rayHeight = entity.pos.y - sy
             local rayOffset = rayHeight * math.tan(math.pi / 2 - angle)
             local startx, starty = entity.pos.x + rayOffset + radiusw, entity.pos.y - rayHeight
             local endx, endy = entity.pos.x + rayOffset - radiusw, entity.pos.y - rayHeight
@@ -604,7 +691,7 @@ function Game:render(dt)
     end
 
     -- Bubbles
-    for _, entity in self:iterEntities() do
+    for _, entity in ipairs(drawnEntities) do
         if entity.bubble then
             love.graphics.push()
             love.graphics.translate(entity.pos.x, entity.pos.y - entity.pos.z)
@@ -618,7 +705,32 @@ function Game:render(dt)
         PhysicsRenderer.draw_camera(self.physics, 0, 0, w, h)
     end
 
+    if debug.pointHeights then
+        for x = sx, ex, 16 do
+            for y = sy, ey, 16 do
+                local height = self.map:getPointHeight(x, y) / (SKY_LIMIT / 2)
+                local r = height <= 0.33 and height or 0
+                local g = height > 0.33 and height <= 0.66 and height or 0
+                local b = height > 0.66 and height or 0
+                love.graphics.setColor(r, g, b, 0.75)
+                love.graphics.rectangle("fill",x, y, 16, 16)
+            end
+        end
+        love.graphics.setColor(1, 1, 1, 1)
+    end
+
     love.graphics:reset()
+
+    if debug.pointHeights then
+        local x, y = 0, 0
+        if self.input.target then
+            x = math.round(self.input.target.pos.x)
+            y = math.round(self.input.target.pos.y)
+        end
+        love.graphics.print(x .. ":" .. y, 50, 0)
+        local tx, ty = Map.PosToTileMat:transformPoint(x, y)
+        love.graphics.print(tx .. ":" .. ty, 50, 50)
+    end
 end
 
 function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
@@ -633,7 +745,11 @@ function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
     if d > fruitStackEntity.fruitStack.pickupRange then
         return
     end
+    self:fruitPickup(fruitStackEntity, fruitEntity)
+end
 
+function Game:fruitPickup(fruitStackEntity, fruitEntity)
+    local stackEntityVelocity = fruitStackEntity or EMPTY
     table.insert(fruitStackEntity.fruitStack.fruits, fruitEntity)
     fruitEntity.fruit.stackEntity = #fruitStackEntity.fruitStack.fruits > 1 and
         fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
@@ -645,7 +761,7 @@ function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
     fruitEntity.fruit.reachedStack = false
     fruitEntity.physics.body:setType("static")
     fruitEntity.velocity.z =
-        math.max(fruitStackEntity.velocity.z, fruitStackEntity.fruitStack.pickupJumpSpeed) *
+        math.max(stackEntityVelocity.z or 0, fruitStackEntity.fruitStack.pickupJumpSpeed) *
         math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) *
         Game.constants.jumpMultiplier
 end
@@ -760,8 +876,7 @@ function Game:drawEntity(entity)
                     sprite.anchor.y)
             end
         end
-    end
-    if entity.tileSprites then
+    elseif entity.tileSprites then
         love.graphics.setBlendMode("alpha", "premultiplied")
         for _, sprite in ipairs(entity.tileSprites) do
             local tileData = tileset.tiles[sprite.tile]
@@ -839,7 +954,7 @@ local function onOverlappingEntitiesCheck(fix)
 
     if overlappingCheckEntity.id == otherEntity.id or
         (overlappingCheckType and fix:getUserData().type ~= overlappingCheckType) or
-        not (overlappingCheckSlop or love.physics.overlap(overlappingCheckEntity, overlappingCheckSensor, otherEntity, fix))
+        not (overlappingCheckSlop or love.physics.overlap(overlappingCheckSensor, fix))
     then
         return true
     end
@@ -903,4 +1018,90 @@ function Game:eval(operand)
     if type == "vars" then
         return self.vars[name]
     end
+end
+
+function Game:emitParticle(framePart, entity, emit)
+    if emit.cooldownFrames and emit.cooldownFrames > 0 then
+        emit.cooldownFrames = math.max(emit.cooldownFrames - framePart)
+        return
+    end
+    emit.cooldownFrames = math.randomRange(emit.cooldownRange, emit.cooldown or 0)
+
+    local count = emit.countRange and math.random(unpack(emit.countRange)) or emit.count or 1
+    local rangePart = 1 / count
+    for i = 1, count do
+        local particle = self:acquireParticle()
+        if particle then
+            particle.sprites[1].name = emit.name
+            local spriteData = sprites[emit.name]
+            local animData = spriteData and spriteData[#spriteData]
+            local width = (animData and animData.tileWidth) or (textures[emit.name]:getWidth())
+            local height = (animData and animData.tileHeight) or (textures[emit.name]:getHeight())
+            particle.sprites[1].anchor.x = width / 2
+            particle.sprites[1].anchor.y = height / 2
+
+            local offsetRange = emit.offsetRange or EMPTY
+            local offset = emit.offset or EMPTY
+            local velocityRange = emit.velocityRange or EMPTY
+            local velocity = emit.velocity or EMPTY
+
+            local horizontal = math.randomRange(offsetRange.horizontal, offset.horizontal or 0)
+            particle.pos.x = entity.pos.x + math.cos(entity.anim.angle) * horizontal + math.randomRange(offsetRange.x, offset.x or 0)
+            particle.pos.y = entity.pos.y + math.sin(entity.anim.angle) * horizontal + math.randomRange(offsetRange.y, offset.y or 0)
+            particle.pos.z = entity.pos.z + math.randomRange(offsetRange.z, offset.z or 0)
+            particle.pos.floorZ = entity.pos.floorZ
+            particle.pos.floorEntity = entity.pos.floorEntity
+            particle.pos.ceilingZ = entity.pos.ceilingZ
+
+            particle.velocity.x = math.randomRange(velocityRange.x, velocity.x or 0) * Game.constants.speedMultiplier
+            particle.velocity.y = math.randomRange(velocityRange.y, velocity.y or 0) * Game.constants.speedMultiplier
+            particle.velocity.z = math.randomRange(velocityRange.z, velocity.z or 0) * Game.constants.speedMultiplier
+            if emit.inherit then
+                particle.velocity.x = particle.velocity.x + entity.velocity.x * emit.inherit.x
+                particle.velocity.y = particle.velocity.y + entity.velocity.y * emit.inherit.y
+                particle.velocity.z = particle.velocity.z + entity.velocity.z * emit.inherit.z
+            end
+            particle.particleDuration = math.randomRange(emit.durationRange, emit.duration or 0)
+            local speed = math.randomRange(emit.speedRange, emit.speed or 0)
+            local angle = math.randomSplitRange(rangePart, i, emit.angleRange, emit.angle or 0)
+            angle = angle + entity.anim.angle
+            particle.velocity.x = particle.velocity.x + math.cos(angle) * speed * Game.constants.speedMultiplier
+            particle.velocity.y = particle.velocity.y + math.sin(angle) * speed * Game.constants.speedMultiplier
+
+            for _, sprite in pairs(particle.sprites) do
+                sprite.animData = nil
+                sprite.frame = nil
+            end
+            particle.anim:clear()
+            particle.anim:setAngle(math.atan2(particle.velocity.y, particle.velocity.x))
+            particle.anim:update(0, particle.sprites)
+        end
+    end
+end
+
+function Game:acquireParticle()
+    if self.nextFreeParticleIndex <= Game.constants.particleCount then
+        local particle = self.particles[self.nextFreeParticleIndex]
+        self.nextFreeParticleIndex = self.nextFreeParticleIndex + 1
+        particle.disabled = false
+        return particle
+    end
+end
+
+function Game:freeParticle(particle)
+    particle.disabled = true
+    local lastTakenParticleIndex = self.nextFreeParticleIndex - 1
+    local lastTakenParticle = self.particles[lastTakenParticleIndex]
+    local particleIndex = particle.particleIndex
+
+    -- Move the previously last taken particle into the freed slot
+    self.particles[particleIndex] = lastTakenParticle
+    lastTakenParticle.particleIndex = particleIndex
+
+    -- Move the newly freed particly into the previously last taken slot
+    self.particles[lastTakenParticleIndex] = particle
+    particle.particleIndex = lastTakenParticleIndex
+
+    -- Mark the previously last taken slot as free.
+    self.nextFreeParticleIndex = lastTakenParticleIndex
 end

@@ -255,7 +255,7 @@ return {
                 dirs = { "l", "tl", "bl", "b" },
                 fps = 10,
                 pingPong = true,
-                tiles = { { 1, 8 }, { 2, 8 }, { 3, 8 } }
+                tiles = { { 0, 9 }, { 1, 9 }, { 2, 9 } }
             },
             {
                 name = "drown",
@@ -263,7 +263,7 @@ return {
                 fps = 10,
                 flipX = true,
                 pingPong = true,
-                tiles = { { 1, 8 }, { 2, 8 }, { 3, 8 } }
+                tiles = { { 0, 9 }, { 1, 9 }, { 2, 9 } }
             },
         },
         cossinPiedBack = {
@@ -488,6 +488,11 @@ return {
                 dirs = { "t" },
                 fps = 0,
                 tiles = { { 4, 5 } }
+            },
+            {
+                name = "drown",
+                fps = 0,
+                tiles = { { 6, 3 } }
             }
         },
         cossinPiedFront = {
@@ -712,6 +717,11 @@ return {
                 dirs = { "t" },
                 fps = 0,
                 tiles = { { 4, 5 } }
+            },
+            {
+                name = "drown",
+                fps = 0,
+                tiles = { { 0, 6 } }
             }
         }
     }

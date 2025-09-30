@@ -1,5 +1,6 @@
 return {
     g = 150 * METER_SCALE,
+    particleCount = 100,
     airFriction = 0.25, -- Per second
     groundDamping = 8,
     slidingDamping = 1,
@@ -49,6 +50,7 @@ return {
             "(", 28,
         }
     },
+    firstLevel = "map1",
     endLevelCutscene = {
         { "input",
             entity = nil
@@ -82,13 +84,14 @@ return {
             entity = { byName = "blonde" },
             disabled = false,
             light = { alpha = 0 },
-            color = { 1, 1, 1, 0 }
+            color = { 1, 1, 1, 0 },
         },
         { "larp",
             entity = { byName = "blonde" },
             ["light.alpha"] = { to = 0.3, frames = 60 },
             ["color[4]"] = { to = 1, delay = 30, frames = 60 },
             ["sprites[1].anchor.x"] = { startOffset = -150, toOffset = 0, delay = 30, frames = 120 },
+            ["particleEmitter.conditions.light.offsetRange.x[1]"] = { startOffset = 150, toOffset = 0, delay = 30, frames = 120 },
             ["pos.z"] = { from = 400, to = 0, delay = 30, frames = 120 }
         },
         { "waitForMove",
@@ -183,9 +186,22 @@ return {
         { "waitForBubble",
             entity = { byName = "blonde" }
         },
+        { "components",
+            entity = { byName = "blonde" },
+            fruitStack = { picnicAction = "pickup" }
+        },
+        { "waitForVar", "==", "[vars.picnicFruits]", 0 },
+        { "waitForVar", "==", "[vars.remainingFruits]", 0 },
         { "bubble",
             entity = { byName = "blonde" },
             text = { 10, "<3" }
+        },
+        { "waitForBubble",
+            entity = { byName = "blonde" }
+        },
+        { "changeState",
+            Game,
+            { map = "[vars.nextMap]" }
         },
         { "else" },
         { "bubble",
@@ -200,6 +216,7 @@ return {
             ["light.alpha"] = { to = 0.3, frames = 30 },
             ["color[4]"] = { to = 0, delay = 30, frames = 30 },
             ["sprites[1].anchor.x"] = { toOffset = -150, frames = 60 },
+            ["particleEmitter.conditions.light.offsetRange.x[1]"] = { toOffset = 150, frames = 60 },
             ["pos.z"] = { to = 400, frames = 60 }
         },
         { "waitForLarp",
@@ -217,7 +234,8 @@ return {
             disabled = true
         },
         { "changeState",
-            Intro
+            Game,
+            { map = "[vars.currentMap]" }
         },
         { "end" },
         { "waitForBubble",

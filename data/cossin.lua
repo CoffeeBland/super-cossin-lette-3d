@@ -48,7 +48,8 @@ return function()
             halfEatIndicator = { 0, "mange" },
             eatWiggleAmplitude = 0.25,
             eatWiggleFrames = 30,
-            sizePerFruit = 0.05
+            sizePerFruit = 0.05,
+            picnicAction = "drop"
         },
         water = {
             drownFrames = 60,
@@ -61,7 +62,7 @@ return function()
             }
         },
         bubble = {
-            anchor = { x = -40, y = -220 }
+            anchor = { x = -40, y = -260 }
         },
         larp = {},
         shakeEmitter = {
@@ -75,6 +76,49 @@ return function()
                     minimumMass = 1.5,
                     amplitude = 5,
                     frames = 10
+                }
+            }
+        },
+        particleEmitter = {
+            triggers = {
+                land = {
+                    name = "Fumee",
+                    inherit = { x = 0.25, y = 0.25, z = 0 },
+                    offset = { x = 0, y = 0, z = 0 },
+                    count = 6,
+                    durationRange = { 15, 25 },
+                    speed = 10,
+                    angleRange = { 0, math.pi * 2 }
+                },
+                step = {
+                    name = "Fumee",
+                    inherit = { x = -0.25, y = -0.25, z = 0 },
+                    offsetRange = { x = { -20, 20 }, y = { -20, 20 } },
+                    offset = { x = 0, y = 0, z = 0, horizontal = -40 },
+                    durationRange = { 15, 25 }
+                },
+                ["drown:start"] = {
+                    name = "Fumee",
+                    offset = { x = 0, y = 0, z = 0 },
+                    offsetRange={ x = { -30, 30 }, y = { -20, 20 } },
+                    count = 8,
+                    durationRange = { 15, 25 },
+                    speed = 10,
+                    angleRange = { 0, math.pi * 2 }
+                }
+            },
+            conditions = {
+                drown = {
+                    name = "Fumee",
+                    inherit = { x = 0.25, y = 0.25, z = 0 },
+                    offset = { x = 0, y = 0, z = 0 },
+                    offsetRange={ x = { -30, 30 }, y = { -20, 20 } },
+                    countRange = { 3, 4 },
+                    durationRange = { 15, 25 },
+                    speed = 10,
+                    angleRange = { 0, math.pi * 2 },
+                    cooldown = 10,
+                    velocity={ z = 10 }
                 }
             }
         },
