@@ -1,3 +1,30 @@
+WaterSystem = {}
+WaterSystem.__index = WaterSystem
+
+function WaterSystem.new()
+    return setmetatable({}, WaterSystem)
+end
+
+function WaterSystem:handleCreation(entity)
+    if entity.water then
+        if entity.disabled then
+                entity.water:clearSensors()
+        end
+
+        if entity.physics then
+            entity.water:createSensors(entity.physics)
+        end
+    end
+end
+
+function WaterSystem:update(framePart, dt, game)
+    for _, entity in game:iterEntities() do
+        if entity.water then
+            entity.water:update(framePart, self, entity.pos, entity.velocity, entity.physics, entity.anim)
+        end
+    end
+end
+
 Water = {}
 Water.__index = Water
 fancyTypes.water = Water

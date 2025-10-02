@@ -2,7 +2,8 @@
 
 * Eau
     * Manque de l'aniiiim
-* Particle emitters!
+* Particle
+    * Y'a le support mais l'actuel est triiiissssssss
 * Sons
     * Y'a le support mais l'actuel est triiiissssssss
 * Intro (partiellement fait)
@@ -13,5 +14,6 @@
 * Y manque un win screen pis lose screen
 * Timer
 * On devrait avoir des fancy types pour toute (pe, probablement, y'en manque)
+* NINJAs
 
 ## BUGS
