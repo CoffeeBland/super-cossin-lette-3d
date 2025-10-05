@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="50" nextobjectid="2381">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="50" nextobjectid="2391">
  <editorsettings>
   <export target="../maps/Niveau1.lua" format="lua"/>
  </editorsettings>
@@ -634,8 +634,8 @@
   <data encoding="csv"/>
  </layer>
  <objectgroup id="43" name="Pic-nic/Blonde a Cossin Lette">
-  <object id="2276" gid="74" x="2812" y="2146" width="605" height="459"/>
-  <object id="2277" gid="92" x="2960" y="2294" width="224" height="404"/>
+  <object id="2276" gid="74" x="2812" y="2072" width="605" height="459"/>
+  <object id="2277" gid="92" x="2960" y="2220" width="224" height="404"/>
  </objectgroup>
  <objectgroup id="44" name="Cossin Lette">
   <object id="2275" gid="25" x="4588" y="2072" width="192" height="256"/>
@@ -716,5 +716,15 @@
   <object id="2376" gid="84" x="3182" y="3478" width="322" height="319"/>
   <object id="2377" gid="2147483727" x="2738" y="3182" width="313" height="321"/>
   <object id="2379" gid="2147483733" x="4514" y="740" width="322" height="319"/>
+  <object id="2381" gid="88" x="2072" y="1554" width="322" height="319"/>
+  <object id="2382" gid="2147483729" x="2220" y="1628" width="313" height="321"/>
+  <object id="2383" gid="15" x="2072" y="1776" width="128" height="148"/>
+  <object id="2384" gid="21" x="2886" y="962" width="128" height="74"/>
+  <object id="2385" gid="23" x="2886" y="740" width="128" height="74"/>
+  <object id="2386" gid="20" x="2368" y="888" width="128" height="74"/>
+  <object id="2387" gid="12" x="2960" y="1184" width="384" height="216"/>
+  <object id="2388" gid="76" x="3108" y="1332" width="313" height="321"/>
+  <object id="2389" gid="19" x="3552" y="2516" width="128" height="148"/>
+  <object id="2390" gid="81" x="1924" y="2590" width="313" height="321"/>
  </objectgroup>
 </map>
