@@ -133,7 +133,7 @@ function Anim:findAnim(spriteData)
             end
         end
     end
-    return foundAnim or spriteData[#spriteData], foundRequest or self.emptyRequest
+    return foundAnim or spriteData[1], foundRequest or self.emptyRequest
 end
 
 function Anim:update(dt, entitySprites)

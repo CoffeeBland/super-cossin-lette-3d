@@ -10,7 +10,7 @@ return {
     shadowColor = { 0.875, 0.867, 0.941, 1 },
     lightColor = { 0.875, 0.867, 0.741, 1 },
     autoWalkCutoffFrames = 600,
-    autoWalkJumpFrames = 120,
+    autoWalkJumpFrames = 60,
     autoWalkCutoffDistance2 = 100,
     defaultLight = {
         angle = 0.4 * math.pi,
@@ -199,10 +199,16 @@ return {
         { "waitForBubble",
             entity = { byName = "blonde" }
         },
+        { "if", "[vars.nextMap]" },
         { "changeState",
             Game,
             { map = "[vars.nextMap]" }
         },
+        { "else" },
+        { "changeState",
+            Intro
+        },
+        { "end" },
         { "else" },
         { "bubble",
             entity = { byName = "blonde" },

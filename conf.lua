@@ -6,6 +6,7 @@ function love.conf(t)
     t.window.title = "Super Cossin Lette 3D"
     t.window.width = 1024
     t.window.height = 768
+    t.window.vsync = 1
     t.window.resizable = true
 
     t.modules.mouse = false

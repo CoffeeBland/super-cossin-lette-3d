@@ -7,9 +7,9 @@ return function()
             walkSpeed = 150,
             slidingSpeed = 0,
             airSpeed = 25,
-            jumpSpeed = 200
+            jumpSpeed = 150
         },
-        pos = { height = HEIGHT_SLICE },
+        pos = { height = 148 },
         velocity = { z = 0 },
         body = { shape = "circle", size = 80, type = "dynamic" },
         anim = {},

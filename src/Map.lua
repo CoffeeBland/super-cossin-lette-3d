@@ -171,6 +171,13 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     local fsx = flipX and -1 or 1
     local fsy = flipY and -1 or 1
 
+    local tx = data.x / TILE_HEIGHT
+    local ty = data.y / TILE_HEIGHT
+    local x = (tx - ty) * TILE_WIDTH / 2 + fsx * (object.offsetX + (object.posX or 0))
+    local y = (tx + ty) * TILE_HEIGHT / 2 + fsy * (object.offsetY + (object.posY or 0))
+    local z = (data.properties.posZ or self:getPointHeight(x, y)) + (object.posZ or 0)
+    y = y + z -- Offset by z to match visually with the editor.
+
     if object.replaceTo then
         for _, replacement in pairs(object.replaceTo) do
             local id = replacement.id or 0
@@ -187,16 +194,13 @@ function Map:createEntity(entities, data, id, flipX, flipY)
             entity.pos.x = entity.pos.x + replacementFsx * (replacement.posX or 0)
             entity.pos.y = entity.pos.y + replacementFsy * (replacement.posY or 0)
             entity.pos.z = entity.pos.z + (replacement.posZ or 0)
+
+            entity.pos.originalx = x
+            entity.pos.originaly = y
+            entity.pos.originalz = z
         end
         return
     end
-
-    local tx = data.x / TILE_HEIGHT
-    local ty = data.y / TILE_HEIGHT
-    local x = (tx - ty) * TILE_WIDTH / 2 + fsx * (object.offsetX + (object.posX or 0))
-    local y = (tx + ty) * TILE_HEIGHT / 2 + fsy * (object.offsetY + (object.posY or 0))
-    local z = (data.properties.posZ or self:getPointHeight(x, y)) + (object.posZ or 0)
-    y = y + z -- Offset by z to match visually with the editor.
 
     local entity = object.prefab and prefabs[object.prefab](object) or {}
     -- Global props

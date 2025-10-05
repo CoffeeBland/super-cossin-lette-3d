@@ -1,3 +1,28 @@
+WaterSystem = {}
+WaterSystem.__index = WaterSystem
+
+function WaterSystem.new()
+    return setmetatable({}, WaterSystem)
+end
+
+function WaterSystem:handleCreation(entity)
+    if entity.water then
+        if entity.disabled then
+                entity.water:clearSensors()
+        end
+
+        if entity.physics then
+            entity.water:createSensors(entity.physics)
+        end
+    end
+end
+
+function WaterSystem:update(framePart, dt, game)
+    for _, entity in game:iterEntities(game.entitiesByComponent.water) do
+        entity.water:update(framePart, game, entity.pos, entity.velocity, entity.physics, entity.anim)
+    end
+end
+
 Water = {}
 Water.__index = Water
 fancyTypes.water = Water
@@ -42,7 +67,7 @@ function Water:update(framePart, game, pos, velocity, physics, anim)
     else
         self.sensorsInWater = 0
         for _, sensor in pairs(self.sampleSensors) do
-            if game:getFirstOverlappingOfType(sensor, WATER_SENSOR, pos) then
+            if game.physics:getFirstOverlappingOfType(sensor, WATER_SENSOR, pos) then
                 self.sensorsInWater = self.sensorsInWater + 1
             end
         end

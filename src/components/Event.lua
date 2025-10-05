@@ -74,7 +74,7 @@ function Event:isWaitDone(framePart, game, wait)
         local entity = game:findEntity(wait.entity)
         wait.done = (entity or game).anim:isTriggered(wait.trigger)
     elseif type == "waitForPan" then
-        wait.done = game.camera.panFrames == 0 or not game.camera.panFrames
+        wait.done = not game.camera:isPanning()
     elseif type == "waitForMove" then
         local entity = game:findEntity(wait.entity)
         wait.done = not entity.actor.autoMoveIndex
@@ -191,8 +191,7 @@ function Event:processEvent(framePart, game, index)
     if type == "bubble" then
         entity.bubble:show(game, event.text, entity.anim)
     elseif type == "camera" then
-        game.camera.panFrames = event.panFrames or 0
-        game.camera.target = entity
+        game.camera:setTarget(entity, event.panFrames)
     elseif type == "input" then
         game.input.target = entity
     elseif type == "move" then

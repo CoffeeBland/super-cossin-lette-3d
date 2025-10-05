@@ -1,3 +1,23 @@
+ActorSystem = {}
+ActorSystem.__index = ActorSystem
+
+function ActorSystem.new()
+    return setmetatable({}, ActorSystem)
+end
+
+function ActorSystem:update(framePart, dt, game)
+    for _, entity in game:iterEntities(game.entitiesByComponent.actor) do
+        local actionsForActor = game.input.target == entity and actions or nil
+        entity.actor:update(framePart, game, entity, actionsForActor)
+    end
+    for _, entity in game:iterEntities(game.entitiesByComponent.bubble) do
+        entity.bubble:update(framePart, entity.anim)
+    end
+    for _, entity in game:iterEntities(game.entitiesByComponent.larp) do
+        entity.larp:update(framePart, entity)
+    end
+end
+
 Actor = {}
 Actor.__index = Actor
 fancyTypes.actor = Actor
