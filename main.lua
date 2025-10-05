@@ -13,6 +13,7 @@ function love.load(args)
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.physics.setMeter(METER_SCALE)
 
+    load.init()
     load.crawlFiles()
 
     if requestedMap then

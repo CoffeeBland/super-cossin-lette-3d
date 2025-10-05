@@ -7,7 +7,7 @@ end
 
 function ActorSystem:update(framePart, dt, game)
     for _, entity in game:iterEntities(game.entitiesByComponent.actor) do
-        local actionsForActor = game.input.target == entity and actions or nil
+        local actionsForActor = game.input and game.input.target == entity and actions or nil
         entity.actor:update(framePart, game, entity, actionsForActor)
     end
     for _, entity in game:iterEntities(game.entitiesByComponent.bubble) do
@@ -159,10 +159,7 @@ end
 
 function Actor:setMoveFromEvent(event)
     self.autoMoveIndex = 0
-    for i = 2, #event do
-        self.autoMoves[i - 1] = event[i]
-    end
-    for i = #event, #self.autoMoves do
-        self.autoMoves[i] = nil
+    for i = 1, math.max(#event, #self.autoMoves) do
+        self.autoMoves[i] = event[i]
     end
 end

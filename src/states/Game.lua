@@ -1,4 +1,5 @@
 fancyTypes = {}
+require "src.components.Requests"
 require "src.components.Camera"
 require "src.components.Sound"
 require "src.components.Actor"
@@ -86,23 +87,7 @@ function Game:enter(args)
         self.vars[key] = value
     end
     self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
-    self.entities = {}
-    self.entitiesByName = {}
-    self.entitiesByComponent = {
-        actor = {},
-        shakeEmitter = {},
-        soundEmitter = {},
-        particleEmitter = {},
-        fruitStack = {},
-        picnic = {},
-        fruit = {},
-        velocity = {},
-        water = {},
-        anim = {},
-        bubble = {},
-        larp = {}
-    }
-
+    Requests.new(self)
     self.physics = PhysicsSystem.new()
     self.sounds = SoundSystem.new()
     self.event = Event.new()
@@ -122,15 +107,8 @@ function Game:enter(args)
         if entity.camera then
             self.camera:setTarget(entity)
         end
-        if entity.name then
-            self.entitiesByName[entity.name] = entity
-        end
-        for componentKey, _ in pairs(entity) do
-            if self.entitiesByComponent[componentKey] then
-                table.insert(self.entitiesByComponent[componentKey], entity)
-            end
-        end
     end
+    Requests.populate(self)
     self:update(0)
 end
 
@@ -180,9 +158,9 @@ function Game:render(dt)
     local i = 1
     for _, entity in self:iterEntities() do
         local entitysx = entity.pos.x - 800
-        local entitysy = entity.pos.y - entity.pos.z - 800
+        local entitysy = entity.pos.y - entity.pos.z - 1200
         local entityex = entity.pos.x + 800
-        local entityey = entity.pos.y - entity.pos.z + 800
+        local entityey = entity.pos.y - entity.pos.z + 1200
         if  entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
             drawnEntities[i] = entity
             i = i + 1

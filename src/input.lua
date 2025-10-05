@@ -4,7 +4,7 @@ local pressActions = {
         buttons = { "start" }
     },
     action = {
-        keys = { "enter" },
+        keys = { "return" },
         buttons = { "x" }
     },
     refresh = {

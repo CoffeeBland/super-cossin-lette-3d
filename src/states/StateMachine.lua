@@ -1,4 +1,5 @@
 require "src.states.Intro"
+require "src.states.Title"
 require "src.states.Game"
 
 StateMachine = {
