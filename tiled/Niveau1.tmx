@@ -5,7 +5,7 @@
  </editorsettings>
  <properties>
   <property name="vars.nextMap" value="Niveau2"/>
-  <property name="vars.targetFruits" type="int" value="4"/>
+  <property name="vars.targetFruits" type="int" value="1"/>
  </properties>
  <tileset firstgid="1" source="objects.tsx"/>
  <tileset firstgid="94" source=":/automap-tiles.tsx"/>
