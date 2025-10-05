@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="77" columns="0">
+<tileset version="1.10" tiledversion="1.11.1" name="objects" tilewidth="1152" tileheight="1286" tilecount="77" columns="0">
  <editorsettings>
   <export target="../data/objects.lua" format="lua"/>
  </editorsettings>
@@ -30,11 +30,13 @@
  <tile id="92">
   <properties>
    <property name="height" type="float" value="1000"/>
+   <property name="maxTruncateHeight" type="float" value="300"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
    <property name="randomTruncateHeight" type="bool" value="false"/>
    <property name="replaceTo[0]" type="class" propertytype="replaceTo">
     <properties>
+     <property name="applyTruncate" type="bool" value="true"/>
      <property name="flipX" propertytype="flip" value="random"/>
      <property name="ids" value="5,6,7"/>
     </properties>
@@ -43,6 +45,7 @@
     <properties>
      <property name="flipX" propertytype="flip" value="random"/>
      <property name="ids" value="2,3,4"/>
+     <property name="offsetByTruncate" type="bool" value="true"/>
      <property name="posY" type="float" value="0"/>
     </properties>
    </property>

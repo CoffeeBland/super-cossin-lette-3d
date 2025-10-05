@@ -28,6 +28,11 @@
             "id": 1,
             "members": [
                 {
+                    "name": "applyTruncate",
+                    "type": "bool",
+                    "value": false
+                },
+                {
                     "name": "flipX",
                     "propertyType": "flip",
                     "type": "string",
@@ -48,6 +53,11 @@
                     "name": "ids",
                     "type": "string",
                     "value": ""
+                },
+                {
+                    "name": "offsetByTruncate",
+                    "type": "bool",
+                    "value": false
                 },
                 {
                     "name": "posX",

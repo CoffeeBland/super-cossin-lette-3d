@@ -14,8 +14,8 @@ return {
     autoWalkCutoffDistance2 = 100,
     defaultLight = {
         angle = 0.4 * math.pi,
-        radiusw = 140,
-        radiush = 80,
+        radiusw = 180,
+        radiush = 90,
         alpha = 0.2
     },
     bubble = {
@@ -72,7 +72,7 @@ return {
         },
         { "move",
             entity = { byName = "cossin" },
-            { "walkTo", point = { byName = "picnic", offset = { x = -360, y = 170 } } },
+            { "walkTo", point = { byName = "picnic", offset = { x = -380, y = 170 } } },
             { "lookAt", point = { byName = "picnic" } },
         },
         { "camera",
@@ -91,7 +91,7 @@ return {
             ["light.alpha"] = { to = 0.3, frames = 60 },
             ["color[4]"] = { to = 1, delay = 30, frames = 60 },
             ["sprites[1].anchor.x"] = { startOffset = -150, toOffset = 0, delay = 30, frames = 120 },
-            ["particleEmitter.conditions.light.offsetRange.x[1]"] = { startOffset = 150, toOffset = 0, delay = 30, frames = 120 },
+            ["particleEmitter.always.offsetRange.x[1]"] = { startOffset = 200, toOffset = 0, delay = 30, frames = 120 },
             ["pos.z"] = { from = 400, to = 0, delay = 30, frames = 120 }
         },
         { "waitForMove",
@@ -128,7 +128,7 @@ return {
         },
         { "move",
             entity = { byName = "cossin" },
-            { "walkTo", point = { byName = "picnic", offset = { x = -380, y = 180 } } },
+            { "walkTo", point = { byName = "picnic", offset = { x = -400, y = 180 } } },
         },
         { "bubble",
             entity = { byName = "cossin" },
@@ -222,7 +222,7 @@ return {
             ["light.alpha"] = { to = 0.3, frames = 30 },
             ["color[4]"] = { to = 0, delay = 30, frames = 30 },
             ["sprites[1].anchor.x"] = { toOffset = -150, frames = 60 },
-            ["particleEmitter.conditions.light.offsetRange.x[1]"] = { toOffset = 150, frames = 60 },
+            ["particleEmitter.always.offsetRange.x[1]"] = { toOffset = 200, frames = 60 },
             ["pos.z"] = { to = 400, frames = 60 }
         },
         { "waitForLarp",

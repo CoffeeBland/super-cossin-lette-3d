@@ -130,6 +130,7 @@ function load.loadData(name, file)
                         end
                     end
                 end
+
                 objects.byId[obj.id] = obj
                 objects.byName[obj.name] = obj
 
