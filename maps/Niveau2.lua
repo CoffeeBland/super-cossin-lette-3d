@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 48,
-  nextobjectid = 2291,
+  nextobjectid = 2292,
   properties = {
     ["vars.nextMap"] = "Niveau2",
     ["vars.targetFruits"] = 4
@@ -9967,6 +9967,20 @@ return {
             ["vars.nextMap"] = "Niveau2",
             ["vars.targetFruits"] = 4
           }
+        },
+        {
+          id = 2291,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4514,
+          y = 2294,
+          width = 192,
+          height = 256,
+          rotation = 0,
+          gid = 25,
+          visible = true,
+          properties = {}
         }
       }
     },

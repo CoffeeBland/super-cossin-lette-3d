@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="48" nextobjectid="2292">
  <editorsettings>
-  <export target="../maps/Niveau1.lua" format="lua"/>
+  <export target="../maps/Niveau2.lua" format="lua"/>
  </editorsettings>
  <properties>
   <property name="vars.nextMap" value="Niveau2"/>
