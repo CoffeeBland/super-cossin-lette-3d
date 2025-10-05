@@ -9,8 +9,8 @@ return {
   height = 20,
   tilewidth = 128,
   tileheight = 74,
-  nextlayerid = 42,
-  nextobjectid = 2273,
+  nextlayerid = 43,
+  nextobjectid = 2275,
   properties = {
     ["vars.targetFruits"] = 15
   },
@@ -10234,7 +10234,7 @@ return {
       id = 39,
       name = "Tile Layer 3",
       class = "",
-      visible = false,
+      visible = true,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -10250,7 +10250,7 @@ return {
       id = 33,
       name = "Objets",
       class = "",
-      visible = false,
+      visible = true,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -10260,13 +10260,10 @@ return {
       objects = {}
     },
     {
-      type = "tilelayer",
-      x = 0,
-      y = 0,
-      width = 30,
-      height = 20,
-      id = 40,
-      name = "Tile Layer 4",
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 42,
+      name = "Object Layer 3",
       class = "",
       visible = true,
       opacity = 1,
@@ -10275,28 +10272,34 @@ return {
       parallaxx = 1,
       parallaxy = 1,
       properties = {},
-      encoding = "lua",
-      chunks = {
+      objects = {
         {
-          x = 48, y = 0, width = 16, height = 16,
-          data = {
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 92, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 74, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-          }
+          id = 2273,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4070,
+          y = 740,
+          width = 605,
+          height = 459,
+          rotation = 0,
+          gid = 74,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2274,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 4366,
+          y = 888,
+          width = 224,
+          height = 404,
+          rotation = 0,
+          gid = 92,
+          visible = true,
+          properties = {}
         }
       }
     },
