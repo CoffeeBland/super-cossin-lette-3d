@@ -21,6 +21,7 @@ local timeline = {
     {
         cossin = true,
         frame = 100,
+        "hello",
         { "walkTo", point = { pos = { x = 300, y = cossinY + 30 } } },
         { "walkTo", point = { pos = { x = -200, y = cossinY - 20 } } },
         { "walkTo", point = { pos = { x = 0, y = cossinY + 0 } } },

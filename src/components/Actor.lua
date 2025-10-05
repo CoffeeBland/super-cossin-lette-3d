@@ -159,7 +159,10 @@ end
 
 function Actor:setMoveFromEvent(event)
     self.autoMoveIndex = 0
-    for i = 1, math.max(#event, #self.autoMoves) do
-        self.autoMoves[i] = event[i]
+    for i = 2, #event do
+        self.autoMoves[i - 1] = event[i]
+    end
+    for i = #event, #self.autoMoves do
+        self.autoMoves[i] = nil
     end
 end
