@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -51,16 +51,19 @@ return {
       id = 92,
       properties = {
         ["height"] = 1000,
+        ["maxTruncateHeight"] = 300,
         ["offsetX"] = 510,
         ["offsetY"] = 1210,
         ["randomTruncateHeight"] = false,
         ["replaceTo[0]"] = {
+          ["applyTruncate"] = true,
           ["flipX"] = "random",
           ["ids"] = "5,6,7"
         },
         ["replaceTo[1]"] = {
           ["flipX"] = "random",
           ["ids"] = "2,3,4",
+          ["offsetByTruncate"] = true,
           ["posY"] = 0
         },
         ["truncateHeight"] = 0

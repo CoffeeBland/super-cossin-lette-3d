@@ -344,6 +344,7 @@ end
 function Game:drawEntity(entity)
     if entity.sprites then
         for _, sprite in ipairs(entity.sprites) do
+            local texture = textures[sprite.name]
             local animData = sprite.animData
             local frame = sprite.frame
             local spriteWiggleX = sprite.wiggle and sprite.wiggle.x or 0
@@ -354,7 +355,7 @@ function Game:drawEntity(entity)
             local scaleY = wiggleY + (1 - spriteWiggleY)
             if animData and frame then
                 love.graphics.draw(
-                    textures[sprite.name],
+                    texture,
                     animData.tiles[frame].quad,
                     entity.pos.x,
                     (entity.pos.y - entity.pos.z),
@@ -364,10 +365,18 @@ function Game:drawEntity(entity)
                     sprite.anchor.x,
                     sprite.anchor.y)
             else
+                if not sprite.quad then
+                    sprite.quad = love.graphics.newQuad(
+                        0, entity.pos.truncateHeight,
+                        texture:getWidth(),
+                        texture:getHeight() - entity.pos.truncateHeight,
+                        texture)
+                end
                 love.graphics.draw(
-                    textures[sprite.name],
+                    texture,
+                    sprite.quad,
                     entity.pos.x,
-                    (entity.pos.y - entity.pos.z),
+                    (entity.pos.y + entity.pos.truncateHeight - entity.pos.z),
                     0,
                     sprite.flipX and -1 or 1,
                     sprite.flipY and -1 or 1,
