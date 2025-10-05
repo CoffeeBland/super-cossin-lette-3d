@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="52" nextobjectid="2413">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="52" nextobjectid="2415">
  <editorsettings>
-  <export format="lua"/>
+  <export target="../maps/Niveau2.lua" format="lua"/>
  </editorsettings>
  <properties>
   <property name="vars.nextMap" value="Niveau2"/>
@@ -497,6 +497,9 @@
  <objectgroup id="44" name="Cossin Lette" locked="1">
   <object id="2275" gid="25" x="1184" y="1776" width="192" height="256"/>
  </objectgroup>
- <objectgroup id="51" name="Fruits"/>
+ <objectgroup id="51" name="Fruits">
+  <object id="2413" gid="36" x="1110" y="518" width="128" height="192"/>
+  <object id="2414" gid="37" x="3552" y="2072" width="128" height="192"/>
+ </objectgroup>
  <objectgroup id="50" name="Objects"/>
 </map>

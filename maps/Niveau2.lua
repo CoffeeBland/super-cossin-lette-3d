@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 52,
-  nextobjectid = 2413,
+  nextobjectid = 2415,
   properties = {
     ["vars.nextMap"] = "Niveau2",
     ["vars.targetFruits"] = 1
@@ -10062,7 +10062,36 @@ return {
       parallaxx = 1,
       parallaxy = 1,
       properties = {},
-      objects = {}
+      objects = {
+        {
+          id = 2413,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1110,
+          y = 518,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 36,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2414,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 3552,
+          y = 2072,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 37,
+          visible = true,
+          properties = {}
+        }
+      }
     },
     {
       type = "objectgroup",
