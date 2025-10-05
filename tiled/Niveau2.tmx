@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="48" nextobjectid="2291">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="48" nextobjectid="2292">
  <editorsettings>
   <export target="../maps/Niveau1.lua" format="lua"/>
  </editorsettings>
@@ -392,6 +392,7 @@
     <property name="vars.targetFruits" type="int" value="4"/>
    </properties>
   </object>
+  <object id="2291" gid="25" x="4514" y="2294" width="192" height="256"/>
  </objectgroup>
  <objectgroup id="46" name="Objects">
   <object id="2279" gid="2147483738" x="4070" y="2368" width="1152" height="1024"/>
