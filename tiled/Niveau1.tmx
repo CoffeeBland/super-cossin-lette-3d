@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="48" nextobjectid="2291">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="49" nextobjectid="2333">
  <editorsettings>
   <export target="../maps/Niveau1.lua" format="lua"/>
  </editorsettings>
@@ -374,9 +374,49 @@
 </chunk>
   </data>
  </layer>
+ <layer id="48" name="Chemins" width="30" height="20">
+  <data encoding="csv">
+   <chunk x="48" y="16" width="16" height="16">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,253,120,123,121,123,123,123,120,123,120,123,
+0,0,0,0,0,107,259,261,259,256,261,261,261,255,261,261,
+0,0,0,0,0,108,261,261,261,261,261,261,258,261,261,261,
+0,0,0,0,0,108,258,255,259,260,261,261,256,261,261,261,
+0,0,0,0,0,126,113,111,110,110,113,109,113,109,110,110,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="64" y="16" width="16" height="16">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+123,129,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+261,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+261,118,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+261,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+113,125,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
+  </data>
+ </layer>
  <objectgroup id="43" name="Pic-nic/Blonde a Cossin Lette">
-  <object id="2276" gid="74" x="2812" y="2072" width="605" height="459"/>
-  <object id="2277" gid="92" x="2960" y="2220" width="224" height="404"/>
+  <object id="2276" gid="74" x="2812" y="2146" width="605" height="459"/>
+  <object id="2277" gid="92" x="2960" y="2294" width="224" height="404"/>
  </objectgroup>
  <objectgroup id="44" name="Cossin Lette">
   <object id="2275" gid="25" x="4588" y="2072" width="192" height="256"/>
@@ -392,13 +432,39 @@
     <property name="vars.targetFruits" type="int" value="4"/>
    </properties>
   </object>
+  <object id="2321" gid="38" x="4810" y="962" width="128" height="192"/>
  </objectgroup>
  <objectgroup id="46" name="Objects">
   <object id="2279" gid="2147483738" x="4070" y="2368" width="1152" height="1024"/>
-  <object id="2280" gid="90" x="1850" y="2664" width="1152" height="1024"/>
+  <object id="2280" gid="90" x="1850" y="2590" width="1152" height="1024"/>
   <object id="2281" gid="93" x="3330" y="814" width="1024" height="1286"/>
   <object id="2282" gid="93" x="4736" y="814" width="1024" height="1286"/>
   <object id="2283" gid="93" x="1702" y="962" width="1024" height="1286"/>
   <object id="2284" gid="93" x="1258" y="3330" width="1024" height="1286"/>
+  <object id="2300" gid="72" x="1554" y="2590" width="256" height="148"/>
+  <object id="2301" gid="64" x="1480" y="2664" width="128" height="72"/>
+  <object id="2302" gid="71" x="1628" y="2886" width="128" height="74"/>
+  <object id="2303" gid="70" x="1776" y="2886" width="128" height="74"/>
+  <object id="2306" gid="63" x="1554" y="2812" width="256" height="148"/>
+  <object id="2307" gid="63" x="1702" y="2738" width="256" height="148"/>
+  <object id="2308" gid="63" x="1702" y="2442" width="256" height="148"/>
+  <object id="2309" gid="65" x="1850" y="2812" width="128" height="74"/>
+  <object id="2310" gid="67" x="1998" y="2812" width="128" height="74"/>
+  <object id="2312" gid="72" x="1554" y="1776" width="256" height="148"/>
+  <object id="2313" gid="63" x="1480" y="1628" width="256" height="148"/>
+  <object id="2314" gid="2147483719" x="1554" y="1628" width="128" height="74"/>
+  <object id="2315" gid="65" x="1480" y="1480" width="128" height="74"/>
+  <object id="2316" gid="70" x="1406" y="1406" width="128" height="74"/>
+  <object id="2322" gid="21" x="4144" y="1554" width="128" height="74"/>
+  <object id="2323" gid="20" x="4070" y="1332" width="128" height="74"/>
+  <object id="2324" gid="23" x="3330" y="888" width="128" height="74"/>
+  <object id="2325" gid="2147483669" x="3700" y="1036" width="128" height="74"/>
+  <object id="2326" gid="2147483720" x="3848" y="2072" width="256" height="148"/>
+  <object id="2327" gid="69" x="3922" y="1924" width="128" height="74"/>
+  <object id="2328" gid="65" x="3922" y="2146" width="128" height="74"/>
+  <object id="2329" gid="64" x="3182" y="2072" width="128" height="72"/>
+  <object id="2330" gid="72" x="3182" y="1924" width="256" height="148"/>
+  <object id="2331" gid="69" x="3108" y="1998" width="128" height="74"/>
+  <object id="2332" gid="65" x="2960" y="1998" width="128" height="74"/>
  </objectgroup>
 </map>
