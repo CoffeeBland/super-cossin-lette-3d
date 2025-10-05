@@ -795,11 +795,75 @@ return {
         {
           wangid = { 0, 6, 0, 6, 0, 6, 0, 0 },
           tileid = 266
+        },
+        {
+          wangid = { 0, 0, 0, 4, 0, 0, 0, 0 },
+          tileid = 267
+        },
+        {
+          wangid = { 0, 0, 0, 4, 0, 4, 0, 0 },
+          tileid = 268
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 4, 0, 0 },
+          tileid = 269
+        },
+        {
+          wangid = { 0, 4, 0, 4, 0, 0, 0, 0 },
+          tileid = 270
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 4, 0, 4 },
+          tileid = 271
+        },
+        {
+          wangid = { 0, 4, 0, 0, 0, 0, 0, 0 },
+          tileid = 272
+        },
+        {
+          wangid = { 0, 4, 0, 0, 0, 0, 0, 4 },
+          tileid = 273
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 0, 0, 4 },
+          tileid = 274
+        },
+        {
+          wangid = { 0, 4, 0, 0, 0, 4, 0, 4 },
+          tileid = 275
+        },
+        {
+          wangid = { 0, 4, 0, 0, 0, 0, 0, 4 },
+          tileid = 276
+        },
+        {
+          wangid = { 0, 4, 0, 4, 0, 0, 0, 4 },
+          tileid = 277
+        },
+        {
+          wangid = { 0, 0, 0, 0, 0, 4, 0, 4 },
+          tileid = 278
+        },
+        {
+          wangid = { 0, 4, 0, 4, 0, 0, 0, 0 },
+          tileid = 279
+        },
+        {
+          wangid = { 0, 0, 0, 4, 0, 4, 0, 4 },
+          tileid = 280
+        },
+        {
+          wangid = { 0, 0, 0, 4, 0, 4, 0, 0 },
+          tileid = 281
+        },
+        {
+          wangid = { 0, 4, 0, 4, 0, 4, 0, 0 },
+          tileid = 282
         }
       }
     }
   },
-  tilecount = 234,
+  tilecount = 250,
   tiles = {
     {
       id = 96,
@@ -898,6 +962,102 @@ return {
       width = 128,
       height = 74,
       probability = 0.015
+    },
+    {
+      id = 267,
+      image = "../img/Tiles/Tuile_gazon-32.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 269,
+      image = "../img/Tiles/Tuile_gazon-34.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 272,
+      image = "../img/Tiles/Tuile_gazon-37.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 274,
+      image = "../img/Tiles/Tuile_gazon-39.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 281,
+      image = "../img/Tiles/Tuile_gazon-46.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 268,
+      image = "../img/Tiles/Tuile_gazon-33.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 271,
+      image = "../img/Tiles/Tuile_gazon-36.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 278,
+      image = "../img/Tiles/Tuile_gazon-43.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 276,
+      image = "../img/Tiles/Tuile_gazon-41.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 273,
+      image = "../img/Tiles/Tuile_gazon-38.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 279,
+      image = "../img/Tiles/Tuile_gazon-44.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 270,
+      image = "../img/Tiles/Tuile_gazon-35.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 275,
+      image = "../img/Tiles/Tuile_gazon-40.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 277,
+      image = "../img/Tiles/Tuile_gazon-42.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 280,
+      image = "../img/Tiles/Tuile_gazon-45.png",
+      width = 128,
+      height = 74
+    },
+    {
+      id = 282,
+      image = "../img/Tiles/Tuile_gazon-47.png",
+      width = 128,
+      height = 74
     },
     {
       id = 97,
