@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="222" tilecount="234" columns="0">
- <editorsettings>
-  <export target="../data/tileset.lua" format="lua"/>
- </editorsettings>
+<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="222" tilecount="250" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="96" probability="0.8">
   <image source="../img/Tiles/Tuile_herbe-2.png" width="128" height="74"/>
@@ -45,6 +42,54 @@
  </tile>
  <tile id="182" probability="0.015">
   <image source="../img/Tiles/Tuile_herbe-212.png" width="128" height="74"/>
+ </tile>
+ <tile id="267">
+  <image source="../img/Tiles/Tuile_gazon-32.png" width="128" height="74"/>
+ </tile>
+ <tile id="269">
+  <image source="../img/Tiles/Tuile_gazon-34.png" width="128" height="74"/>
+ </tile>
+ <tile id="272">
+  <image source="../img/Tiles/Tuile_gazon-37.png" width="128" height="74"/>
+ </tile>
+ <tile id="274">
+  <image source="../img/Tiles/Tuile_gazon-39.png" width="128" height="74"/>
+ </tile>
+ <tile id="281">
+  <image source="../img/Tiles/Tuile_gazon-46.png" width="128" height="74"/>
+ </tile>
+ <tile id="268">
+  <image source="../img/Tiles/Tuile_gazon-33.png" width="128" height="74"/>
+ </tile>
+ <tile id="271">
+  <image source="../img/Tiles/Tuile_gazon-36.png" width="128" height="74"/>
+ </tile>
+ <tile id="278">
+  <image source="../img/Tiles/Tuile_gazon-43.png" width="128" height="74"/>
+ </tile>
+ <tile id="276">
+  <image source="../img/Tiles/Tuile_gazon-41.png" width="128" height="74"/>
+ </tile>
+ <tile id="273">
+  <image source="../img/Tiles/Tuile_gazon-38.png" width="128" height="74"/>
+ </tile>
+ <tile id="279">
+  <image source="../img/Tiles/Tuile_gazon-44.png" width="128" height="74"/>
+ </tile>
+ <tile id="270">
+  <image source="../img/Tiles/Tuile_gazon-35.png" width="128" height="74"/>
+ </tile>
+ <tile id="275">
+  <image source="../img/Tiles/Tuile_gazon-40.png" width="128" height="74"/>
+ </tile>
+ <tile id="277">
+  <image source="../img/Tiles/Tuile_gazon-42.png" width="128" height="74"/>
+ </tile>
+ <tile id="280">
+  <image source="../img/Tiles/Tuile_gazon-45.png" width="128" height="74"/>
+ </tile>
+ <tile id="282">
+  <image source="../img/Tiles/Tuile_gazon-47.png" width="128" height="74"/>
  </tile>
  <tile id="97" probability="0.8">
   <image source="../img/Tiles/Tuile_herbe-1.png" width="128" height="74"/>
@@ -1839,6 +1884,22 @@
    <wangtile tileid="264" wangid="0,6,0,6,0,0,0,6"/>
    <wangtile tileid="265" wangid="0,0,0,6,0,6,0,6"/>
    <wangtile tileid="266" wangid="0,6,0,6,0,6,0,0"/>
+   <wangtile tileid="267" wangid="0,0,0,4,0,0,0,0"/>
+   <wangtile tileid="268" wangid="0,0,0,4,0,4,0,0"/>
+   <wangtile tileid="269" wangid="0,0,0,0,0,4,0,0"/>
+   <wangtile tileid="270" wangid="0,4,0,4,0,0,0,0"/>
+   <wangtile tileid="271" wangid="0,0,0,0,0,4,0,4"/>
+   <wangtile tileid="272" wangid="0,4,0,0,0,0,0,0"/>
+   <wangtile tileid="273" wangid="0,4,0,0,0,0,0,4"/>
+   <wangtile tileid="274" wangid="0,0,0,0,0,0,0,4"/>
+   <wangtile tileid="275" wangid="0,4,0,0,0,4,0,4"/>
+   <wangtile tileid="276" wangid="0,4,0,0,0,0,0,4"/>
+   <wangtile tileid="277" wangid="0,4,0,4,0,0,0,4"/>
+   <wangtile tileid="278" wangid="0,0,0,0,0,4,0,4"/>
+   <wangtile tileid="279" wangid="0,4,0,4,0,0,0,0"/>
+   <wangtile tileid="280" wangid="0,0,0,4,0,4,0,4"/>
+   <wangtile tileid="281" wangid="0,0,0,4,0,4,0,0"/>
+   <wangtile tileid="282" wangid="0,4,0,4,0,4,0,0"/>
   </wangset>
  </wangsets>
 </tileset>
