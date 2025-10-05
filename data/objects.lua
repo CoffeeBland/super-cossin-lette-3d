@@ -50,7 +50,7 @@ return {
     {
       id = 92,
       properties = {
-        ["height"] = 800,
+        ["height"] = 1000,
         ["offsetX"] = 510,
         ["offsetY"] = 1210,
         ["randomTruncateHeight"] = false,

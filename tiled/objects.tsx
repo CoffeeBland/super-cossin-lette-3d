@@ -29,7 +29,7 @@
  </tile>
  <tile id="92">
   <properties>
-   <property name="height" type="float" value="800"/>
+   <property name="height" type="float" value="1000"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
    <property name="randomTruncateHeight" type="bool" value="false"/>
