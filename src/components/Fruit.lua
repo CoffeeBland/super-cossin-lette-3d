@@ -42,7 +42,10 @@ function FruitSystem:update(framePart, dt, game)
             elseif entity.fruitStack.cooldown > 0 then
                 local lessThanHalfWay = entity.fruitStack.cooldown > entity.fruitStack.eatCooldown / 2
                 entity.fruitStack.cooldown = math.max(entity.fruitStack.cooldown - framePart, 0)
-                if entity.fruitStack.cooldown <= entity.fruitStack.eatCooldown / 2 and lessThanHalfWay then
+                if entity.fruitStack.halfEatIndicator and
+                    entity.fruitStack.cooldown <= entity.fruitStack.eatCooldown / 2 and
+                    lessThanHalfWay
+                then
                     entity.bubble:show(game, entity.fruitStack.halfEatIndicator, entity.anim)
                 end
             end

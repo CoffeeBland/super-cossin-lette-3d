@@ -9,6 +9,11 @@ objects = {
     byName = {}
 }
 prefabs = {}
+fonts = {}
+
+function load.init()
+    fonts.menu = love.graphics.newFont(36)
+end
 
 local function getObjectPos(alignment, obj)
     local texture = textures[obj.name]

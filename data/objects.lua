@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -53,6 +53,7 @@ return {
         ["height"] = 800,
         ["offsetX"] = 510,
         ["offsetY"] = 1210,
+        ["randomTruncateHeight"] = false,
         ["replaceTo[0]"] = {
           ["flipX"] = "random",
           ["ids"] = "5,6,7"
@@ -61,7 +62,8 @@ return {
           ["flipX"] = "random",
           ["ids"] = "2,3,4",
           ["posY"] = 0
-        }
+        },
+        ["truncateHeight"] = 0
       },
       image = "../img/Arbre.png",
       width = 1024,
@@ -2150,7 +2152,7 @@ return {
         ["height"] = 230,
         ["offsetX"] = 510,
         ["offsetY"] = 470,
-        ["posZ"] = 750
+        ["posZ"] = 770
       },
       image = "../img/Feuillage1.png",
       width = 1024,

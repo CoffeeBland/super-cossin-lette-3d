@@ -787,8 +787,8 @@
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="230"/>
    <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="620"/>
-   <property name="posZ" type="float" value="600"/>
+   <property name="offsetY" type="float" value="470"/>
+   <property name="posZ" type="float" value="770"/>
   </properties>
   <image source="../img/Feuillage1.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="3">
@@ -802,8 +802,8 @@
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="230"/>
    <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="620"/>
-   <property name="posZ" type="float" value="600"/>
+   <property name="offsetY" type="float" value="470"/>
+   <property name="posZ" type="float" value="770"/>
   </properties>
   <image source="../img/Feuillage2.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="2">
@@ -817,8 +817,8 @@
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="230"/>
    <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="620"/>
-   <property name="posZ" type="float" value="600"/>
+   <property name="offsetY" type="float" value="470"/>
+   <property name="posZ" type="float" value="770"/>
   </properties>
   <image source="../img/Feuillage3.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="2">
@@ -829,7 +829,7 @@
  </tile>
  <tile id="5">
   <properties>
-   <property name="height" type="float" value="700"/>
+   <property name="height" type="float" value="770"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
   </properties>
@@ -842,7 +842,7 @@
  </tile>
  <tile id="6">
   <properties>
-   <property name="height" type="float" value="700"/>
+   <property name="height" type="float" value="770"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
   </properties>
@@ -855,7 +855,7 @@
  </tile>
  <tile id="7">
   <properties>
-   <property name="height" type="float" value="700"/>
+   <property name="height" type="float" value="770"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
   </properties>
