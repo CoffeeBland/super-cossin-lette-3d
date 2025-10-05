@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="39" nextobjectid="2266">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="39" nextobjectid="2272">
  <editorsettings>
   <export target="../maps/map1_prototype.lua" format="lua"/>
  </editorsettings>
@@ -985,12 +985,6 @@
   <object id="1516" gid="71" x="1628" y="2960" width="128" height="74"/>
   <object id="1517" gid="71" x="1702" y="2960" width="128" height="74"/>
   <object id="1518" gid="64" x="1406" y="2516" width="128" height="74"/>
-  <object id="1519" gid="6" x="1332" y="666" width="1024" height="1286"/>
-  <object id="1520" gid="5" x="1332" y="666" width="1024" height="1286"/>
-  <object id="1522" gid="7" x="3700" y="888" width="1024" height="1286"/>
-  <object id="1523" gid="4" x="3700" y="888" width="1024" height="1286"/>
-  <object id="1525" gid="8" x="4884" y="592" width="1024" height="1286"/>
-  <object id="1526" gid="5" x="4884" y="592" width="1024" height="1286"/>
   <object id="1532" gid="22" x="3108" y="370" width="128" height="74"/>
   <object id="1533" gid="20" x="3774" y="1184" width="128" height="74"/>
   <object id="1534" gid="23" x="3404" y="814" width="128" height="74"/>
@@ -1015,8 +1009,6 @@
   <object id="1736" gid="53" x="814" y="740" width="128" height="148"/>
   <object id="1737" gid="50" x="888" y="814" width="128" height="148"/>
   <object id="1738" gid="47" x="1036" y="814" width="128" height="74"/>
-  <object id="1739" gid="2147483655" x="2294" y="493.333" width="1024" height="1286"/>
-  <object id="1740" gid="5" x="2294" y="493.333" width="1024" height="1286"/>
   <object id="1741" gid="57" x="2442" y="740" width="128" height="74"/>
   <object id="1742" gid="57" x="2368" y="888" width="128" height="74"/>
   <object id="1743" gid="2147483700" x="2442" y="666" width="128" height="148"/>
@@ -1046,13 +1038,9 @@
   <object id="1770" gid="57" x="4958" y="1184" width="128" height="74"/>
   <object id="1771" gid="47" x="5032" y="1332" width="128" height="74"/>
   <object id="1772" gid="47" x="5106" y="1036" width="128" height="74"/>
-  <object id="1773" gid="2147483656" x="1110" y="3404" width="1024" height="1286"/>
-  <object id="1776" gid="3" x="1184" y="3404" width="1024" height="1286"/>
   <object id="1777" gid="72" x="1554" y="1998" width="256" height="148"/>
   <object id="1779" gid="63" x="2664" y="2072" width="256" height="148"/>
   <object id="1780" gid="71" x="2664" y="2220" width="128" height="74"/>
-  <object id="1783" gid="2147483654" x="3626" y="3552" width="1024" height="1286"/>
-  <object id="1784" gid="4" x="3626" y="3552" width="1024" height="1286"/>
   <object id="1785" gid="33" x="3552" y="1850" width="128" height="192"/>
   <object id="1786" gid="2147483687" x="3552" y="666" width="128" height="192"/>
   <object id="1790" gid="2147483690" x="1332" y="2368" width="128" height="192"/>
@@ -1226,5 +1214,11 @@
   <object id="2263" gid="33" x="3700" y="1184" width="128" height="192"/>
   <object id="2264" gid="92" x="4403" y="1221" width="224" height="404"/>
   <object id="2265" gid="25" x="1097.67" y="370" width="192" height="256"/>
+  <object id="2266" gid="93" x="1110" y="3391.67" width="1024" height="1286"/>
+  <object id="2267" gid="93" x="1356.67" y="678.333" width="1024" height="1286"/>
+  <object id="2268" gid="93" x="2294" y="456.333" width="1024" height="1286"/>
+  <object id="2269" gid="93" x="3650.67" y="3626" width="1024" height="1286"/>
+  <object id="2270" gid="93" x="3663" y="851" width="1024" height="1286"/>
+  <object id="2271" gid="93" x="4797.67" y="518" width="1024" height="1286"/>
  </objectgroup>
 </map>
