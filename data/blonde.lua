@@ -6,7 +6,7 @@ return function()
         sprites = {
             {
                 name = "Blonde",
-                anchor = { x = 123, y = 368 },
+                anchor = { x = 160, y = 428 },
                 wiggle = { x = 1, y = 1 }
             }
         },
@@ -15,7 +15,7 @@ return function()
             anchor = { x = 96, y = 46 }
         },
         bubble = {
-            anchor = { x = -40, y = -420 }
+            anchor = { x = -40, y = -500 }
         },
         anim = {},
         light = { alpha = 0 },
@@ -25,18 +25,16 @@ return function()
             triggers = {}
         },
         particleEmitter = {
-            conditions = {
-                light = {
-                    name = "Sparkle",
-                    offsetRange = {
-                        x = { -100, 150 },
-                        y = { -0, 0 },
-                        z = { 0, 300 }
-                    },
-                    duration = 60,
-                    cooldown = 5,
-                    minimumLight = 0.1
-                }
+            always = {
+                name = "Sparkle",
+                offsetRange = {
+                    x = { -100, 150 },
+                    y = { -0, 0 },
+                    z = { 0, 450 }
+                },
+                duration = 60,
+                cooldown = 5,
+                minimumLight = 0.1
             }
         },
         fruitStack = {
@@ -44,9 +42,9 @@ return function()
             eaten = {},
             pickupRange = 280,
             pickupForce = 0.7,
-            pickupJumpSpeed = 140,
+            pickupJumpSpeed = 160,
             pickupAnimFrames = 20,
-            firstOffset = { x = 0, y = 0, z = 320 },
+            firstOffset = { x = 0, y = 0, z = 380 },
             otherOffset = { x = 0, y = 0, z = 90 },
             dropForce = 240,
             dropJumpSpeed = 60,

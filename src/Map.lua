@@ -55,7 +55,12 @@ function Map:init()
                 local tx = self.iteratorLayer.x + chunk.x + ((i - 1) % chunk.width) + 1
                 local ty = self.iteratorLayer.y + chunk.y + math.floor((i - 1) / chunk.width) + 1
                 local globali = tx + ty * self.width
-                return i, tile, tx, ty, globali, flipX, flipY, og
+                local tileData = tileset.tiles[tile]
+                if tileData then
+                    return i, tile, tx, ty, globali, flipX, flipY, og
+                else
+                    print("Unknown tile gid!", tile, og)
+                end
             end
         end
     end
@@ -110,9 +115,6 @@ function Map:init()
             for _, chunk in ipairs(layer.chunks) do
                 for i, tile, tx, ty, globali, flipX, flipY, og in self:chunkTiles(layer, chunk) do
                     local tileData = tileset.tiles[tile]
-                    if not tileData then
-                        print("Unknown tile gid!", tile, og)
-                    end
                     local height = tileData.height or 0
                     local layerHeight = 0
                     if self.heightMarkersByLayer[layeri] then
@@ -179,6 +181,12 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     y = y + z -- Offset by z to match visually with the editor.
 
     if object.replaceTo then
+
+        local truncateHeight = data.properties.truncateHeight or object.truncateHeight or 0
+        if data.properties.randomTruncateHeight or object.randomTruncateHeight then
+            truncateHeight = math.random(data.properties.maxTruncateHeight or object.maxTruncateHeight)
+        end
+
         for _, replacement in pairs(object.replaceTo) do
             local id = replacement.id or 0
             if replacement.ids and #replacement.ids > 0 then
@@ -195,6 +203,13 @@ function Map:createEntity(entities, data, id, flipX, flipY)
             entity.pos.y = entity.pos.y + replacementFsy * (replacement.posY or 0)
             entity.pos.z = entity.pos.z + (replacement.posZ or 0)
 
+            if replacement.offsetByTruncate then
+                entity.pos.z = entity.pos.z - truncateHeight
+            end
+            if replacement.applyTruncate then
+                entity.pos.truncateHeight = truncateHeight + 80
+            end
+
             entity.pos.originalx = x
             entity.pos.originaly = y
             entity.pos.originalz = z
@@ -209,6 +224,7 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     entity.pos.y = y
     entity.pos.z = z
     entity.pos.onGround = true
+    entity.pos.truncateHeight = 0
     if object.height or not entity.pos.height then
         entity.pos.height = object.height or HEIGHT_SLICE
     end

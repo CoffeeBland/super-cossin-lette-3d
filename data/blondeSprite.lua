@@ -1,6 +1,6 @@
 return {
-    tileWidth = 224,
-    tileHeight = 404,
+    tileWidth = 320,
+    tileHeight = 448,
     sprites = {
         Blonde = {
             {
