@@ -2421,13 +2421,13 @@ return {
     {
       id = 91,
       properties = {
-        ["offsetX"] = 123,
-        ["offsetY"] = 368,
+        ["offsetX"] = 160,
+        ["offsetY"] = 428,
         ["prefab"] = "blonde"
       },
       image = "../img/Blonde.png",
-      width = 224,
-      height = 404
+      width = 320,
+      height = 448
     }
   }
 }

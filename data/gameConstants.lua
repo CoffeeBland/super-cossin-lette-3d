@@ -50,7 +50,7 @@ return {
             "(", 28,
         }
     },
-    firstLevel = "map1",
+    firstLevel = "Niveau1",
     endLevelCutscene = {
         { "input",
             entity = nil
@@ -191,7 +191,6 @@ return {
             fruitStack = { picnicAction = "pickup" }
         },
         { "waitForVar", "==", "[vars.picnicFruits]", 0 },
-        { "waitForVar", "==", "[vars.remainingFruits]", 0 },
         { "bubble",
             entity = { byName = "blonde" },
             text = { 10, "<3" }
