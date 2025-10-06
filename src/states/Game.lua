@@ -68,6 +68,7 @@ function Game:iterEntitiesAABB(sx, sy, ex, ey)
 end
 
 function Game:enter(args)
+    load.crawlFiles()
     self.camera = CameraSystem.new()
     self.input = {
         target = nil
@@ -114,7 +115,6 @@ end
 
 function Game:exit()
     self.physics:exit()
-    love.audio.stop()
 end
 
 function Game:handleCreation()

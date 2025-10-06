@@ -11,7 +11,7 @@ function ParticleSystem.new(particleCount, entities)
             particleIndex = #instance.particles + 1,
             disabled = true,
             sprites = { { anchor = { x = 0, y = 0 } } },
-            pos = { x = 0, y = 0, z = 0 },
+            pos = { x = 0, y = 0, z = 0, truncateHeight = 0 },
             velocity = { x = 0, y = 0, z = 0 },
             anim = Anim:new()
         }

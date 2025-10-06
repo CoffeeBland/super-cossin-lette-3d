@@ -3,9 +3,39 @@ Title = {
     fadein = 15
 }
 
+local grassTiles = {
+    "Tuile_gazon-19",
+    "Tuile_gazon-20",
+    "Tuile_gazon-21",
+    "Tuile_gazon-22",
+    "Tuile_gazon-23",
+    "Tuile_gazon-24",
+    "Tuile_gazon-25",
+    "Tuile_gazon-26",
+    "Tuile_gazon-27",
+    "Tuile_gazon-28",
+    "Tuile_gazon-29",
+    "Tuile_gazon-30",
+    "Tuile_gazon-31",
+}
+
 local cossinY = 400
 local expectedResolution = { 2732, 2048 }
 local bgcol = { 0.686, 0.898, 0.608 }
+local bgGrassTiles = {}
+
+local jump = 240
+local acrossCount = 24
+local length = jump * acrossCount * 1.5
+for i = -acrossCount, acrossCount do
+    for j = -acrossCount, acrossCount do
+        table.insert(bgGrassTiles, {
+            x = i * jump + math.random(-jump / 2, jump / 2),
+            y = j * jump + math.random(-jump / 2, jump / 2),
+            name = grassTiles[math.random(#grassTiles)]
+        })
+    end
+end
 local textScale = {
     frames = 15,
     from = 0.25,
@@ -86,8 +116,20 @@ local menu = {
             text = "PIQUE-NIQUER",
             menuState = "new",
             sound = "Step",
-            pitch = 1.2,
-            angle = math.pi * (6/8),
+            pitch = 1.3,
+            move = {
+                "hello",
+                { "walkTo", point = { pos = { x = -40, y = cossinY + 20 } } },
+                { "jump", jumpSpeed = 100 },
+                { "walkTo", point = { pos = { x = -120, y = cossinY + 60 } } },
+                { "lookAt", point = { pos = { x = -120, y = cossinY + 70 } } }
+            },
+            actionMove = {
+                "hello",
+                { "walkTo", point = { pos = { x = -150, y = cossinY + 60 } } },
+                { "jump", jumpSpeed = 100 },
+                { "walkTo", point = { pos = { x = -150, y = cossinY + 180 } } },
+            },
             cond = function()
                 return actions.movement.x < -DELTA
             end
@@ -96,8 +138,20 @@ local menu = {
             text = "SE RECOUCHER",
             menuState = "quit",
             sound = "Step",
-            pitch = 0.8,
-            angle = math.pi * (2/8),
+            pitch = 0.6,
+            move = {
+                "hello",
+                { "walkTo", point = { pos = { x = 40, y = cossinY + 20 } } },
+                { "jump", jumpSpeed = 100 },
+                { "walkTo", point = { pos = { x = 120, y = cossinY + 60 } } },
+                { "lookAt", point = { pos = { x = 120, y = cossinY + 70 } } }
+            },
+            actionMove = {
+                "hello",
+                { "walkTo", point = { pos = { x = 150, y = cossinY + 60 } } },
+                { "jump", jumpSpeed = 100 },
+                { "walkTo", point = { pos = { x = 150, y = cossinY + 180 } } },
+            },
             cond = function()
                 return actions.movement.x > DELTA
             end
@@ -116,9 +170,36 @@ local colors = {
 }
 
 function Title:enter()
+    local texturesToFind = { "Bubble_icons" }
+    local soundsToFind = { "TitleMusic" }
+    for _, grassTile in pairs(grassTiles) do
+        table.insert(texturesToFind, grassTile)
+    end
+    for _, event in pairs(timeline) do
+        if event.text then
+            table.insert(texturesToFind, event.text)
+            table.insert(soundsToFind, event.text)
+        end
+    end
+    for _, button in pairs(menu.buttons) do
+        table.insert(soundsToFind, button.sound)
+    end
+    for _, buisson in pairs(buissons) do
+        table.insert(texturesToFind, buisson.name)
+    end
+
+    load.crawlFor({
+        textures = texturesToFind,
+        sounds = soundsToFind,
+        data = { "cossin", "gameConstants" }
+    })
+    load.crawlFor({ data = { "cossinSprite", "particleSprite" } })
     self.frame = 0
     self.menuState = "new"
     self.menuActive = false
+    self.waitingForEnd = false
+    sounds.TitleMusic:setVolume(0.5)
+    sounds.TitleMusic:play()
 
     menu.width = -menu.margin
     for _, button in ipairs(menu.buttons) do
@@ -145,6 +226,7 @@ function Title:enter()
 
     self.physics = PhysicsSystem.new()
     self.actors = ActorSystem.new()
+    self.sound = SoundSystem.new()
     self.particles = ParticleSystem.new(Game.constants.particleCount, self.entities)
     Requests.populate(self)
 
@@ -155,46 +237,64 @@ function Title:exit()
 end
 
 function Title:update(dt)
+    load.crawlFiles(nil, true)
     self.frame = self.frame + 1
-    for _, event in ipairs(timeline) do
-        if event.frame == self.frame then
-            if event.text then
-                local source = sounds[event.text]
-                love.audio.play(source)
+
+    if self.waitingForEnd then
+        if not self.entitiesByName.cossin.actor.autoMoveIndex then
+            if self.menuState == "new" then
+                StateMachine:change(Game, { map = Game.constants.firstLevel })
+            elseif self.menuState == "quit" then
+                StateMachine:change(Exit)
             end
-            if event.menu then
-                self.menuActive = true
+        end
+    else
+        for _, event in ipairs(timeline) do
+            if event.frame == self.frame then
+                if event.text then
+                    local source = sounds[event.text]
+                    love.audio.play(source)
+                end
+                if event.menu then
+                    self.menuActive = true
+                end
+                if event.cossin and self.entitiesByName.cossin.disabled then
+                    local w = love.graphics:getDimensions()
+                    self.entitiesByName.cossin.disabled = false
+                    self.entitiesByName.cossin.pos.x = - (w + 60)
+                    self.entitiesByName.cossin.actor:setMoveFromEvent(event)
+                end
             end
-            if event.cossin then
+        end
+
+        if self.menuActive and actions.action then
+            local button = menu.buttonsByMenuState[self.menuState]
+            self.waitingForEnd = true
+            self.entitiesByName.cossin.actor:setMoveFromEvent(button.actionMove)
+        end
+
+        if actions.action or actions.escape or actions.movement.x ~= 0 then
+            self.menuActive = true
+            if self.entitiesByName.cossin.disabled then
                 local w = love.graphics:getDimensions()
                 self.entitiesByName.cossin.disabled = false
                 self.entitiesByName.cossin.pos.x = - (w + 60)
-                self.entitiesByName.cossin.actor:setMoveFromEvent(event)
+                local button = menu.buttonsByMenuState[self.menuState]
+                self.entitiesByName.cossin.actor:setMoveFromEvent(button.move)
             end
         end
-    end
 
-    if self.menuActive and actions.action then
-        if self.menuState == "new" then
-            StateMachine:change(Game, { map = Game.constants.firstLevel })
-        elseif self.menuState == "quit" then
-            love.event.quit()
-        end
-    end
-
-    if actions.action or actions.escape or actions.movement.x ~= 0 then
-        self.menuActive = true
-    end
-
-    for _, button in ipairs(menu.buttons) do
-        if button.cond() then
-            if self.menuState ~= button.menuState then
-                local source = sounds[button.sound]
-                source:setPitch(button.pitch)
-                source:stop()
-                love.audio.play(source)
+        for _, button in ipairs(menu.buttons) do
+            if button.cond() then
+                if self.menuState ~= button.menuState then
+                    local source = sounds[button.sound]
+                    source:setPitch(button.pitch)
+                    source:stop()
+                    love.audio.play(source)
+                    self.entitiesByName.cossin.actor:setMoveFromEvent(button.move)
+                end
+                self.menuState = button.menuState
             end
-            self.menuState = button.menuState
         end
     end
 
@@ -206,14 +306,7 @@ function Title:update(dt)
     self.physics:update(framePart, dt, self)
     self.actors:update(framePart, dt, self)
     self.particles:update(framePart, dt, self)
-
-    if self.menuActive and
-        not self.entitiesByName.cossin.disabled and
-        not self.entitiesByName.cossin.actor.autoMoveIndex
-    then
-        local button = menu.buttonsByMenuState[self.menuState]
-        self.entitiesByName.cossin.anim:setAngle(button.angle)
-    end
+    self.sound:update(framePart, dt, self)
 end
 
 function Title:iterEntities(table)
@@ -232,6 +325,9 @@ function Title:render()
     love.graphics.translate(w / 2, h / 2)
     love.graphics.scale(scale)
     love.graphics.clear(unpack(bgcol))
+    for _, tile in ipairs(bgGrassTiles) do
+        love.graphics.draw(textures[tile.name], tile.x, tile.y)
+    end
     for _, event in ipairs(timeline) do
         if self.frame >= event.frame and event.text then
             local texture = textures[event.text]
@@ -274,6 +370,7 @@ function Title:render()
     end
     love.graphics.setBlendMode("alpha")
 
+    table.sort(self.entities, function (a, b) return a.pos.y < b.pos.y end)
     for _, entity in self:iterEntities(self.entities) do
         Game:drawEntity(entity)
     end
