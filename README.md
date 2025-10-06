@@ -19,3 +19,4 @@
     * Par défaut non aléatoire, tu peux écraser, et tu dois cocher pour activer l'auto-troncage
 
 ## BUGS
+* Les layers de tuiles tolèrent pas des gaps

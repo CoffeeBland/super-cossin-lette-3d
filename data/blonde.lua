@@ -33,8 +33,18 @@ return function()
                     z = { 0, 450 }
                 },
                 duration = 60,
-                cooldown = 5,
-                minimumLight = 0.1
+                cooldown = 5
+            }
+        },
+        soundEmitter = {
+            conditions = {
+                light = {
+                    name = "Angel",
+                    loop = true,
+                    minimumLight = 0.1,
+                    fadeIn = 30,
+                    fadeOut = 15
+                }
             }
         },
         fruitStack = {

@@ -123,7 +123,6 @@ return function()
             }
         },
         soundEmitter = {
-            playing = {},
             triggers = {
                 ["eat:start"] = {
                     name = "Ooh"

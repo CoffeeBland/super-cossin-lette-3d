@@ -239,6 +239,7 @@ return {
             entity = { byName = "blonde" },
             disabled = true
         },
+        { "waitFrames", 60 },
         { "changeState",
             Game,
             { map = "[vars.currentMap]" }

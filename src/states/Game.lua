@@ -114,6 +114,7 @@ end
 
 function Game:exit()
     self.physics:exit()
+    love.audio.stop()
 end
 
 function Game:handleCreation()
