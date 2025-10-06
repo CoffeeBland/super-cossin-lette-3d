@@ -1,518 +1,181 @@
-require "src.Map"
+fancyTypes = {}
+require "src.components.Requests"
+require "src.components.Camera"
+require "src.components.Sound"
+require "src.components.Actor"
 require "src.components.Anim"
+require "src.components.Bubble"
+require "src.components.Event"
+require "src.components.Physics"
+require "src.components.Larp"
+require "src.components.Fruit"
+require "src.components.Water"
+require "src.components.Particle"
+
+require "src.Map"
 
 local PhysicsRenderer = require "src.PhysicsRenderer"
 
-local bit = require("bit")
-local g = 3 * METER_SCALE
-local airFriction = 0.975
-local groundDamping = 16
-local slidingDamping = 1
-local jumpMultiplier = 0.5
-local speedMultiplier = 20
---   2
---  1 3
--- 8   4
---  7 5
---   6
-local dirs = { "tl", "t", "tr", "r", "br", "b", "bl", "l" }
-local v2 = { x = 0, y = 0 }
+Game = {
+    fadeout = 15,
+    fadein = 15
+}
 
-Game = {}
+function Game:refresh(force)
+    local path = "maps/" .. self.map.name .. ".lua"
+    local info = love.filesystem.getInfo(path, "file")
+    if force or (timestamps[path] and timestamps[path].modtime < info.modtime) then
+        timestamps[path] = info
+        StateMachine:change(Game, { map = self.map.name })
+    end
+end
 
-function Game:refresh()
-    StateMachine:change(Game, { map = self.map.name })
+function Game.entityIterator(entities, i)
+    for j = i, #entities do
+        local entity = entities[j]
+        if not entity.disabled then
+            return j + 1, entity
+        end
+    end
+end
+
+function Game:iterEntities(table)
+    table = table or self.entities
+    return Game.entityIterator, table, 1
+end
+
+local iteratorSx, iteratorSy, iteratorEx, iteratorEy
+function Game.entitiesAABBIterator(entities, i)
+    for j = i, #entities do
+        local entity = entities[j]
+        if not entity.disabled and
+            entity.pos.y >= sy and
+            entity.pos.y <= ey and
+            entity.pos.x >= sx and
+            entity.pos.x <= ex
+        then
+            return j + 1, entity
+        end
+    end
+end
+
+function Game:iterEntitiesAABB(sx, sy, ex, ey)
+    iteratorSx = sx
+    iteratorSy = sy
+    iteratorEx = ex
+    iteratorEy = ey
+    return Game.entitiesAABBIterator, self.entities, 1
 end
 
 function Game:enter(args)
-    self.physics = love.physics.newWorld(0, 0, true)
-    self.physics:setContactFilter(
-        function(fix1, fix2)
-            if fix1:isSensor() or fix2:isSensor() then
-                return true
-            end
-            local e1 = fix1:getBody():getUserData()
-            local e2 = fix2:getBody():getUserData()
-            return self:shouldEntitiesContact(e1, e2)
-        end)
-    self.camera = { x = 0, y = 0 }
-    self.time = 0
-    self.map = Map.load(args.map)
-    self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
-    self.entities = {
-        {
-            id = 1,
-            input = true,
-            camera = true,
-            actor = { walkSpeed = 250, jumpSpeed = 225 },
-            pos = { x = 0, y = 0, z = 0, height = HEIGHT_SLICE },
-            velocity = { z = 0 },
-            body = { shape = "circle", size = 80, type = "dynamic" },
-            anim = Anim.new(),
-            sprites = {
-                {
-                    name = "cossinPiedBack",
-                    anchor = { x = 96, y = 236 }
-                },
-                {
-                    name = "cossinCorps",
-                    anchor = { x = 96, y = 236 }
-                },
-                {
-                    name = "cossinPiedFront",
-                    anchor = { x = 96, y = 236 }
-                }
-            },
-            shadow = {
-                name = "cossinOmbre",
-                anchor = { x = 96, y = 46 }
-            },
-            fruitStack = {
-                fruits = {},
-                pickupRange = 160,
-                pickupForce = 0.7,
-                pickupJumpSpeed = 140,
-                pickupAnimFrames = 20,
-                firstOffset = { x = 0, y = 0, z = 150 },
-                otherOffset = { x = 0, y = 0, z = 90 },
-                dropForce = 240,
-                dropJumpSpeed = 60,
-                dropCooldown = 60,
-                eatCooldown = 600
-            },
-            soundEmitter = {
-                playing = {},
-                triggers = {
-                    ["eat:start"] = {
-                        name = "Ooh"
-                    },
-                    --throwFruit = {
-                    --    name = "Shoop"
-                    --},
-                    eatFruit = {
-                        name = "Gulp"
-                    },
-                    ["jump:start"] = {
-                        name = "Ooh",
-                        stopOn = "jump:stop"
-                    },
-                    --["jump:stop"] = {
-                    --    name = "Poof"
-                    --},
-                    step = {
-                        name = "Step",
-                        volumeRange = { 0.3, 0.4 },
-                        pitchRange = { 0.8, 1.2 }
-                    },
-                    ["squish:start"] = {
-                        name = "Gnieh",
-                        loop = true,
-                        stopOn = "squish:stop"
-                    }
-                }
-            }
-        }
+    self.camera = CameraSystem.new()
+    self.input = {
+        target = nil
     }
+    self.time = 0
+    self.endTriggered = false
+    self.map = Map.load(args.map)
+    self.vars = {
+        remainingFruits = 0,
+        eaten = 0,
+        picnicFruits = 0,
+        targetFruits = 1,
+        currentMap = args.map,
+        nextMap = nil
+    }
+    for key, value in pairs(self.map.vars) do
+        self.vars[key] = value
+    end
+    self.tilesBatch = love.graphics.newSpriteBatch(textures.tileset)
+    Requests.new(self)
+    self.physics = PhysicsSystem.new()
+    self.sounds = SoundSystem.new()
+    self.event = Event.new()
+    self.anim = Anim.new()
+    self.water = WaterSystem.new()
+    self.fruits = FruitSystem.new()
+    self.actors = ActorSystem.new()
+    self.particles = ParticleSystem.new(Game.constants.particleCount, self.entities)
 
+    self.map:getTileEntities(self.physics.world, self.entities)
     self.map:getEntities(self.entities)
+    for key, entity in pairs(self.entities) do
+        -- Auto-attaching the input
+        if entity.input and not self.input.target then
+            self.input.target = entity
+        end
+        if entity.camera then
+            self.camera:setTarget(entity)
+        end
+    end
+    Requests.populate(self)
+    self:update(0)
 end
 
 function Game:exit()
-    self.physics:destroy()
-    self.physics = nil
+    self.physics:exit()
+    love.audio.stop()
 end
 
-function Game:updateHeightSlices(entity)
-    local startZ = entity.pos.z
-    local endZ = startZ + (entity.pos.height)
-    local sliceStart = math.clamp(1 + math.ceil(startZ / HEIGHT_SLICE), 1, 16)
-    local sliceEnd = math.clamp(1 + math.floor((endZ - 1) / HEIGHT_SLICE), 1, 16)
-    sliceEnd = math.max(sliceStart, sliceEnd)
-    if sliceStart ~= entity.physics.sliceStart or sliceEnd ~= entity.physics.sliceEnd then
-        -- Categories
-        local categories = {}
-        for i = sliceStart,sliceEnd do
-            table.insert(categories, i)
-        end
-        entity.physics.fixture:setCategory(unpack(categories))
-
-        -- Masks
-        local masks = {}
-        if sliceStart > 1 then
-            for i = 1, sliceStart - 1 do
-                table.insert(masks, i)
-            end
-        end
-        if sliceEnd < 16 then
-            for i = sliceEnd + 1, 16 do
-                table.insert(masks, i)
-            end
-        end
-
-        entity.physics.fixture:setMask(unpack(masks))
-
-        entity.physics.sliceStart = sliceStart
-        entity.physics.sliceEnd = sliceEnd
+function Game:handleCreation()
+    for _, entity in ipairs(self.entities) do
+        self.physics:handleCreation(entity)
+        self.water:handleCreation(entity)
+        self.fruits:handleCreation(entity)
     end
 end
 
 function Game:update(dt)
-    self.physics:update(dt)
+    self:handleCreation()
+
     self.time = self.time + dt
+    local framePart = dt / (1 / 60)
 
-    for _, entity in ipairs(self.entities) do
-        -- Create physics
-        if entity.body and not entity.physics then
-            local body = love.physics.newBody(self.physics, entity.pos.x, entity.pos.y, entity.body.type)
-            body:setUserData(entity)
-            local shape
-            if entity.body.shape == "circle" then
-                shape = love.physics.newCircleShape(entity.body.size / 2)
-            elseif entity.body.preshape then
-                shape = entity.body.preshape
-            end
+    for _, entity in self:iterEntities(self.entitiesByComponent.anim) do
+        entity.anim:update(dt, entity.sprites)
+    end
+    self.physics:update(framePart, dt, self)
+    self.water:update(framePart, dt, self)
+    self.actors:update(framePart, dt, self)
+    self.sounds:update(framePart, dt, self)
+    self.particles:update(framePart, dt, self)
+    self.fruits:update(framePart, dt, self)
+    self.camera:update(framePart, dt, self)
+    self.event:update(framePart, self)
+    self.anim:clearTriggers()
 
-            local heightSensor = love.physics.newFixture(body, shape, 0)
-            heightSensor:setSensor(true)
-            heightSensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-            heightSensor:setUserData(HEIGHT_SENSOR);
+    if (self.vars.remainingFruits == 0 or actions.gogogadget) and not self.endTriggered then
+        self.endTriggered = true
+        self.event:execute(Game.constants.endLevelCutscene)
+    end
+end
 
-            local fixture = love.physics.newFixture(body, shape, 1)
+local drawnEntities = {}
 
-            entity.physics = {
-                body = body,
-                shape = shape,
-                fixture = fixture,
-                heightSensor = heightSensor
-            }
+function Game:render(dt)
+    local w, h, sx, sy, ex, ey = self.camera:applyTransformations()
+    love.graphics.clear(0.2, 0.5, 0.4)
 
-            self:updateHeightSlices(entity)
-        end
-
-        -- Eat input
-        if entity.input then
-            entity.actions = actions
-        end
-
-        -- Fruit stack haver
-        if entity.fruitStack then
-            if not entity.fruitStack.sensor and entity.physics then
-                local shape = love.physics.newCircleShape(entity.fruitStack.pickupRange / 2)
-                local sensor = love.physics.newFixture(entity.physics.body, shape, 0)
-                sensor:setSensor(true)
-                sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-                entity.fruitStack.sensor = sensor
-            end
-
-            if #entity.fruitStack.fruits > 0 then
-                if not entity.fruitStack.cooldown then
-                    entity.fruitStack.cooldown = entity.fruitStack.eatCooldown
-                else
-                    entity.fruitStack.cooldown = entity.fruitStack.cooldown - 1
-                end
-            end
-
-            if entity.fruitStack.cooldown == 0 then
-                entity.anim:request("eat")
-            end
-
-            if entity.anim:isTriggered("throwFruit") then
-                for _, fruitEntity in ipairs(entity.fruitStack.fruits) do
-                    fruitEntity.velocity.z = entity.fruitStack.pickupJumpSpeed * jumpMultiplier
-                end
-            end
-
-            if entity.anim:isTriggered("eatFruit") then
-                local eaten = entity.fruitStack.fruits[1]
-                if eaten then
-                    eaten.toRemove = true
-                    table.remove(entity.fruitStack.fruits, 1)
-                    local nextFruitEntity = entity.fruitStack.fruits[1]
-                    if nextFruitEntity then
-                        nextFruitEntity.fruit.stackEntity = entity
-                        nextFruitEntity.fruit.offset = entity.fruitStack.firstOffset
-                    end
-                end
-            end
-
-            if #entity.fruitStack.fruits == 0 or entity.anim:isTriggered("eat:finished") then
-                entity.fruitStack.cooldown = nil
-            end
-
-            for _, other in pairs(self:getOverlappingEntities(entity, entity.fruitStack.sensor)) do
-                if other.fruit then
-                    self:checkFruitPickup(entity, other)
-                end
-            end
-        end
-
-        -- Actor! Shit this is sketch.
-        if entity.actor then
-            entity.pos.sliding = false
-            if entity.actions.movement.angle then
-                -- RIP
-                local a = math.floor(entity.actions.movement.angle / math.pi * 4 + 0.5) + 4
-                entity.anim.dir = dirs[a];
-            end
-            if entity.actions.movement.angle and entity.anim:highestPriority() <= Anim.priorities.walk then
-                if entity.pos.onGround then
-                    local dx = entity.actor.walkSpeed * math.cos(entity.actions.movement.angle) * speedMultiplier
-                    local dy = entity.actor.walkSpeed * math.sin(entity.actions.movement.angle) * speedMultiplier
-                    entity.physics.body:applyForce(dx, dy)
-                end
-
-                entity.anim:release("idle")
-                entity.anim:request("walk")
-            else
-                entity.anim:release("walk")
-                entity.anim:request("idle")
-            end
-            if entity.pos.onGround and entity.anim:highestPriority() <= Anim.priorities.squish then
-                if entity.actions.jump then
-                    entity.velocity.z = entity.velocity.z + entity.actor.jumpSpeed * jumpMultiplier
-                    entity.pos.onGround = false
-                end
-                entity.pos.sliding = entity.actions.prejump
-                entity.anim:toggle("squish", entity.actions.prejump)
-            end
-            entity.anim:toggle("jump", not entity.pos.onGround)
-        end
-
-        -- Picnic at the disco
-        if entity.picnic then
-            if entity.physics and not entity.picnic.sensor then
-                local shape = love.physics.newCircleShape(entity.picnic.dropRange / 2)
-                local sensor = love.physics.newFixture(entity.physics.body, shape, 0)
-                sensor:setSensor(true)
-                sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-                entity.picnic.sensor = sensor
-            end
-
-            for _, otherEntity in pairs(self:getOverlappingEntities(entity, entity.picnic.sensor)) do
-                if otherEntity.fruitStack then
-                    if #otherEntity.fruitStack.fruits > 0 then
-                        otherEntity.velocity.z = 60
-                        otherEntity.physics.body:setLinearVelocity(0, 0)
-                    end
-                    local dropPoints = love.physics.sampleShape(
-                        entity.physics.shape,
-                        #otherEntity.fruitStack.fruits)
-                    for i = #otherEntity.fruitStack.fruits, 1, -1 do
-                        local fruitEntity = otherEntity.fruitStack.fruits[i]
-                        otherEntity.fruitStack.fruits[i] = nil
-                        otherEntity.fruitStack.cooldown = nil
-                        otherEntity.anim:release("eat")
-
-                        fruitEntity.fruit.stackEntity = entity
-                        fruitEntity.fruit.animFrames = 20
-                        fruitEntity.fruit.offset = {
-                            x = dropPoints[(i - 1) * 2 + 1],
-                            y = dropPoints[(i - 1) * 2 + 2],
-                            z = 0
-                        }
-                        fruitEntity.fruit.reachedStack = false
-                        fruitEntity.fruit.cooldown = nil
-                        fruitEntity.velocity.z = 150 * jumpMultiplier
-                        table.insert(entity.picnic.fruits, fruitEntity)
-                    end
-                end
-            end
-        end
-
-        -- Handling physics and the dreaded Z axis
-        if entity.physics then
-            entity.pos.x, entity.pos.y = entity.physics.body:getPosition()
-            if entity.velocity then
-                -- Establish floor and ceiling
-                local floorEntity = nil
-                local ceilingEntity = nil
-                local floorZ = 0
-                local ceilingZ = SKY_LIMIT
-                for _, otherEntity in pairs(self:getOverlappingEntities(entity)) do
-                    if Game:shouldEntitiesContact(entity, otherEntity) then
-                        local sz = otherEntity.pos.z
-                        local ez = otherEntity.pos.z + otherEntity.pos.height
-                        if ez < entity.pos.z + DELTA and ez + DELTA > floorZ then
-                            -- If the floors are close enough, pick the one with most render priority
-                            if not floorEntity or
-                                (math.abs(floorZ - ez) < DELTA and otherEntity.pos.y > floorEntity.pos.y)
-                            then
-                                floorEntity = otherEntity
-                            end
-                            floorZ = math.max(floorZ, ez)
-                        end
-                        if sz > entity.pos.z + entity.pos.height - DELTA and sz < ceilingZ then
-                            ceilingEntity = otherEntity
-                            ceilingZ = sz
-                        end
-                    end
-                end
-                entity.pos.floorEntity = floorEntity
-                entity.pos.floorZ = floorZ
-                entity.pos.ceilingEntity = ceilingEntity
-                entity.pos.ceilingZ = ceilingZ
-
-                -- Speed! Movement! Wee!
-                entity.velocity.z = (entity.velocity.z - g * dt) * airFriction
-                entity.pos.z = entity.pos.z + entity.velocity.z
-
-                -- Check ground (squish!)
-                entity.pos.onGround = entity.pos.z < floorZ + DELTA
-                if entity.pos.onGround then
-                    entity.pos.z = floorZ
-                    entity.velocity.z = 0
-                end
-
-                -- Check head (ouch!)
-                if entity.pos.z + entity.pos.height > ceilingZ then
-                    entity.pos.z = ceilingZ - entity.pos.height - DELTA
-                    entity.velocity.z = 0
-                end
-
-                self:updateHeightSlices(entity)
-            end
-            entity.physics.body:setLinearDamping(entity.pos.onGround and (entity.pos.sliding and slidingDamping or groundDamping) or 0)
-        end
-
-        -- Fruit being
-        if entity.fruit then
-            if entity.fruit.animFrames then
-                local prevX = entity.pos.x
-                local prevY = entity.pos.y
-                local prevZ = entity.pos.z
-
-                local parentEntity = entity.fruit.stackEntity
-                local stackRootEntity = parentEntity
-                while stackRootEntity.fruit and stackRootEntity.fruit.stackEntity do
-                    stackRootEntity = stackRootEntity.fruit.stackEntity
-                end
-                local targetX = parentEntity.pos.x + entity.fruit.offset.x
-                local targetY = parentEntity.pos.y + entity.fruit.offset.y
-                local targetZ = parentEntity.pos.z + entity.fruit.offset.z
-
-                if entity.fruit.animFrames > 0 then
-                    local p = 1 - 1 / entity.fruit.animFrames
-                    entity.physics.body:setPosition(
-                        entity.pos.x * p + targetX * (1 - p),
-                        entity.pos.y * p + targetY * (1 - p))
-                    entity.fruit.animFrames = entity.fruit.animFrames - 1
-                    if entity.pos.z > targetZ then
-                        entity.fruit.reachedStack = true
-                    end
-                else
-                    local pickupForce = stackRootEntity.fruitStack and stackRootEntity.fruitStack.pickupForce or 0.7
-                    entity.physics.body:setPosition(
-                        entity.pos.x * (1 - pickupForce) + targetX * pickupForce,
-                        entity.pos.y * (1 - pickupForce) + targetY * pickupForce)
-                end
-                if (entity.fruit.animFrames <= 0 or entity.fruit.reachedStack) and entity.pos.z <= targetZ then
-                    entity.pos.z = targetZ
-                    entity.velocity.z = 0
-                    entity.pos.floorEntity = parentEntity
-                    entity.pos.floorZ = targetZ
-                end
-
-                if stackRootEntity.fruitStack then
-                    self:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
-                end
-            end
-            if entity.fruit.cooldown then
-                entity.fruit.cooldown = entity.fruit.cooldown - 1
-                if entity.fruit.cooldown < 0 then
-                    entity.fruit.cooldown = nil
-                end
-            end
-        end
-
-        -- SOUND!
-        if entity.soundEmitter then
-            for name, sound in pairs(entity.soundEmitter.playing) do
-                local source = sounds[sound.name]
-                if source:isPlaying() then
-                    if sound.stopOn and entity.anim:isTriggered(sound.stopOn) then
-                        source:stop()
-                    end
-                else
-                    entity.soundEmitter.playing[name] = nil
-                end
-            end
-            for trigger, sound in pairs(entity.soundEmitter.triggers) do
-                if entity.anim:isTriggered(trigger) then
-                    local source = sounds[sound.name]
-                    source:setVolume(sound.volumeRange and math.randomRange(sound.volumeRange) or sound.volume or 1)
-                    source:setPitch(sound.pitchRange and math.randomRange(sound.pitchRange) or sound.pitch or 1)
-                    source:setLooping(sound.loop or false)
-
-                    entity.soundEmitter.playing[sound.name] = sound
-                    love.audio.play(source)
-                end
-            end
-        end
-
-        -- Animating things
-        if entity.anim then
-            for _, request in pairs(entity.anim.requested) do
-                request.time = request.time + dt
-            end
-            entity.anim:clearTriggers()
-            for _, sprite in pairs(entity.sprites) do
-                local spriteData = sprites[sprite.name]
-                if spriteData then
-                    local animData, animRequest = self:findAnim(spriteData, entity.anim)
-
-                    -- Moi je trouve que Oui.
-                    local frame = math.floor(animData.fps * animRequest.time)
-                    if animData.oneShot and frame > #animData.tiles then
-                        entity.anim:trigger(animData.name .. ":finished")
-                        entity.anim:release(animData.name)
-                    end
-                    if animData.pingPong then
-                        local tileCount = #animData.tiles * 2 - 2
-                        frame = frame % tileCount
-                        if frame >= #animData.tiles then
-                            frame = tileCount - frame
-                        end
-                    else
-                        frame = frame % #animData.tiles
-                    end
-                    frame = frame + 1
-
-                    local trigger = animData.tiles[frame].trigger
-                    if sprite.frame ~= frame and trigger then
-                        entity.anim:trigger(trigger)
-                    end
-
-                    sprite.animData = animData
-                    sprite.frame = frame
-                end
-            end
-        end
-
-        -- Updating the camera
-        if entity.camera then
-            self.camera.x = entity.pos.x
-            self.camera.y = entity.pos.y
+    local i = 1
+    for _, entity in self:iterEntities() do
+        local entitysx = entity.pos.x - 800
+        local entitysy = entity.pos.y - entity.pos.z - 1200
+        local entityex = entity.pos.x + 800
+        local entityey = entity.pos.y - entity.pos.z + 1200
+        if  entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
+            drawnEntities[i] = entity
+            i = i + 1
         end
     end
-
-    -- Removing dead entities, but we maybe shouldn't!?
-    for i = #self.entities, 1, -1 do
-        local entity = self.entities[i]
-        if entity.toRemove then
-            if entity.physics then
-                entity.physics.body:destroy()
-            end
-            table.remove(self.entities, i)
-        end
+    for j = i, #drawnEntities do
+        drawnEntities[j] = nil
     end
 
     -- Sorting! Fun times!
-    table.sort(self.entities,
+    table.sort(drawnEntities,
         function (a, b)
-            local ay = a.y
-
-            local floorA, ay = self:findFloorEntity(a)
-            local floorB, by = self:findFloorEntity(b)
+            local floorA, ay = self.physics:findFloorY(a)
+            local floorB, by = self.physics:findFloorY(b)
 
             if math.abs(ay - by) < DELTA then
                 if math.abs(a.pos.y - b.pos.y) < DELTA then
@@ -526,224 +189,209 @@ function Game:update(dt)
 
             return ay < by
         end)
-end
-
-function Game:render(dt)
-    -- Camera
-    local w, h = love.graphics.getDimensions()
-    love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(0.33)
-    love.graphics.translate(-self.camera.x, -self.camera.y)
-    love.graphics.clear(0.2, 0.5, 0.4)
 
     -- Tiles
     love.graphics.setBlendMode("alpha", "premultiplied")
     self.tilesBatch:clear()
-    self.map:drawTiles(self.tilesBatch, self.time)
+    self.map:drawTiles(self.tilesBatch, self.time, sx, sy, ex, ey)
     love.graphics.draw(self.tilesBatch, 0, 0)
     love.graphics.setBlendMode("alpha")
 
     -- Shadows
     love.graphics.setBlendMode("multiply", "premultiplied")
-    for _, entity in ipairs(self.entities) do
+    for _, entity in ipairs(drawnEntities) do
         if entity.shadow then
-            Game:drawEntityShadow(entity)
+            if entity.color then
+                love.graphics.setColor(unpack(entity.color))
+            end
+            self:drawEntityShadow(entity)
+            love.graphics.setColor(1, 1, 1, 1)
         end
     end
     love.graphics.setBlendMode("alpha")
 
     -- Entities
-    for _, entity in ipairs(self.entities) do
+    for _, entity in ipairs(drawnEntities) do
+        if entity.color then
+            love.graphics.setColor(unpack(entity.color))
+        end
         -- Stacked entities shadows
-        if entity.shadow and entity.pos.floorEntity then
+        if banana and entity.shadow and (entity.pos.floorZ or 0) > 0 then
             love.graphics.stencil(
                 function()
                     love.graphics.setShader(MASK_SHADER)
-                    Game:drawEntitySprites(entity.pos.floorEntity)
+                    overlappingCheckSlop = SHADOW_OVERLAP_SLOP
+                    for _, other in ipairs(self.physics:getAllOverlappingOfType(entity.physics.heightSensor)) do
+                        if entity.pos.z + DELTA > other.pos.z then
+                            self:drawEntity(other)
+                        end
+                    end
                     love.graphics.setShader()
                 end,
                 "replace",
                 1)
             love.graphics.setStencilTest("greater", 0)
             love.graphics.setBlendMode("multiply", "premultiplied")
-            Game:drawEntityShadow(entity, entity.pos.floorZ)
+            self:drawEntityShadow(entity, entity.pos.floorZ)
             love.graphics.setBlendMode("alpha")
             love.graphics.setStencilTest()
         end
         -- Sprites
-        if entity.sprites then
-            Game:drawEntitySprites(entity)
+        self:drawEntity(entity)
+        love.graphics.setColor(1, 1, 1, 1)
+
+        -- Newfangled banana shadows
+        if entity.physics then
+            love.graphics.stencil(
+                function()
+                    love.graphics.setShader(MASK_SHADER)
+                    self:drawEntity(entity)
+                    love.graphics.setShader()
+                end,
+                "replace",
+                1)
+            love.graphics.setStencilTest("greater", 0)
+            love.graphics.setBlendMode("multiply", "premultiplied")
+            overlappingCheckSlop = SHADOW_OVERLAP_SLOP
+            for _, other in ipairs(self.physics:getAllOverlappingOfType(entity.physics.heightSensor)) do
+                if other.shadow and
+                    entity.pos.z + entity.pos.height < other.pos.z + DELTA and
+                    entity.pos.z + entity.pos.height > other.pos.floorZ - DELTA
+                then
+                    self:drawEntityShadow(other, entity.pos.z + entity.pos.height)
+                end
+            end
+            love.graphics.setBlendMode("alpha")
+            love.graphics.setStencilTest()
+        end
+
+
+        if entity.light and entity.light.alpha > DELTA then
+            local radiusw = entity.light.radiusw or Game.constants.defaultLight.radiusw
+            local radiush = entity.light.radiush or Game.constants.defaultLight.radiush
+            local alpha = entity.light.alpha or Game.constants.defaultLight.alpha
+            local angle = entity.light.angle or Game.constants.defaultLight.angle
+            local rayHeight = entity.pos.y - sy
+            local rayOffset = rayHeight * math.tan(math.pi / 2 - angle)
+            local startx, starty = entity.pos.x + rayOffset + radiusw, entity.pos.y - rayHeight
+            local endx, endy = entity.pos.x + rayOffset - radiusw, entity.pos.y - rayHeight
+            LIGHT_POINTS[1] = startx
+            LIGHT_POINTS[2] = starty
+            local n = 8
+            for i = 1, n do
+                local x, y =  math.getEllipsePoint(
+                    entity.pos.x, entity.pos.y,
+                    radiusw, radiush,
+                    ((i - 1) / (n - 1)) * math.pi)
+                LIGHT_POINTS[i * 2 + 1] = x
+                LIGHT_POINTS[i * 2 + 2] = y
+            end
+            LIGHT_POINTS[#LIGHT_POINTS - 1] = endx
+            LIGHT_POINTS[#LIGHT_POINTS] = endy
+            love.graphics.setBlendMode("add")
+            love.graphics.setColor(
+                Game.constants.lightColor[1],
+                Game.constants.lightColor[2],
+                Game.constants.lightColor[3],
+                alpha)
+            love.graphics.polygon("fill", unpack(LIGHT_POINTS))
+            love.graphics.setColor(1, 1, 1, 1)
+            love.graphics.setBlendMode("alpha")
         end
     end
 
-    -- Debug
+    -- Bubbles
+    for _, entity in ipairs(drawnEntities) do
+        if entity.bubble then
+            love.graphics.push()
+            love.graphics.translate(entity.pos.x, entity.pos.y - entity.pos.z)
+            entity.bubble:draw()
+            love.graphics.pop()
+        end
+    end
+
     if debug.physics then
-        PhysicsRenderer.draw_camera(self.physics, 0, 0, w, h)
+        PhysicsRenderer.draw_camera(self.physics.world, 0, 0, w, h)
+    end
+
+    if debug.pointHeights then
+        for x = sx, ex, 16 do
+            for y = sy, ey, 16 do
+                local height = self.map:getPointHeight(x, y) / (SKY_LIMIT / 2)
+                local r = height <= 0.33 and height or 0
+                local g = height > 0.33 and height <= 0.66 and height or 0
+                local b = height > 0.66 and height or 0
+                love.graphics.setColor(r, g, b, 0.75)
+                love.graphics.rectangle("fill",x, y, 16, 16)
+            end
+        end
+        love.graphics.setColor(1, 1, 1, 1)
     end
 
     love.graphics:reset()
-end
 
-function Game:checkFruitPickup(fruitStackEntity, fruitEntity)
-    if fruitEntity.fruit.stackEntity or fruitEntity.fruit.cooldown then
-        return
-    end
-
-    local dx = fruitStackEntity.pos.x - fruitEntity.pos.x
-    local dy = fruitStackEntity.pos.y - fruitEntity.pos.y
-    local dz = fruitStackEntity.pos.z - fruitEntity.pos.z
-    local d = math.sqrt(math.pow(dx, 2) + math.pow(dy, 2) + math.pow(dz, 2))
-    if d > fruitStackEntity.fruitStack.pickupRange then
-        return
-    end
-
-    table.insert(fruitStackEntity.fruitStack.fruits, fruitEntity)
-    fruitEntity.fruit.stackEntity = #fruitStackEntity.fruitStack.fruits > 1 and
-        fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
-        fruitStackEntity
-    fruitEntity.fruit.animFrames = fruitStackEntity.fruitStack.pickupAnimFrames
-    fruitEntity.fruit.offset = fruitEntity.fruit.stackEntity == fruitStackEntity and
-        fruitStackEntity.fruitStack.firstOffset or
-        fruitStackEntity.fruitStack.otherOffset
-    fruitEntity.fruit.reachedStack = false
-    fruitEntity.physics.body:setType("static")
-    fruitEntity.velocity.z =
-        math.max(fruitStackEntity.velocity.z, fruitStackEntity.fruitStack.pickupJumpSpeed) *
-        math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) *
-        jumpMultiplier
-end
-
-function Game:checkFruitDrop(entity, stackRootEntity, parentEntity, prevX, prevY, prevZ)
-    for _, otherEntity in pairs(self:getOverlappingEntities(entity)) do
-        if not otherEntity.fruit and not otherEntity.fruitStack then
-            if entity.pos.z <= otherEntity.pos.z + otherEntity.pos.height and
-                entity.pos.z + entity.pos.height >= otherEntity.pos.z
-            then
-                entity.pos.x = prevX
-                entity.pos.y = prevY
-                entity.pos.z = prevZ
-                entity.physics.body:setPosition(entity.pos.x, entity.pos.y)
-                for i = #stackRootEntity.fruitStack.fruits, 1, -1 do
-                    local fruitEntity = stackRootEntity.fruitStack.fruits[i]
-                    stackRootEntity.fruitStack.fruits[i] = nil
-
-                    local dir = math.random() * math.pi * 2
-                    local dx = math.cos(dir) * stackRootEntity.fruitStack.dropForce
-                    local dy = math.sin(dir) * stackRootEntity.fruitStack.dropForce
-                    fruitEntity.fruit.stackEntity = nil
-                    fruitEntity.fruit.animFrames = nil
-                    fruitEntity.fruit.reachedStack = false
-                    fruitEntity.fruit.cooldown = stackRootEntity.fruitStack.dropCooldown
-                    fruitEntity.velocity.z = stackRootEntity.fruitStack.dropJumpSpeed * jumpMultiplier
-                    fruitEntity.physics.body:setType("dynamic")
-                    fruitEntity.physics.body:setLinearDamping(0)
-                    fruitEntity.physics.body:applyLinearImpulse(dx, dy)
-                    fruitEntity.pos.onGround = false
-                    fruitEntity.pos.floorEntity = nil
-                    fruitEntity.pos.ceilingEntity = nil
-
-                    if fruitEntity == entity then
-                        return
-                    end
-                end
-            end
+    if debug.pointHeights then
+        local x, y = 0, 0
+        if self.input.target then
+            x = math.round(self.input.target.pos.x)
+            y = math.round(self.input.target.pos.y)
         end
+        love.graphics.print(x .. ":" .. y, 50, 0)
+        local tx, ty = Map.PosToTileMat:transformPoint(x, y)
+        love.graphics.print(tx .. ":" .. ty, 50, 50)
     end
 end
 
-function Game:findAnim(spriteData, entityAnim)
-    local foundAnim = nil
-    local foundRequest = EMPTY_REQUEST
-    for _, anim in ipairs(spriteData) do
-        local request = entityAnim:getRequest(anim.name)
-        if request and request.priority >= foundRequest.priority then
-            if anim.dirs then
-                for _, dir in ipairs(anim.dirs) do
-                    if dir == entityAnim.dir then
-                        foundAnim = anim
-                        foundRequest = request
-                    end
-                end
+function Game:drawEntity(entity)
+    if entity.sprites then
+        for _, sprite in ipairs(entity.sprites) do
+            local texture = textures[sprite.name]
+            local animData = sprite.animData
+            local frame = sprite.frame
+            local spriteWiggleX = sprite.wiggle and sprite.wiggle.x or 0
+            local spriteWiggleY = sprite.wiggle and sprite.wiggle.y or 0
+            local wiggleX = spriteWiggleX * (entity.anim and entity.anim.wiggle.x or 1)
+            local wiggleY = spriteWiggleY * (entity.anim and entity.anim.wiggle.y or 1)
+            local scaleX = wiggleX + (1 - spriteWiggleX)
+            local scaleY = wiggleY + (1 - spriteWiggleY)
+            if animData and frame then
+                love.graphics.draw(
+                    texture,
+                    animData.tiles[frame].quad,
+                    entity.pos.x,
+                    (entity.pos.y - entity.pos.z),
+                    0,
+                    (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1) * scaleX,
+                    (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1) * scaleY,
+                    sprite.anchor.x,
+                    sprite.anchor.y)
             else
-                foundAnim = anim
-                foundRequest = request
+                if not sprite.quad then
+                    sprite.quad = love.graphics.newQuad(
+                        0, entity.pos.truncateHeight,
+                        texture:getWidth(),
+                        texture:getHeight() - entity.pos.truncateHeight,
+                        texture)
+                end
+                love.graphics.draw(
+                    texture,
+                    sprite.quad,
+                    entity.pos.x,
+                    (entity.pos.y + entity.pos.truncateHeight - entity.pos.z),
+                    0,
+                    sprite.flipX and -1 or 1,
+                    sprite.flipY and -1 or 1,
+                    sprite.anchor.x,
+                    sprite.anchor.y)
             end
         end
-    end
-    return foundAnim or spriteData[#spriteData], foundRequest or EMPTY_REQUEST
-end
-
-function Game:findFloorEntity(entity)
-    local y = entity.pos.y
-    for i = 1, 10 do
-        if entity.pos.floorEntity then
-            entity = entity.pos.floorEntity
-            y = math.max(entity.pos.y + DELTA * 3, y)
-        else
-            return entity, y
-        end
-    end
-    return entity, y
-end
-
-Game.overlappingEntitiesCheckEntity = nil
-Game.overlappingEntitiesCheckSensor = nil
-Game.overlappingEntitiesCheckResult = {}
-
-function Game:getOverlappingEntities(entity, sensor)
-    sensor = sensor or entity.physics.heightSensor
-
-    Game.overlappingEntitiesCheckEntity = entity
-    Game.overlappingEntitiesCheckSensor = sensor
-
-    local tlx, tly, brx, bry = sensor:getBoundingBox()
-    self.physics:queryBoundingBox(tlx, tly, brx, bry, Game.onOverlappingEntitiesCheck)
-
-    Game.overlappingEntitiesCheckEntity = nil
-    Game.overlappingEntitiesCheckSensor = nil
-    local result = Game.overlappingEntitiesCheckResult
-    if #Game.overlappingEntitiesCheckResult > 0 then
-        Game.overlappingEntitiesCheckResult = {}
-    end
-
-    return result
-end
-
-function Game.onOverlappingEntitiesCheck(fix)
-    local entity = Game.overlappingEntitiesCheckEntity
-    local sensor = Game.overlappingEntitiesCheckSensor
-    local result = Game.overlappingEntitiesCheckResult
-    local otherEntity = fix:getBody():getUserData()
-    if entity.id == otherEntity.id then
-        return true
-    end
-    if (fix:getUserData() == HEIGHT_SENSOR and
-        (love.physics.fancyTouchy(entity.physics.body, sensor, fix) or
-            fix:testPoint(entity.pos.x, entity.pos.y)))
-    then
-        table.insert(result, otherEntity)
-    end
-    return true
-end
-
-function Game:drawEntitySprites(entity)
-    for _, sprite in ipairs(entity.sprites) do
-        local animData = sprite.animData
-        local frame = sprite.frame
-        if animData and frame then
+    elseif entity.tileSprites then
+        love.graphics.setBlendMode("alpha", "premultiplied")
+        for _, sprite in ipairs(entity.tileSprites) do
+            local tileData = tileset.tiles[sprite.tile]
             love.graphics.draw(
-                textures[sprite.name],
-                animData.tiles[frame].quad,
-                entity.pos.x,
-                (entity.pos.y - entity.pos.z),
-                0,
-                (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1),
-                (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1),
-                sprite.anchor.x,
-                sprite.anchor.y)
-        else
-            love.graphics.draw(
-                textures[sprite.name],
+                textures.tileset,
+                tileData.quad,
                 entity.pos.x,
                 (entity.pos.y - entity.pos.z),
                 0,
@@ -752,6 +400,7 @@ function Game:drawEntitySprites(entity)
                 sprite.anchor.x,
                 sprite.anchor.y)
         end
+        love.graphics.setBlendMode("alpha")
     end
 end
 
@@ -771,6 +420,40 @@ function Game:drawEntityShadow(entity, floorZ)
         entity.shadow.anchor.y)
 end
 
-function Game:shouldEntitiesContact(e1, e2)
-    return not ((e1.fruit or e1.fruitStack) and (e2.fruit or e2.fruitStack))
+function Game:findEntity(designation)
+    if not designation then
+        return nil
+    elseif designation.byName then
+        return self.entitiesByName[designation.byName]
+    end
+end
+
+function Game:findPoint(designation)
+    if not designation then
+        return nil
+    end
+    local x, y = nil, nil
+    if designation.byName then
+        local entity = self:findEntity(designation)
+        if entity and entity.pos then
+            x, y = entity.pos.x, entity.pos.y
+        end
+    elseif designation.pos then
+        x, y = designation.pos.x, designation.pos.y
+    end
+    if designation.offset then
+        x = x + designation.offset.x or 0
+        y = y + designation.offset.y or 0
+    end
+    return x, y
+end
+
+function Game:eval(operand)
+    if type(operand) == "number" then
+        return operand
+    end
+    local type, name = operand:match"%[(%w+)%.(%w+)%]"
+    if type == "vars" then
+        return self.vars[name]
+    end
 end

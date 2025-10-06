@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -23,7 +23,7 @@ return {
   },
   properties = {},
   wangsets = {},
-  tilecount = 75,
+  tilecount = 77,
   tiles = {
     {
       id = 89,
@@ -48,178 +48,29 @@ return {
       height = 1024
     },
     {
-      id = 2,
+      id = 92,
       properties = {
+        ["height"] = 1000,
+        ["maxTruncateHeight"] = 300,
         ["offsetX"] = 510,
-        ["offsetY"] = 1220
+        ["offsetY"] = 1210,
+        ["randomTruncateHeight"] = false,
+        ["replaceTo[0]"] = {
+          ["applyTruncate"] = true,
+          ["flipX"] = "random",
+          ["ids"] = "5,6,7"
+        },
+        ["replaceTo[1]"] = {
+          ["flipX"] = "random",
+          ["ids"] = "2,3,4",
+          ["offsetByTruncate"] = true,
+          ["posY"] = 0
+        },
+        ["truncateHeight"] = 0
       },
-      image = "../img/Feuillage1.png",
+      image = "../img/Arbre.png",
       width = 1024,
       height = 1286
-    },
-    {
-      id = 3,
-      properties = {
-        ["offsetX"] = 510,
-        ["offsetY"] = 1220
-      },
-      image = "../img/Feuillage2.png",
-      width = 1024,
-      height = 1286
-    },
-    {
-      id = 4,
-      properties = {
-        ["offsetX"] = 510,
-        ["offsetY"] = 1220
-      },
-      image = "../img/Feuillage3.png",
-      width = 1024,
-      height = 1286
-    },
-    {
-      id = 5,
-      properties = {
-        ["height"] = 800,
-        ["offsetX"] = 510,
-        ["offsetY"] = 1210
-      },
-      image = "../img/Tronc1.png",
-      width = 1024,
-      height = 1286,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 4,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 6,
-            name = "",
-            type = "",
-            shape = "polygon",
-            x = 394,
-            y = 1215,
-            width = 0,
-            height = 0,
-            rotation = 0,
-            visible = true,
-            polygon = {
-              { x = 0, y = 0 },
-              { x = 70, y = 29 },
-              { x = 161, y = 25 },
-              { x = 222, y = 2 },
-              { x = 170, y = -45 },
-              { x = 48, y = -44 }
-            },
-            properties = {}
-          }
-        }
-      }
-    },
-    {
-      id = 6,
-      properties = {
-        ["height"] = 800,
-        ["offsetX"] = 510,
-        ["offsetY"] = 1210
-      },
-      image = "../img/Tronc2.png",
-      width = 1024,
-      height = 1286,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "polygon",
-            x = 442,
-            y = 1207,
-            width = 0,
-            height = 0,
-            rotation = 0,
-            visible = true,
-            polygon = {
-              { x = 0, y = 0 },
-              { x = 65.2703, y = 29 },
-              { x = 150.122, y = 25 },
-              { x = 207, y = 2 },
-              { x = 158.514, y = -45 },
-              { x = 44.7568, y = -44 }
-            },
-            properties = {}
-          }
-        }
-      }
-    },
-    {
-      id = 7,
-      properties = {
-        ["height"] = 800,
-        ["offsetX"] = 510,
-        ["offsetY"] = 1210
-      },
-      image = "../img/Tronc3.png",
-      width = 1024,
-      height = 1286,
-      objectGroup = {
-        type = "objectgroup",
-        draworder = "index",
-        id = 2,
-        name = "",
-        class = "",
-        visible = true,
-        opacity = 1,
-        offsetx = 0,
-        offsety = 0,
-        parallaxx = 1,
-        parallaxy = 1,
-        properties = {},
-        objects = {
-          {
-            id = 2,
-            name = "",
-            type = "",
-            shape = "polygon",
-            x = 357.765,
-            y = 1214.86,
-            width = 0,
-            height = 0,
-            rotation = 0,
-            visible = true,
-            polygon = {
-              { x = 14.2353, y = -1 },
-              { x = 85.6288, y = 32.1351 },
-              { x = 196.946, y = 27.7027 },
-              { x = 256.235, y = 1.21622 },
-              { x = 207.956, y = -49.8649 },
-              { x = 58.7169, y = -48.7568 }
-            },
-            properties = {}
-          }
-        }
-      }
     },
     {
       id = 10,
@@ -639,7 +490,7 @@ return {
       id = 19,
       properties = {
         ["offsetX"] = 64,
-        ["offsetY"] = 55
+        ["offsetY"] = 60
       },
       image = "../img/Champignons-1.png",
       width = 128,
@@ -649,7 +500,7 @@ return {
       id = 20,
       properties = {
         ["offsetX"] = 64,
-        ["offsetY"] = 55
+        ["offsetY"] = 60
       },
       image = "../img/Champignons-2.png",
       width = 128,
@@ -659,7 +510,7 @@ return {
       id = 21,
       properties = {
         ["offsetX"] = 64,
-        ["offsetY"] = 55
+        ["offsetY"] = 60
       },
       image = "../img/Champignons-3.png",
       width = 128,
@@ -669,7 +520,7 @@ return {
       id = 22,
       properties = {
         ["offsetX"] = 64,
-        ["offsetY"] = 55
+        ["offsetY"] = 60
       },
       image = "../img/Champignons-4.png",
       width = 128,
@@ -678,12 +529,13 @@ return {
     {
       id = 24,
       properties = {
-        ["offsetX"] = 0,
-        ["offsetY"] = 0
+        ["offsetX"] = 96,
+        ["offsetY"] = 236,
+        ["prefab"] = "cossin"
       },
       image = "../img/cossin.png",
-      width = 960,
-      height = 512
+      width = 192,
+      height = 256
     },
     {
       id = 32,
@@ -691,7 +543,7 @@ return {
         ["fruit"] = "apple",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-1.png",
       width = 128,
@@ -703,7 +555,7 @@ return {
         ["fruit"] = "banana",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-2.png",
       width = 128,
@@ -715,7 +567,7 @@ return {
         ["fruit"] = "pineapple",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-3.png",
       width = 128,
@@ -727,7 +579,7 @@ return {
         ["fruit"] = "pear",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-4.png",
       width = 128,
@@ -739,7 +591,7 @@ return {
         ["fruit"] = "tomato",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-5.png",
       width = 128,
@@ -751,7 +603,7 @@ return {
         ["fruit"] = "orange",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-6.png",
       width = 128,
@@ -763,7 +615,7 @@ return {
         ["fruit"] = "mushroom",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-7.png",
       width = 128,
@@ -775,7 +627,7 @@ return {
         ["fruit"] = "grape",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-8.png",
       width = 128,
@@ -787,7 +639,7 @@ return {
         ["fruit"] = "durian",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-9.png",
       width = 128,
@@ -799,7 +651,7 @@ return {
         ["fruit"] = "peach",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-10.png",
       width = 128,
@@ -811,7 +663,7 @@ return {
         ["fruit"] = "radish",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
-        ["shadow"] = "fruitOmbre"
+        ["prefab"] = "fruit"
       },
       image = "../img/Fruit-11.png",
       width = 128,
@@ -1466,10 +1318,12 @@ return {
     {
       id = 73,
       properties = {
+        ["autoshadow"] = true,
+        ["dropRange"] = 800,
         ["height"] = 80,
         ["offsetX"] = 302.5,
         ["offsetY"] = 300,
-        ["picnic"] = 600
+        ["prefab"] = "picnic"
       },
       image = "../img/Picnic.png",
       width = 605,
@@ -2157,10 +2011,11 @@ return {
     {
       id = 88,
       properties = {
-        ["height"] = 120,
+        ["autoshadow"] = true,
+        ["height"] = 160,
         ["offsetX"] = 400,
-        ["offsetY"] = 400,
-        ["posZ"] = 360
+        ["offsetY"] = 360,
+        ["posZ"] = 320
       },
       image = "../img/Arche_top.png",
       width = 961,
@@ -2191,10 +2046,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -74, y = -124 },
-              { x = -335, y = 35 },
-              { x = -946, y = -272 },
-              { x = -648, y = -392 }
+              { x = -148.667, y = -125.333 },
+              { x = -487, y = 75 },
+              { x = -915.333, y = -171 },
+              { x = -661.333, y = -322.667 }
             },
             properties = {}
           }
@@ -2283,15 +2138,296 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -7, y = 3 },
+              { x = -40.3333, y = -7.66667 },
               { x = 192, y = 99 },
               { x = 519, y = -76 },
-              { x = 324, y = -180 }
+              { x = 297.333, y = -200 }
             },
             properties = {}
           }
         }
       }
+    },
+    {
+      id = 2,
+      properties = {
+        ["autoshadow"] = true,
+        ["height"] = 230,
+        ["offsetX"] = 510,
+        ["offsetY"] = 470,
+        ["posZ"] = 770
+      },
+      image = "../img/Feuillage1.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 3,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 2,
+            name = "",
+            type = "",
+            shape = "ellipse",
+            x = 170.667,
+            y = 214.333,
+            width = 682.667,
+            height = 428.667,
+            rotation = 0,
+            visible = true,
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 3,
+      properties = {
+        ["autoshadow"] = true,
+        ["height"] = 230,
+        ["offsetX"] = 510,
+        ["offsetY"] = 470,
+        ["posZ"] = 770
+      },
+      image = "../img/Feuillage2.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "ellipse",
+            x = 170.667,
+            y = 214.333,
+            width = 682.667,
+            height = 428.667,
+            rotation = 0,
+            visible = true,
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 4,
+      properties = {
+        ["autoshadow"] = true,
+        ["height"] = 230,
+        ["offsetX"] = 510,
+        ["offsetY"] = 470,
+        ["posZ"] = 770
+      },
+      image = "../img/Feuillage3.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 1,
+            name = "",
+            type = "",
+            shape = "ellipse",
+            x = 170.667,
+            y = 214.333,
+            width = 682.667,
+            height = 428.667,
+            rotation = 0,
+            visible = true,
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 5,
+      properties = {
+        ["height"] = 770,
+        ["offsetX"] = 510,
+        ["offsetY"] = 1210
+      },
+      image = "../img/Tronc1.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 4,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 6,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 394,
+            y = 1215,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 70, y = 29 },
+              { x = 161, y = 25 },
+              { x = 222, y = 2 },
+              { x = 170, y = -45 },
+              { x = 48, y = -44 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 6,
+      properties = {
+        ["height"] = 770,
+        ["offsetX"] = 510,
+        ["offsetY"] = 1210
+      },
+      image = "../img/Tronc2.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 2,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 442,
+            y = 1207,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 0, y = 0 },
+              { x = 65.2703, y = 29 },
+              { x = 150.122, y = 25 },
+              { x = 207, y = 2 },
+              { x = 158.514, y = -45 },
+              { x = 44.7568, y = -44 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 7,
+      properties = {
+        ["height"] = 770,
+        ["offsetX"] = 510,
+        ["offsetY"] = 1210
+      },
+      image = "../img/Tronc3.png",
+      width = 1024,
+      height = 1286,
+      objectGroup = {
+        type = "objectgroup",
+        draworder = "index",
+        id = 2,
+        name = "",
+        class = "",
+        visible = true,
+        opacity = 1,
+        offsetx = 0,
+        offsety = 0,
+        parallaxx = 1,
+        parallaxy = 1,
+        properties = {},
+        objects = {
+          {
+            id = 2,
+            name = "",
+            type = "",
+            shape = "polygon",
+            x = 357.765,
+            y = 1214.86,
+            width = 0,
+            height = 0,
+            rotation = 0,
+            visible = true,
+            polygon = {
+              { x = 14.2353, y = -1 },
+              { x = 85.6288, y = 32.1351 },
+              { x = 196.946, y = 27.7027 },
+              { x = 256.235, y = 1.21622 },
+              { x = 207.956, y = -49.8649 },
+              { x = 58.7169, y = -48.7568 }
+            },
+            properties = {}
+          }
+        }
+      }
+    },
+    {
+      id = 91,
+      properties = {
+        ["offsetX"] = 160,
+        ["offsetY"] = 428,
+        ["prefab"] = "blonde"
+      },
+      image = "../img/Blonde.png",
+      width = 320,
+      height = 448
     }
   }
 }

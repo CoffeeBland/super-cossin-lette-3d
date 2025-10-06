@@ -1,702 +1,161 @@
-return {
-    tileWidth = 192,
-    tileHeight = 256,
-    sprites = {
-        cossinCorps = {
-            -- Idle
+return function()
+    return {
+        name = "cossin",
+        input = true,
+        camera = true,
+        actor = {
+            walkSpeed = 150,
+            slidingSpeed = 0,
+            airSpeed = 25,
+            jumpSpeed = 150
+        },
+        pos = { height = 148 },
+        velocity = { z = 0 },
+        body = { shape = "circle", size = 80, type = "dynamic" },
+        anim = {},
+        sprites = {
             {
-                name = "idle",
-                dirs = { "b" },
-                fps = 6,
-                pingPong = true,
-                tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } }
+                name = "cossinPiedBack",
+                anchor = { x = 96, y = 236 }
             },
             {
-                name = "idle",
-                dirs = { "bl"},
-                fps = 6,
-                pingPong = true,
-                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
+                name = "cossinCorps",
+                anchor = { x = 96, y = 236 },
+                wiggle = { x = 1, y = 1 }
             },
             {
-                name = "idle",
-                dirs = { "l"},
-                fps = 6,
-                pingPong = true,
-                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
-            },
-            {
-                name = "idle",
-                dirs = { "tl" },
-                fps = 6,
-                pingPong = true,
-                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
-            },
-            {
-                name = "idle",
-                dirs = { "t" },
-                fps = 6,
-                pingPong = true,
-                tiles = { { 0, 4 }, { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 } }
-            },
-            {
-                name = "idle",
-                dirs = { "br"},
-                fps = 6,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
-            },
-            {
-                name = "idle",
-                dirs = { "r"},
-                fps = 6,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
-            },
-            {
-                name = "idle",
-                dirs = { "tr" },
-                fps = 6,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
-            },
-            -- Walk
-            {
-                name = "walk",
-                dirs = { "b" },
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } }
-            },
-            {
-                name = "walk",
-                dirs = { "bl"},
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
-            },
-            {
-                name = "walk",
-                dirs = { "l"},
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
-            },
-            {
-                name = "walk",
-                dirs = { "tl" },
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
-            },
-            {
-                name = "walk",
-                dirs = { "t" },
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 4 }, { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 } }
-            },
-            {
-                name = "walk",
-                dirs = { "br"},
-                fps = 25,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
-            },
-            {
-                name = "walk",
-                dirs = { "r"},
-                fps = 25,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
-            },
-            {
-                name = "walk",
-                dirs = { "tr" },
-                fps = 25,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
-            },
-            -- Squish
-            {
-                name = "squish",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 0, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 1, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 1, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 3, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 3, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 4, 6 } }
-            },
-            -- Jump
-            {
-                name = "jump",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 0, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 1, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 1, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 3, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 3, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 4, 5 } }
-            },
-            -- Manger
-            {
-                name = "eat",
-                dirs = { "l", "tl", "bl", "b" },
-                fps = 10,
-                oneShot = true,
-                tiles = {
-                    { 2, 7 }, { 3, 7 }, { 4, 7 },
-                    { 0, 8, "throwFruit" }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8, "eatFruit" }
-                }
-            },
-            {
-                name = "eat",
-                dirs = { "r", "tr", "br", "t" },
-                fps = 10,
-                flipX = true,
-                oneShot = true,
-                tiles = {
-                    { 2, 7 }, { 3, 7 }, { 4, 7 },
-                    { 0, 8, "throwFruit" }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8, "eatFruit" }
+                name = "cossinPiedFront",
+                anchor = { x = 96, y = 236 }
+            }
+        },
+        shadow = {
+            name = "cossinOmbre",
+            anchor = { x = 96, y = 46 }
+        },
+        fruitStack = {
+            fruits = {},
+            eaten = {},
+            pickupRange = 160,
+            pickupForce = 0.7,
+            pickupJumpSpeed = 140,
+            pickupAnimFrames = 20,
+            firstOffset = { x = 0, y = 0, z = 150 },
+            otherOffset = { x = 0, y = 0, z = 90 },
+            dropForce = 240,
+            dropJumpSpeed = 60,
+            dropCooldown = 60,
+            eatCooldown = 600,
+            halfEatIndicator = { 0, "mange" },
+            eatWiggleAmplitude = 0.25,
+            eatWiggleFrames = 30,
+            sizePerFruit = 0.05,
+            picnicAction = "drop"
+        },
+        water = {
+            drownFrames = 60,
+            respawnJumpSpeed = 100,
+            samples = {
+                { 0, 50, 5 },
+                { 0, -50, 5 },
+                { 50, 0, 5 },
+                { -50, 0, 5 }
+            }
+        },
+        bubble = {
+            anchor = { x = -40, y = -260 }
+        },
+        larp = {},
+        shakeEmitter = {
+            triggers = {
+                land = {
+                    minimumMass = 1.25,
+                    amplitude = 10,
+                    frames = 15
+                },
+                step = {
+                    minimumMass = 1.5,
+                    amplitude = 5,
+                    frames = 10
                 }
             }
         },
-        cossinPiedBack = {
-            -- Idle
-            {
-                name = "idle",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 2, 0 } }
+        particleEmitter = {
+            triggers = {
+                land = {
+                    name = "Fumee",
+                    inherit = { x = 0.25, y = 0.25, z = 0 },
+                    offset = { x = 0, y = 0, z = 0 },
+                    count = 6,
+                    durationRange = { 15, 25 },
+                    speed = 10,
+                    angleRange = { 0, math.pi * 2 }
+                },
+                step = {
+                    name = "Fumee",
+                    inherit = { x = -0.25, y = -0.25, z = 0 },
+                    offsetRange = { x = { -20, 20 }, y = { -20, 20 } },
+                    offset = { x = 0, y = 0, z = 0, horizontal = -40 },
+                    durationRange = { 15, 25 }
+                },
+                ["drown:start"] = {
+                    name = "Fumee",
+                    offset = { x = 0, y = 0, z = 0 },
+                    offsetRange={ x = { -30, 30 }, y = { -20, 20 } },
+                    count = 8,
+                    durationRange = { 15, 25 },
+                    speed = 10,
+                    angleRange = { 0, math.pi * 2 }
+                }
             },
-            {
-                name = "idle",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 2, 1 } }
-            },
-            {
-                name = "idle",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 2 } }
-            },
-            {
-                name = "idle",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 2, 3 } }
-            },
-            {
-                name = "idle",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 2, 4 } }
-            },
-            {
-                name = "idle",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 3 } }
-            },
-            {
-                name = "idle",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 2 } }
-            },
-            {
-                name = "idle",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 1 } }
-            },
-            {
-                name = "idle",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 2, 0 } }
-            },
-            -- Walk
-            {
-                name = "walk",
-                dirs = { "b" },
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } }
-            },
-            {
-                name = "walk",
-                dirs = { "bl"},
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
-            },
-            {
-                name = "walk",
-                dirs = { "l"},
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
-            },
-            {
-                name = "walk",
-                dirs = { "tl" },
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
-            },
-            {
-                name = "walk",
-                dirs = { "t" },
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 4 }, { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 } }
-            },
-            {
-                name = "walk",
-                dirs = { "br"},
-                fps = 25,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
-            },
-            {
-                name = "walk",
-                dirs = { "r"},
-                fps = 25,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
-            },
-            {
-                name = "walk",
-                dirs = { "tr" },
-                fps = 25,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
-            },
-            -- Squish
-            {
-                name = "squish",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 0, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 1, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 1, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 3, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 3, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 4, 6 } }
-            },
-            -- Jump
-            {
-                name = "jump",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 0, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 1, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 1, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 3, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 3, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 4, 5 } }
+            conditions = {
+                drown = {
+                    name = "Fumee",
+                    inherit = { x = 0.25, y = 0.25, z = 0 },
+                    offset = { x = 0, y = 0, z = 0 },
+                    offsetRange={ x = { -30, 30 }, y = { -20, 20 } },
+                    countRange = { 3, 4 },
+                    durationRange = { 15, 25 },
+                    speed = 10,
+                    angleRange = { 0, math.pi * 2 },
+                    cooldown = 10,
+                    velocity={ z = 10 }
+                }
             }
         },
-        cossinPiedFront = {
-            -- Idle
-            {
-                name = "idle",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 2, 0 } }
-            },
-            {
-                name = "idle",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 2, 1 } }
-            },
-            {
-                name = "idle",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 2 } }
-            },
-            {
-                name = "idle",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 2, 3 } }
-            },
-            {
-                name = "idle",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 2, 4 } }
-            },
-            {
-                name = "idle",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 3 } }
-            },
-            {
-                name = "idle",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 2 } }
-            },
-            {
-                name = "idle",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 1 } }
-            },
-            {
-                name = "idle",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 2, 0 } }
-            },
-            -- Walk
-            {
-                name = "walk",
-                dirs = { "b" },
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } }
-            },
-            {
-                name = "walk",
-                dirs = { "bl"},
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
-            },
-            {
-                name = "walk",
-                dirs = { "l"},
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
-            },
-            {
-                name = "walk",
-                dirs = { "tl" },
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
-            },
-            {
-                name = "walk",
-                dirs = { "t" },
-                fps = 25,
-                pingPong = true,
-                tiles = { { 0, 4 }, { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 } }
-            },
-            {
-                name = "walk",
-                dirs = { "br"},
-                fps = 25,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } }
-            },
-            {
-                name = "walk",
-                dirs = { "r"},
-                fps = 25,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 } }
-            },
-            {
-                name = "walk",
-                dirs = { "tr" },
-                fps = 25,
-                pingPong = true,
-                flipX = true,
-                tiles = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
-            },
-            -- Squish
-            {
-                name = "squish",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 0, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 1, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 1, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 3, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 3, 6 } }
-            },
-            {
-                name = "squish",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 4, 6 } }
-            },
-            -- Jump
-            {
-                name = "jump",
-                dirs = { "b" },
-                fps = 0,
-                tiles = { { 0, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "bl" },
-                fps = 0,
-                tiles = { { 1, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "br" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 1, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "l" },
-                fps = 0,
-                tiles = { { 2, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "r" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 2, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "tl" },
-                fps = 0,
-                tiles = { { 3, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "tr" },
-                fps = 0,
-                flipX = true,
-                tiles = { { 3, 5 } }
-            },
-            {
-                name = "jump",
-                dirs = { "t" },
-                fps = 0,
-                tiles = { { 4, 5 } }
+        soundEmitter = {
+            triggers = {
+                ["eat:start"] = {
+                    name = "Ooh"
+                },
+                --throwFruit = {
+                --    name = "Shoop"
+                --},
+                eatFruit = {
+                    name = "Gulp"
+                },
+                ["jump:start"] = {
+                    name = "Ooh",
+                    stopOn = "jump:stop"
+                },
+                --["jump:stop"] = {
+                --    name = "Poof"
+                --},
+                step = {
+                    name = "Step",
+                    volumeRange = { 0.3, 0.4 },
+                    pitchRange = { 0.6, 0.8 }
+                },
+                speak = {
+                    name = "Step",
+                    volumeRange = { 0.8, 1 },
+                    pitchRange = { 0.8, 1.2 }
+                },
+                ["squish:start"] = {
+                    name = "Gnieh",
+                    loop = true,
+                    stopOn = "squish:stop"
+                }
             }
         }
     }
-}
+end

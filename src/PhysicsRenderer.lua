@@ -5,8 +5,8 @@ local rng = love.math.newRandomGenerator(seed)
 
 local function fixture_fill_color(fixture)
     if fixture:isSensor() then
-        if fixture:getUserData() == HEIGHT_SENSOR then
-            return 0.5, 0, 0, 0.4
+        if fixture:getUserData().type == HEIGHT_SENSOR then
+            return 0.5, 0.5, 0.5, 0.2
         else
             return 0, 0, 0.5, 0.4
         end
@@ -21,6 +21,10 @@ local function fixture_line_color(fixture)
     else
         return 1, 1, 1
     end
+end
+
+local function fixture_aabb_color(fixture)
+    return 1, 0, 0, 1
 end
 
 local function draw_fixture(fixture)
@@ -50,6 +54,17 @@ end
 local function draw_body(body)
     local bx, by = body:getPosition()
     local bodyAngle = body:getAngle()
+    local fixtures = body:getFixtures()
+
+    --for i = 1, #fixtures do
+    --    love.graphics.setColor(fixture_aabb_color(fixture))
+    --    local tlx, tly, brx, bry = fixtures[i]:getBoundingBox()
+    --    love.graphics.polygon("line",
+    --        tlx, tly,
+    --        brx, tly,
+    --        brx, bry,
+    --        tlx, bry)
+    --end
 
     love.graphics.push()
     love.graphics.translate(bx, by)
@@ -57,7 +72,6 @@ local function draw_body(body)
 
     rng:setSeed(seed)
 
-    local fixtures = body:getFixtures()
     for i = 1, #fixtures do
         draw_fixture(fixtures[i])
     end
@@ -66,9 +80,13 @@ local function draw_body(body)
     if entity and entity.pos then
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.print("z" .. math.round(entity.pos.z) .. ":" .. entity.pos.height, 0, 0, 0, 3, 3)
+        if entity.pos.floorZ and entity.pos.ceilingZ then
+            love.graphics.print("z" .. entity.pos.floorZ .. ":" .. entity.pos.ceilingZ, 0, 30, 0, 3, 3)
+        end
     end
 
     love.graphics.setPointSize(3)
+    love.graphics.setColor(1, 0, 0, 1)
     love.graphics.points(0, 0)
     love.graphics.pop()
 end
@@ -79,10 +97,10 @@ local function debug_world_draw_scissor_callback(fixture)
     return true --search continues until false
 end
 
-function PhysicsRenderer.draw_camera(physics, x, y, w, h)
+function PhysicsRenderer.draw_camera(world, x, y, w, h)
     local sx, sy = love.graphics.inverseTransformPoint(x, y)
     local ex, ey = love.graphics.inverseTransformPoint(x + w, y + h)
-    physics:queryBoundingBox(sx, sy, ex, ey, debug_world_draw_scissor_callback)
+    world:queryBoundingBox(sx, sy, ex, ey, debug_world_draw_scissor_callback)
 
     love.graphics.setLineWidth(1)
 
@@ -95,7 +113,7 @@ function PhysicsRenderer.draw_camera(physics, x, y, w, h)
     love.graphics.setLineWidth(3)
     love.graphics.setPointSize(3)
 
-    local joints = physics:getJoints()
+    local joints = world:getJoints()
     for i = 1, #joints do
         local x1, y1, x2, y2 = joints[i]:getAnchors()
         if x1 and x2 then
@@ -112,7 +130,7 @@ function PhysicsRenderer.draw_camera(physics, x, y, w, h)
 
     love.graphics.setColor(1, 0, 0, 1)
     love.graphics.setPointSize(3)
-    local contacts = physics:getContacts()
+    local contacts = world:getContacts()
     for i = 1, #contacts do
         local x1, y1, x2, y2 = contacts[i]:getPositions()
         if x1 then

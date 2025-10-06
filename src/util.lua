@@ -1,4 +1,5 @@
 str = {}
+timestamps = {}
 
 function math.clamp(x, min, max)
     return math.min(math.max(x, min), max)
@@ -6,6 +7,45 @@ end
 
 function math.round(n)
     return math.floor(n + 0.5)
+end
+
+function math.interp(frames, current, target)
+    local p = 1 / math.max(frames or 1, 1)
+    return current * (1 - p) + target * p
+end
+
+local byte0 = 48
+local byte9 = 57
+
+function math.parse(str)
+    if not str then
+        return nil
+    end
+    local n = 0
+    local digits = 0
+    local bytes = { string.byte(str, 1, string.len(str)) }
+    for i = #bytes, 1, -1 do
+        local byte = bytes[i]
+        if byte >= byte0 and byte <= byte9 then
+            local digit = byte - byte0
+            n = n + digit * (10^digits)
+            digits = digits + 1
+        end
+    end
+    return n
+end
+
+function math.randomSplitRange(rangePart, i, range, value)
+    if not range then
+        return value
+    end
+    local rangeExtent = (range[2] - range[1]) * rangePart
+    local rangePartStart = range[1] + (i - 1) * rangeExtent
+    return rangePartStart + math.random() * rangeExtent
+end
+
+function math.randomRange(range, value)
+    return range and (range[1] + math.random() * (range[2] - range[1])) or value
 end
 
 function love.filesystem.crawl(dir, _results)
@@ -20,7 +60,11 @@ function love.filesystem.crawl(dir, _results)
         if not extension then
             love.filesystem.crawl(dir .. "/" .. name, _results)
         else
-            table.insert(_results, dir .. "/" .. file)
+            local path = dir .. "/" .. file
+            local info = love.filesystem.getInfo(path, "file")
+            if not timestamps[path] or timestamps[path].modtime < info.modtime then
+                _results[path] = info
+            end
         end
     end
 
@@ -75,6 +119,19 @@ function dump(o, args)
     return _dump(o, "", {}, args)
 end
 
+function dumpTable(o, args)
+    local args = args or { sep = '\n' }
+    local seen = {}
+    local s = '{'
+    for j = 1, args.height do
+        s = s .. args.sep .. '  '
+        for i = 1, args.width do
+            s = s .. tostring(o[i + (j - 1) * args.width]) .. ','
+        end
+    end
+    return s .. args.sep .. '}'
+end
+
 function table.index(table, obj)
     for i, x in ipairs(table) do
         if x == obj then
@@ -95,24 +152,53 @@ function table.setHandlingTable(o, key, value)
     o[key] = value
 end
 
-function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
-    --local points = {}
-    --for i = 1,segments do
---
-    --end
+function table.recset(dest, key, source)
+    if not dest[key] or type(source) ~= "table" then
+        dest[key] = source
+    else
+        for subkey, value in pairs(source) do
+            table.recset(dest[key], subkey, value)
+        end
+    end
 end
 
-function love.physics.fancyTouchy(body, sensor, otherFix)
-    for _, contact in pairs(body:getContacts()) do
-        local fix1, fix2 = contact:getFixtures()
-        if (fix1 == sensor or fix2 == sensor) and
-            (fix1 == otherFix or fix2 == otherFix) and
-            contact:isTouching() then
+function math.getEllipsePoint(x, y, radiusx, radiusy, angle)
+    local w = math.cos(angle) * radiusx
+    local h = math.sin(angle) * radiusy
+    return x + w, y + h
+end
+
+function math.getEllipse(x, y, radiusx, radiusy, segments)
+    local points = {}
+    for i = 1,segments do
+        local angle = i / segments * 2 * math.pi
+        local x, y = math.getEllipsePoint(x, y, radiusx, radiusy, angle)
+        points[i * 2 - 1] = x
+        points[i * 2] = y
+    end
+    return points
+end
+
+function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
+    return love.physics.newPolygonShape(unpack(math.getEllipse(x, y, radiusx, radiusy, segments)))
+end
+
+function love.physics.overlap(sensor, otherFix)
+    local tlx, tly, brx, bry = sensor:getBoundingBox()
+    local ex, ey = (tlx + brx) / 2, (tly + bry) / 2
+    if otherFix:testPoint(ex, ey) then
+        return true
+    end
+    tlx, tly, brx, bry = otherFix:getBoundingBox()
+    local ox, oy = (tlx + brx) / 2, (tly + bry) / 2
+    local _, _, frac = otherFix:rayCast(ex, ey, ox, oy, 1)
+    if frac then
+        local x = ex + (ox - ex) * frac
+        local y = ey + (oy - ey) * frac
+        if sensor:testPoint(x, y) then
             return true
         end
     end
-
-    return false
 end
 
 function love.physics.sampleShape(thingymagig, count)
@@ -137,6 +223,11 @@ function love.physics.sampleShape(thingymagig, count)
     return result
 end
 
-function math.randomRange(range)
-    return range[1] + math.random() * (range[2] - range[1])
+function love.keyboard.isAnyDown(keys)
+    for _, key in pairs(keys) do
+        if love.keyboard.isDown(key) then
+            return true
+        end
+    end
+    return false
 end

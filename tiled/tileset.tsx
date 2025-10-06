@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="222" tilecount="234" columns="0">
- <editorsettings>
-  <export target="../data/tileset.lua" format="lua"/>
- </editorsettings>
+<tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="222" tilecount="250" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="96" probability="0.8">
   <image source="../img/Tiles/Tuile_herbe-2.png" width="128" height="74"/>
@@ -45,6 +42,54 @@
  </tile>
  <tile id="182" probability="0.015">
   <image source="../img/Tiles/Tuile_herbe-212.png" width="128" height="74"/>
+ </tile>
+ <tile id="267">
+  <image source="../img/Tiles/Tuile_gazon-32.png" width="128" height="74"/>
+ </tile>
+ <tile id="269">
+  <image source="../img/Tiles/Tuile_gazon-34.png" width="128" height="74"/>
+ </tile>
+ <tile id="272">
+  <image source="../img/Tiles/Tuile_gazon-37.png" width="128" height="74"/>
+ </tile>
+ <tile id="274">
+  <image source="../img/Tiles/Tuile_gazon-39.png" width="128" height="74"/>
+ </tile>
+ <tile id="281">
+  <image source="../img/Tiles/Tuile_gazon-46.png" width="128" height="74"/>
+ </tile>
+ <tile id="268">
+  <image source="../img/Tiles/Tuile_gazon-33.png" width="128" height="74"/>
+ </tile>
+ <tile id="271">
+  <image source="../img/Tiles/Tuile_gazon-36.png" width="128" height="74"/>
+ </tile>
+ <tile id="278">
+  <image source="../img/Tiles/Tuile_gazon-43.png" width="128" height="74"/>
+ </tile>
+ <tile id="276">
+  <image source="../img/Tiles/Tuile_gazon-41.png" width="128" height="74"/>
+ </tile>
+ <tile id="273">
+  <image source="../img/Tiles/Tuile_gazon-38.png" width="128" height="74"/>
+ </tile>
+ <tile id="279">
+  <image source="../img/Tiles/Tuile_gazon-44.png" width="128" height="74"/>
+ </tile>
+ <tile id="270">
+  <image source="../img/Tiles/Tuile_gazon-35.png" width="128" height="74"/>
+ </tile>
+ <tile id="275">
+  <image source="../img/Tiles/Tuile_gazon-40.png" width="128" height="74"/>
+ </tile>
+ <tile id="277">
+  <image source="../img/Tiles/Tuile_gazon-42.png" width="128" height="74"/>
+ </tile>
+ <tile id="280">
+  <image source="../img/Tiles/Tuile_gazon-45.png" width="128" height="74"/>
+ </tile>
+ <tile id="282">
+  <image source="../img/Tiles/Tuile_gazon-47.png" width="128" height="74"/>
  </tile>
  <tile id="97" probability="0.8">
   <image source="../img/Tiles/Tuile_herbe-1.png" width="128" height="74"/>
@@ -282,13 +327,18 @@
  </tile>
  <tile id="95">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-1.png" width="128" height="74"/>
+  <objectgroup draworder="index" id="2">
+   <object id="2" x="64" y="0">
+    <polygon points="0,0 64,37 0,74 -64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="75">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-21.png" width="128" height="74"/>
   <objectgroup draworder="index" id="3">
@@ -299,7 +349,7 @@
  </tile>
  <tile id="60">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-6.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -310,7 +360,7 @@
  </tile>
  <tile id="70">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-16.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -321,7 +371,7 @@
  </tile>
  <tile id="65">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-11.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -332,7 +382,7 @@
  </tile>
  <tile id="44">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-14.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -343,7 +393,7 @@
  </tile>
  <tile id="76">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-22.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -354,7 +404,7 @@
  </tile>
  <tile id="77">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-23.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -365,7 +415,7 @@
  </tile>
  <tile id="78">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-24.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -376,7 +426,7 @@
  </tile>
  <tile id="79">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-25.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -387,7 +437,7 @@
  </tile>
  <tile id="40">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-10.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -398,7 +448,7 @@
  </tile>
  <tile id="62">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-8.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -409,7 +459,7 @@
  </tile>
  <tile id="61">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-7.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -420,7 +470,7 @@
  </tile>
  <tile id="64">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-10.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -431,7 +481,7 @@
  </tile>
  <tile id="63">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-9.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -442,7 +492,7 @@
  </tile>
  <tile id="66">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-12.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -453,7 +503,7 @@
  </tile>
  <tile id="36">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-6.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -464,7 +514,7 @@
  </tile>
  <tile id="67">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-13.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -475,7 +525,7 @@
  </tile>
  <tile id="68">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-14.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -486,7 +536,7 @@
  </tile>
  <tile id="69">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-15.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -497,7 +547,7 @@
  </tile>
  <tile id="32">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-2.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -508,7 +558,7 @@
  </tile>
  <tile id="73">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-19.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -519,7 +569,7 @@
  </tile>
  <tile id="74">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-20.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -530,7 +580,7 @@
  </tile>
  <tile id="71">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-17.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -541,7 +591,7 @@
  </tile>
  <tile id="72">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-18.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -552,7 +602,7 @@
  </tile>
  <tile id="59">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-5.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -563,7 +613,7 @@
  </tile>
  <tile id="56">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-2.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -574,7 +624,7 @@
  </tile>
  <tile id="58">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-4.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -585,7 +635,7 @@
  </tile>
  <tile id="57">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-3.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -596,7 +646,7 @@
  </tile>
  <tile id="52">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-22.png" width="128" height="74"/>
   <objectgroup draworder="index" id="4">
@@ -607,7 +657,7 @@
  </tile>
  <tile id="54">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-24.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -618,7 +668,7 @@
  </tile>
  <tile id="50">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-20.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -629,7 +679,7 @@
  </tile>
  <tile id="48">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-18.png" width="128" height="74"/>
   <objectgroup draworder="index" id="3">
@@ -640,7 +690,7 @@
  </tile>
  <tile id="51">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-21.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -651,7 +701,7 @@
  </tile>
  <tile id="53">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-23.png" width="128" height="74"/>
   <objectgroup draworder="index" id="3">
@@ -662,7 +712,7 @@
  </tile>
  <tile id="47">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-17.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -673,7 +723,7 @@
  </tile>
  <tile id="49">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-19.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -684,7 +734,7 @@
  </tile>
  <tile id="31">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-1.png" width="128" height="74"/>
   <objectgroup draworder="index" id="3">
@@ -695,7 +745,7 @@
  </tile>
  <tile id="46">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-16.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -706,7 +756,7 @@
  </tile>
  <tile id="45">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-15.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -717,7 +767,7 @@
  </tile>
  <tile id="43">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-13.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -728,7 +778,7 @@
  </tile>
  <tile id="42">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-12.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -739,7 +789,7 @@
  </tile>
  <tile id="41">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-11.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -750,7 +800,7 @@
  </tile>
  <tile id="39">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-9.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -761,7 +811,7 @@
  </tile>
  <tile id="38">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-8.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -772,7 +822,7 @@
  </tile>
  <tile id="37">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-7.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -783,7 +833,7 @@
  </tile>
  <tile id="35">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-5.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -794,7 +844,7 @@
  </tile>
  <tile id="34">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-4.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -805,7 +855,7 @@
  </tile>
  <tile id="33">
   <properties>
-   <property name="type" value="eau"/>
+   <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-3.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -815,57 +865,196 @@
   </objectgroup>
  </tile>
  <tile id="233" probability="0.6">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-33.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="3" x="64" y="74">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="229" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-29.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="231" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-31.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="232" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-32.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="230" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-30.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="228" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-28.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="3">
+   <object id="2" x="0" y="111">
+    <polygon points="0,0 35.3333,-20.6667 90.3333,-20 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="227" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-27.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 35.3333,-20.6667 90.3333,-20 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="226" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-26.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 89,-14.3333 90,9.33333 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="225" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-25.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 89.6667,-8.66667 89.6667,10.6667 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="224" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-24.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 64,-37 0,-74 -19,-56.3333 -19,-29.3333"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="223" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-23.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="74">
+    <polygon points="0,0 -19.6667,18.6667 -19.3333,46 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="222" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-22.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 85.6667,13.6667 39,15.3333"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="221" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-21.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 38.3333,16.6667 81.6667,16 128,0 64,-37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="220" probability="0.7">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-20.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="74">
+    <polygon points="0,0 64,37 0,74 -64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="218" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-18.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="74">
+    <polygon points="0,0 64,37 0,74 -64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="219" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-19.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="74">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="217" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-17.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="74">
+    <polygon points="0,0 64,37 0,74 -64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="216" probability="0.7">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-16.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="121.796" y="108.855">
@@ -874,153 +1063,534 @@
   </objectgroup>
  </tile>
  <tile id="213" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-13.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="74">
+    <polygon points="0,0 64,37 0,74 -64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="214" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-14.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="215" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-15.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="74">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="212" probability="0.7">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-12.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="74">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="211" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-11.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 64,-37 0,-74 -64,-37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="209" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-9.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="210" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-10.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="208" probability="0.7">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-8.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="206" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-6.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="205" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-5.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="207" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-7.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="204">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-4.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="202">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-2.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="203">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-3.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="201">
+  <properties>
+   <property name="height" type="float" value="75"/>
+  </properties>
   <image source="../img/Tiles/Niveau1-1.png" width="128" height="148"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="111">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="234" probability="0.6">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-1.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="235" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-2.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="236" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-3.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="237" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-4.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="238" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-5.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="239" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-6.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 35.3333,-20.6667 90.3333,-20 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="240" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-7.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 35.3333,-20.6667 90.3333,-20 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="241" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-8.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 89.6667,-8.66667 89.6667,10.6667 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="242" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-9.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 89.6667,-8.66667 89.6667,10.6667 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="243" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-10.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="222">
+    <polygon points="0,0 64,-37 0,-74 -19,-56.3333 -19,-29.3333"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="244" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-11.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="222">
+    <polygon points="0,0 64,-37 0,-74 -19,-56.3333 -19,-29.3333"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="245" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-12.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 85.6667,13.6667 39,15.3333"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="246" probability="0.5">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-13.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 85.6667,13.6667 39,15.3333"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="247" probability="0.7">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-14.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="248" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-15.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="249" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-16.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="250" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-17.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="251" probability="0.7">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-18.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="252" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-19.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="253" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-20.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="254" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-21.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="255" probability="0.7">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-22.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="256" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-23.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="258" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-25.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="257" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-24.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="259" probability="0.7">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-26.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="262" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-29.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="148">
+    <polygon points="0,0 -64,37 0,74 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="260" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-27.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="261" probability="0.1">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-28.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="64" y="222">
+    <polygon points="0,0 -64,-37 0,-74 64,-37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="263">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-30.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="264">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-31.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="265">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-32.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,-37 128,0 64,37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="266">
+  <properties>
+   <property name="height" type="float" value="150"/>
+  </properties>
   <image source="../img/Tiles/Niveau2-33.png" width="128" height="222"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="185">
+    <polygon points="0,0 64,37 128,0 64,-37"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="87">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-33.png" width="128" height="74"/>
   <animation>
    <frame tileid="87" duration="200"/>
@@ -1032,9 +1602,6 @@
   </animation>
  </tile>
  <tile id="83">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-29.png" width="128" height="74"/>
   <animation>
    <frame tileid="83" duration="200"/>
@@ -1046,9 +1613,6 @@
   </animation>
  </tile>
  <tile id="90">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-36.png" width="128" height="74"/>
   <animation>
    <frame tileid="88" duration="200"/>
@@ -1057,9 +1621,6 @@
   </animation>
  </tile>
  <tile id="93">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-39.png" width="128" height="74"/>
   <animation>
    <frame tileid="91" duration="200"/>
@@ -1068,63 +1629,33 @@
   </animation>
  </tile>
  <tile id="80">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-26.png" width="128" height="74"/>
  </tile>
  <tile id="81">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-27.png" width="128" height="74"/>
  </tile>
  <tile id="82">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-28.png" width="128" height="74"/>
  </tile>
  <tile id="84">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-30.png" width="128" height="74"/>
  </tile>
  <tile id="85">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-31.png" width="128" height="74"/>
  </tile>
  <tile id="86">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-32.png" width="128" height="74"/>
  </tile>
  <tile id="88">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-34.png" width="128" height="74"/>
  </tile>
  <tile id="89">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-35.png" width="128" height="74"/>
  </tile>
  <tile id="91">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-37.png" width="128" height="74"/>
  </tile>
  <tile id="92">
-  <properties>
-   <property name="type" value="eau"/>
-  </properties>
   <image source="../img/Tiles/Tuile_eau-38.png" width="128" height="74"/>
  </tile>
  <tile id="145" type="ligne_gazon" probability="0.015">
@@ -1353,6 +1884,22 @@
    <wangtile tileid="264" wangid="0,6,0,6,0,0,0,6"/>
    <wangtile tileid="265" wangid="0,0,0,6,0,6,0,6"/>
    <wangtile tileid="266" wangid="0,6,0,6,0,6,0,0"/>
+   <wangtile tileid="267" wangid="0,0,0,4,0,0,0,0"/>
+   <wangtile tileid="268" wangid="0,0,0,4,0,4,0,0"/>
+   <wangtile tileid="269" wangid="0,0,0,0,0,4,0,0"/>
+   <wangtile tileid="270" wangid="0,4,0,4,0,0,0,0"/>
+   <wangtile tileid="271" wangid="0,0,0,0,0,4,0,4"/>
+   <wangtile tileid="272" wangid="0,4,0,0,0,0,0,0"/>
+   <wangtile tileid="273" wangid="0,4,0,0,0,0,0,4"/>
+   <wangtile tileid="274" wangid="0,0,0,0,0,0,0,4"/>
+   <wangtile tileid="275" wangid="0,4,0,0,0,4,0,4"/>
+   <wangtile tileid="276" wangid="0,4,0,0,0,0,0,4"/>
+   <wangtile tileid="277" wangid="0,4,0,4,0,0,0,4"/>
+   <wangtile tileid="278" wangid="0,0,0,0,0,4,0,4"/>
+   <wangtile tileid="279" wangid="0,4,0,4,0,0,0,0"/>
+   <wangtile tileid="280" wangid="0,0,0,4,0,4,0,4"/>
+   <wangtile tileid="281" wangid="0,0,0,4,0,4,0,0"/>
+   <wangtile tileid="282" wangid="0,4,0,4,0,4,0,0"/>
   </wangset>
  </wangsets>
 </tileset>
