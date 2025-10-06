@@ -37,6 +37,12 @@ return function()
             }
         },
         soundEmitter = {
+            triggers = {
+                eatFruit = {
+                    name = "Gulp",
+                    pitchRange = { 1.6, 2 }
+                }
+            },
             conditions = {
                 light = {
                     name = "Angel",

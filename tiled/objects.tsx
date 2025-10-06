@@ -871,10 +871,10 @@
  </tile>
  <tile id="91">
   <properties>
-   <property name="offsetX" type="float" value="123"/>
-   <property name="offsetY" type="float" value="368"/>
+   <property name="offsetX" type="float" value="160"/>
+   <property name="offsetY" type="float" value="428"/>
    <property name="prefab" value="blonde"/>
   </properties>
-  <image source="../img/Blonde.png" width="224" height="404"/>
+  <image source="../img/Blonde.png" width="320" height="448"/>
  </tile>
 </tileset>

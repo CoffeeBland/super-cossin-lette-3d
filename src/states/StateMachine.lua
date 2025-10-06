@@ -2,6 +2,12 @@ require "src.states.Intro"
 require "src.states.Title"
 require "src.states.Game"
 
+Exit = { fadein = 1, fadeout = 1 }
+function Exit:enter() end
+function Exit:exit() end
+function Exit:update() love.event.quit() end
+function Exit:render() end
+
 StateMachine = {
     fadeOutFrames = 0,
     fadeInFrames = 0
@@ -10,7 +16,7 @@ StateMachine = {
 function StateMachine:change(state, params)
     if self.current then
         self.fadeOutFrames = self.current.fadeout
-        self.fadeInFrames = state.fadein
+        self.fadeInFrames = state and state.fadein
         if self.fadeOutFrames > 0 or self.fadeInFrames > 0 then
             self.nextParams = params
             self.nextState = state
@@ -37,6 +43,7 @@ function StateMachine:update(dt)
     end
     if self.nextState and self.fadeOutFrames == 0 then
         if self.current then
+            love.audio.stop()
             self.current:exit()
         end
         self.current = self.nextState

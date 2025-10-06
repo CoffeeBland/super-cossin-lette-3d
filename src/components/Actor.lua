@@ -49,14 +49,12 @@ function Actor:processMove(framePart, game, nextMove, entity, actions)
     elseif type == "jump" then
         actions.jump = false
         self.autoJumped = self.autoJumped or false
-        if pos.onGround then
-            if self.autoJumped then
-                self.autoJumped = nil
-                return true
-            else
-                actions.jump = nextMove.jumpSpeed
-                self.autoJumped = true
-            end
+        if self.autoJumped then
+            self.autoJumped = nil
+            return true
+        elseif pos.onGround then
+            actions.jump = nextMove.jumpSpeed
+            self.autoJumped = true
         end
     elseif type == "walkTo" then
         local x, y = game:findPoint(nextMove.point)
