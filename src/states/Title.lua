@@ -170,6 +170,30 @@ local colors = {
 }
 
 function Title:enter()
+    local texturesToFind = { "Bubble_icons" }
+    local soundsToFind = { "TitleMusic" }
+    for _, grassTile in pairs(grassTiles) do
+        table.insert(texturesToFind, grassTile)
+    end
+    for _, event in pairs(timeline) do
+        if event.text then
+            table.insert(texturesToFind, event.text)
+            table.insert(soundsToFind, event.text)
+        end
+    end
+    for _, button in pairs(menu.buttons) do
+        table.insert(soundsToFind, button.sound)
+    end
+    for _, buisson in pairs(buissons) do
+        table.insert(texturesToFind, buisson.name)
+    end
+
+    load.crawlFor({
+        textures = texturesToFind,
+        sounds = soundsToFind,
+        data = { "cossin", "gameConstants" }
+    })
+    load.crawlFor({ data = { "cossinSprite", "particleSprite" } })
     self.frame = 0
     self.menuState = "new"
     self.menuActive = false
@@ -213,6 +237,7 @@ function Title:exit()
 end
 
 function Title:update(dt)
+    load.crawlFiles(nil, true)
     self.frame = self.frame + 1
 
     if self.waitingForEnd then

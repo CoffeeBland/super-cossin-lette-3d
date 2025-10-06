@@ -14,7 +14,6 @@ function love.load(args)
     love.physics.setMeter(METER_SCALE)
 
     load.init()
-    load.crawlFiles()
 
     if requestedMap then
         StateMachine:change(Game, { map = requestedMap })
@@ -29,6 +28,13 @@ local frameTime = 0
 local frameDuration = 1 / 60
 
 function love.update(dt)
+    if DISREGARD_NEXT_UPDATE then
+        dt = 0
+        DISREGARD_NEXT_UPDATE = false
+    end
+
+    dt = math.min(dt, frameDuration)
+
     input.poll(dt)
 
     if actions.toggleDebug then
@@ -39,8 +45,8 @@ function love.update(dt)
         actions.toggleDebug = false
     end
 
-    local requiresRefresh = load.crawlFiles(frame) or (actions.refresh and StateMachine.current.refresh)
     if StateMachine.current.refresh then
+        local requiresRefresh = load.crawlFiles(frame) or actions.refresh
         StateMachine.current:refresh(requiresRefresh)
     end
 

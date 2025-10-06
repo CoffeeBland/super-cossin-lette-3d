@@ -68,6 +68,7 @@ function Game:iterEntitiesAABB(sx, sy, ex, ey)
 end
 
 function Game:enter(args)
+    load.crawlFiles()
     self.camera = CameraSystem.new()
     self.input = {
         target = nil

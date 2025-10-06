@@ -338,40 +338,123 @@ function load.loadData(name, file)
     end
 end
 
-function load.crawlFiles(frame)
+function load.loadImgFile(file, name, info)
+    local time = love.timer.getTime()
+    local ok, img = pcall(love.graphics.newImage, file)
+    print("image", math.round((love.timer.getTime() - time) * 1000), file)
+    if ok then
+        textures[name] = img
+        timestamps[file] = info
+        return true
+    else
+        print("Could not read file", img)
+    end
+end
+
+function load.loadAudioFile(file, name, info)
+    local time = love.timer.getTime()
+    sounds[name] = love.audio.newSource(file, "static")
+    print("audio", math.round((love.timer.getTime() - time) * 1000), file)
+    timestamps[file] = info
+    return true
+end
+
+function load.crawlFor(toFind)
+    for file, info in pairs(love.filesystem.crawl("img")) do
+        for _, nameToFind in pairs(toFind.textures or EMPTY) do
+            local name = str.filename(file)
+            if name == nameToFind then
+                load.loadImgFile(file, name, info)
+            end
+        end
+    end
+
+    for file, info in pairs(love.filesystem.crawl("audio")) do
+        for _, nameToFind in pairs(toFind.sounds or EMPTY) do
+            local name = str.filename(file)
+            if name == nameToFind then
+                load.loadAudioFile(file, name, info)
+            end
+        end
+    end
+
+    local extraToFind = { textures = {}, sounds = {} }
+    local extraFindPliz = false
+    for file, info in pairs(love.filesystem.crawl("data")) do
+        for _, nameToFind in pairs(toFind.data or EMPTY) do
+            local name = str.filename(file)
+            if name == nameToFind then
+                local time = love.timer.getTime()
+                load.loadData(name, file)
+                print("data", math.round((love.timer.getTime() - time) * 1000), file)
+                timestamps[file] = info
+
+                if prefabs[name] then
+                    local instance = prefabs[name]()
+                    for _, sprite in pairs(instance and instance.sprites or EMPTY) do
+                        extraToFind.textures[sprite.name] = sprite.name
+                        extraFindPliz = true
+                    end
+                    if instance.shadow then
+                        extraToFind.textures[instance.shadow.name] = instance.shadow.name
+                        extraFindPliz = true
+                    end
+                    for _, emit in pairs(instance and instance.particleEmitter and instance.particleEmitter.triggers or EMPTY) do
+                        extraToFind.textures[emit.name] = emit.name
+                        extraFindPliz = true
+                    end
+                    for _, emit in pairs(instance and instance.particleEmitter and instance.particleEmitter.conditions or EMPTY) do
+                        extraToFind.textures[emit.name] = emit.name
+                        extraFindPliz = true
+                    end
+                    for _, emit in pairs(instance and instance.soundEmitter and instance.soundEmitter.triggers or EMPTY) do
+                        extraToFind.sounds[emit.name] = emit.name
+                        extraFindPliz = true
+                    end
+                    for _, emit in pairs(instance and instance.soundEmitter and instance.soundEmitter.conditions or EMPTY) do
+                        extraToFind.sounds[emit.name] = emit.name
+                        extraFindPliz = true
+                    end
+                end
+            end
+        end
+    end
+    if extraFindPliz then
+        load.crawlFor(extraToFind)
+    end
+end
+
+function load.crawlFiles(frame, stopOnLoad)
     local updated = false
     if not frame or (frame % 30) == 0 then
         for file, info in pairs(love.filesystem.crawl("img")) do
-            print("image", file)
-            local name = str.filename(file)
-            local ok, img = pcall(love.graphics.newImage, file)
-            if ok then
-                textures[name] = img
-                timestamps[file] = info
-                updated = true
-            else
-                print("Could not read file", img)
+            updated = load.loadImgFile(file, str.filename(file), info) or updated
+            if updated and stopOnLoad then
+                return true
             end
         end
     end
 
     if not frame or (frame % 30) == 10 then
         for file, info in pairs(love.filesystem.crawl("audio")) do
-            print("audio", file)
-            local name = str.filename(file)
-            sounds[name] = love.audio.newSource(file, "static")
-            timestamps[file] = info
-            updated = true
+            updated = load.loadAudioFile(file, str.filename(file), info) or updated
+            if updated and stopOnLoad then
+                return true
+            end
         end
     end
 
     if not frame or (frame % 30) == 20 then
         for file, info in pairs(love.filesystem.crawl("data")) do
-            print("data", file)
+            local time = love.timer.getTime()
             local name = str.filename(file)
             load.loadData(name, file)
+            print("data", math.round((love.timer.getTime() - time) * 1000), file)
             timestamps[file] = info
             updated = true
+            if updated and stopOnLoad then
+                return true
+            end
         end
     end
     return updated

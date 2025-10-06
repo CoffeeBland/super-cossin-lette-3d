@@ -8,11 +8,21 @@ local sparkles = {
 local sparkleFrames = 12
 
 Intro = {
-    fadeout = 0,
+    fadeout = 15,
     fadein = 0
 }
 
 function Intro:enter()
+    load.crawlFor({
+        textures = {
+            "Sparkle",
+            "SceauDeKalitay"
+        },
+        sounds = {
+            "IntroClick",
+            "Intro"
+        }
+    })
     self.splashFrame = 0
     self.sparkleQuads = {}
     local sw = textures.Sparkle:getWidth()
@@ -32,7 +42,8 @@ function Intro:exit()
 end
 
 function Intro:update(dt)
-    if self.splashFrame >= splashFrames or actions.escape then
+    load.crawlFiles(nil, true)
+    if self.splashFrame >= splashFrames or actions.escape or actions.action then
         love.audio.stop(sounds.IntroClick)
         love.audio.stop(sounds.Intro)
         StateMachine:change(Title)

@@ -27,6 +27,7 @@ function StateMachine:change(state, params)
         self.current:exit()
     end
     self.current = state
+    DISREGARD_NEXT_UPDATE = true
     self.current:enter(params)
     self.fadeOutFrames = 0
     self.fadeInFrames = 0
@@ -47,6 +48,7 @@ function StateMachine:update(dt)
             self.current:exit()
         end
         self.current = self.nextState
+        DISREGARD_NEXT_UPDATE = true
         self.current:enter(self.nextParams)
         self.nextParams = nil
         self.nextState = nil
