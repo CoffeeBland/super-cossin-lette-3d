@@ -127,9 +127,9 @@ return function()
                 ["eat:start"] = {
                     name = "Ooh"
                 },
-                throwFruit = {
-                    name = "Shoop"
-                },
+                -- throwFruit = {
+                --     name = "Shoop"
+                -- },
                 eatFruit = {
                     name = "Gulp"
                 },
