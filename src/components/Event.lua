@@ -24,7 +24,7 @@ function Event:execute(list)
     end
 end
 
-function Event:update(framePart, game)
+function Event:update(framePart, dt, game)
     if self.wait then
         if not self:isWaitDone(framePart, game, self.wait) then
             return
@@ -46,6 +46,7 @@ function Event:isWait(event)
         type == "waitFrames" or
         type == "waitForTrigger" or
         type == "waitForPan" or
+        type == "waitForZoom" or
         type == "waitForMove" or
         type == "waitForLarp" or
         type == "waitForBubble" or
@@ -75,6 +76,8 @@ function Event:isWaitDone(framePart, game, wait)
         wait.done = (entity or game).anim:isTriggered(wait.trigger)
     elseif type == "waitForPan" then
         wait.done = not game.camera:isPanning()
+    elseif type == "waitForZoom" then
+        wait.done = not game.camera:isZooming()
     elseif type == "waitForMove" then
         local entity = game:findEntity(wait.entity)
         wait.done = not entity.actor.autoMoveIndex
@@ -191,9 +194,12 @@ function Event:processEvent(framePart, game, index)
     if type == "bubble" then
         entity.bubble:show(game, event.text, entity.anim)
     elseif type == "camera" then
-        game.camera:setTarget(entity, event.panFrames)
+        game.camera:setMoveFromEvent(entity, event)
     elseif type == "input" then
         game.input.target = entity
+    elseif type == "sound" then
+        local source = sounds[event.name]
+        game.sounds:start(game, event, source)
     elseif type == "move" then
         entity.actor:setMoveFromEvent(event)
     elseif type == "larp" then
@@ -221,6 +227,9 @@ function Event:processEvent(framePart, game, index)
             args[key] = game:eval(value)
         end
         StateMachine:change(event[2], args)
+    elseif type == "timer" then
+        local time = game:eval(event[2])
+        game.timer:start(time)
     else
         print("OHNO", dump(event))
     end

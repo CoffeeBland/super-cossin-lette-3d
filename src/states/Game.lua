@@ -11,6 +11,8 @@ require "src.components.Larp"
 require "src.components.Fruit"
 require "src.components.Water"
 require "src.components.Particle"
+require "src.components.Music"
+require "src.components.Timer"
 
 require "src.Map"
 
@@ -18,7 +20,8 @@ local PhysicsRenderer = require "src.PhysicsRenderer"
 
 Game = {
     fadeout = 15,
-    fadein = 15
+    fadein = 15,
+    fadeColor = { 1, 1, 1 }
 }
 
 function Game:refresh(force)
@@ -97,6 +100,7 @@ function Game:enter(args)
     self.fruits = FruitSystem.new()
     self.actors = ActorSystem.new()
     self.particles = ParticleSystem.new(Game.constants.particleCount, self.entities)
+    self.timer = TimerSystem.new()
 
     self.map:getTileEntities(self.physics.world, self.entities)
     self.map:getEntities(self.entities)
@@ -110,6 +114,8 @@ function Game:enter(args)
         end
     end
     Requests.populate(self)
+
+    self.event:execute(Game.constants.startLevelCutscene)
     self:update(0)
 end
 
@@ -141,13 +147,9 @@ function Game:update(dt)
     self.particles:update(framePart, dt, self)
     self.fruits:update(framePart, dt, self)
     self.camera:update(framePart, dt, self)
-    self.event:update(framePart, self)
+    self.event:update(framePart, dt, self)
+    self.timer:update(framePart, dt, self)
     self.anim:clearTriggers()
-
-    if (self.vars.remainingFruits == 0 or actions.gogogadget) and not self.endTriggered then
-        self.endTriggered = true
-        self.event:execute(Game.constants.endLevelCutscene)
-    end
 end
 
 local drawnEntities = {}

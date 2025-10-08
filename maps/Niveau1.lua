@@ -13,7 +13,8 @@ return {
   nextobjectid = 2413,
   properties = {
     ["vars.nextMap"] = "Niveau2",
-    ["vars.targetFruits"] = 1
+    ["vars.targetFruits"] = 1,
+    ["vars.timer"] = 30
   },
   tilesets = {
     {

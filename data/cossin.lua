@@ -1,8 +1,6 @@
 return function()
     return {
         name = "cossin",
-        input = true,
-        camera = true,
         actor = {
             walkSpeed = 150,
             slidingSpeed = 0,
@@ -133,10 +131,10 @@ return function()
                 eatFruit = {
                     name = "Gulp"
                 },
-                ["jump:start"] = {
-                    name = "Ooh",
-                    stopOn = "jump:stop"
-                },
+                --["jump:start"] = {
+                --    name = "Ooh",
+                --    stopOn = "jump:stop"
+                --},
                 --["jump:stop"] = {
                 --    name = "Poof"
                 --},

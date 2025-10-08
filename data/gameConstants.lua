@@ -22,6 +22,9 @@ return {
         offset = { x = 0, y = 20 },
         lingerFrames = 60
     },
+    musicLoops = {
+        Title = { loopStart = 55150, loopEnd = 772810 }
+    },
     icons = {
         size = { w = 64, h = 64 },
         list = {
@@ -48,9 +51,41 @@ return {
             ":", 28,
             "^", 28,
             "(", 28,
+            "time3/4", 48,
+            "time2/4", 48,
+            "time1/4", 48,
         }
     },
+    timeWarnings = {
+        { time = 0.75, text = { 20, "time3/4" } },
+        { time = 0.5, text = { 20, "time2/4" } },
+        { time = 0.25, text = { 20, "time1/4" } },
+    },
     firstLevel = "Niveau1",
+    startLevelCutscene = {
+        { "camera",
+            entity = { byName = "picnic" },
+            zoom = 3
+        },
+        { "camera",
+            zoom = 1,
+            zoomFrames = 60
+        },
+        { "waitFrames", 15 },
+        { "sound",
+            name = "Gulp"
+        },
+        { "waitFrames", 45 },
+        { "camera",
+            entity = { byName = "cossin" },
+            panFrames = 60
+        },
+        { "waitForPan" },
+        { "input",
+            entity = { byName = "cossin" }
+        },
+        { "timer", "[vars.timer]" }
+    },
     endLevelCutscene = {
         { "input",
             entity = nil
@@ -200,7 +235,7 @@ return {
         },
         { "if", "[vars.nextMap]" },
         { "changeState",
-            Game,
+            MapIntro,
             { map = "[vars.nextMap]" }
         },
         { "else" },

@@ -10,14 +10,34 @@ function CameraSystem.new()
         target = nil,
         shakeFrames = 0,
         shakeAmplitude = 0,
+        zoom = 1,
+        targetZoom = 1,
+        zoomFrames = 0,
         offsetX = 0,
         offsetY = 0
     }, CameraSystem)
 end
 
-function CameraSystem:setTarget(entity, panFrames)
+function CameraSystem:setMoveFromEvent(entity, event)
+    if event.entity then
+        self.target = entity
+    end
+    if event.panFrames then
+        self.panFrames = event.panFrames
+    else
+        self.panFrames = 0
+    end
+    if event.zoom then
+        self.zoomFrames = event.zoomFrames or 0
+        self.targetZoom = event.zoom
+        if self.zoomFrames == 0 then
+            self.zoom = event.zoom
+        end
+    end
+end
+
+function CameraSystem:setTarget(entity)
     self.target = entity
-    self.panFrames = panFrames or 0
 end
 
 function CameraSystem:update(framePart, dt, game)
@@ -34,6 +54,9 @@ function CameraSystem:update(framePart, dt, game)
             end
         end
     end
+
+    self.zoom = math.interp(self.zoomFrames, self.zoom, self.targetZoom or self.zoom)
+    self.zoomFrames = math.max(self.zoomFrames - framePart, 0)
 
     if self.target then
         if self.panFrames > 0 then
@@ -65,7 +88,7 @@ end
 function CameraSystem:applyTransformations()
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(0.5)
+    love.graphics.scale(0.5 * self.zoom)
     love.graphics.translate(
         -self.x + self.offsetX,
         -self.y + self.offsetY + self.z)
@@ -76,4 +99,8 @@ end
 
 function CameraSystem:isPanning()
     return self.panFrames and self.panFrames > 0
+end
+
+function CameraSystem:isZooming()
+    return self.zoomFrames and self.zoomFrames > 0
 end

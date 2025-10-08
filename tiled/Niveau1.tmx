@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="50" nextobjectid="2413">
+<map version="1.10" tiledversion="1.11.1" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="50" nextobjectid="2413">
  <editorsettings>
   <export target="../maps/Niveau1.lua" format="lua"/>
  </editorsettings>
  <properties>
   <property name="vars.nextMap" value="Niveau2"/>
   <property name="vars.targetFruits" type="int" value="1"/>
+  <property name="vars.timer" type="float" value="30"/>
  </properties>
  <tileset firstgid="1" source="objects.tsx"/>
  <tileset firstgid="94" source=":/automap-tiles.tsx"/>
@@ -579,9 +580,9 @@
  <layer id="49" name="Details" width="30" height="20" locked="1">
   <data encoding="csv"/>
  </layer>
- <objectgroup id="43" name="Pic-nic/Blonde a Cossin Lette" locked="1">
+ <objectgroup id="43" name="Pic-nic/Blonde a Cossin Lette">
   <object id="2276" gid="74" x="2812" y="2072" width="605" height="459"/>
-  <object id="2277" gid="92" x="3034" y="2220" width="224" height="404"/>
+  <object id="2277" gid="92" x="2925.91" y="2128.09" width="224" height="404"/>
  </objectgroup>
  <objectgroup id="44" name="Cossin Lette" locked="1">
   <object id="2275" gid="25" x="4588" y="2072" width="192" height="256"/>

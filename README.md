@@ -14,9 +14,6 @@
 * Y manque un win screen pis lose screen
 * Timer
 * NINJAs
-* Pouvoir tronquer le top des troncs
-    * Les troncs ont un truncateHeight
-    * Par défaut non aléatoire, tu peux écraser, et tu dois cocher pour activer l'auto-troncage
 
 ## BUGS
 * Les layers de tuiles tolèrent pas des gaps

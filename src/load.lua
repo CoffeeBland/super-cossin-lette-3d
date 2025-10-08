@@ -2,6 +2,7 @@ load = {}
 fonts = {}
 textures = {}
 sounds = {}
+music = {}
 sprites = {}
 tileset = {}
 objects = {
@@ -15,8 +16,16 @@ function load.init()
     fonts.menu = love.graphics.newFont(36)
 end
 
+local function getOrLoadTexture(name)
+    if not textures[name] then
+        print(name)
+        load.crawlFor({ textures = { name } })
+    end
+    return textures[name]
+end
+
 local function getObjectPos(alignment, obj)
-    local texture = textures[obj.name]
+    local texture = getOrLoadTexture(obj.name)
     if alignment == "unspecified" or alignment == "bottom" then
         return -texture:getWidth() / 2, -texture:getHeight()
     end
@@ -24,7 +33,7 @@ end
 
 local function getTilePos(alignment, tile)
     local tileName = str.filename(tile.image)
-    local texture = textures[tileName]
+    local texture = getOrLoadTexture(tileName)
     if alignment == "unspecified" or alignment == "bottom" then
         return -TILE_WIDTH / 2, -texture:getHeight()
     end
@@ -135,7 +144,7 @@ function load.loadData(name, file)
                 objects.byName[obj.name] = obj
 
                 if obj.shadow then
-                    local shadowTexture = textures[obj.shadow]
+                    local shadowTexture = getOrLoadTexture(obj.shadow)
                     obj.shadow = {
                         name = obj.shadow,
                         anchor = {
@@ -205,13 +214,14 @@ function load.loadData(name, file)
             tileset.shapes = {}
             if data.image then
                 local name = str.filename(data.image)
+                local texture = getOrLoadTexture(name)
                 for i = 1, data.tilecount do
                     tileset.tiles[i] = love.graphics.newQuad(
                         ((i - 1) % data.columns) * data.tilewidth,
                         math.floor((i - 1) / data.columns) * data.tileheight,
                         data.tilewidth,
                         data.tileheight,
-                        textures[name])
+                        texture)
                 end
             elseif data.tiles then
                 -- Tiles can be of non-uniform size.
@@ -249,7 +259,8 @@ function load.loadData(name, file)
                     local y = row.y
                     for _, tile in ipairs(row.tiles) do
                         local tileName = str.filename(tile.image)
-                        love.graphics.draw(textures[tileName], x, y)
+                        local texture = getOrLoadTexture(tileName)
+                        love.graphics.draw(texture, x, y)
                         local posX, posY = getTilePos(data.objectalignment, tile)
                         tileset.tiles[tile.id] = {
                             quad = love.graphics.newQuad(x, y, tile.width, tile.height, canvas),
@@ -316,7 +327,7 @@ function load.loadData(name, file)
 
     if data.sprites then
         for spriteName, sprite in pairs(data.sprites) do
-            local texture = textures[spriteName]
+            local texture = getOrLoadTexture(spriteName)
             for i, anim in ipairs(sprite) do
                 anim.tileWidth = data.tileWidth or sprite.tileWidth
                 anim.tileHeight = data.tileHeight or sprite.tileHeight
@@ -355,6 +366,14 @@ function load.loadAudioFile(file, name, info)
     local time = love.timer.getTime()
     sounds[name] = love.audio.newSource(file, "static")
     print("audio", math.round((love.timer.getTime() - time) * 1000), file)
+    timestamps[file] = info
+    return true
+end
+
+function load.loadMusicFile(file, name, info)
+    local time = love.timer.getTime()
+    music[name] = love.audio.newSource(file, "stream")
+    print("music", math.round((love.timer.getTime() - time) * 1000), file)
     timestamps[file] = info
     return true
 end
@@ -426,6 +445,13 @@ end
 
 function load.crawlFiles(frame, stopOnLoad)
     local updated = false
+
+    if not frame or (frame % 30) == 15 then
+        for file, info in pairs(love.filesystem.crawl("music")) do
+            updated = load.loadMusicFile(file, str.filename(file), info) or updated
+        end
+    end
+
     if not frame or (frame % 30) == 0 then
         for file, info in pairs(love.filesystem.crawl("img")) do
             updated = load.loadImgFile(file, str.filename(file), info) or updated

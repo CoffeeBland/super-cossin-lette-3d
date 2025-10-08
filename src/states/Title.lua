@@ -1,5 +1,5 @@
 Title = {
-    fadeout = 15,
+    fadeout = 60,
     fadein = 15
 }
 
@@ -171,7 +171,7 @@ local colors = {
 
 function Title:enter()
     local texturesToFind = { "Bubble_icons" }
-    local soundsToFind = { "TitleMusic" }
+    local soundsToFind = {}
     for _, grassTile in pairs(grassTiles) do
         table.insert(texturesToFind, grassTile)
     end
@@ -191,15 +191,13 @@ function Title:enter()
     load.crawlFor({
         textures = texturesToFind,
         sounds = soundsToFind,
-        data = { "cossin", "gameConstants" }
+        data = { "cossin", "gameConstants", "cossinSprite", "particleSprite" }
     })
-    load.crawlFor({ data = { "cossinSprite", "particleSprite" } })
     self.frame = 0
     self.menuState = "new"
     self.menuActive = false
     self.waitingForEnd = false
-    sounds.TitleMusic:setVolume(0.5)
-    sounds.TitleMusic:play()
+    Music:play("Title", true)
 
     menu.width = -menu.margin
     for _, button in ipairs(menu.buttons) do
@@ -226,7 +224,7 @@ function Title:enter()
 
     self.physics = PhysicsSystem.new()
     self.actors = ActorSystem.new()
-    self.sound = SoundSystem.new()
+    self.sounds = SoundSystem.new()
     self.particles = ParticleSystem.new(Game.constants.particleCount, self.entities)
     Requests.populate(self)
 
@@ -237,13 +235,13 @@ function Title:exit()
 end
 
 function Title:update(dt)
-    load.crawlFiles(nil, true)
     self.frame = self.frame + 1
 
     if self.waitingForEnd then
         if not self.entitiesByName.cossin.actor.autoMoveIndex then
+            Music:fadeout(Title.fadeout)
             if self.menuState == "new" then
-                StateMachine:change(Game, { map = Game.constants.firstLevel })
+                StateMachine:change(MapIntro, { map = Game.constants.firstLevel })
             elseif self.menuState == "quit" then
                 StateMachine:change(Exit)
             end
@@ -306,7 +304,7 @@ function Title:update(dt)
     self.physics:update(framePart, dt, self)
     self.actors:update(framePart, dt, self)
     self.particles:update(framePart, dt, self)
-    self.sound:update(framePart, dt, self)
+    self.sounds:update(framePart, dt, self)
 end
 
 function Title:iterEntities(table)

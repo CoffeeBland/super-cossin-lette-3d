@@ -24,7 +24,7 @@ return {
     },
     {
       name = "objects",
-      firstgid = 268,
+      firstgid = 284,
       filename = "../tiled/objects.tsx",
       exportfilename = "../data/objects.lua"
     }
@@ -654,12 +654,12 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 431.667,
-          y = 678.333,
+          x = -261.208,
+          y = 1123.21,
           width = 605,
           height = 459,
           rotation = 0,
-          gid = 341,
+          gid = 357,
           visible = true,
           properties = {}
         },
@@ -668,12 +668,12 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 468.667,
-          y = 875.667,
+          x = -224.02,
+          y = 1288.35,
           width = 224,
           height = 404,
           rotation = 0,
-          gid = 359,
+          gid = 375,
           visible = true,
           properties = {}
         },
@@ -682,12 +682,12 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 715.333,
-          y = 221,
+          x = 1096.33,
+          y = -360,
           width = 192,
           height = 256,
           rotation = 0,
-          gid = 292,
+          gid = 308,
           visible = true,
           properties = {}
         },
@@ -701,7 +701,7 @@ return {
           width = 128,
           height = 192,
           rotation = 0,
-          gid = 304,
+          gid = 320,
           visible = true,
           properties = {}
         },
@@ -715,7 +715,7 @@ return {
           width = 128,
           height = 192,
           rotation = 0,
-          gid = 300,
+          gid = 316,
           visible = true,
           properties = {}
         },
@@ -729,7 +729,7 @@ return {
           width = 1024,
           height = 1286,
           rotation = 0,
-          gid = 360,
+          gid = 376,
           visible = true,
           properties = {
             ["posZ"] = 450
@@ -745,7 +745,7 @@ return {
           width = 1024,
           height = 1286,
           rotation = 0,
-          gid = 360,
+          gid = 376,
           visible = true,
           properties = {
             ["posZ"] = 0,
@@ -763,7 +763,7 @@ return {
           width = 1152,
           height = 1024,
           rotation = 0,
-          gid = 2147484005,
+          gid = 2147484021,
           visible = true,
           properties = {}
         }

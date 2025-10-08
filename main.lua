@@ -5,7 +5,7 @@ require "src.input"
 require "src.constants"
 require "src.states.StateMachine"
 
-debug = { cycle = 0, physics = false, fps = false }
+debug = { cycle = 0, physics = false, fps = false, autorefresh = true }
 
 function love.load(args)
     local requestedMap = args[1]
@@ -33,8 +33,6 @@ function love.update(dt)
         DISREGARD_NEXT_UPDATE = false
     end
 
-    dt = math.min(dt, frameDuration)
-
     input.poll(dt)
 
     if actions.toggleDebug then
@@ -45,7 +43,7 @@ function love.update(dt)
         actions.toggleDebug = false
     end
 
-    if StateMachine.current.refresh then
+    if debug.autorefresh and StateMachine.current.refresh then
         local requiresRefresh = load.crawlFiles(frame) or actions.refresh
         StateMachine.current:refresh(requiresRefresh)
     end

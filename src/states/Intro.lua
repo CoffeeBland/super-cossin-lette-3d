@@ -42,7 +42,6 @@ function Intro:exit()
 end
 
 function Intro:update(dt)
-    load.crawlFiles(nil, true)
     if self.splashFrame >= splashFrames or actions.escape or actions.action then
         love.audio.stop(sounds.IntroClick)
         love.audio.stop(sounds.Intro)
