@@ -5,6 +5,7 @@ fancyTypes.anim = Anim
 Anim.priorities = {
     idle = 1,
     walk = 1,
+    lookUp = 1,
     squish = 2,
     jump = 3,
     eat = 4,

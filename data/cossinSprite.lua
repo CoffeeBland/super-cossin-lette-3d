@@ -265,6 +265,12 @@ return {
                 pingPong = true,
                 tiles = { { 0, 9 }, { 1, 9 }, { 2, 9 } }
             },
+            -- Lookup
+            {
+                name = "lookUp",
+                fps = 5,
+                tiles = { { 0, 7 }, { 0, 8 } }
+            },
         },
         cossinPiedBack = {
             -- Idle

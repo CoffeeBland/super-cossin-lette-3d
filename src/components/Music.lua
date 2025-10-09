@@ -6,11 +6,13 @@ Music = {
 }
 
 local musicVolume = 0.5
-local fadeFrames = 30
+local fadeFrames = 60
 
 function Music:play(name, loop)
+    local fadein = false
     if self.current and self.currentName ~= name then
         self:fadeout()
+        fadein = true
     end
     self.currentFadeinFrames = 0
     if self.current and self.currentName == name then
@@ -19,11 +21,11 @@ function Music:play(name, loop)
     end
     self.currentName = name
     self.current = music[name]
-    self.current:setVolume(self.old and 0 or musicVolume)
+    self.current:setVolume(fadein and 0 or musicVolume)
     self.current:stop()
     self.current:play()
     self.currentLoop = loop
-    if self.old then
+    if fadein then
         self.currentFadeinFrames = fadeFrames
     end
     self:update(0)

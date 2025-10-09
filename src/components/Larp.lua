@@ -35,13 +35,13 @@ function Larp:empty()
     return true
 end
 
-function Larp:update(framePart, entity)
+function Larp:update(framePart, obj)
     for key, larp in pairs(self) do
-        local current = Larp.get[key](entity);
+        local current = Larp.get[key](obj);
 
         if larp.from then
             current = larp.from
-            Larp.set[key](entity, current)
+            Larp.set[key](obj, current)
             larp.from = nil
         end
 
@@ -51,7 +51,7 @@ function Larp:update(framePart, entity)
 
         if larp.startOffset then
             current = current + larp.startOffset
-            Larp.set[key](entity, current)
+            Larp.set[key](obj, current)
             larp.startOffset = nil
         end
 
@@ -60,9 +60,9 @@ function Larp:update(framePart, entity)
         elseif (larp.frames or 0) > 0 then
             larp.frames = math.max(larp.frames - framePart, 0)
             local value = math.interp(larp.frames, current, larp.to)
-            Larp.set[key](entity, value)
+            Larp.set[key](obj, value)
         else
-            Larp.set[key](entity, larp.to)
+            Larp.set[key](obj, larp.to)
             self[key] = nil
         end
     end

@@ -190,6 +190,12 @@ function Event:processEvent(framePart, game, index)
         return true
     end
 
+    local image = event.image and game.images.imagesById[event.image.byId]
+    if event.image and not image then
+        print("OHNO could not find image", dump(event))
+        return true
+    end
+
     -- Actions
     if type == "bubble" then
         entity.bubble:show(game, event.text, entity.anim)
@@ -197,15 +203,27 @@ function Event:processEvent(framePart, game, index)
         game.camera:setMoveFromEvent(entity, event)
     elseif type == "input" then
         game.input.target = entity
+    elseif type == "anim" then
+        entity.anim:toggle(event.name, event.value)
     elseif type == "sound" then
         local source = sounds[event.name]
         game.sounds:start(game, event, source)
+    elseif type == "image" then
+        game.images:setImage(event)
     elseif type == "move" then
         entity.actor:setMoveFromEvent(event)
     elseif type == "larp" then
-        for key, larp in pairs(event) do
-            if key ~= 1 and key ~= "entity" then
-                entity.larp:add(key, larp)
+        if entity then
+            for key, larp in pairs(event) do
+                if key ~= 1 and key ~= "entity" then
+                    entity.larp:add(key, larp)
+                end
+            end
+        elseif image then
+            for key, larp in pairs(event) do
+                if key ~= 1 and key ~= "image" then
+                    image.larp:add(key, larp)
+                end
             end
         end
     elseif type == "components" then

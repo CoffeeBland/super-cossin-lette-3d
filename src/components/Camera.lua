@@ -24,8 +24,6 @@ function CameraSystem:setMoveFromEvent(entity, event)
     end
     if event.panFrames then
         self.panFrames = event.panFrames
-    else
-        self.panFrames = 0
     end
     if event.zoom then
         self.zoomFrames = event.zoomFrames or 0

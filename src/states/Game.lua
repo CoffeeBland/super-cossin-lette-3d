@@ -13,6 +13,7 @@ require "src.components.Water"
 require "src.components.Particle"
 require "src.components.Music"
 require "src.components.Timer"
+require "src.components.Image"
 
 require "src.Map"
 
@@ -101,6 +102,7 @@ function Game:enter(args)
     self.actors = ActorSystem.new()
     self.particles = ParticleSystem.new(Game.constants.particleCount, self.entities)
     self.timer = TimerSystem.new()
+    self.images = ImageSystem.new()
 
     self.map:getTileEntities(self.physics.world, self.entities)
     self.map:getEntities(self.entities)
@@ -147,6 +149,7 @@ function Game:update(dt)
     self.particles:update(framePart, dt, self)
     self.fruits:update(framePart, dt, self)
     self.camera:update(framePart, dt, self)
+    self.images:update(framePart, dt, self)
     self.event:update(framePart, dt, self)
     self.timer:update(framePart, dt, self)
     self.anim:clearTriggers()
@@ -331,6 +334,8 @@ function Game:render(dt)
     end
 
     love.graphics:reset()
+
+    self.images:draw()
 
     if debug.pointHeights then
         local x, y = 0, 0

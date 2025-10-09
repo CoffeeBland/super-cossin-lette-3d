@@ -42,10 +42,15 @@ local textScale = {
     to = 1
 }
 
+--             s 2732, 2048
+--p 384, 120   s 1202, 494 c 985, 367  c2 -381, -657 super
+--p 1166, 371  s 1197, 450 c 1765, 596 c2 399, -428 cossin
+--p 1304, 763  s 1165, 403 c 1887, 965 c2 521, -59 lette
+--p 247, 482   s 1022, 845 c 758, 905  c2 -608 -119 3d
 local timeline = {
     {
         text = "TitleSuper",
-        pos = { x = 120, y = 0 },
+        pos = { x = 100 - 381, y = -657 },
         frame = 40,
     },
     {
@@ -62,17 +67,17 @@ local timeline = {
     },
     {
         text = "TitleCossin",
-        pos = { x = 120, y = 0 },
+        pos = { x = 100 + 399 , y = -428 },
         frame = 110,
     },
     {
         text = "TitleLette",
-        pos = { x = 120, y = 0 },
+        pos = { x = 100 + 521, y = -59 },
         frame = 160,
     },
     {
         text = "Title3d",
-        pos = { x = 120, y = 0 },
+        pos = { x = 100 + 20 -608, y = 20 -119 },
         frame = 220,
     },
     {
@@ -332,6 +337,7 @@ function Title:render()
             local tw, th = texture:getWidth(), texture:getHeight()
             local animPart = math.min((self.frame - event.frame) / textScale.frames, 1) ^ 0.5
             animPart = 0.5 * (1 - math.cos(animPart * 1.2 * math.pi))
+            animPart = animPart / (0.5 * (1 - math.cos(1.2 * math.pi)))
             animPart = animPart * (1 + math.sin((self.frame - event.frame) * math.pi / 120) / 100)
             love.graphics.draw(
                 texture,

@@ -18,7 +18,6 @@ end
 
 local function getOrLoadTexture(name)
     if not textures[name] then
-        print(name)
         load.crawlFor({ textures = { name } })
     end
     return textures[name]

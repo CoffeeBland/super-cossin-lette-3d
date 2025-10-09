@@ -54,6 +54,7 @@ return {
             "time3/4", 48,
             "time2/4", 48,
             "time1/4", 48,
+            "time4/4", 48,
         }
     },
     timeWarnings = {
@@ -61,19 +62,25 @@ return {
         { time = 0.5, text = { 20, "time2/4" } },
         { time = 0.25, text = { 20, "time1/4" } },
     },
+    defaultLevelTimer = 60,
     firstLevel = "Niveau1",
     startLevelCutscene = {
+        { "anim",
+            entity = { byName = "cossin" },
+            name = "lookUp",
+            value = true
+        },
         { "camera",
             entity = { byName = "picnic" },
             zoom = 3
         },
         { "camera",
             zoom = 1,
-            zoomFrames = 60
+            zoomFrames = 15
         },
-        { "waitFrames", 15 },
+        { "waitForZoom" },
         { "sound",
-            name = "Gulp"
+            name = "Ohho"
         },
         { "waitFrames", 45 },
         { "camera",
@@ -81,10 +88,110 @@ return {
             panFrames = 60
         },
         { "waitForPan" },
+        { "waitFrames", 15 },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 10, "fruit", 5, "[vars.targetFruits]" },
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin" }
+        },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 10, "time4/4", 5, "[vars.timer]" }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin" }
+        },
+        { "anim",
+            entity = { byName = "cossin" },
+            name = "lookUp",
+            value = false
+        },
+        { "sound",
+            name = "Go"
+        },
+        { "image",
+            id = "Go1",
+            name = "VasY",
+            offset = { x = 0, y = -120 },
+            color = { 1, 1, 1, 0 },
+            scale = { x = 0.9, y = 0.9 }
+        },
+        { "larp",
+            image = { byId = "Go1" },
+            ["color[4]"] = { to = 1, frames = 15 },
+            ["scale.x"] = { to = 1, frames = 15 },
+            ["scale.y"] = { to = 1, frames = 15 }
+        },
+        { "waitFrames", 15 },
+        { "image",
+            id = "Go2",
+            name = "TitleCossin",
+            offset = { x = -300, y = 110 },
+            color = { 1, 1, 1, 0 },
+            scale = { x = 0.45, y = 0.45 }
+        },
+        { "larp",
+            image = { byId = "Go2" },
+            ["color[4]"] = { to = 1, frames = 15 },
+            ["scale.x"] = { to = 0.5, frames = 15 },
+            ["scale.y"] = { to = 0.5, frames = 15 }
+        },
+        { "waitFrames", 5 },
+        { "image",
+            id = "Go3",
+            name = "TitleLette",
+            offset = { x = 300, y = 110 },
+            color = { 1, 1, 1, 0 },
+            scale = { x = 0.45, y = 0.45 }
+        },
+        { "larp",
+            image = { byId = "Go3" },
+            ["color[4]"] = { to = 1, frames = 15 },
+            ["scale.x"] = { to = 0.5, frames = 15 },
+            ["scale.y"] = { to = 0.5, frames = 15 }
+        },
+        { "waitFrames", 30 },
+        { "timer", "[vars.timer]" },
         { "input",
             entity = { byName = "cossin" }
         },
-        { "timer", "[vars.timer]" }
+        { "move",
+            entity = { byName = "cossin" },
+            { "jump", jumpSpeed = 100 }
+        },
+        { "larp",
+            image = { byId = "Go1" },
+            ["color[4]"] = { to = 0, frames = 15 },
+            ["scale.x"] = { to = 1.2, frames = 15 },
+            ["scale.y"] = { to = 1.2, frames = 15 }
+        },
+        { "larp",
+            image = { byId = "Go2" },
+            ["color[4]"] = { to = 0, frames = 15 },
+            ["scale.x"] = { to = 0.6, frames = 15 },
+            ["scale.y"] = { to = 0.6, frames = 15 }
+        },
+        { "larp",
+            image = { byId = "Go3" },
+            ["color[4]"] = { to = 0, frames = 15 },
+            ["scale.x"] = { to = 0.6, frames = 15 },
+            ["scale.y"] = { to = 0.6, frames = 15 }
+        },
+        { "waitFrames", 15 },
+        { "image",
+            id = "Go1",
+            name = nil
+        },
+        { "image",
+            id = "Go2",
+            name = nil
+        },
+        { "image",
+            id = "Go3",
+            name = nil
+        }
     },
     endLevelCutscene = {
         { "input",
