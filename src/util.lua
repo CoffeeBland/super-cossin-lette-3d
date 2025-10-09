@@ -183,6 +183,10 @@ function love.physics.newEllipseShape(x, y, radiusx, radiusy, segments)
     return love.physics.newPolygonShape(unpack(math.getEllipse(x, y, radiusx, radiusy, segments)))
 end
 
+function love.physics.newUIUIShape(radius)
+    return love.physics.newEllipseShape(0, 0, radius * ELLIPSE_WIDTH_RATIO, radius * ELLIPSE_HEIGHT_RATIO, 8)
+end
+
 function love.physics.overlap(sensor, otherFix)
     local tlx, tly, brx, bry = sensor:getBoundingBox()
     local ex, ey = (tlx + brx) / 2, (tly + bry) / 2

@@ -10,7 +10,7 @@ function TimerSystem.new()
 end
 
 function TimerSystem:start(time)
-    self.frames = (time or Game.constants.defaultLevelTimer) * 60
+    self.frames = time * 60
     self.totalFrames = self.frames
 end
 

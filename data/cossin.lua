@@ -63,6 +63,7 @@ return function()
             anchor = { x = -40, y = -260 }
         },
         larp = {},
+        lens = { size = 480, size2 = 480^2 },
         shakeEmitter = {
             triggers = {
                 land = {

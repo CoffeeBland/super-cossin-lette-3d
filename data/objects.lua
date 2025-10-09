@@ -2013,6 +2013,7 @@ return {
       properties = {
         ["autoshadow"] = true,
         ["height"] = 160,
+        ["lensed"] = true,
         ["offsetX"] = 400,
         ["offsetY"] = 360,
         ["posZ"] = 320
@@ -2106,6 +2107,7 @@ return {
       id = 1,
       properties = {
         ["height"] = 480,
+        ["lensed"] = true,
         ["offsetX"] = 860,
         ["offsetY"] = 830
       },
@@ -2153,6 +2155,7 @@ return {
       properties = {
         ["autoshadow"] = true,
         ["height"] = 230,
+        ["lensed"] = true,
         ["offsetX"] = 510,
         ["offsetY"] = 470,
         ["posZ"] = 770
@@ -2195,6 +2198,7 @@ return {
       properties = {
         ["autoshadow"] = true,
         ["height"] = 230,
+        ["lensed"] = true,
         ["offsetX"] = 510,
         ["offsetY"] = 470,
         ["posZ"] = 770
@@ -2237,6 +2241,7 @@ return {
       properties = {
         ["autoshadow"] = true,
         ["height"] = 230,
+        ["lensed"] = true,
         ["offsetX"] = 510,
         ["offsetY"] = 470,
         ["posZ"] = 770

@@ -11,8 +11,22 @@ HEIGHT_SLICE = 80
 BIG_NUMBER = 999999
 
 MASK_SHADER = love.graphics.newShader[[
+    const mat4x4 thresholdMatrix = mat4x4(
+            1.0/17.0,  9.0/17.0,  3.0/17.0, 11.0/17.0,
+           13.0/17.0,  5.0/17.0, 15.0/17.0,  7.0/17.0,
+            4.0/17.0, 12.0/17.0,  2.0/17.0, 10.0/17.0,
+           16.0/17.0,  8.0/17.0, 14.0/17.0,  6.0/17.0
+    );
+
+    bool dither(float val, vec2 coords) {
+        int x = int(mod(coords.x/2, 4));
+        int y = int(mod(coords.y/2, 4));
+        return thresholdMatrix[x][y] > val;
+    }
+
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
-        if (Texel(texture, texture_coords).a < 0.5) {
+        float alpha = Texel(texture, texture_coords).a;
+        if (alpha == 0 || dither(alpha, screen_coords)) {
             discard;
         }
         return vec4(1.0);
@@ -52,4 +66,7 @@ WATER_SENSOR = 43
 
 TILE_WIDTH = 128
 TILE_HEIGHT = 74
+-- Cheat a little
+ELLIPSE_WIDTH_RATIO = 0.5 + TILE_WIDTH / (TILE_WIDTH + TILE_HEIGHT)
+ELLIPSE_HEIGHT_RATIO = 0.5 + TILE_HEIGHT / (TILE_WIDTH + TILE_HEIGHT)
 LIGHT_POINTS = {}

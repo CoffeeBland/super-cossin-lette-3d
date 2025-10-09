@@ -85,6 +85,7 @@ function Game:enter(args)
         eaten = 0,
         picnicFruits = 0,
         targetFruits = 1,
+        timer = Game.constants.defaultLevelTimer,
         currentMap = args.map,
         nextMap = nil
     }
@@ -113,6 +114,26 @@ function Game:enter(args)
         end
         if entity.camera then
             self.camera:setTarget(entity)
+        end
+        if entity.lens then
+            local w = entity.lens.size * ELLIPSE_WIDTH_RATIO
+            local h = entity.lens.size * ELLIPSE_HEIGHT_RATIO
+            local canvas = love.graphics.newCanvas(w, h)
+            love.graphics.setCanvas(canvas)
+            love.graphics.clear(1, 1, 1, 0)
+            love.graphics.setColor(1, 1, 1, Game.constants.lens.textureStepAlpha)
+            local steps = Game.constants.lens.textureSteps
+            for i = 1, steps do
+                local step = (i - 1) * Game.constants.lens.textureStepSize
+                love.graphics.polygon("fill", unpack(math.getEllipse(w / 2, h / 2, w / 2 - step, h / 2 - step, 32)))
+            end
+            love.graphics.setColor(1, 1, 1, 1)
+            local opaqueStep = steps * Game.constants.lens.textureStepSize
+            love.graphics.polygon("fill", unpack(math.getEllipse(w / 2, h / 2, w / 2 - opaqueStep, h / 2 - opaqueStep, 32)))
+            love.graphics.setCanvas()
+            entity.lens.texture = canvas
+            entity.lens.width = w
+            entity.lens.height = h
         end
     end
     Requests.populate(self)
@@ -204,7 +225,8 @@ function Game:render(dt)
 
     -- Shadows
     love.graphics.setBlendMode("multiply", "premultiplied")
-    for _, entity in ipairs(drawnEntities) do
+    for i, entity in ipairs(drawnEntities) do
+        entity.drawOrder = i
         if entity.shadow then
             if entity.color then
                 love.graphics.setColor(unpack(entity.color))
@@ -217,32 +239,16 @@ function Game:render(dt)
 
     -- Entities
     for _, entity in ipairs(drawnEntities) do
+        love.graphics.clear(false, 128, false)
+        self:stencilLensEntities(entity)
         if entity.color then
             love.graphics.setColor(unpack(entity.color))
         end
-        -- Stacked entities shadows
-        if banana and entity.shadow and (entity.pos.floorZ or 0) > 0 then
-            love.graphics.stencil(
-                function()
-                    love.graphics.setShader(MASK_SHADER)
-                    overlappingCheckSlop = SHADOW_OVERLAP_SLOP
-                    for _, other in ipairs(self.physics:getAllOverlappingOfType(entity.physics.heightSensor)) do
-                        if entity.pos.z + DELTA > other.pos.z then
-                            self:drawEntity(other)
-                        end
-                    end
-                    love.graphics.setShader()
-                end,
-                "replace",
-                1)
-            love.graphics.setStencilTest("greater", 0)
-            love.graphics.setBlendMode("multiply", "premultiplied")
-            self:drawEntityShadow(entity, entity.pos.floorZ)
-            love.graphics.setBlendMode("alpha")
-            love.graphics.setStencilTest()
-        end
+        --self:old_drawStackedEntityShadows(entity)
         -- Sprites
+        love.graphics.setStencilTest("gequal", 128)
         self:drawEntity(entity)
+        love.graphics.setStencilTest()
         love.graphics.setColor(1, 1, 1, 1)
 
         -- Newfangled banana shadows
@@ -253,9 +259,10 @@ function Game:render(dt)
                     self:drawEntity(entity)
                     love.graphics.setShader()
                 end,
-                "replace",
-                1)
-            love.graphics.setStencilTest("greater", 0)
+                "increment",
+                1,
+                true)
+            love.graphics.setStencilTest("greater", 128)
             love.graphics.setBlendMode("multiply", "premultiplied")
             overlappingCheckSlop = SHADOW_OVERLAP_SLOP
             for _, other in ipairs(self.physics:getAllOverlappingOfType(entity.physics.heightSensor)) do
@@ -269,7 +276,6 @@ function Game:render(dt)
             love.graphics.setBlendMode("alpha")
             love.graphics.setStencilTest()
         end
-
 
         if entity.light and entity.light.alpha > DELTA then
             local radiusw = entity.light.radiusw or Game.constants.defaultLight.radiusw
@@ -425,6 +431,53 @@ function Game:drawEntityShadow(entity, floorZ)
         (entity.shadow.flipY and -1 or 1) * zscale,
         entity.shadow.anchor.x,
         entity.shadow.anchor.y)
+end
+
+function Game:old_drawStackedEntityShadows(entity)
+    if entity.shadow and (entity.pos.floorZ or 0) > 0 then
+        love.graphics.stencil(
+            function()
+                love.graphics.setShader(MASK_SHADER)
+                overlappingCheckSlop = SHADOW_OVERLAP_SLOP
+                for _, other in ipairs(self.physics:getAllOverlappingOfType(entity.physics.heightSensor)) do
+                    if entity.pos.z + DELTA > other.pos.z then
+                        self:drawEntity(other)
+                    end
+                end
+                love.graphics.setShader()
+            end,
+            "replace",
+            1)
+        love.graphics.setStencilTest("greater", 0)
+        love.graphics.setBlendMode("multiply", "premultiplied")
+        self:drawEntityShadow(entity, entity.pos.floorZ)
+        love.graphics.setBlendMode("alpha")
+        love.graphics.setStencilTest()
+    end
+end
+
+function Game:stencilLensEntities(entity)
+    if not entity.pos.lensed or not entity.physics then
+        return
+    end
+    for _, lensEntity in self:iterEntities(self.entitiesByComponent.lens) do
+        local lensx = lensEntity.pos.x
+        local lensy = lensEntity.pos.y - lensEntity.pos.z - lensEntity.pos.height / 2
+        if (lensEntity.drawOrder or BIG_NUMBER) < (entity.drawOrder or 0) then
+            love.graphics.stencil(
+                function()
+                    love.graphics.setShader(MASK_SHADER)
+                    love.graphics.draw(
+                        lensEntity.lens.texture,
+                        lensx - lensEntity.lens.width / 2,
+                        lensy - lensEntity.lens.height / 2)
+                    love.graphics.setShader()
+                end,
+                "decrement",
+                2,
+                true)
+        end
+    end
 end
 
 function Game:findEntity(designation)

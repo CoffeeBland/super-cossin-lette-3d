@@ -13,7 +13,8 @@ return {
   nextobjectid = 58,
   properties = {
     ["vars.nextMap"] = "map_mymp",
-    ["vars.targetFruits"] = 2
+    ["vars.targetFruits"] = 2,
+    ["vars.timer"] = 60
   },
   tilesets = {
     {

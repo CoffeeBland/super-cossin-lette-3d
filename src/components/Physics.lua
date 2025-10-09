@@ -46,9 +46,6 @@ function PhysicsSystem:update(framePart, dt, game)
         -- Handling physics and the dreaded Z axis
         if entity.physics then
             entity.pos.x, entity.pos.y = entity.physics.body:getPosition()
-            if entity.anim then
-                entity.physics.body:setAngle(entity.anim.angle)
-            end
             self:findFloorAndCeiling(entity)
             -- Speed! Movement! Wee!
             entity.velocity.x, entity.velocity.y = entity.physics.body:getLinearVelocity()
@@ -235,7 +232,7 @@ function Physics.new(world, entity)
     body:setUserData(entity)
     local shape
     if entity.body.shape == "circle" then
-        shape = love.physics.newCircleShape(entity.body.size / 2)
+        shape = love.physics.newUIUIShape(entity.body.size / 2)
     elseif entity.body.preshape then
         shape = entity.body.preshape
     end

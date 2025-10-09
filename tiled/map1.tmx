@@ -6,9 +6,10 @@
  <properties>
   <property name="vars.nextMap" value="map_mymp"/>
   <property name="vars.targetFruits" type="int" value="2"/>
+  <property name="vars.timer" type="float" value="60"/>
  </properties>
  <tileset firstgid="1" source="tileset.tsx"/>
- <tileset firstgid="268" source="objects.tsx"/>
+ <tileset firstgid="284" source="objects.tsx"/>
  <layer id="1" name="Tile Layer 1" width="30" height="20">
   <data encoding="csv">
    <chunk x="-16" y="-16" width="16" height="16">
@@ -476,23 +477,23 @@
   </data>
  </layer>
  <objectgroup id="4" name="Object Layer 1">
-  <object id="47" gid="341" x="431.667" y="678.333" width="605" height="459"/>
-  <object id="48" gid="359" x="468.667" y="875.667" width="224" height="404"/>
-  <object id="49" gid="292" x="715.333" y="221" width="192" height="256"/>
-  <object id="50" gid="304" x="1233.33" y="456.333" width="128" height="192"/>
-  <object id="51" gid="300" x="949.667" y="752.333" width="128" height="192"/>
-  <object id="54" gid="360" x="-61.6667" y="-530.333" width="1024" height="1286">
+  <object id="47" gid="357" x="-261.208" y="1123.21" width="605" height="459"/>
+  <object id="48" gid="375" x="-224.02" y="1288.35" width="224" height="404"/>
+  <object id="49" gid="308" x="1096.33" y="-360" width="192" height="256"/>
+  <object id="50" gid="320" x="1233.33" y="456.333" width="128" height="192"/>
+  <object id="51" gid="316" x="949.667" y="752.333" width="128" height="192"/>
+  <object id="54" gid="376" x="-61.6667" y="-530.333" width="1024" height="1286">
    <properties>
     <property name="posZ" type="float" value="450"/>
    </properties>
   </object>
-  <object id="56" gid="360" x="1340.69" y="-578.688" width="1024" height="1286">
+  <object id="56" gid="376" x="1340.69" y="-578.688" width="1024" height="1286">
    <properties>
     <property name="posZ" type="float" value="0"/>
     <property name="randomTruncateHeight" type="bool" value="false"/>
     <property name="truncateHeight" type="float" value="400"/>
    </properties>
   </object>
-  <object id="57" gid="2147484005" x="-111" y="592" width="1152" height="1024"/>
+  <object id="57" gid="2147484021" x="-111" y="592" width="1152" height="1024"/>
  </objectgroup>
 </map>

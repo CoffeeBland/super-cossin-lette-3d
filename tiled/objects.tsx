@@ -748,6 +748,7 @@
   <properties>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="160"/>
+   <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="400"/>
    <property name="offsetY" type="float" value="360"/>
    <property name="posZ" type="float" value="320"/>
@@ -775,6 +776,7 @@
  <tile id="1">
   <properties>
    <property name="height" type="float" value="480"/>
+   <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="860"/>
    <property name="offsetY" type="float" value="830"/>
   </properties>
@@ -789,6 +791,7 @@
   <properties>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="230"/>
+   <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="470"/>
    <property name="posZ" type="float" value="770"/>
@@ -804,6 +807,7 @@
   <properties>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="230"/>
+   <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="470"/>
    <property name="posZ" type="float" value="770"/>
@@ -819,6 +823,7 @@
   <properties>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="230"/>
+   <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="470"/>
    <property name="posZ" type="float" value="770"/>

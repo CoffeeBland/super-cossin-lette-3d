@@ -25,6 +25,11 @@ return {
     musicLoops = {
         Title = { loopStart = 55150, loopEnd = 772810 }
     },
+    lens = {
+        textureStepSize = 8,
+        textureSteps = 10,
+        textureStepAlpha = 0.2
+    },
     icons = {
         size = { w = 64, h = 64 },
         list = {

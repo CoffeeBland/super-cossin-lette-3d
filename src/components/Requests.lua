@@ -15,7 +15,8 @@ function Requests.new(game)
         water = {},
         anim = {},
         bubble = {},
-        larp = {}
+        larp = {},
+        lens = {}
     }
 end
 

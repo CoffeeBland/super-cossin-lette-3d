@@ -17,14 +17,14 @@ function FruitSystem:handleCreation(entity)
 
     if entity.physics then
         if entity.fruitStack and not entity.fruitStack.sensor then
-            local shape = love.physics.newCircleShape(entity.fruitStack.pickupRange / 2)
+            local shape = love.physics.newUIUIShape(entity.fruitStack.pickupRange / 2)
             local sensor = entity.physics:newSensor(shape, 0) -- TODO ISH
             sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
             entity.fruitStack.sensor = sensor
         end
 
         if entity.picnic and not entity.picnic.sensor then
-            local shape = love.physics.newCircleShape(entity.picnic.dropRange / 2)
+            local shape = love.physics.newUIUIShape(entity.picnic.dropRange / 2)
             local sensor = entity.physics:newSensor(shape, 0)
             sensor:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
             entity.picnic.sensor = sensor

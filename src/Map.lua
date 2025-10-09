@@ -225,6 +225,7 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     entity.pos.z = z
     entity.pos.onGround = true
     entity.pos.truncateHeight = 0
+    entity.pos.lensed = object.lensed or false
     if object.height or not entity.pos.height then
         entity.pos.height = object.height or HEIGHT_SLICE
     end
