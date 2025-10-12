@@ -180,7 +180,8 @@ local drawnEntities = {}
 
 function Game:render(dt)
     local w, h, sx, sy, ex, ey = self.camera:applyTransformations()
-    love.graphics.clear(0.2, 0.5, 0.4)
+    -- love.graphics.clear(0.2, 0.5, 0.4)
+    love.graphics.clear(0.4, 0.65, 0.4) -- Jessi a pâlie la couleur de BG
 
     local i = 1
     for _, entity in self:iterEntities() do
