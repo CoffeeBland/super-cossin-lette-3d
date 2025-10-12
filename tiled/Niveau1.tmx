@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="51" nextobjectid="2473">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="51" nextobjectid="2510">
  <editorsettings>
   <export target="../maps/Niveau1.lua" format="lua"/>
  </editorsettings>
@@ -580,7 +580,45 @@
  <layer id="49" name="Details" width="30" height="20" locked="1">
   <data encoding="csv"/>
  </layer>
- <objectgroup id="50" name="Arbres delimitent le niveau"/>
+ <objectgroup id="50" name="Arbres delimitent le niveau">
+  <object id="2473" gid="93" x="814" y="3774" width="1024" height="1286"/>
+  <object id="2474" gid="93" x="814" y="3552" width="1024" height="1286"/>
+  <object id="2475" gid="93" x="814" y="3330" width="1024" height="1286"/>
+  <object id="2476" gid="93" x="740" y="3108" width="1024" height="1286"/>
+  <object id="2477" gid="93" x="814" y="2886" width="1024" height="1286"/>
+  <object id="2478" gid="93" x="740" y="3626" width="1024" height="1286"/>
+  <object id="2479" gid="93" x="740" y="3404" width="1024" height="1286"/>
+  <object id="2480" gid="93" x="740" y="3182" width="1024" height="1286"/>
+  <object id="2481" gid="93" x="740" y="3034" width="1024" height="1286"/>
+  <object id="2482" gid="93" x="814" y="2738" width="1024" height="1286"/>
+  <object id="2483" gid="93" x="814" y="2516" width="1024" height="1286"/>
+  <object id="2484" gid="93" x="814" y="2590" width="1024" height="1286"/>
+  <object id="2485" gid="93" x="814" y="2368" width="1024" height="1286"/>
+  <object id="2486" gid="93" x="814" y="2220" width="1024" height="1286"/>
+  <object id="2487" gid="93" x="814" y="2072" width="1024" height="1286"/>
+  <object id="2488" gid="93" x="740" y="1924" width="1024" height="1286"/>
+  <object id="2489" gid="93" x="888" y="1776" width="1024" height="1286"/>
+  <object id="2490" gid="93" x="740" y="1702" width="1024" height="1286"/>
+  <object id="2491" gid="93" x="814" y="1628" width="1024" height="1286"/>
+  <object id="2492" gid="93" x="962" y="3922" width="1024" height="1286"/>
+  <object id="2493" gid="93" x="1110" y="4218" width="1024" height="1286"/>
+  <object id="2494" gid="93" x="1332" y="4144" width="1024" height="1286"/>
+  <object id="2495" gid="93" x="740" y="1850" width="1024" height="1286"/>
+  <object id="2496" gid="93" x="814" y="1480" width="1024" height="1286"/>
+  <object id="2497" gid="93" x="814" y="1406" width="1024" height="1286"/>
+  <object id="2498" gid="93" x="814" y="1258" width="1024" height="1286"/>
+  <object id="2499" gid="93" x="814" y="1184" width="1024" height="1286"/>
+  <object id="2500" gid="93" x="740" y="1184" width="1024" height="1286"/>
+  <object id="2501" gid="93" x="814" y="1036" width="1024" height="1286"/>
+  <object id="2502" gid="93" x="814" y="888" width="1024" height="1286"/>
+  <object id="2503" gid="93" x="814" y="666" width="1024" height="1286"/>
+  <object id="2504" gid="93" x="814" y="518" width="1024" height="1286"/>
+  <object id="2505" gid="93" x="814" y="370" width="1024" height="1286"/>
+  <object id="2506" gid="93" x="814" y="222" width="1024" height="1286"/>
+  <object id="2507" gid="93" x="814" y="148" width="1024" height="1286"/>
+  <object id="2508" gid="93" x="814" y="740" width="1024" height="1286"/>
+  <object id="2509" gid="93" x="888" y="3034" width="1024" height="1286"/>
+ </objectgroup>
  <objectgroup id="43" name="Pic-nic/Blonde a Cossin Lette">
   <object id="2276" gid="74" x="2812" y="2072" width="605" height="459"/>
   <object id="2277" gid="92" x="2925.91" y="2128.09" width="224" height="404"/>
@@ -601,7 +639,7 @@
   </object>
   <object id="2321" gid="38" x="4884" y="592" width="128" height="192"/>
  </objectgroup>
- <objectgroup id="46" name="Objects">
+ <objectgroup id="46" name="Objects" visible="0">
   <object id="2279" gid="2147483738" x="4070" y="2368" width="1152" height="1024"/>
   <object id="2280" gid="90" x="1850" y="2590" width="1152" height="1024"/>
   <object id="2281" gid="93" x="3330" y="814" width="1024" height="1286"/>
