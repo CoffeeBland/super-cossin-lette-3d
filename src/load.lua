@@ -99,7 +99,8 @@ function load.loadData(name, file)
 
         local icons = Game.constants.icons
         icons.byName = {}
-        local cols = math.floor(textures.Bubble_icons:getWidth() / icons.size.w)
+        local iconTexture = getOrLoadTexture("Bubble_icons")
+        local cols = math.floor(iconTexture:getWidth() / icons.size.w)
         for i = 1, #icons.list / 2 do
             local name = icons.list[i * 2 - 1]
             local width = icons.list[i * 2]
@@ -110,9 +111,36 @@ function load.loadData(name, file)
                     math.floor(imgi / cols) * icons.size.h,
                     icons.size.w,
                     icons.size.h,
-                    textures.Bubble_icons),
+                    iconTexture),
                 width = width
             }
+        end
+
+        local bubble = Game.constants.bubble
+        local bubbleTexture = getOrLoadTexture("Bubble")
+        local toQuad = { bubble.guedille, bubble.bg.left, bubble.bg.right }
+        for _, entry in ipairs(toQuad) do
+            entry.quad = love.graphics.newQuad(
+                entry.tile[1] * bubble.segment.w,
+                entry.tile[2] * bubble.segment.h,
+                bubble.segment.w,
+                bubble.segment.h,
+                bubbleTexture)
+        end
+        bubble.bg.segments.quads = {}
+        for i, tile in ipairs(bubble.bg.segments.tiles) do
+            bubble.bg.segments.quads[i * 2 - 1] = love.graphics.newQuad(
+                tile[1] * bubble.segment.w,
+                tile[2] * bubble.segment.h,
+                bubble.segment.w / 2,
+                bubble.segment.h,
+                bubbleTexture)
+            bubble.bg.segments.quads[i * 2] = love.graphics.newQuad(
+                (tile[1] + 0.5) * bubble.segment.w,
+                tile[2] * bubble.segment.h,
+                bubble.segment.w / 2,
+                bubble.segment.h,
+                bubbleTexture)
         end
     end
 

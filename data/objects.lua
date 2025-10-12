@@ -2060,7 +2060,9 @@ return {
     {
       id = 0,
       properties = {
+        ["autoshadow"] = true,
         ["height"] = 480,
+        ["lensed"] = true,
         ["offsetX"] = 280,
         ["offsetY"] = 560
       },
@@ -2106,6 +2108,7 @@ return {
     {
       id = 1,
       properties = {
+        ["autoshadow"] = true,
         ["height"] = 480,
         ["lensed"] = true,
         ["offsetX"] = 860,

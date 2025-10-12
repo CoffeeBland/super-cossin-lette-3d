@@ -762,7 +762,9 @@
  </tile>
  <tile id="0">
   <properties>
+   <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="480"/>
+   <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="280"/>
    <property name="offsetY" type="float" value="560"/>
   </properties>
@@ -775,6 +777,7 @@
  </tile>
  <tile id="1">
   <properties>
+   <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="480"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="860"/>

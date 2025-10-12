@@ -9,11 +9,10 @@
 * Intro (partiellement fait)
 * End state
 * Highlight pour les cas cachés
-* Les bulles ont besoin d'amour
 * Les transitions ont besoin d'amour
 * Y manque un win screen pis lose screen
-* Timer
 * NINJAs
 
 ## BUGS
 * Les layers de tuiles tolèrent pas des gaps
+* Les bulles sont pas bien centrées (mais c'est fiiiiine)

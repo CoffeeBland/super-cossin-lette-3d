@@ -7,15 +7,20 @@ function SoundSystem.new()
     }, SoundSystem)
 end
 
+function SoundSystem:exit()
+end
+
 function SoundSystem:updatePlaying(framePart, dt, entity)
     local playing = (entity.soundEmitter or entity.sounds).playing
     for name, sound in pairs(playing) do
-        local source = sounds[sound.name]
+        local source = sound.source
         if sound.volumeFrames then
             sound.volumeFrames = math.max(sound.volumeFrames - framePart, 0)
             local volume = math.interp(sound.volumeFrames, source:getVolume(), sound.targetVolume)
             if (volume - sound.targetVolume) < DELTA and volume < DELTA then
-                source:stop()
+                sound.source:stop()
+                playing[sound.name] = nil
+                sound.source = nil
             else
                 source:setVolume(volume)
             end
@@ -25,7 +30,7 @@ function SoundSystem:updatePlaying(framePart, dt, entity)
         end
         if source:isPlaying() then
             if (sound.stopOn and entity.anim:isTriggered(sound.stopOn)) or entity.disabled then
-                self:stop(entity, sound, sounds[sound.name])
+                self:stop(entity, sound)
             end
         else
             playing[name] = nil
@@ -47,8 +52,8 @@ function SoundSystem:update(framePart, dt, game)
 
         for trigger, sound in pairs(entity.soundEmitter.triggers) do
             if entity.anim:isTriggered(trigger) then
-                local source = sounds[sound.name]
-                self:start(entity, sound, source)
+                local sourceName = sound.names and sound.names[math.random(#sound.names)] or sound.name
+                self:start(entity, sound, sounds[sourceName])
             end
         end
 
@@ -74,18 +79,22 @@ function SoundSystem:start(entity, sound, source)
         source:setVolume(0)
     end
     (entity.soundEmitter or entity.sounds).playing[sound.name] = sound
+    sound.source = source
     source:stop()
     source:play()
 end
 
-function SoundSystem:stop(entity, sound, source)
+function SoundSystem:stop(entity, sound)
     if sound.fadeOut then
         if not sound.volumeFrames or sound.targetVolume ~= 0 then
             sound.volumeFrames = sound.fadeOut
             sound.targetVolume = 0
         end
     else
-        source:stop()
+        local playing = (entity.soundEmitter or entity.sounds).playing
+        sound.source:stop()
+        playing[sound.name] = nil
+        sound.source = nil
     end
 end
 
@@ -93,11 +102,11 @@ function SoundSystem:toggle(framePart, entity, sound, active)
     if not sound then
         return
     end
-    local source = sounds[sound.name]
     local playing = entity.soundEmitter.playing[sound.name]
     if playing and not active then
-        self:stop(entity, sound, sounds[sound.name])
+        self:stop(entity, sound)
     elseif active and not playing then
-        self:start(entity, sound, sounds[sound.name])
+        local sourceName = sound.names and sound.names[math.random(#sound.names)] or sound.name
+        self:start(entity, sound, sounds[sourceName])
     end
 end

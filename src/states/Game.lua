@@ -86,6 +86,7 @@ function Game:enter(args)
         picnicFruits = 0,
         targetFruits = 1,
         timer = Game.constants.defaultLevelTimer,
+        firstLevel = Game.constants.firstLevel,
         currentMap = args.map,
         nextMap = nil
     }
@@ -180,8 +181,7 @@ local drawnEntities = {}
 
 function Game:render(dt)
     local w, h, sx, sy, ex, ey = self.camera:applyTransformations()
-    -- love.graphics.clear(0.2, 0.5, 0.4)
-    love.graphics.clear(0.4, 0.65, 0.4) -- Jessi a pâlie la couleur de BG
+    love.graphics.clear(unpack(Game.constants.bgColor))
 
     local i = 1
     for _, entity in self:iterEntities() do

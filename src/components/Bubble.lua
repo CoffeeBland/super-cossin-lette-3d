@@ -20,17 +20,6 @@ function Bubble:draw()
         return
     end
 
-    love.graphics.translate(
-        self.anchor.x,
-        self.anchor.y)
-    love.graphics.draw(
-        textures.Bubble,
-        Game.constants.bubble.offset.x, Game.constants.bubble.offset.y, -- pos
-        0, -- rotation
-        1, 1, -- scale
-        textures.Bubble:getWidth() / 2,
-        textures.Bubble:getHeight() / 2)
-
     local n = self.textLen
 
     local iconStart = 0
@@ -44,9 +33,65 @@ function Bubble:draw()
         textWidth = textWidth + iconWidth
     end
 
+    local def = Game.constants.bubble
     local iconStart = iconStart - textWidth / 2
-    local x = iconStart
+    local segments = (textWidth + def.padding) / def.segment.w
+    segments = math.ceil(segments)
+    local bgWidth = segments * def.segment.w
+    local bgHeight = def.segment.h
 
+    love.graphics.translate(
+        self.anchor.x,
+        self.anchor.y)
+
+    love.graphics.draw(
+        textures.Bubble,
+        def.bg.left.quad,
+        0,
+        0,
+        0, 1, 1,
+        bgWidth / 2,
+        bgHeight / 2)
+
+    love.graphics.draw(
+        textures.Bubble,
+        def.bg.right.quad,
+        bgWidth - def.segment.w,
+        0,
+        0, 1, 1,
+        bgWidth / 2,
+        bgHeight / 2)
+
+    local halfw = def.segment.w / 2
+    for i = 2, segments - 1 do
+        love.graphics.draw(
+            textures.Bubble,
+            def.bg.segments.quads[i],
+            i * halfw,
+            0,
+            0, 1, 1,
+            bgWidth / 2,
+            bgHeight / 2)
+        love.graphics.draw(
+            textures.Bubble,
+            def.bg.segments.quads[#def.bg.segments.quads - i + 2],
+            bgWidth - (i + 1) * halfw,
+            0,
+            0, 1, 1,
+            bgWidth / 2,
+            bgHeight / 2)
+    end
+
+    love.graphics.draw(
+        textures.Bubble,
+        def.guedille.quad,
+        0 + def.guedille.offset.x,
+        0 + def.guedille.offset.y,
+        0, 1, 1,
+        def.segment.w / 2,
+        bgHeight / 2)
+
+    local x = iconStart
     for i = 1, self.textIndex or 0 do
         local icon = self.text[i * 2]
         local iconData = Game.constants.icons.byName[icon]
@@ -64,6 +109,11 @@ end
 local digits = {}
 
 function Bubble:show(game, text, anim)
+    if self.textLen ~= 0 then
+        self.nextText = text
+        return
+    end
+
     local i = 0
     while i < #text / 2 do
         local iconName = text[i * 2 + 2]
@@ -96,7 +146,7 @@ function Bubble:show(game, text, anim)
     anim:trigger("speak:start")
 end
 
-function Bubble:update(framePart, anim)
+function Bubble:update(framePart, game, anim)
     if self.textLen == 0 then
         return
     end
@@ -114,6 +164,10 @@ function Bubble:update(framePart, anim)
             self.textIndex = 0
             self.textFrames = nil
             anim:trigger("speak:finished")
+            if self.nextText then
+                self:show(game, self.nextText, anim)
+            end
+            self.nextText = nil
         end
     end
 end

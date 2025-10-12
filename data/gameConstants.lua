@@ -7,6 +7,7 @@ return {
     airDamping = 1,
     jumpMultiplier = 30,
     speedMultiplier = 20,
+    bgColor = { 0.4, 0.65, 0.4 }, -- Jessi a pâlie la couleur de BG
     shadowColor = { 0.875, 0.867, 0.941, 1 },
     lightColor = { 0.875, 0.867, 0.741, 1 },
     autoWalkCutoffFrames = 600,
@@ -19,8 +20,15 @@ return {
         alpha = 0.2
     },
     bubble = {
-        offset = { x = 0, y = 20 },
-        lingerFrames = 60
+        segment = { w = 32, h = 92 },
+        lingerFrames = 60,
+        guedille = { tile = { 0, 0 }, offset = { x = 16, y = 60 } },
+        padding = 48,
+        bg = {
+            left = { tile = { 1, 0 } },
+            right = { tile = { 5, 0 } },
+            segments = { tiles = { { 2, 0 }, { 3, 0 }, { 4, 0 } } }
+        }
     },
     musicLoops = {
         Title = { loopStart = 55150, loopEnd = 772810 }
@@ -75,6 +83,7 @@ return {
             name = "lookUp",
             value = true
         },
+        { "if", "==", "[vars.currentMap]", "[vars.firstLevel]" },
         { "camera",
             entity = { byName = "picnic" },
             zoom = 3
@@ -93,6 +102,17 @@ return {
             panFrames = 60
         },
         { "waitForPan" },
+        { "else" },
+        { "camera",
+            entity = { byName = "cossin" },
+            zoom = 3
+        },
+        { "camera",
+            zoom = 1,
+            zoomFrames = 15
+        },
+        { "waitForZoom" },
+        { "end" },
         { "waitFrames", 15 },
         { "bubble",
             entity = { byName = "cossin" },
@@ -338,6 +358,7 @@ return {
             fruitStack = { picnicAction = "pickup" }
         },
         { "waitForVar", "==", "[vars.picnicFruits]", 0 },
+        { "waitFrames", 30 },
         { "bubble",
             entity = { byName = "blonde" },
             text = { 10, "<3" }

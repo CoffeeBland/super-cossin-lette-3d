@@ -11,7 +11,7 @@ function ActorSystem:update(framePart, dt, game)
         entity.actor:update(framePart, game, entity, actionsForActor)
     end
     for _, entity in game:iterEntities(game.entitiesByComponent.bubble) do
-        entity.bubble:update(framePart, entity.anim)
+        entity.bubble:update(framePart, game, entity.anim)
     end
     for _, entity in game:iterEntities(game.entitiesByComponent.larp) do
         entity.larp:update(framePart, entity)

@@ -41,7 +41,23 @@ return function()
                 eatFruit = {
                     name = "Gulp",
                     pitchRange = { 1.6, 2 }
-                }
+                },
+                speak = {
+                    name = "Bloop",
+                    names = {
+                        "Bloop1",
+                        "Bloop2",
+                        "Bloop3",
+                        "Bloop4",
+                        "Bloop5",
+                        "Bloop6",
+                        "Bloop7",
+                        "Bloop8",
+                        "Bloop9",
+                    },
+                    volumeRange = { 0.8, 1 },
+                    pitchRange = { 1.2, 1.4 }
+                },
             },
             conditions = {
                 light = {
@@ -49,8 +65,9 @@ return function()
                     loop = true,
                     minimumLight = 0.1,
                     fadeIn = 30,
-                    fadeOut = 15
-                }
+                    fadeOut = 15,
+                    volume = 0.7
+                },
             }
         },
         fruitStack = {
