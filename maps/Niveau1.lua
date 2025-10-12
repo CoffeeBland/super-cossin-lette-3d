@@ -10876,7 +10876,11 @@ return {
           rotation = 0,
           gid = 93,
           visible = true,
-          properties = {}
+          properties = {
+            ["vars.nextMap"] = "Niveau2",
+            ["vars.targetFruits"] = 3,
+            ["vars.timer"] = 30
+          }
         },
         {
           id = 2517,
@@ -13065,7 +13069,7 @@ return {
       id = 46,
       name = "Objects",
       class = "",
-      visible = false,
+      visible = true,
       opacity = 1,
       offsetx = 0,
       offsety = 0,

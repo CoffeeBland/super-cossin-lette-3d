@@ -624,7 +624,13 @@
   <object id="2513" gid="93" x="2738" y="4514" width="1024" height="1286"/>
   <object id="2514" gid="93" x="3256" y="4662" width="1024" height="1286"/>
   <object id="2515" gid="93" x="3256" y="4588" width="1024" height="1286"/>
-  <object id="2516" gid="93" x="3700" y="4662" width="1024" height="1286"/>
+  <object id="2516" gid="93" x="3700" y="4662" width="1024" height="1286">
+   <properties>
+    <property name="vars.nextMap" value="Niveau2"/>
+    <property name="vars.targetFruits" type="int" value="3"/>
+    <property name="vars.timer" type="float" value="30"/>
+   </properties>
+  </object>
   <object id="2517" gid="93" x="3404" y="4662" width="1024" height="1286"/>
   <object id="2518" gid="93" x="2960" y="4514" width="1024" height="1286"/>
   <object id="2519" gid="93" x="2368" y="4514" width="1024" height="1286"/>
