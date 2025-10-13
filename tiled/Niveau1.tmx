@@ -5,7 +5,7 @@
  </editorsettings>
  <properties>
   <property name="vars.nextMap" value="Niveau2"/>
-  <property name="vars.targetFruits" type="int" value="1"/>
+  <property name="vars.targetFruits" type="int" value="3"/>
   <property name="vars.timer" type="float" value="30"/>
  </properties>
  <tileset firstgid="1" source="objects.tsx"/>
@@ -793,7 +793,7 @@
     <property name="vars.targetFruits" type="int" value="4"/>
    </properties>
   </object>
-  <object id="2321" gid="38" x="4884" y="592" width="128" height="192"/>
+  <object id="2321" gid="38" x="4662" y="370" width="128" height="192"/>
  </objectgroup>
  <objectgroup id="46" name="Objects">
   <object id="2279" gid="2147483738" x="4070" y="2368" width="1152" height="1024"/>

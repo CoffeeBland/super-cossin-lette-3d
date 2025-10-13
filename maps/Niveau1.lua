@@ -13,7 +13,7 @@ return {
   nextobjectid = 2660,
   properties = {
     ["vars.nextMap"] = "Niveau2",
-    ["vars.targetFruits"] = 1,
+    ["vars.targetFruits"] = 3,
     ["vars.timer"] = 30
   },
   tilesets = {
@@ -13052,8 +13052,8 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 4884,
-          y = 592,
+          x = 4662,
+          y = 370,
           width = 128,
           height = 192,
           rotation = 0,

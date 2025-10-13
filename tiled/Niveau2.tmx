@@ -975,8 +975,8 @@
   <data encoding="csv"/>
  </layer>
  <objectgroup id="43" name="Pic-nic/Blonde a Cossin Lette">
-  <object id="2276" gid="74" x="4218" y="3256" width="605" height="459"/>
-  <object id="2277" gid="92" x="4218" y="3330" width="224" height="404"/>
+  <object id="2276" gid="74" x="4292" y="3404" width="605" height="459"/>
+  <object id="2277" gid="92" x="4292" y="3478" width="240" height="370"/>
  </objectgroup>
  <objectgroup id="44" name="Cossin Lette">
   <object id="2275" gid="25" x="1406" y="2220" width="192" height="256"/>
