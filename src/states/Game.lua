@@ -189,7 +189,8 @@ function Game:render(dt)
         local entitysy = entity.pos.y - entity.pos.z - 1200
         local entityex = entity.pos.x + 800
         local entityey = entity.pos.y - entity.pos.z + 1200
-        if  entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
+        if (entity.sprites or entity.tileSprites) and
+            entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
             drawnEntities[i] = entity
             i = i + 1
         end
@@ -240,14 +241,12 @@ function Game:render(dt)
 
     -- Entities
     for _, entity in ipairs(drawnEntities) do
-        love.graphics.clear(false, 128, false)
         self:stencilLensEntities(entity)
         if entity.color then
             love.graphics.setColor(unpack(entity.color))
         end
         --self:old_drawStackedEntityShadows(entity)
         -- Sprites
-        love.graphics.setStencilTest("gequal", 128)
         self:drawEntity(entity)
         love.graphics.setStencilTest()
         love.graphics.setColor(1, 1, 1, 1)
@@ -261,14 +260,16 @@ function Game:render(dt)
                     love.graphics.setShader()
                 end,
                 "increment",
-                1,
-                true)
-            love.graphics.setStencilTest("greater", 128)
+                1)
+            love.graphics.setStencilTest("greater", 0)
             love.graphics.setBlendMode("multiply", "premultiplied")
             overlappingCheckSlop = SHADOW_OVERLAP_SLOP
-            for _, other in ipairs(self.physics:getAllOverlappingOfType(entity.physics.heightSensor)) do
-                if other.shadow and
-                    entity.pos.z + entity.pos.height < other.pos.z + DELTA and
+            for _, other in ipairs(self.physics:getAllOverlappingOfType(
+                entity.physics.heightSensor,
+                nil, -- type
+                nil, -- pos
+                "shadow")) do
+                if entity.pos.z + entity.pos.height < other.pos.z + DELTA and
                     entity.pos.z + entity.pos.height > other.pos.floorZ - DELTA
                 then
                     self:drawEntityShadow(other, entity.pos.z + entity.pos.height)
@@ -461,6 +462,8 @@ function Game:stencilLensEntities(entity)
     if not entity.pos.lensed or not entity.physics then
         return
     end
+    love.graphics.clear(false, 128, false)
+    love.graphics.setStencilTest("gequal", 128)
     for _, lensEntity in self:iterEntities(self.entitiesByComponent.lens) do
         local lensx = lensEntity.pos.x
         local lensy = lensEntity.pos.y - lensEntity.pos.z - lensEntity.pos.height / 2

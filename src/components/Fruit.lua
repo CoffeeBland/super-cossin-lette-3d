@@ -92,10 +92,13 @@ function FruitSystem:update(framePart, dt, game)
             entity.fruitStack.cooldown = nil
         end
 
-        for _, other in ipairs(game.physics:getAllOverlappingOfType(entity.fruitStack.sensor)) do
-            if other.fruit then
-                self:checkFruitPickup(entity, other)
-            end
+        for _, other in ipairs(game.physics:getAllOverlappingOfType(
+            entity.fruitStack.sensor,
+            nil, -- type
+            nil, -- pos
+            "fruit"))
+        do
+            self:checkFruitPickup(entity, other)
         end
 
         game.vars.remainingFruits = game.vars.remainingFruits + #entity.fruitStack.fruits
@@ -106,46 +109,49 @@ function FruitSystem:update(framePart, dt, game)
             entity.picnic.dropFrames = math.max(entity.picnic.dropFrames - framePart, 0)
         end
 
-        for _, otherEntity in ipairs(game.physics:getAllOverlappingOfType(entity.picnic.sensor)) do
-            if otherEntity.fruitStack then
-                if otherEntity.fruitStack.picnicAction == "drop" and
-                    #otherEntity.fruitStack.fruits > 0
-                then
-                    otherEntity.velocity.z = entity.picnic.stackDropJumpSpeed * Game.constants.jumpMultiplier
-                    otherEntity.physics.body:setLinearVelocity(0, 0)
-                    local dropPoints = love.physics.sampleShape(
-                        entity.physics.shape,
-                        #otherEntity.fruitStack.fruits)
-                    for i = #otherEntity.fruitStack.fruits, 1, -1 do
-                        local fruitEntity = otherEntity.fruitStack.fruits[i]
-                        otherEntity.fruitStack.fruits[i] = nil
-                        otherEntity.fruitStack.cooldown = nil
-                        otherEntity.anim:release("eat")
+        for _, otherEntity in ipairs(game.physics:getAllOverlappingOfType(
+            entity.picnic.sensor,
+            nil, -- type
+            nil, -- pos
+            "fruitStack"))
+        do
+            if otherEntity.fruitStack.picnicAction == "drop" and
+                #otherEntity.fruitStack.fruits > 0
+            then
+                otherEntity.velocity.z = entity.picnic.stackDropJumpSpeed * Game.constants.jumpMultiplier
+                otherEntity.physics.body:setLinearVelocity(0, 0)
+                local dropPoints = love.physics.sampleShape(
+                    entity.physics.shape,
+                    #otherEntity.fruitStack.fruits)
+                for i = #otherEntity.fruitStack.fruits, 1, -1 do
+                    local fruitEntity = otherEntity.fruitStack.fruits[i]
+                    otherEntity.fruitStack.fruits[i] = nil
+                    otherEntity.fruitStack.cooldown = nil
+                    otherEntity.anim:release("eat")
 
-                        fruitEntity.fruit.stackEntity = entity
-                        fruitEntity.fruit.animFrames = entity.picnic.pickupAnimFrames
-                        fruitEntity.fruit.offset = {
-                            x = dropPoints[(i - 1) * 2 + 1],
-                            y = dropPoints[(i - 1) * 2 + 2],
-                            z = 0
-                        }
-                        fruitEntity.fruit.reachedStack = false
-                        fruitEntity.fruit.cooldown = nil
-                        fruitEntity.velocity.z = entity.picnic.pickupJumpSpeed * Game.constants.jumpMultiplier
-                        table.insert(entity.picnic.fruits, fruitEntity)
-                        game.vars.picnicFruits = #entity.picnic.fruits
-                    end
-                elseif otherEntity.fruitStack.picnicAction == "pickup" and
-                    #entity.picnic.fruits > 0 and
-                    (not entity.picnic.dropFrames or entity.picnic.dropFrames == 0)
-                then
-                    entity.picnic.dropFrames = entity.picnic.dropCooldown
-                    local i = math.random(#entity.picnic.fruits)
-                    local fruitEntity = entity.picnic.fruits[i]
-                    table.remove(entity.picnic.fruits, i)
+                    fruitEntity.fruit.stackEntity = entity
+                    fruitEntity.fruit.animFrames = entity.picnic.pickupAnimFrames
+                    fruitEntity.fruit.offset = {
+                        x = dropPoints[(i - 1) * 2 + 1],
+                        y = dropPoints[(i - 1) * 2 + 2],
+                        z = 0
+                    }
+                    fruitEntity.fruit.reachedStack = false
+                    fruitEntity.fruit.cooldown = nil
+                    fruitEntity.velocity.z = entity.picnic.pickupJumpSpeed * Game.constants.jumpMultiplier
+                    table.insert(entity.picnic.fruits, fruitEntity)
                     game.vars.picnicFruits = #entity.picnic.fruits
-                    self:fruitPickup(otherEntity, fruitEntity)
                 end
+            elseif otherEntity.fruitStack.picnicAction == "pickup" and
+                #entity.picnic.fruits > 0 and
+                (not entity.picnic.dropFrames or entity.picnic.dropFrames == 0)
+            then
+                entity.picnic.dropFrames = entity.picnic.dropCooldown
+                local i = math.random(#entity.picnic.fruits)
+                local fruitEntity = entity.picnic.fruits[i]
+                table.remove(entity.picnic.fruits, i)
+                game.vars.picnicFruits = #entity.picnic.fruits
+                self:fruitPickup(otherEntity, fruitEntity)
             end
         end
     end
@@ -164,7 +170,7 @@ function FruitSystem:update(framePart, dt, game)
             local targetX = parentEntity.pos.x + entity.fruit.offset.x
             local targetY = parentEntity.pos.y + entity.fruit.offset.y
             local offsetZ = entity.fruit.offset.z * (parentEntity.anim and parentEntity.anim.baseWiggle.y or 1)
-            local targetZ = parentEntity.pos.z + offsetZ
+            local targetZ = parentEntity.pos.z + parentEntity.pos.height + offsetZ
 
             if entity.fruit.animFrames > 0 then
                 entity.physics.body:setPosition(

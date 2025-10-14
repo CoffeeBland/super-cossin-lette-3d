@@ -14,14 +14,13 @@ return {
   properties = {
     ["vars.nextMap"] = "map_mymp",
     ["vars.targetFruits"] = 2,
-    ["vars.timer"] = 60
+    ["vars.timer"] = 15
   },
   tilesets = {
     {
       name = "tileset",
       firstgid = 1,
-      filename = "../tiled/tileset.tsx",
-      exportfilename = "../data/tileset.lua"
+      filename = "../tiled/tileset.tsx"
     },
     {
       name = "objects",

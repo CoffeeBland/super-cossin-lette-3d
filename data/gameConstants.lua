@@ -259,7 +259,7 @@ return {
             ["color[4]"] = { to = 1, delay = 30, frames = 60 },
             ["sprites[1].anchor.x"] = { startOffset = -150, toOffset = 0, delay = 30, frames = 120 },
             ["particleEmitter.always.offsetRange.x[1]"] = { startOffset = 200, toOffset = 0, delay = 30, frames = 120 },
-            ["pos.z"] = { from = 400, to = 0, delay = 30, frames = 120 }
+            ["pos.z"] = { startOffset = 400, delay = 30, frames = 120 }
         },
         { "waitForMove",
             entity = { byName = "cossin" }
@@ -390,7 +390,7 @@ return {
             ["color[4]"] = { to = 0, delay = 30, frames = 30 },
             ["sprites[1].anchor.x"] = { toOffset = -150, frames = 60 },
             ["particleEmitter.always.offsetRange.x[1]"] = { toOffset = 200, frames = 60 },
-            ["pos.z"] = { to = 400, frames = 60 }
+            ["pos.z"] = { toOffset = 400, frames = 60 }
         },
         { "waitForLarp",
             entity = { byName = "blonde" }

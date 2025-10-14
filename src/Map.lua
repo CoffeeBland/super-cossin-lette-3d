@@ -187,26 +187,30 @@ function Map:createEntity(entities, data, id, flipX, flipY)
             truncateHeight = math.random(data.properties.maxTruncateHeight or object.maxTruncateHeight)
         end
 
-        for _, replacement in pairs(object.replaceTo) do
-            local id = replacement.id or 0
-            if replacement.ids and #replacement.ids > 0 then
-                id = replacement.ids[math.random(#replacement.ids)]
+        for _, rep in pairs(object.replaceTo) do
+            local id = rep.id or 0
+            if rep.ids and #rep.ids > 0 then
+                id = rep.ids[math.random(#rep.ids)]
             end
-            local replacementFlipX = flipX ~= self.getFlip(replacement.flipX)
-            local replacementFlipY = flipY ~= self.getFlip(replacement.flipY)
-            local replacementFsx = replacementFlipX and -1 or 1
-            local replacementFsy = replacementFlipY and -1 or 1
-            local entity = self:createEntity(entities, data, id, replacementFlipX, replacementFlipY)
-            -- TODO sub replacements aren't supported
+            local repob = objects.byId[id]
+            local repFlipX = flipX ~= self.getFlip(rep.flipX)
+            local repFlipY = flipY ~= self.getFlip(rep.flipY)
+            local repFsx = repFlipX and -1 or 1
+            local repFsy = repFlipY and -1 or 1
+            local entity = self:createEntity(entities, data, id, repFlipX, repFlipY)
+            -- TODO sub reps aren't supported
             -- Also this can blow up if data is recursive (oops!)
-            entity.pos.x = entity.pos.x + replacementFsx * (replacement.posX or 0)
-            entity.pos.y = entity.pos.y + replacementFsy * (replacement.posY or 0)
-            entity.pos.z = entity.pos.z + (replacement.posZ or 0)
+            entity.pos.z = z + (repob.posZ or 0) + (rep.posZ or 0)
+            entity.pos.x = (tx - ty) * TILE_WIDTH / 2 +
+                repFsx * (repob.offsetX + (repob.posX or 0) + (rep.posX or 0))
+            entity.pos.y = (tx + ty) * TILE_HEIGHT / 2 +
+                repFsy * (repob.offsetY + (repob.posY or 0) + (rep.posY or 0)) +
+                entity.pos.z
 
-            if replacement.offsetByTruncate then
+            if rep.offsetByTruncate then
                 entity.pos.z = entity.pos.z - truncateHeight
             end
-            if replacement.applyTruncate then
+            if rep.applyTruncate then
                 entity.pos.truncateHeight = truncateHeight + 80
             end
 

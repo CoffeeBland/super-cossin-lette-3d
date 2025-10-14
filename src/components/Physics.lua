@@ -156,11 +156,15 @@ local overlappingCheckEndZ = nil
 overlappingCheckSlop = nil
 local overlappingCheckStopOnFirst = false
 local overlappingCheckResult = {}
+local overlappingVisit = 0
+local overlappingSearchedComponent = nil
 
 local function onOverlappingEntitiesCheck(fix)
     local otherEntity = fix:getBody():getUserData()
 
-    if otherEntity.disabled then
+    if otherEntity.disabled or
+        otherEntity._visit == overlappingVisit or
+        (overlappingSearchedComponent and not otherEntity[overlappingSearchedComponent]) then
         return true
     end
 
@@ -178,23 +182,34 @@ local function onOverlappingEntitiesCheck(fix)
             if overlappingCheckStartZ < ez2 - DELTA and
                 sz2 < overlappingCheckEndZ + DELTA
             then
+                otherEntity._visit = overlappingVisit
                 table.insert(overlappingCheckResult, otherEntity)
             end
         end
     else
+        otherEntity._visit = overlappingVisit
         table.insert(overlappingCheckResult, otherEntity)
     end
 
     return not overlappingCheckStopOnFirst
 end
 
-function PhysicsSystem:getAllOverlappingOfType(sensor, type, pos)
+local function overlappingCheckResultIterator(result, i)
+    if i > overlappingCheckResultLen then
+        return
+    end
+    return i  + 1, overlappingCheckResult[i]
+end
+
+function PhysicsSystem:getAllOverlappingOfType(sensor, type, pos, searchedComponent)
     overlappingCheckSensor = sensor
     overlappingCheckBody = overlappingCheckSensor:getBody()
     overlappingCheckEntity = overlappingCheckBody:getUserData()
     overlappingCheckType = type or HEIGHT_SENSOR
     overlappingCheckStartZ = pos and pos.z
     overlappingCheckEndZ = pos and (pos.z + pos.height)
+    overlappingVisit = overlappingVisit + 1
+    overlappingSearchedComponent = searchedComponent
     local slop = overlappingCheckSlop or 0
 
     local tlx, tly, brx, bry = sensor:getBoundingBox()
@@ -207,6 +222,7 @@ function PhysicsSystem:getAllOverlappingOfType(sensor, type, pos)
     overlappingCheckStartZ = nil
     overlappingCheckEndZ = nil
     overlappingCheckSlop = nil
+    overlappingSearchedComponent = nil
     local result = overlappingCheckResult
     if #overlappingCheckResult > 0 then
         overlappingCheckResult = {}

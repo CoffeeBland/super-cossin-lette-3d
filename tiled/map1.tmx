@@ -6,7 +6,7 @@
  <properties>
   <property name="vars.nextMap" value="map_mymp"/>
   <property name="vars.targetFruits" type="int" value="2"/>
-  <property name="vars.timer" type="float" value="60"/>
+  <property name="vars.timer" type="float" value="15"/>
  </properties>
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="284" source="objects.tsx"/>
