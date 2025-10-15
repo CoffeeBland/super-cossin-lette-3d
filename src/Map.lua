@@ -384,11 +384,7 @@ function Map:getTileEntities(physics, entities)
     end
 end
 
-function Map:drawTiles(batch, time, sx, sy, ex, ey)
-    sx = sx - TILE_WIDTH
-    ex = ex + TILE_WIDTH
-    sy = sy - TILE_HEIGHT
-    ey = ey + TILE_HEIGHT
+function Map:drawTiles(batch, time)
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
@@ -399,26 +395,46 @@ function Map:drawTiles(batch, time, sx, sy, ex, ey)
                         tile = anim.ids[frame + 1]
                     end
                     local x, y = Map.TileToPosMat:transformPoint(tx, ty)
-                    if x >= sx and x <= ex and y >= sy and y <= ey then
-                        local tileData = tileset.tiles[tile]
-                        -- Tiles with heights are handled as entities
-                        local height = tileData.height or 0
-                        local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
-                        if height == 0 and layerHeight == 0 then
-                            local tileData = tileData
-                            batch:add(
-                                tileData.quad,
-                                x,
-                                y,
-                                0,
-                                flipX and -1 or 1,
-                                flipY and -1 or 1,
-                                tileData.originX,
-                                tileData.originY)
-                        end
+                    local tileData = tileset.tiles[tile]
+                    -- Tiles with heights are handled as entities
+                    local height = tileData.height or 0
+                    local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
+                    if height == 0 and layerHeight == 0 then
+                        local tileData = tileData
+                        batch:add(
+                            tileData.quad,
+                            x,
+                            y,
+                            0,
+                            flipX and -1 or 1,
+                            flipY and -1 or 1,
+                            tileData.originX,
+                            tileData.originY)
                     end
                 end
             end
         end
     end
+end
+
+-- TODO!
+function Map:createShadowMap(entities)
+    local shadowMap = love.graphics.newCanvas(math.ceil(w / scale), math.ceil(h / scale))
+
+    love.graphics.setCanvas(shadowMap)
+    love.graphics.scale(1/4)
+
+    for _, entity in ipairs(entities) do
+        if entity.shadow and not entity.velocity then
+            love.graphics.draw(textures[entity.shadow.name],
+                entity.pos.x,
+                entity.pos.y,
+                0,
+                (entity.shadow.flipX and -1 or 1),
+                (entity.shadow.flipY and -1 or 1),
+                entity.shadow.anchor.x,
+                entity.shadow.anchor.y)
+        end
+    end
+
 end

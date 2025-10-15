@@ -13,6 +13,8 @@ return {
     autoWalkCutoffFrames = 600,
     autoWalkJumpFrames = 60,
     autoWalkCutoffDistance2 = 100,
+    tileBatchesCount = 16,
+    tileBatchesDT = 15 * (1 / 60),
     defaultLight = {
         angle = 0.4 * math.pi,
         radiusw = 180,

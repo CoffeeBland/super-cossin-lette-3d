@@ -67,7 +67,7 @@ function load.createShadow(name, points)
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setCanvas()
     local shadowName = "objectShadow" .. name;
-    textures[shadowName] = shadowCanvas
+    textures[shadowName] = love.graphics.newImage(shadowCanvas:newImageData())
 
     local centerX = (maxX + minX) / 2
     local centerY = (maxY + minY) / 2
@@ -277,7 +277,6 @@ function load.loadData(name, file)
                 end
 
                 local canvas = love.graphics.newCanvas(width, height)
-                textures[name] = canvas
                 love.graphics.setCanvas(canvas)
 
                 -- Gogo gadget.
@@ -348,6 +347,7 @@ function load.loadData(name, file)
                 end
 
                 love.graphics.setCanvas()
+                textures[name] = love.graphics.newImage(canvas:newImageData())
             end
         end
     end
