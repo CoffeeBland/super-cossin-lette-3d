@@ -294,6 +294,31 @@ function Map:getPointHeight(x, y)
 end
 
 function Map:getTileEntities(physics, entities)
+    for tx = self.minx - 1, self.maxx + 1 do
+        for ty = self.miny - 1, self.maxy + 1 do
+            local globali = tx + ty * self.width
+            if not self.heightMarkers[globali] then
+                local x, y = Map.TileToPosMat:transformPoint(tx - 0.5, ty - 0.5)
+                local tile = 95 -- LOL
+                local tileData = tileset.tiles[tile]
+                local tileShape = tileset.shapes[tile]
+                local body = love.physics.newBody(physics, x, y, "static")
+                local fixture = love.physics.newFixture(body, tileShape.default, 1)
+                fixture:setUserData({ type = FIXBODY })
+                fixture:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+                body:setUserData({
+                    id = -1,
+                    pos = {
+                        x = x,
+                        y = y,
+                        z = 0,
+                        height = SKY_LIMIT
+                    }
+                })
+            end
+        end
+    end
+
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
