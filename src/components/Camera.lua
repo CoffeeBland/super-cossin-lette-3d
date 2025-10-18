@@ -88,14 +88,14 @@ end
 function CameraSystem:applyTransformations()
     local w, h = love.graphics.getDimensions()
     love.graphics.translate(w / 2, h / 2)
-    local scale = math.min(math.min(w / expectedResolution[1], h / expectedResolution[2]), 1)
-    love.graphics.scale(scale * self.zoom)
+    local scale = math.min(math.min(w / expectedResolution[1], h / expectedResolution[2]), 1) * self.zoom
+    love.graphics.scale(scale)
     love.graphics.translate(
         -self.x + self.offsetX,
         -self.y + self.offsetY + self.z)
     local sx, sy = love.graphics.inverseTransformPoint(0, 0)
     local ex, ey = love.graphics.inverseTransformPoint(0 + w, 0 + h)
-    return w, h, sx, sy, ex, ey
+    return w, h, sx, sy, ex, ey, scale
 end
 
 function CameraSystem:isPanning()

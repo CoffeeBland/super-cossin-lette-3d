@@ -6,9 +6,9 @@ TILE_FLIP_H = math.pow(2, 31)
 TILE_FLIP_V = math.pow(2, 30)
 TILE_ID_MASK = bit.bnot(bit.bor(TILE_FLIP_H, TILE_FLIP_V))
 DELTA = 0.01
-SKY_LIMIT = METER_SCALE * 16 -- 2048
-SHADOW_MAP_HEIGHT_OFFSET = 100
-SHADOW_MAP_OFFSET = 600
+SKY_LIMIT = 2560
+SHADOW_MAP_HEIGHT_OFFSET = 32
+SHADOW_MAP_OFFSET = 1200
 HEIGHT_SLICE = 80
 BIG_NUMBER = 999999
 
@@ -20,23 +20,41 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
     uniform float shadowMapHeightOffset;
     uniform float shadowMapOffset;
     uniform float skyLimit;
+    uniform float scale;
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
 
-        vec2 height_map_coords = screen_coords / size;
-        float height = Texel(heightMap, height_map_coords).r * skyLimit / 2.0;
+        float height = Texel(heightMap, screen_coords / size).r * skyLimit;
 
-        vec3 pos = vec3(screen_coords.x, screen_coords.y + height, height);
-
-        vec2 shadow_map_coords = vec2(screen_coords.x, screen_coords.y + height) / vec2(size.x, size.y + shadowMapOffset);
+        vec2 shadow_map_coords = vec2(
+            (screen_coords.x) / size.x,
+            (screen_coords.y + height * scale) / (size.y + shadowMapOffset));
         float shadowHeight = Texel(shadowMap, shadow_map_coords).r * skyLimit - shadowMapHeightOffset;
 
-        if (height <= shadowHeight / 2.0) {
-            return texturecolor * color * shadowColor;
+        if (height <= shadowHeight + 10) {
+            return texturecolor * color * vec4(shadowColor.rgb, 1.0);
         } else {
             return texturecolor * color;
         }
+    }
+]]
+
+HEIGHT_MAP_SHADER = love.graphics.newShader[[
+    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+        vec4 texturecolor = Texel(texture, texture_coords);
+        return vec4(texturecolor.rgb + color.rgb, texturecolor.a * color.a);
+    }
+]]
+
+MAP_DEBUG_SHADER = love.graphics.newShader[[
+    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+        vec4 texturecolor = Texel(texture, texture_coords);
+        float third = 1.0/3.0;
+        float r = min(texturecolor.r, third) * 3.0;
+        float g = min(max(texturecolor.r - third, 0.0), third) * 3.0;
+        float b = min(max(texturecolor.r - 2 * third, 0.0), third) * 3.0;
+        return vec4(r, g, b, texturecolor.a);
     }
 ]]
 
@@ -105,13 +123,3 @@ TILE_SHAPE = love.physics.newPolygonShape(
 ELLIPSE_WIDTH_RATIO = 0.5 + TILE_WIDTH / (TILE_WIDTH + TILE_HEIGHT)
 ELLIPSE_HEIGHT_RATIO = 0.5 + TILE_HEIGHT / (TILE_WIDTH + TILE_HEIGHT)
 LIGHT_POINTS = {}
-
---local heightGradientCanvas = love.graphics.newCanvas(1, SKY_LIMIT, { format = "r8" })
---love.graphics.setCanvas(heightGradientCanvas)
---for i = 0, SKY_LIMIT - 1 do
---    love.graphics.setColor(i / SKY_LIMIT, 0, 0, 1)
---    love.graphics.points(0, i)
---end
---love.graphics.reset()
---love.graphics.setCanvas()
---HEIGHT_GRADIENT = love.graphics.newImage(heightGradientCanvas:newImageData())

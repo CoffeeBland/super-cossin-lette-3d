@@ -143,7 +143,7 @@ function Game:enter(args)
         if entity.sprites then
             for _, sprite in ipairs(entity.sprites) do
                 if sprite.name then
-                    load.createHeightTexture(sprite.name)
+                    load.createHeightTexture(sprite.name, sprite.anchor, entity.pos.height)
                 end
             end
         end
@@ -185,7 +185,7 @@ function Game:enter(args)
                     sprite.anchor.y)
 
                 self.stackedTilesHeightBatches[i]:setColor(
-                    (entity.pos.z + (entity.pos.height or 0)) / SKY_LIMIT,
+                    entity.pos.z / SKY_LIMIT,
                     0,
                     0,
                     1)
@@ -249,7 +249,7 @@ local heightCanvas = nil
 local shadowCanvas = nil
 
 function Game:render(dt)
-    local w, h, sx, sy, ex, ey = self.camera:applyTransformations()
+    local w, h, sx, sy, ex, ey, scale = self.camera:applyTransformations()
 
     local i = 1
     for _, entity in self:iterEntities() do
@@ -281,12 +281,13 @@ function Game:render(dt)
     love.graphics.clear(unpack(Game.constants.bgColor))
     love.graphics.setShader(HEIGHT_MAPPED_SHADER)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
-    HEIGHT_MAPPED_SHADER:send("skyLimit", SKY_LIMIT)
     HEIGHT_MAPPED_SHADER:send("heightMap", heightCanvas)
     HEIGHT_MAPPED_SHADER:send("shadowMap", shadowCanvas)
     HEIGHT_MAPPED_SHADER:send("shadowColor", Game.constants.shadowColor)
-    HEIGHT_MAPPED_SHADER:send("shadowMapHeightOffset", SHADOW_MAP_HEIGHT_OFFSET * 0.9)
+    HEIGHT_MAPPED_SHADER:send("shadowMapHeightOffset", SHADOW_MAP_HEIGHT_OFFSET)
     HEIGHT_MAPPED_SHADER:send("shadowMapOffset", SHADOW_MAP_OFFSET)
+    HEIGHT_MAPPED_SHADER:send("skyLimit", SKY_LIMIT)
+    HEIGHT_MAPPED_SHADER:send("scale", scale)
 
     tileBatchStartIdx = 0
     tileBatchIdx = 0
@@ -385,11 +386,15 @@ function Game:render(dt)
     love.graphics:reset()
 
     if debug.heightMap then
+        love.graphics.setShader(MAP_DEBUG_SHADER)
         love.graphics.draw(heightCanvas, 0, 0)
+        love.graphics.setShader()
     end
 
     if debug.shadowMap then
+        love.graphics.setShader(MAP_DEBUG_SHADER)
         love.graphics.draw(shadowCanvas, 0, 0)
+        love.graphics.setShader()
     end
 
     self.images:draw()
@@ -503,15 +508,15 @@ function Game:drawHeightMap(w, h, drawnEntities)
     local tmp = textures
     textures = heightTextures
     love.graphics.push("all")
+    love.graphics.setShader(HEIGHT_MAP_SHADER)
     love.graphics.setCanvas({ heightCanvas, stencil = true })
     love.graphics.clear(0, 0, 0, 1)
     for _, entity in ipairs(drawnEntities) do
         if entity.sprites then
             self:drawStackedTileHeightBatch()
             self:stencilLensEntities(entity)
-            local topz = entity.pos.z + (entity.pos.height or 0)
             for _, sprite in ipairs(entity.sprites) do
-                love.graphics.setColor(topz / SKY_LIMIT, 0, 0, 1)
+                love.graphics.setColor(entity.pos.z / SKY_LIMIT, 0, 0, 1)
                 self:drawEntitySprite(entity, sprite)
             end
             love.graphics.setStencilTest()

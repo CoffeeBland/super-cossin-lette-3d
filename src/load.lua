@@ -39,16 +39,21 @@ local function getTilePos(alignment, tile)
     end
 end
 
-function load.createHeightTexture(name)
+-- We're gonna bake in a whole lot of assumptions about how textures, sizes and collisions are used
+-- Strap in boyz
+function load.createHeightTexture(name, anchor, height)
     if heightTextures[name] then
         return
     end
+    local startz = anchor and anchor.y or 0 -- the bit where height goes up
+    height = height or 0
+    local endz = startz - height or 0 -- the bit where it stops going up
     local sprite = sprites[name]
     local texture = textures[name]
     local w, h = texture:getDimensions()
     local canvas = love.graphics.newCanvas(w, h)
     love.graphics.setCanvas({ canvas, stencil = true })
-    love.graphics.clear(1, 1, 1, 0)
+    love.graphics.clear(0, 0, 0, 0)
     love.graphics.stencil(function()
             love.graphics.setShader(MASK_SHADER)
             love.graphics.draw(texture)
@@ -58,15 +63,45 @@ function load.createHeightTexture(name)
         1)
     love.graphics.setStencilTest("greater", 0)
 
-    love.graphics.rectangle("fill", 0, 0, w, h)
+    local sprite = sprites[name]
+    if sprite then
+        for _, anim in ipairs(sprite) do
+            for _, tile in ipairs(anim.tiles) do
+                load.drawHeightTextureQuad(tile.quad, startz, endz, height)
+            end
+        end
+    else
+        local quad = love.graphics.newQuad(0, 0, w, h, w, h)
+        load.drawHeightTextureQuad(quad, startz, endz, height)
+    end
 
     love.graphics.reset()
     heightTextures[name] = love.graphics.newImage(canvas:newImageData())
 end
 
+function load.drawHeightTextureQuad(quad, startz, endz, height)
+    local x, y, w, h = quad:getViewport()
+    love.graphics.push()
+    love.graphics.translate(x, y)
+    love.graphics.setColor(height / SKY_LIMIT, 0, 0, 1)
+    love.graphics.rectangle("fill", 0, 0, w, endz)
+
+    -- gradient
+    for i = 1, height - 1 do
+        love.graphics.setColor((height - i * (3/4)) / SKY_LIMIT, 0, 0, 1)
+        love.graphics.rectangle("fill", 0, endz + i - 0.5, w, 2)
+    end
+
+    love.graphics.setColor(height / (4 * SKY_LIMIT), 0, 0, 1)
+    love.graphics.rectangle("fill", 0, startz, w, h - startz)
+    love.graphics.pop()
+end
+
 function load.createShadow(name, points)
     local minX, minY, maxX, maxY
     for i = 1, #points / 2 do
+        points[i * 2 - 1] = points[i * 2 - 1] * 0.9
+        points[i * 2] = points[i * 2] * 0.9
         local x, y = points[i * 2 - 1], points[i * 2]
         minX = minX and math.min(x, minX) or x
         maxX = maxX and math.max(x, maxX) or x
