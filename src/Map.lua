@@ -37,6 +37,16 @@ function Map:getTile(layer, tx, ty)
     end
 end
 
+function Map:anyTile(tx, ty)
+    for _, layer in ipairs(self._data.layers) do
+        local tile = self:getTile(layer, tx, ty)
+        if tile and tile > 0 then
+            return true
+        end
+    end
+    return false
+end
+
 function Map:init()
     -- Chunk iterator. Gotta capture self to simplify things...
     function self.chunkIterator(chunk, i)
@@ -198,8 +208,6 @@ function Map:createEntity(entities, data, id, flipX, flipY)
             local repFsx = repFlipX and -1 or 1
             local repFsy = repFlipY and -1 or 1
             local entity = self:createEntity(entities, data, id, repFlipX, repFlipY)
-            -- TODO sub reps aren't supported
-            -- Also this can blow up if data is recursive (oops!)
             entity.pos.z = z + (repob.posZ or 0) + (rep.posZ or 0)
             entity.pos.x = (tx - ty) * TILE_WIDTH / 2 +
                 repFsx * (repob.offsetX + (repob.posX or 0) + (rep.posX or 0))
@@ -293,17 +301,24 @@ function Map:getPointHeight(x, y)
     return self.heightMarkers[globali] or 0
 end
 
+function Map:adjacentToTile(tx, ty)
+    for dx = tx - 1, tx + 1 do
+        for dy = ty - 1, ty + 1 do
+            if self:anyTile(dx, dy) then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 function Map:getTileEntities(physics, entities)
     for tx = self.minx - 1, self.maxx + 1 do
         for ty = self.miny - 1, self.maxy + 1 do
-            local globali = tx + ty * self.width
-            if not self.heightMarkers[globali] then
+            if not self:anyTile(tx, ty) and self:adjacentToTile(tx, ty) then
                 local x, y = Map.TileToPosMat:transformPoint(tx - 0.5, ty - 0.5)
-                local tile = 95 -- LOL
-                local tileData = tileset.tiles[tile]
-                local tileShape = tileset.shapes[tile]
                 local body = love.physics.newBody(physics, x, y, "static")
-                local fixture = love.physics.newFixture(body, tileShape.default, 1)
+                local fixture = love.physics.newFixture(body, TILE_SHAPE, 1)
                 fixture:setUserData({ type = FIXBODY })
                 fixture:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
                 body:setUserData({
@@ -440,26 +455,4 @@ function Map:drawTiles(batch, time)
             end
         end
     end
-end
-
--- TODO!
-function Map:createShadowMap(entities)
-    local shadowMap = love.graphics.newCanvas(math.ceil(w / scale), math.ceil(h / scale))
-
-    love.graphics.setCanvas(shadowMap)
-    love.graphics.scale(1/4)
-
-    for _, entity in ipairs(entities) do
-        if entity.shadow and not entity.velocity then
-            love.graphics.draw(textures[entity.shadow.name],
-                entity.pos.x,
-                entity.pos.y,
-                0,
-                (entity.shadow.flipX and -1 or 1),
-                (entity.shadow.flipY and -1 or 1),
-                entity.shadow.anchor.x,
-                entity.shadow.anchor.y)
-        end
-    end
-
 end

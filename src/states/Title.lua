@@ -366,17 +366,21 @@ function Title:render()
         end
     end
 
-    love.graphics.setBlendMode("multiply", "premultiplied")
     for _, entity in self:iterEntities(self.entities) do
         if entity.shadow then
+            love.graphics.setColor(
+                Game.constants.shadowColor[1] * bgcol[1],
+                Game.constants.shadowColor[2] * bgcol[2],
+                Game.constants.shadowColor[3] * bgcol[3],
+                1)
             Game:drawEntityShadow(entity)
+            love.graphics.setColor(1, 1, 1, 1)
         end
     end
-    love.graphics.setBlendMode("alpha")
 
     table.sort(self.entities, function (a, b) return a.pos.y < b.pos.y end)
     for _, entity in self:iterEntities(self.entities) do
-        Game:drawEntity(entity)
+        Game:drawEntitySprites(entity)
     end
 
     love.graphics.pop()

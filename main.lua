@@ -36,9 +36,11 @@ function love.update(dt)
     input.poll(dt)
 
     if actions.toggleDebug then
-        debug.cycle = (debug.cycle + 1) % 4
+        debug.cycle = (debug.cycle + 1) % 6
         debug.physics = debug.cycle == 2
         debug.pointHeights = debug.cycle == 3
+        debug.heightMap = debug.cycle == 4
+        debug.shadowMap = debug.cycle == 5
         debug.fps = debug.cycle >= 1
         actions.toggleDebug = false
     end

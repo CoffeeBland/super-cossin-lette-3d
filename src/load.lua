@@ -1,6 +1,7 @@
 load = {}
 fonts = {}
 textures = {}
+heightTextures = {}
 sounds = {}
 music = {}
 sprites = {}
@@ -38,6 +39,31 @@ local function getTilePos(alignment, tile)
     end
 end
 
+function load.createHeightTexture(name)
+    if heightTextures[name] then
+        return
+    end
+    local sprite = sprites[name]
+    local texture = textures[name]
+    local w, h = texture:getDimensions()
+    local canvas = love.graphics.newCanvas(w, h)
+    love.graphics.setCanvas({ canvas, stencil = true })
+    love.graphics.clear(1, 1, 1, 0)
+    love.graphics.stencil(function()
+            love.graphics.setShader(MASK_SHADER)
+            love.graphics.draw(texture)
+            love.graphics.setShader()
+        end,
+        "increment",
+        1)
+    love.graphics.setStencilTest("greater", 0)
+
+    love.graphics.rectangle("fill", 0, 0, w, h)
+
+    love.graphics.reset()
+    heightTextures[name] = love.graphics.newImage(canvas:newImageData())
+end
+
 function load.createShadow(name, points)
     local minX, minY, maxX, maxY
     for i = 1, #points / 2 do
@@ -52,12 +78,12 @@ function load.createShadow(name, points)
     local shadowCanvas = love.graphics.newCanvas(shadowW, shadowH)
     love.graphics.setCanvas(shadowCanvas)
 
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setColor(1, 1, 1, 0)
     love.graphics.rectangle("fill", 0, 0, shadowW, shadowH)
 
     love.graphics.push()
     love.graphics.translate(-minX + STATIC_SHADOW_SLOP, -minY + STATIC_SHADOW_SLOP)
-    love.graphics.setColor(0.875, 0.867, 0.941, 1) -- TODO read game constants
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setLineWidth(STATIC_SHADOW_SLOP)
     love.graphics.setLineStyle("smooth")
     love.graphics.polygon("line", points)

@@ -263,6 +263,14 @@ return {
             ["particleEmitter.always.offsetRange.x[1]"] = { startOffset = 200, toOffset = 0, delay = 30, frames = 120 },
             ["pos.z"] = { startOffset = 400, delay = 30, frames = 120 }
         },
+        { "waitFrames", 60 },
+        { "waitForLarp",
+            entity = { byName = "blonde" }
+        },
+        { "larp",
+            entity = { byName = "blonde" },
+            ["light.alpha"] = { to = 0, frames = 60 }
+        },
         { "waitForMove",
             entity = { byName = "cossin" }
         },
@@ -270,13 +278,6 @@ return {
             entity = { byName = "cossin" },
             { "waitFrames", 45 },
             { "lookAt", point = { byName = "blonde" } },
-        },
-        { "waitForLarp",
-            entity = { byName = "blonde" }
-        },
-        { "larp",
-            entity = { byName = "blonde" },
-            ["light.alpha"] = { to = 0, frames = 60 }
         },
         { "bubble",
             entity = { byName = "blonde" },

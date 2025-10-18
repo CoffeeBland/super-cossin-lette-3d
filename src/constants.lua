@@ -6,9 +6,39 @@ TILE_FLIP_H = math.pow(2, 31)
 TILE_FLIP_V = math.pow(2, 30)
 TILE_ID_MASK = bit.bnot(bit.bor(TILE_FLIP_H, TILE_FLIP_V))
 DELTA = 0.01
-SKY_LIMIT = METER_SCALE * 16
+SKY_LIMIT = METER_SCALE * 16 -- 2048
+SHADOW_MAP_HEIGHT_OFFSET = 100
+SHADOW_MAP_OFFSET = 600
 HEIGHT_SLICE = 80
 BIG_NUMBER = 999999
+
+HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
+    uniform vec2 size;
+    uniform vec4 shadowColor;
+    uniform Image shadowMap;
+    uniform Image heightMap;
+    uniform float shadowMapHeightOffset;
+    uniform float shadowMapOffset;
+    uniform float skyLimit;
+
+    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+        vec4 texturecolor = Texel(texture, texture_coords);
+
+        vec2 height_map_coords = screen_coords / size;
+        float height = Texel(heightMap, height_map_coords).r * skyLimit / 2.0;
+
+        vec3 pos = vec3(screen_coords.x, screen_coords.y + height, height);
+
+        vec2 shadow_map_coords = vec2(screen_coords.x, screen_coords.y + height) / vec2(size.x, size.y + shadowMapOffset);
+        float shadowHeight = Texel(shadowMap, shadow_map_coords).r * skyLimit - shadowMapHeightOffset;
+
+        if (height <= shadowHeight / 2.0) {
+            return texturecolor * color * shadowColor;
+        } else {
+            return texturecolor * color;
+        }
+    }
+]]
 
 MASK_SHADER = love.graphics.newShader[[
     const mat4x4 thresholdMatrix = mat4x4(
@@ -66,7 +96,22 @@ WATER_SENSOR = 43
 
 TILE_WIDTH = 128
 TILE_HEIGHT = 74
+TILE_SHAPE = love.physics.newPolygonShape(
+    -TILE_WIDTH / 8, 0,
+    0, -TILE_HEIGHT / 8,
+    TILE_WIDTH / 8, 0,
+    0, TILE_HEIGHT / 8)
 -- Cheat a little
 ELLIPSE_WIDTH_RATIO = 0.5 + TILE_WIDTH / (TILE_WIDTH + TILE_HEIGHT)
 ELLIPSE_HEIGHT_RATIO = 0.5 + TILE_HEIGHT / (TILE_WIDTH + TILE_HEIGHT)
 LIGHT_POINTS = {}
+
+--local heightGradientCanvas = love.graphics.newCanvas(1, SKY_LIMIT, { format = "r8" })
+--love.graphics.setCanvas(heightGradientCanvas)
+--for i = 0, SKY_LIMIT - 1 do
+--    love.graphics.setColor(i / SKY_LIMIT, 0, 0, 1)
+--    love.graphics.points(0, i)
+--end
+--love.graphics.reset()
+--love.graphics.setCanvas()
+--HEIGHT_GRADIENT = love.graphics.newImage(heightGradientCanvas:newImageData())

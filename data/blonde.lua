@@ -1,5 +1,6 @@
 return function()
     return {
+        pos={ height = 430 },
         disabled = true,
         name = "blonde",
         body = { shape = "circle", size = 80, type = "static" },
@@ -20,10 +21,6 @@ return function()
         anim = {},
         light = { alpha = 0 },
         larp = {},
-        soundEmitter = {
-            playing = {},
-            triggers = {}
-        },
         particleEmitter = {
             always = {
                 name = "Sparkle",
@@ -77,15 +74,15 @@ return function()
             pickupForce = 0.7,
             pickupJumpSpeed = 160,
             pickupAnimFrames = 20,
-            firstOffset = { x = 0, y = 0, z = 380 },
-            otherOffset = { x = 0, y = 0, z = 90 },
+            firstOffset = { x = 0, y = 0, z = 0 },
+            otherOffset = { x = 0, y = 0, z = 0 },
             dropForce = 240,
             dropJumpSpeed = 60,
             dropCooldown = 60,
             eatCooldown = 18,
             eatWiggleAmplitude = 0.25,
             eatWiggleFrames = 30,
-            sizePerFruit = 0,
+            sizePerFruit = 0.01,
         }
     }
 end
