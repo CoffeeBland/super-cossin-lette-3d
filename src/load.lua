@@ -40,43 +40,45 @@ local function getTilePos(alignment, tile)
 end
 
 function load.createHeightTextures(entities)
+    heightTextures = {}
     -- All sprite entities with actual info
-    for _, entity in ipairs(entities) do
-        if entity.sprites then
-            for _, sprite in ipairs(entity.sprites) do
-                if sprite.name then
-                    local spriteData = sprites[sprite.name]
-                    local tiles = {}
-                    local shape = entity.body and Physics.getBodyShape(entity.body)
-                    local points =
-                        (shape and { shape:getPoints() }) or
-                        { 0, 0 }
-                    for i = 1, #points / 2 do
-                        points[i * 2 - 1] = points[i * 2 - 1] + sprite.anchor.x
-                        points[i * 2] = points[i * 2] + sprite.anchor.y
-                    end
-                    if spriteData then
-                        for _, anim in ipairs(spriteData) do
-                            for _, tile in ipairs(anim.tiles) do
-                                table.insert(tiles, {
-                                    quad = tile.quad,
-                                    height = entity.pos.height,
-                                    points = points,
-                                })
-                            end
-                        end
-                    else
-                        table.insert(tiles, {
-                            quad = nil,
-                            height = entity.pos.height,
-                            points = points,
-                        })
-                    end
-                    load.createHeightTexture(sprite.name, tiles)
+    for name, object in pairs(objects.byName) do
+        local entity = object.prefab and prefabs[object.prefab]({}) or {}
+        entity.sprites = entity.sprites or { { name = name, anchor = { x = object.offsetX, y = object.offsetY } } }
+        entity.pos = entity.pos or {}
+        entity.pos.height = entity.pos.height or object.height or 0
+        for _, sprite in ipairs(entity.sprites) do
+            if sprite.name then
+                local spriteData = sprites[sprite.name]
+                local tiles = {}
+                local shape = entity.body and Physics.getBodyShape(entity.body) or object.shape
+                local points = (shape and { shape:getPoints() }) or { 0, 0 }
+                for i = 1, #points / 2 do
+                    points[i * 2 - 1] = points[i * 2 - 1] + sprite.anchor.x
+                    points[i * 2] = points[i * 2] + sprite.anchor.y
                 end
+                if spriteData then
+                    for _, anim in ipairs(spriteData) do
+                        for _, tile in ipairs(anim.tiles) do
+                            table.insert(tiles, {
+                                quad = tile.quad,
+                                height = entity.pos.height,
+                                points = points,
+                            })
+                        end
+                    end
+                else
+                    table.insert(tiles, {
+                        quad = nil,
+                        height = entity.pos.height,
+                        points = points,
+                    })
+                end
+                load.createHeightTexture(sprite.name, tiles)
             end
         end
     end
+
     -- All other sprites sad sprites
     for name, sprite in pairs(sprites) do
         if not heightTextures[name] then
@@ -95,7 +97,7 @@ function load.createHeightTextures(entities)
         }
         for i = 1, #tile.points / 2 do
             tile.points[i * 2 - 1] = tile.points[i * 2 - 1] + tileData.originX
-            tile.points[i * 2] = tile.points[i * 2] + tileData.originY
+            tile.points[i * 2] = tile.points[i * 2] + tileData.originY - TILE_HEIGHT / 2
         end
         tilesetTiles[i] = tile
     end
@@ -121,10 +123,10 @@ end
 -- We're gonna bake in a whole lot of assumptions about how textures, sizes and collisions are used
 -- Strap in boyz
 function load.createHeightTexture(name, tiles)
-    print(name, dump(tiles))
     if heightTextures[name] then
         return
     end
+    print("height", name)
     local texture = textures[name]
     local w, h = texture:getDimensions()
     local canvas = love.graphics.newCanvas(w, h)
@@ -151,8 +153,8 @@ function load.createHeightTexture(name, tiles)
 
         local leftx, lefty = findx(points, math.min)
         local rightx, righty = findx(points, math.max)
-        local topmost = math.min(lefty, righty) - height
-        local botmost = math.max(lefty, righty)
+        local topmost = math.max(lefty, righty) - height
+        local botmost = math.min(lefty, righty)
 
         love.graphics.push()
         love.graphics.translate(x, y)
@@ -172,7 +174,7 @@ function load.createHeightTexture(name, tiles)
             -- If just a single point then no point (ha!) in drawing the polygon
             if #points > 2 then
                 love.graphics.push()
-                love.graphics.translate(0, -i - 0.5)
+                love.graphics.translate(0, -i)
                 love.graphics.polygon("fill", points)
                 love.graphics.pop()
             end
