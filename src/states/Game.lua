@@ -138,24 +138,9 @@ function Game:enter(args)
     end
     Requests.populate(self)
 
-    -- All sprite entities
-    for _, entity in ipairs(self.entities) do
-        if entity.sprites then
-            for _, sprite in ipairs(entity.sprites) do
-                if sprite.name then
-                    load.createHeightTexture(sprite.name, sprite.anchor, entity.pos.height)
-                end
-            end
-        end
-    end
-    -- All sprites
-    for name, sprite in pairs(sprites) do
-        if not heightTextures[name] then
-            load.createHeightTexture(name)
-        end
-    end
-    -- Tileset
-    load.createHeightTexture("tileset")
+    -- Ideally would not depend on entities, but huh,
+    -- fuck drawing them by hand so I guess we're doing sketchy things.
+    load.createHeightTextures(self.entities)
 
     -- Create tile batches
     self.groundTilesBatches = {}

@@ -39,16 +39,92 @@ local function getTilePos(alignment, tile)
     end
 end
 
+function load.createHeightTextures(entities)
+    -- All sprite entities with actual info
+    for _, entity in ipairs(entities) do
+        if entity.sprites then
+            for _, sprite in ipairs(entity.sprites) do
+                if sprite.name then
+                    local spriteData = sprites[sprite.name]
+                    local tiles = {}
+                    local shape = entity.body and Physics.getBodyShape(entity.body)
+                    local points =
+                        (shape and { shape:getPoints() }) or
+                        { 0, 0 }
+                    for i = 1, #points / 2 do
+                        points[i * 2 - 1] = points[i * 2 - 1] + sprite.anchor.x
+                        points[i * 2] = points[i * 2] + sprite.anchor.y
+                    end
+                    if spriteData then
+                        for _, anim in ipairs(spriteData) do
+                            for _, tile in ipairs(anim.tiles) do
+                                table.insert(tiles, {
+                                    quad = tile.quad,
+                                    height = entity.pos.height,
+                                    points = points,
+                                })
+                            end
+                        end
+                    else
+                        table.insert(tiles, {
+                            quad = nil,
+                            height = entity.pos.height,
+                            points = points,
+                        })
+                    end
+                    load.createHeightTexture(sprite.name, tiles)
+                end
+            end
+        end
+    end
+    -- All other sprites sad sprites
+    for name, sprite in pairs(sprites) do
+        if not heightTextures[name] then
+            load.createHeightTexture(name)
+        end
+    end
+    -- Tileset
+    local tilesetTiles = {}
+    for i, tileData in pairs(tileset.tiles) do
+        local tile = {
+            quad = tileData.quad,
+            height = tileData.height,
+            points =
+                (tileset.shapes[i] and { tileset.shapes[i].default:getPoints() }) or
+                { 0, 0 }
+        }
+        for i = 1, #tile.points / 2 do
+            tile.points[i * 2 - 1] = tile.points[i * 2 - 1] + tileData.originX
+            tile.points[i * 2] = tile.points[i * 2] + tileData.originY
+        end
+        tilesetTiles[i] = tile
+    end
+    load.createHeightTexture("tileset", tilesetTiles)
+end
+
+local function findx(points, xfn)
+    local foundx, foundy
+    for i = 1, #points / 2 do
+        local x, y = points[i * 2 - 1], points[i * 2]
+        if not foundx then
+            foundx = x
+        else
+            foundx = xfn(foundx, x)
+        end
+        if foundx == x then
+            foundy = y
+        end
+    end
+    return foundx, foundy
+end
+
 -- We're gonna bake in a whole lot of assumptions about how textures, sizes and collisions are used
 -- Strap in boyz
-function load.createHeightTexture(name, anchor, height)
+function load.createHeightTexture(name, tiles)
+    print(name, dump(tiles))
     if heightTextures[name] then
         return
     end
-    local startz = anchor and anchor.y or 0 -- the bit where height goes up
-    height = height or 0
-    local endz = startz - height or 0 -- the bit where it stops going up
-    local sprite = sprites[name]
     local texture = textures[name]
     local w, h = texture:getDimensions()
     local canvas = love.graphics.newCanvas(w, h)
@@ -63,45 +139,55 @@ function load.createHeightTexture(name, anchor, height)
         1)
     love.graphics.setStencilTest("greater", 0)
 
-    local sprite = sprites[name]
-    if sprite then
-        for _, anim in ipairs(sprite) do
-            for _, tile in ipairs(anim.tiles) do
-                load.drawHeightTextureQuad(tile.quad, startz, endz, height)
+    -- For empty cases
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.rectangle("fill", 0, 0, w, h)
+
+    for _, tile in pairs(tiles or EMPTY) do
+        local quad, height, points = tile.quad, tile.height, tile.points
+        quad = quad or love.graphics.newQuad(0, 0, w, h, w, h)
+        height = height or 0
+        local x, y, w, h = quad:getViewport()
+
+        local leftx, lefty = findx(points, math.min)
+        local rightx, righty = findx(points, math.max)
+        local topmost = math.min(lefty, righty) - height
+        local botmost = math.max(lefty, righty)
+
+        love.graphics.push()
+        love.graphics.translate(x, y)
+
+        love.graphics.setColor(height / SKY_LIMIT, 0, 0, 1)
+        love.graphics.rectangle("fill", 0, 0, w, topmost)
+
+        love.graphics.setColor(height / (4 * SKY_LIMIT), 0, 0, 1)
+        love.graphics.rectangle("fill", 0, botmost, w, h - botmost)
+
+        -- gradient
+        for i = 1, height - 1, 0.5 do
+            love.graphics.setColor((height / 4 + i * (3/4)) / SKY_LIMIT, 0, 0, 1)
+            love.graphics.rectangle("fill", 0, lefty - i - 0.5, leftx, 2)
+            love.graphics.rectangle("fill", rightx, righty - i - 0.5, w - rightx, 2)
+
+            -- If just a single point then no point (ha!) in drawing the polygon
+            if #points > 2 then
+                love.graphics.push()
+                love.graphics.translate(0, -i - 0.5)
+                love.graphics.polygon("fill", points)
+                love.graphics.pop()
             end
         end
-    else
-        local quad = love.graphics.newQuad(0, 0, w, h, w, h)
-        load.drawHeightTextureQuad(quad, startz, endz, height)
+
+        love.graphics.pop()
     end
 
     love.graphics.reset()
     heightTextures[name] = love.graphics.newImage(canvas:newImageData())
 end
 
-function load.drawHeightTextureQuad(quad, startz, endz, height)
-    local x, y, w, h = quad:getViewport()
-    love.graphics.push()
-    love.graphics.translate(x, y)
-    love.graphics.setColor(height / SKY_LIMIT, 0, 0, 1)
-    love.graphics.rectangle("fill", 0, 0, w, endz)
-
-    -- gradient
-    for i = 1, height - 1 do
-        love.graphics.setColor((height - i * (3/4)) / SKY_LIMIT, 0, 0, 1)
-        love.graphics.rectangle("fill", 0, endz + i - 0.5, w, 2)
-    end
-
-    love.graphics.setColor(height / (4 * SKY_LIMIT), 0, 0, 1)
-    love.graphics.rectangle("fill", 0, startz, w, h - startz)
-    love.graphics.pop()
-end
-
 function load.createShadow(name, points)
     local minX, minY, maxX, maxY
     for i = 1, #points / 2 do
-        points[i * 2 - 1] = points[i * 2 - 1] * 0.9
-        points[i * 2] = points[i * 2] * 0.9
         local x, y = points[i * 2 - 1], points[i * 2]
         minX = minX and math.min(x, minX) or x
         maxX = maxX and math.max(x, maxX) or x
@@ -375,7 +461,7 @@ function load.loadData(name, file)
                                     local minX, minY, maxX, maxY
                                     for _, point in ipairs(subobject.polygon) do
                                         local x = point.x + subobject.x + posX
-                                        local y = point.y + subobject.y + posY + 74 / 2
+                                        local y = point.y + subobject.y + posY + TILE_HEIGHT / 2
                                         minX = minX and math.min(x, minX) or x
                                         maxX = maxX and math.max(x, maxX) or x
                                         minY = minY and math.min(y, minY) or y

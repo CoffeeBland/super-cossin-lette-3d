@@ -242,16 +242,21 @@ Physics = {}
 Physics.__index = Physics
 fancyTypes.physics = Physics
 
+function Physics.getBodyShape(body)
+    local shape
+    if body.shape == "circle" then
+        shape = love.physics.newUIUIShape(body.size / 2)
+    elseif body.preshape then
+        shape = body.preshape
+    end
+    return shape
+end
+
 function Physics.new(world, entity)
     local body = love.physics.newBody(world, entity.pos.x, entity.pos.y, entity.body.type)
     body:setFixedRotation(true)
     body:setUserData(entity)
-    local shape
-    if entity.body.shape == "circle" then
-        shape = love.physics.newUIUIShape(entity.body.size / 2)
-    elseif entity.body.preshape then
-        shape = entity.body.preshape
-    end
+    local shape = Physics.getBodyShape(entity.body)
 
     local fixture = love.physics.newFixture(body, shape, 1)
     fixture:setUserData({ type = FIXBODY })
