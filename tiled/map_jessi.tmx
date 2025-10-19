@@ -2679,7 +2679,7 @@
   <object id="781" gid="376" x="10111.6" y="630.375" width="1024" height="1286"/>
   <object id="783" gid="376" x="9607.88" y="1070.12" width="1024" height="1286"/>
  </objectgroup>
- <objectgroup id="7" name="deco" visible="0">
+ <objectgroup id="7" name="deco">
   <object id="468" gid="346" x="4546.62" y="2426.83" width="256" height="148"/>
   <object id="469" gid="352" x="4388.36" y="2426.24" width="128" height="74"/>
   <object id="470" gid="353" x="4392.28" y="2345.72" width="128" height="74"/>
@@ -2695,9 +2695,21 @@
   <object id="480" gid="352" x="5333.2" y="1832.92" width="128" height="74"/>
   <object id="481" gid="354" x="5552.63" y="1572.04" width="128" height="74"/>
   <object id="482" gid="350" x="5549.98" y="1500.02" width="128" height="74"/>
-  <object id="483" gid="351" x="5367.25" y="1032.08" width="128" height="74"/>
-  <object id="484" gid="348" x="5310.96" y="1059.04" width="128" height="74"/>
-  <object id="485" gid="350" x="5318.25" y="958.417" width="128" height="74"/>
+  <object id="483" gid="351" x="5367.25" y="1032.08" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="484" gid="348" x="5310.96" y="1059.04" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="485" gid="350" x="5318.25" y="958.417" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="486" gid="2147483995" x="5551" y="1875.67" width="128" height="72"/>
   <object id="487" gid="2147484001" x="5214.19" y="2443.81" width="128" height="74"/>
   <object id="488" gid="350" x="5273.28" y="2412.72" width="128" height="74"/>
@@ -2740,23 +2752,79 @@
   <object id="529" gid="349" x="8096.56" y="2844.1" width="128" height="74"/>
   <object id="530" gid="349" x="6215.44" y="3623.9" width="128" height="74"/>
   <object id="531" gid="2147484001" x="6223.67" y="4053" width="128" height="74"/>
-  <object id="532" gid="2147484003" x="5330.06" y="1273.94" width="256" height="148"/>
-  <object id="533" gid="352" x="5188.37" y="1250.96" width="128" height="74"/>
-  <object id="534" gid="2147484001" x="5120.17" y="1185.83" width="128" height="74"/>
+  <object id="532" gid="2147484003" x="5330.06" y="1273.94" width="256" height="148">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="533" gid="352" x="5188.37" y="1250.96" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="534" gid="2147484001" x="5120.17" y="1185.83" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="535" gid="354" x="4992.5" y="1230.83" width="128" height="74"/>
-  <object id="536" gid="351" x="5187.44" y="1214.56" width="128" height="74"/>
-  <object id="537" gid="2147483997" x="5186.62" y="1156.71" width="128" height="74"/>
+  <object id="536" gid="351" x="5187.44" y="1214.56" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="537" gid="2147483997" x="5186.62" y="1156.71" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="539" gid="348" x="5004.12" y="1208.54" width="128" height="74"/>
   <object id="540" gid="349" x="4916.52" y="1184.15" width="128" height="74"/>
-  <object id="541" gid="2147483997" x="5320.06" y="1337.94" width="128" height="74"/>
-  <object id="542" gid="346" x="5630.42" y="1282.92" width="256" height="148"/>
-  <object id="543" gid="2147483995" x="5701.94" y="1223.4" width="128" height="72"/>
-  <object id="544" gid="352" x="5795.19" y="1174.81" width="128" height="74"/>
-  <object id="545" gid="351" x="5785.27" y="1232.73" width="128" height="74"/>
-  <object id="546" gid="349" x="5722.73" y="1148.6" width="128" height="74"/>
-  <object id="547" gid="348" x="5665.48" y="1307.19" width="128" height="74"/>
-  <object id="548" gid="350" x="5865.73" y="1168.27" width="128" height="74"/>
-  <object id="549" gid="2147483997" x="5853.65" y="1137.69" width="128" height="74"/>
+  <object id="541" gid="2147483997" x="5320.06" y="1337.94" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="542" gid="346" x="5630.42" y="1282.92" width="256" height="148">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="543" gid="2147483995" x="5701.94" y="1223.4" width="128" height="72">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="544" gid="352" x="5795.19" y="1174.81" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="545" gid="351" x="5785.27" y="1232.73" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="546" gid="349" x="5722.73" y="1148.6" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="547" gid="348" x="5665.48" y="1307.19" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="548" gid="350" x="5865.73" y="1168.27" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="549" gid="2147483997" x="5853.65" y="1137.69" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="550" gid="350" x="5326.81" y="1856.52" width="128" height="74"/>
   <object id="551" gid="350" x="7362.83" y="3921.83" width="128" height="74"/>
   <object id="553" gid="352" x="7480.17" y="2953.83" width="128" height="74"/>
@@ -2766,11 +2834,27 @@
   <object id="557" gid="348" x="6883.5" y="4577.17" width="128" height="74"/>
   <object id="558" gid="348" x="6218.46" y="4124.87" width="128" height="74"/>
   <object id="559" gid="348" x="6593.08" y="4440.92" width="128" height="74"/>
-  <object id="560" gid="346" x="5548.48" y="844.854" width="256" height="148"/>
+  <object id="560" gid="346" x="5548.48" y="844.854" width="256" height="148">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="561" gid="349" x="5505.56" y="869.771" width="128" height="74"/>
-  <object id="562" gid="2147483995" x="5255.13" y="768.875" width="128" height="72"/>
-  <object id="564" gid="354" x="5255.98" y="860.688" width="128" height="74"/>
-  <object id="565" gid="351" x="5243.27" y="838.729" width="128" height="74"/>
+  <object id="562" gid="2147483995" x="5255.13" y="768.875" width="128" height="72">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="564" gid="354" x="5255.98" y="860.688" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="565" gid="351" x="5243.27" y="838.729" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="Arbres" visible="0" opacity="0.46">
   <object id="371" gid="295" x="4369.38" y="6006.62" width="384" height="216"/>

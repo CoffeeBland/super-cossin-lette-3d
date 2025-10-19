@@ -11,7 +11,6 @@ return {
   tileheight = 74,
   nextlayerid = 13,
   nextobjectid = 784,
-  backgroundcolor = { 132, 208, 131 },
   properties = {
     ["vars.nextMap"] = "map_jessi",
     ["vars.targetFruits"] = 2,
@@ -9787,7 +9786,7 @@ return {
       id = 7,
       name = "deco",
       class = "",
-      visible = false,
+      visible = true,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -10017,7 +10016,9 @@ return {
           rotation = 0,
           gid = 351,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 484,
@@ -10031,7 +10032,9 @@ return {
           rotation = 0,
           gid = 348,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 485,
@@ -10045,7 +10048,9 @@ return {
           rotation = 0,
           gid = 350,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 486,
@@ -10647,7 +10652,9 @@ return {
           rotation = 0,
           gid = 2147484003,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 533,
@@ -10661,7 +10668,9 @@ return {
           rotation = 0,
           gid = 352,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 534,
@@ -10675,7 +10684,9 @@ return {
           rotation = 0,
           gid = 2147484001,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 535,
@@ -10703,7 +10714,9 @@ return {
           rotation = 0,
           gid = 351,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 537,
@@ -10717,7 +10730,9 @@ return {
           rotation = 0,
           gid = 2147483997,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 539,
@@ -10759,7 +10774,9 @@ return {
           rotation = 0,
           gid = 2147483997,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 542,
@@ -10773,7 +10790,9 @@ return {
           rotation = 0,
           gid = 346,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 543,
@@ -10787,7 +10806,9 @@ return {
           rotation = 0,
           gid = 2147483995,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 544,
@@ -10801,7 +10822,9 @@ return {
           rotation = 0,
           gid = 352,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 545,
@@ -10815,7 +10838,9 @@ return {
           rotation = 0,
           gid = 351,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 546,
@@ -10829,7 +10854,9 @@ return {
           rotation = 0,
           gid = 349,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 547,
@@ -10843,7 +10870,9 @@ return {
           rotation = 0,
           gid = 348,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 548,
@@ -10857,7 +10886,9 @@ return {
           rotation = 0,
           gid = 350,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 549,
@@ -10871,7 +10902,9 @@ return {
           rotation = 0,
           gid = 2147483997,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 550,
@@ -11011,7 +11044,9 @@ return {
           rotation = 0,
           gid = 346,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 561,
@@ -11039,7 +11074,9 @@ return {
           rotation = 0,
           gid = 2147483995,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 564,
@@ -11053,7 +11090,9 @@ return {
           rotation = 0,
           gid = 354,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 565,
@@ -11067,7 +11106,9 @@ return {
           rotation = 0,
           gid = 351,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         }
       }
     },

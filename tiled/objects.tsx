@@ -757,22 +757,22 @@
  <tile id="88">
   <properties>
    <property name="autoshadow" type="bool" value="true"/>
-   <property name="height" type="float" value="200"/>
+   <property name="height" type="float" value="240"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="400"/>
    <property name="offsetY" type="float" value="360"/>
-   <property name="posZ" type="float" value="280"/>
+   <property name="posZ" type="float" value="240"/>
   </properties>
   <image source="../img/Arche_top.png" width="961" height="622"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="954" y="466">
-    <polygon points="-144.667,-67.333 -465,119 -893.333,-127 -639.333,-278.667"/>
+    <polygon points="-160.667,-35.333 -465,121 -855.333,-103 -619.333,-238.667"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="0">
   <properties>
-   <property name="autoheightDelta" type="float" value="180"/>
+   <property name="autoheightDelta" type="float" value="220"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="480"/>
    <property name="lensed" type="bool" value="true"/>
@@ -782,7 +782,7 @@
   <image source="../img/Arche_arriere.png" width="1152" height="1024"/>
   <objectgroup draworder="index" id="3">
    <object id="8" x="49" y="580">
-    <polygon points="-4,1 164,104 448,-31 251,-143"/>
+    <polygon points="-4,1 174,108 448,-31 251,-143"/>
    </object>
   </objectgroup>
  </tile>

@@ -15,25 +15,50 @@ BIG_NUMBER = 999999
 HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
     uniform vec2 size;
     uniform vec4 shadowColor;
-    uniform Image shadowMap;
     uniform Image heightMap;
+    uniform Image shadowMap;
     uniform float shadowMapHeightOffset;
     uniform float shadowMapOffset;
     uniform float skyLimit;
     uniform float scale;
 
+    const int heightSamples = 1;
+    const float heightSampleDst = 1.5;
+    const float heightParts = (heightSamples * 2 + 1) * (heightSamples * 2 + 1);
+
+    const int shadowSamples = 1;
+    const float shadowSampleDst = 1.0;
+    const float shadowStrParts = 4.0;
+
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
 
-        float height = Texel(heightMap, screen_coords / size).r * skyLimit;
+        float height = 0.0;
+        for (int i = -heightSamples; i <= heightSamples; i++) {
+            for (int j = -heightSamples; j <= heightSamples; j++) {
+                vec2 sampleDst = vec2(i * heightSampleDst, j * heightSampleDst);
+                height += Texel(heightMap, (screen_coords + sampleDst) / size).r * skyLimit;
+            }
+        }
 
-        vec2 shadow_map_coords = vec2(
-            (screen_coords.x) / size.x,
-            (screen_coords.y + height * scale) / (size.y + shadowMapOffset));
-        float shadowHeight = Texel(shadowMap, shadow_map_coords).r * skyLimit - shadowMapHeightOffset;
+        height /= heightParts;
 
-        if (height <= shadowHeight + 10) {
-            return texturecolor * color * vec4(shadowColor.rgb, 1.0);
+        int votes = 0;
+        for (int i = -shadowSamples; i <= shadowSamples; i++) {
+            for (int j = -shadowSamples; j <= shadowSamples; j++) {
+                vec2 shadow_map_coords = vec2(
+                    (i * shadowSampleDst + screen_coords.x) / size.x,
+                    (j * shadowSampleDst + screen_coords.y + height * scale) / (size.y + shadowMapOffset));
+                float shadowHeight = Texel(shadowMap, shadow_map_coords).r * skyLimit - shadowMapHeightOffset;
+                if (height <= shadowHeight + 10) {
+                    votes++;
+                }
+            }
+        }
+
+        if (votes > 0) {
+            float str = min(votes / shadowStrParts, 1.0);
+            return texturecolor * color * ((1.0 - str) * vec4(1.0) + str * vec4(shadowColor.rgb, 1.0));
         } else {
             return texturecolor * color;
         }

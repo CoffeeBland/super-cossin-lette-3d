@@ -169,12 +169,12 @@ function load.createHeightTexture(name, tiles)
         love.graphics.setColor(height / SKY_LIMIT, 0, 0, 1)
         love.graphics.rectangle("fill", 0, 0, w, topmost)
 
-        love.graphics.setColor(height / (4 * SKY_LIMIT), 0, 0, 1)
+        love.graphics.setColor(height / (8 * SKY_LIMIT), 0, 0, 1)
         love.graphics.rectangle("fill", 0, botmost, w, h - botmost)
 
         -- gradient
         for i = 1, height - 1 do
-            love.graphics.setColor((height / 4 + i * (3/4)) / SKY_LIMIT, 0, 0, 1)
+            love.graphics.setColor((height / 8 + i * (7/8)) / SKY_LIMIT, 0, 0, 1)
 
             local delta = (tile.delta or 0) * (i / height)
             local bulge = math.trigterp(i, 1, height - 1, (tile.bulge or 0) - pw)
