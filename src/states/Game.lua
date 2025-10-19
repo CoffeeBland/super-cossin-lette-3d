@@ -138,9 +138,7 @@ function Game:enter(args)
     end
     Requests.populate(self)
 
-    -- Ideally would not depend on entities, but huh,
-    -- fuck drawing them by hand so I guess we're doing sketchy things.
-    load.createHeightTextures(self.entities)
+    load.createHeightTextures()
 
     -- Create tile batches
     self.groundTilesBatches = {}
@@ -561,7 +559,7 @@ function Game:stencilLensEntities(entity)
             love.graphics.stencil(
                 function()
                     love.graphics.push("all")
-                    love.graphics.setShader(MASK_SHADER)
+                    love.graphics.setShader(DITHER_SHADER)
                     love.graphics.draw(
                         lensEntity.lens.texture,
                         lensx - lensEntity.lens.width / 2,

@@ -39,7 +39,7 @@ local function getTilePos(alignment, tile)
     end
 end
 
-function load.createHeightTextures(entities)
+function load.createHeightTextures()
     heightTextures = {}
     -- All sprite entities with actual info
     for name, object in pairs(objects.byName) do
@@ -53,17 +53,17 @@ function load.createHeightTextures(entities)
                 local tiles = {}
                 local shape = entity.body and Physics.getBodyShape(entity.body) or object.shape
                 local points = (shape and { shape:getPoints() }) or { 0, 0 }
-                for i = 1, #points / 2 do
-                    points[i * 2 - 1] = points[i * 2 - 1] + sprite.anchor.x
-                    points[i * 2] = points[i * 2] + sprite.anchor.y
-                end
                 if spriteData then
                     for _, anim in ipairs(spriteData) do
                         for _, tile in ipairs(anim.tiles) do
                             table.insert(tiles, {
                                 quad = tile.quad,
                                 height = entity.pos.height,
+                                delta = sprite.autoheightDelta or object.autoheightDelta,
+                                bulge = sprite.autoheightBulge or object.autoheightBulge,
                                 points = points,
+                                pointsX = sprite.anchor.x,
+                                pointsY = sprite.anchor.y,
                             })
                         end
                     end
@@ -71,7 +71,11 @@ function load.createHeightTextures(entities)
                     table.insert(tiles, {
                         quad = nil,
                         height = entity.pos.height,
+                        delta = object.autoheightDelta,
+                        bulge = sprite.autoheightBulge or object.autoheightBulge,
                         points = points,
+                        pointsX = sprite.anchor.x,
+                        pointsY = sprite.anchor.y,
                     })
                 end
                 load.createHeightTexture(sprite.name, tiles)
@@ -95,10 +99,8 @@ function load.createHeightTextures(entities)
                 (tileset.shapes[i] and { tileset.shapes[i].default:getPoints() }) or
                 { 0, 0 }
         }
-        for i = 1, #tile.points / 2 do
-            tile.points[i * 2 - 1] = tile.points[i * 2 - 1] + tileData.originX
-            tile.points[i * 2] = tile.points[i * 2] + tileData.originY - TILE_HEIGHT / 2
-        end
+        tile.pointsX = tileData.originX
+        tile.pointsY = tileData.originY - TILE_HEIGHT / 2
         tilesetTiles[i] = tile
     end
     load.createHeightTexture("tileset", tilesetTiles)
@@ -152,7 +154,12 @@ function load.createHeightTexture(name, tiles)
         local x, y, w, h = quad:getViewport()
 
         local leftx, lefty = findx(points, math.min)
+        leftx = leftx + tile.pointsX
+        lefty = lefty + tile.pointsY
         local rightx, righty = findx(points, math.max)
+        rightx = rightx + tile.pointsX
+        righty = righty + tile.pointsY
+        local pw = rightx - leftx
         local topmost = math.max(lefty, righty) - height
         local botmost = math.min(lefty, righty)
 
@@ -166,15 +173,22 @@ function load.createHeightTexture(name, tiles)
         love.graphics.rectangle("fill", 0, botmost, w, h - botmost)
 
         -- gradient
-        for i = 1, height - 1, 0.5 do
+        for i = 1, height - 1 do
             love.graphics.setColor((height / 4 + i * (3/4)) / SKY_LIMIT, 0, 0, 1)
-            love.graphics.rectangle("fill", 0, lefty - i - 0.5, leftx, 2)
-            love.graphics.rectangle("fill", rightx, righty - i - 0.5, w - rightx, 2)
+
+            local delta = (tile.delta or 0) * (i / height)
+            local bulge = math.trigterp(i, 1, height - 1, (tile.bulge or 0) - pw)
+            local ldx = delta - bulge / 2
+            local rdx = delta + bulge / 2
+
+            love.graphics.rectangle("fill", 0, lefty - i - 0.5, leftx + ldx + 1, 2)
+            love.graphics.rectangle("fill", rightx + rdx - 1, righty - i - 0.5, w - rightx - rdx + 1, 2)
 
             -- If just a single point then no point (ha!) in drawing the polygon
-            if #points > 2 then
+            if #points > 2 and pw > 0 then
                 love.graphics.push()
-                love.graphics.translate(0, -i)
+                love.graphics.translate(tile.pointsX + delta, tile.pointsY - i)
+                love.graphics.scale(((rdx - ldx) + pw) / pw, 1)
                 love.graphics.polygon("fill", points)
                 love.graphics.pop()
             end

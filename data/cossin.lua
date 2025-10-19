@@ -19,7 +19,8 @@ return function()
             {
                 name = "cossinCorps",
                 anchor = { x = 96, y = 236 },
-                wiggle = { x = 1, y = 1 }
+                wiggle = { x = 1, y = 1 },
+                autoheightBulge = 170
             },
             {
                 name = "cossinPiedFront",

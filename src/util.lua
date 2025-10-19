@@ -14,6 +14,14 @@ function math.interp(frames, current, target)
     return current * (1 - p) + target * p
 end
 
+function math.trigterp(time, ts, te, apex)
+    if not apex or apex <= 0 then
+        return 0
+    end
+    local part = (time - ts) / (te - ts)
+    return apex * (1 - math.cos(part * 2 * math.pi)) / 2
+end
+
 local byte0 = 48
 local byte9 = 57
 

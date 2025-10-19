@@ -51,14 +51,24 @@ MAP_DEBUG_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
         float third = 1.0/3.0;
-        float r = min(texturecolor.r, third) * 3.0;
-        float g = min(max(texturecolor.r - third, 0.0), third) * 3.0;
-        float b = min(max(texturecolor.r - 2 * third, 0.0), third) * 3.0;
+        float r = min(texturecolor.r * 2.0, third) * 3.0;
+        float g = min(max(texturecolor.r * 2.0 - third, 0.0), third) * 3.0;
+        float b = min(max(texturecolor.r * 2.0 - 2 * third, 0.0), third) * 3.0;
         return vec4(r, g, b, texturecolor.a);
     }
 ]]
 
 MASK_SHADER = love.graphics.newShader[[
+    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+        float alpha = Texel(texture, texture_coords).a;
+        if (alpha <= 0.5) {
+            discard;
+        }
+        return vec4(1.0);
+    }
+]]
+
+DITHER_SHADER = love.graphics.newShader[[
     const mat4x4 thresholdMatrix = mat4x4(
             1.0/17.0,  9.0/17.0,  3.0/17.0, 11.0/17.0,
            13.0/17.0,  5.0/17.0, 15.0/17.0,  7.0/17.0,

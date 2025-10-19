@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -540,6 +540,7 @@ return {
     {
       id = 32,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "apple",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -552,6 +553,7 @@ return {
     {
       id = 33,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "banana",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -564,6 +566,7 @@ return {
     {
       id = 34,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "pineapple",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -576,6 +579,7 @@ return {
     {
       id = 35,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "pear",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -588,6 +592,7 @@ return {
     {
       id = 36,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "tomato",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -600,6 +605,7 @@ return {
     {
       id = 37,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "orange",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -612,6 +618,7 @@ return {
     {
       id = 38,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "mushroom",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -624,6 +631,7 @@ return {
     {
       id = 39,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "grape",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -636,6 +644,7 @@ return {
     {
       id = 40,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "durian",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -648,6 +657,7 @@ return {
     {
       id = 41,
       properties = {
+        ["autoheightBulge"] = 125,
         ["fruit"] = "peach",
         ["offsetX"] = 64,
         ["offsetY"] = 170,
@@ -2012,11 +2022,11 @@ return {
       id = 88,
       properties = {
         ["autoshadow"] = true,
-        ["height"] = 160,
+        ["height"] = 200,
         ["lensed"] = true,
         ["offsetX"] = 400,
         ["offsetY"] = 360,
-        ["posZ"] = 320
+        ["posZ"] = 280
       },
       image = "../img/Arche_top.png",
       width = 961,
@@ -2047,10 +2057,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -148.667, y = -125.333 },
-              { x = -487, y = 75 },
-              { x = -915.333, y = -171 },
-              { x = -661.333, y = -322.667 }
+              { x = -144.667, y = -67.333 },
+              { x = -465, y = 119 },
+              { x = -893.333, y = -127 },
+              { x = -639.333, y = -278.667 }
             },
             properties = {}
           }
@@ -2060,6 +2070,7 @@ return {
     {
       id = 0,
       properties = {
+        ["autoheightDelta"] = 180,
         ["autoshadow"] = true,
         ["height"] = 480,
         ["lensed"] = true,
@@ -2108,6 +2119,7 @@ return {
     {
       id = 1,
       properties = {
+        ["autoheightDelta"] = -90,
         ["autoshadow"] = true,
         ["height"] = 480,
         ["lensed"] = true,
@@ -2143,10 +2155,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -40.3333, y = -7.66667 },
+              { x = -14.3333, y = 6.33333 },
               { x = 192, y = 99 },
               { x = 519, y = -76 },
-              { x = 297.333, y = -200 }
+              { x = 321.333, y = -170 }
             },
             properties = {}
           }
@@ -2156,6 +2168,7 @@ return {
     {
       id = 2,
       properties = {
+        ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
         ["height"] = 230,
         ["lensed"] = true,
@@ -2199,6 +2212,7 @@ return {
     {
       id = 3,
       properties = {
+        ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
         ["height"] = 230,
         ["lensed"] = true,
@@ -2242,6 +2256,7 @@ return {
     {
       id = 4,
       properties = {
+        ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
         ["height"] = 230,
         ["lensed"] = true,

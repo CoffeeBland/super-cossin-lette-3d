@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.1" name="objects" tilewidth="1152" tileheight="1286" tilecount="77" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="77" columns="0">
  <editorsettings>
   <export target="../data/objects.lua" format="lua"/>
  </editorsettings>
@@ -208,6 +208,7 @@
  </tile>
  <tile id="32">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="apple"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -217,6 +218,7 @@
  </tile>
  <tile id="33">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="banana"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -226,6 +228,7 @@
  </tile>
  <tile id="34">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="pineapple"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -235,6 +238,7 @@
  </tile>
  <tile id="35">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="pear"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -244,6 +248,7 @@
  </tile>
  <tile id="36">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="tomato"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -253,6 +258,7 @@
  </tile>
  <tile id="37">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="orange"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -262,6 +268,7 @@
  </tile>
  <tile id="38">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="mushroom"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -271,6 +278,7 @@
  </tile>
  <tile id="39">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="grape"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -280,6 +288,7 @@
  </tile>
  <tile id="40">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="durian"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -289,6 +298,7 @@
  </tile>
  <tile id="41">
   <properties>
+   <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="peach"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
@@ -747,21 +757,22 @@
  <tile id="88">
   <properties>
    <property name="autoshadow" type="bool" value="true"/>
-   <property name="height" type="float" value="160"/>
+   <property name="height" type="float" value="200"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="400"/>
    <property name="offsetY" type="float" value="360"/>
-   <property name="posZ" type="float" value="320"/>
+   <property name="posZ" type="float" value="280"/>
   </properties>
   <image source="../img/Arche_top.png" width="961" height="622"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="954" y="466">
-    <polygon points="-148.667,-125.333 -487,75 -915.333,-171 -661.333,-322.667"/>
+    <polygon points="-144.667,-67.333 -465,119 -893.333,-127 -639.333,-278.667"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="0">
   <properties>
+   <property name="autoheightDelta" type="float" value="180"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="480"/>
    <property name="lensed" type="bool" value="true"/>
@@ -777,6 +788,7 @@
  </tile>
  <tile id="1">
   <properties>
+   <property name="autoheightDelta" type="float" value="-90"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="480"/>
    <property name="lensed" type="bool" value="true"/>
@@ -786,12 +798,13 @@
   <image source="../img/Arche_avant.png" width="1152" height="1024"/>
   <objectgroup draworder="index" id="2">
    <object id="2" x="588" y="884">
-    <polygon points="-40.3333,-7.66667 192,99 519,-76 297.333,-200"/>
+    <polygon points="-14.3333,6.33333 192,99 519,-76 321.333,-170"/>
    </object>
   </objectgroup>
  </tile>
  <tile id="2">
   <properties>
+   <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="230"/>
    <property name="lensed" type="bool" value="true"/>
@@ -808,6 +821,7 @@
  </tile>
  <tile id="3">
   <properties>
+   <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="230"/>
    <property name="lensed" type="bool" value="true"/>
@@ -824,6 +838,7 @@
  </tile>
  <tile id="4">
   <properties>
+   <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="230"/>
    <property name="lensed" type="bool" value="true"/>
