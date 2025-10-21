@@ -160,7 +160,7 @@ function Game:enter(args)
                 self.stackedTilesBatches[i]:add(
                     tileData.quad,
                     entity.pos.x,
-                    (entity.pos.y - entity.pos.z),
+                    (entity.pos.y - entity.pos.z - (sprite.anchor.z or 0)),
                     0,
                     sprite.flipX and -1 or 1,
                     sprite.flipY and -1 or 1,
@@ -168,14 +168,14 @@ function Game:enter(args)
                     sprite.anchor.y)
 
                 self.stackedTilesHeightBatches[i]:setColor(
-                    entity.pos.z / SKY_LIMIT,
+                    (entity.pos.z + (sprite.anchor.z or 0)) / SKY_LIMIT,
                     0,
                     0,
                     1)
                 self.stackedTilesHeightBatches[i]:add(
                     tileData.quad,
                     entity.pos.x,
-                    (entity.pos.y - entity.pos.z),
+                    (entity.pos.y - entity.pos.z - (sprite.anchor.z or 0)),
                     0,
                     sprite.flipX and -1 or 1,
                     sprite.flipY and -1 or 1,
@@ -417,10 +417,10 @@ function Game:drawEntitySprite(entity, sprite)
             texture,
             animData.tiles[frame].quad,
             entity.pos.x,
-            (entity.pos.y - entity.pos.z),
+            (entity.pos.y - entity.pos.z - (sprite.anchor.z or 0)),
             0,
-            (sprite.flipX and - 1 or 1) * (animData.flipX and -1 or 1) * scaleX,
-            (sprite.flipY and - 1 or 1) * (animData.flipY and -1 or 1) * scaleY,
+            (sprite.flipX and -1 or 1) * (animData.flipX and -1 or 1) * scaleX,
+            (sprite.flipY and -1 or 1) * (animData.flipY and -1 or 1) * scaleY,
             sprite.anchor.x,
             sprite.anchor.y)
     else
@@ -435,7 +435,7 @@ function Game:drawEntitySprite(entity, sprite)
             texture,
             sprite.quad,
             entity.pos.x,
-            (entity.pos.y + entity.pos.truncateHeight - entity.pos.z),
+            entity.pos.y + entity.pos.truncateHeight - entity.pos.z - (sprite.anchor.z or 0),
             0,
             sprite.flipX and -1 or 1,
             sprite.flipY and -1 or 1,
@@ -501,7 +501,7 @@ function Game:drawHeightMap(w, h, drawnEntities)
             self:drawStackedTileHeightBatch()
             self:stencilLensEntities(entity)
             for _, sprite in ipairs(entity.sprites) do
-                love.graphics.setColor(entity.pos.z / SKY_LIMIT, 0, 0, 1)
+                love.graphics.setColor((entity.pos.z + (sprite.anchor.z or 0)) / SKY_LIMIT, 0, 0, 1)
                 self:drawEntitySprite(entity, sprite)
             end
             love.graphics.setStencilTest()

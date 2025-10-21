@@ -407,7 +407,8 @@ function Map:getTileEntities(physics, entities)
                                         flipY = topflipY,
                                         anchor = {
                                             x = toptileData.originX,
-                                            y = toptileData.originY - TILE_HEIGHT / 2 + height
+                                            y = toptileData.originY - TILE_HEIGHT / 2,
+                                            z = height
                                         }
                                     })
                                 end
