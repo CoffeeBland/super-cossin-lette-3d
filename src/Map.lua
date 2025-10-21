@@ -90,12 +90,12 @@ function Map:init()
     end
 
     self.heightMarkers = {}
-    self.heightMarkersByLayer = {}
+    self.layerHeightInfo = {}
     self.tileEntities = {}
     local minx, miny, maxx, maxy = nil, nil, nil, nil
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
-            self.heightMarkersByLayer[layeri] = {}
+            self.layerHeightInfo[layeri] = {}
             -- Make data into chunks for uniformity
             layer.chunks = layer.chunks or {}
             if layer.data then
@@ -124,18 +124,26 @@ function Map:init()
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
                 for i, tile, tx, ty, globali, flipX, flipY, og in self:chunkTiles(layer, chunk) do
+                    local x, y = Map.TileToPosMat:transformPoint(tx, ty)
                     local tileData = tileset.tiles[tile]
                     local height = tileData.height or 0
-                    local layerHeight = 0
-                    if self.heightMarkersByLayer[layeri] then
-                        layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
+                    local layerHeightInfo = self.layerHeightInfo[layeri] and self.layerHeightInfo[layeri][globali]
+                    if not layerHeightInfo or layerHeightInfo.y < y then
+                        layerHeightInfo = { y = y, height = 0 }
                     end
                     for i = 0, math.floor(height / TILE_HEIGHT) do
                         globali = (tx - i) + (ty - i) * self.width
-                        local current = self.heightMarkers[globali]
-                        local new = math.max(current or 0, height + layerHeight)
-                        if self.heightMarkersByLayer[layeri + 1] then
-                            self.heightMarkersByLayer[layeri + 1][globali] = new
+                        local current = layerHeightInfo.height
+                        local new = math.max(current or 0, height + layerHeightInfo.height)
+                        for j = layeri + 1, #self._data.layers do
+                            if self.layerHeightInfo[j] then
+                                local layerHeightInfoToUpd = self.layerHeightInfo[j][globali]
+                                if not layerHeightInfoToUpd then
+                                    self.layerHeightInfo[j][globali] = { y = y, height = new }
+                                elseif layerHeightInfoToUpd.y < y then
+                                    layerHeightInfoToUpd.height = new
+                                end
+                            end
                         end
                         self.heightMarkers[globali] = new
                     end
@@ -343,7 +351,8 @@ function Map:getTileEntities(physics, entities)
                     local tileData = tileset.tiles[tile]
                     local tileShape = tileset.shapes[tile]
                     local height = tileData.height or 0
-                    local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
+                    local layerHeightInfo = self.layerHeightInfo[layeri][globali]
+                    local layerHeight = layerHeightInfo and layerHeightInfo.height or 0
                     local shape = tileShape and (
                         (flipX and tileShape.flipX) or
                         (flipY and tileShape.flipY) or tileShape.default)
@@ -399,7 +408,8 @@ function Map:getTileEntities(physics, entities)
                             if toptile and toptile > 0 then
                                 local toptileData = tileset.tiles[toptile]
                                 local topheight = toptileData.height or 0
-                                local toplayerHeight = self.heightMarkersByLayer[nextlayeri][topglobali] or 0
+                                local toplayerHeightInfo = self.layerHeightInfo[nextlayeri][topglobali]
+                                local toplayerHeight = toplayerHeightInfo and toplayerHeightInfo.height or 0
                                 if topheight == 0 and toplayerHeight ~= 0 then
                                     table.insert(entity.tileSprites, {
                                         tile = toptile,
@@ -439,7 +449,8 @@ function Map:drawTiles(batch, time)
                     local tileData = tileset.tiles[tile]
                     -- Tiles with heights are handled as entities
                     local height = tileData.height or 0
-                    local layerHeight = self.heightMarkersByLayer[layeri][globali] or 0
+                    local layerHeightInfo = self.layerHeightInfo[layeri][globali]
+                    local layerHeight = layerHeightInfo and layerHeightInfo.height or 0
                     if height == 0 and layerHeight == 0 then
                         local tileData = tileData
                         batch:add(
