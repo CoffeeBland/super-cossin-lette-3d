@@ -378,16 +378,14 @@
  <objectgroup id="81" name="Fruits cachés">
   <object id="2461" gid="41" x="3996" y="444" width="128" height="192"/>
   <object id="2494" gid="36" x="4218" y="1776" width="128" height="192"/>
-  <object id="2496" x="3034" y="1850">
-   <ellipse/>
-  </object>
-  <object id="2497" x="2886" y="1850">
-   <ellipse/>
-  </object>
   <object id="2500" gid="38" x="4292" y="3182" width="128" height="192"/>
  </objectgroup>
  <objectgroup id="86" name="Arche">
-  <object id="2499" gid="90" x="3552" y="2590" width="1152" height="1024"/>
+  <object id="2499" gid="90" x="3552" y="2590" width="1152" height="1024">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="84" name="Chemins" width="30" height="20">
   <data encoding="csv">
@@ -807,9 +805,6 @@
   <object id="2491" gid="93" x="4292" y="4292" width="1024" height="1286"/>
   <object id="2492" gid="93" x="1258" y="1332" width="1024" height="1286"/>
   <object id="2493" gid="93" x="1036" y="4366" width="1024" height="1286"/>
-  <object id="2498" x="3182" y="1998">
-   <ellipse/>
-  </object>
  </objectgroup>
  <objectgroup id="79" name="Fruits">
   <object id="2467" gid="37" x="2812" y="1850" width="128" height="192">
