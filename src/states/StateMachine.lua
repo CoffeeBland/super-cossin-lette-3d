@@ -63,6 +63,7 @@ function StateMachine:update(dt)
         self.current:update(dt)
     end
     Music:update(dt)
+    Sound:update(framePart, dt)
     if self.fadeOutFrames > 0 then
         self.fadeOutFrames = math.max(self.fadeOutFrames - framePart, 0)
         self.fadePart = 1 - self.fadeOutFrames / self.current.fadeout

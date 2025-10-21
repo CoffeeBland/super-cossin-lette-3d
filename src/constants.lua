@@ -75,18 +75,23 @@ HEIGHT_MAP_SHADER = love.graphics.newShader[[
 MAP_DEBUG_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
-        float third = 1.0/3.0;
-        float r = min(texturecolor.r * 2.0, third) * 3.0;
-        float g = min(max(texturecolor.r * 2.0 - third, 0.0), third) * 3.0;
-        float b = min(max(texturecolor.r * 2.0 - 2 * third, 0.0), third) * 3.0;
-        return vec4(r, g, b, texturecolor.a);
+        float val = texturecolor.r;
+        if (val < 0.25) {
+            return vec4(val * 4.0, 0, 0, texturecolor.a);
+        } else if (val < 0.5) {
+            return vec4(1.0, val * 4.0 - 1.0, 0, texturecolor.a);
+        } else if (val < 0.75) {
+            return vec4(3.0 - val * 4.0, 1.0, 0, texturecolor.a);
+        } else {
+            return vec4(0, 1.0, val * 4.0 - 3.0, texturecolor.a);
+        }
     }
 ]]
 
 MASK_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         float alpha = Texel(texture, texture_coords).a;
-        if (alpha <= 0.5) {
+        if (alpha <= 0.1) {
             discard;
         }
         return vec4(1.0);

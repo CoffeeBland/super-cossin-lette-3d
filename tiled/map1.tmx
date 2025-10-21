@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="8" nextobjectid="58">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="8" nextobjectid="58">
  <editorsettings>
   <export target="../maps/map1.lua" format="lua"/>
  </editorsettings>
@@ -430,8 +430,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 248,243,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-236,252,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-235,252,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+236,252,0,0,0,0,0,0,0,0,0,0,0,240,242,0,
+235,252,0,0,0,0,0,0,0,0,0,0,0,244,246,0,
 256,247,0,0,229,226,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,224,222,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -491,7 +491,7 @@
    <properties>
     <property name="posZ" type="float" value="0"/>
     <property name="randomTruncateHeight" type="bool" value="false"/>
-    <property name="truncateHeight" type="float" value="400"/>
+    <property name="truncateHeight" type="float" value="230"/>
    </properties>
   </object>
   <object id="57" gid="2147484021" x="-111" y="592" width="1152" height="1024"/>

@@ -1,73 +1,20 @@
-SoundSystem = {}
-SoundSystem.__index = SoundSystem
+-- Sound is split between a global handler, and a system!
+-- Sound must handle the state stopping... so it must live longer than the state.
+-- The system handles interacting with entities. The global thingy doesn't deal with puny little things.
 
-function SoundSystem.new()
-    return setmetatable({
-        playing = {}
-    }, SoundSystem)
-end
+Sound = {
+    playing = {},
+    nextPlayingId = 1
+}
 
-function SoundSystem:exit()
-end
+local fadeFrames = 30
 
-function SoundSystem:updatePlaying(framePart, dt, entity)
-    local playing = (entity.soundEmitter or entity.sounds).playing
-    for name, sound in pairs(playing) do
-        local source = sound.source
-        if sound.volumeFrames then
-            sound.volumeFrames = math.max(sound.volumeFrames - framePart, 0)
-            local volume = math.interp(sound.volumeFrames, source:getVolume(), sound.targetVolume)
-            if (volume - sound.targetVolume) < DELTA and volume < DELTA then
-                sound.source:stop()
-                playing[sound.name] = nil
-                sound.source = nil
-            else
-                source:setVolume(volume)
-            end
-            if sound.volumeFrames == 0 then
-                sound.volumeFrames = nil
-            end
-        end
-        if source:isPlaying() then
-            if (sound.stopOn and entity.anim:isTriggered(sound.stopOn)) or entity.disabled then
-                self:stop(entity, sound)
-            end
-        else
-            playing[name] = nil
-        end
-    end
-end
-
-function SoundSystem:update(framePart, dt, game)
-    -- Sound emitters have to handle being disabled
-    for _, entity in ipairs(game.entitiesByComponent.soundEmitter) do
-        if not entity.soundEmitter.playing then entity.soundEmitter.playing = {} end
-        self:updatePlaying(framePart, dt, entity)
-    end
-    self:updatePlaying(framePart, dt, game)
-
-    for _, entity in game:iterEntities(game.entitiesByComponent.soundEmitter) do
-        if not entity.soundEmitter.triggers then entity.soundEmitter.triggers = {} end
-        if not entity.soundEmitter.conditions then entity.soundEmitter.conditions = {} end
-
-        for trigger, sound in pairs(entity.soundEmitter.triggers) do
-            if entity.anim:isTriggered(trigger) then
-                local sourceName = sound.names and sound.names[math.random(#sound.names)] or sound.name
-                self:start(entity, sound, sounds[sourceName])
-            end
-        end
-
-        local conditions = entity.soundEmitter.conditions
-        self:toggle(framePart, entity,conditions.drown,
-            entity.water and entity.water.remainingDrownFrames)
-        self:toggle(framePart, entity, conditions.light,
-            entity.light and entity.light.alpha >= conditions.light.minimumLight)
-    end
-end
-
-function SoundSystem:start(entity, sound, source)
+function Sound:start(sound)
+    local sourceName = sound.names and sound.names[math.random(#sound.names)] or sound.name
+    local source = sounds[sourceName]
     if not source then
-        print(dump(sound))
+        error("Could not find source for sound", sound)
+        return
     end
     local volume = sound.volumeRange and math.randomRange(sound.volumeRange) or sound.volume or 1
     source:setVolume(volume)
@@ -78,35 +25,108 @@ function SoundSystem:start(entity, sound, source)
         sound.targetVolume = volume
         source:setVolume(0)
     end
-    (entity.soundEmitter or entity.sounds).playing[sound.name] = sound
+    self.playing[sound.name] = sound
     sound.source = source
+    sound.playingId = self.nextPlayingId
+    self.nextPlayingId = self.nextPlayingId + 1
     source:stop()
     source:play()
 end
 
-function SoundSystem:stop(entity, sound)
+function Sound:stop(sound)
     if sound.fadeOut then
         if not sound.volumeFrames or sound.targetVolume ~= 0 then
             sound.volumeFrames = sound.fadeOut
             sound.targetVolume = 0
         end
     else
-        local playing = (entity.soundEmitter or entity.sounds).playing
         sound.source:stop()
-        playing[sound.name] = nil
+        self.playing[sound.name] = nil
         sound.source = nil
+        sound.entity = nil
     end
 end
 
-function SoundSystem:toggle(framePart, entity, sound, active)
+function Sound:fadeout(frames)
+    for name, sound in pairs(self.playing) do
+        if not sound.volumeFrames or sound.targetVolume ~= 0 then
+            sound.volumeFrames = frames or fadeFrames
+            sound.targetVolume = 0
+        end
+    end
+end
+
+function Sound:toggle(sound, active)
     if not sound then
         return
     end
-    local playing = entity.soundEmitter.playing[sound.name]
+    local playing = self.playing[sound.name]
     if playing and not active then
-        self:stop(entity, sound)
+        self:stop(sound)
     elseif active and not playing then
-        local sourceName = sound.names and sound.names[math.random(#sound.names)] or sound.name
-        self:start(entity, sound, sounds[sourceName])
+        self:start(sound)
+    end
+end
+
+function Sound:update(framePart, dt)
+    for name, sound in pairs(self.playing) do
+        local source = sound.source
+        if sound.volumeFrames then
+            sound.volumeFrames = math.max(sound.volumeFrames - framePart, 0)
+            local volume = math.interp(sound.volumeFrames, source:getVolume(), sound.targetVolume)
+            if (volume - sound.targetVolume) < DELTA and volume < DELTA then
+                sound.source:stop()
+                self.playing[sound.name] = nil
+                sound.source = nil
+                sound.entity = nil
+            else
+                source:setVolume(volume)
+            end
+            if sound.volumeFrames == 0 then
+                sound.volumeFrames = nil
+            end
+        end
+        if not source:isPlaying() then
+            self.playing[name] = nil
+            sound.source = nil
+            sound.entity = nil
+        end
+    end
+end
+
+SoundSystem = {}
+SoundSystem.__index = SoundSystem
+
+function SoundSystem.new()
+    return setmetatable({}, SoundSystem)
+end
+
+function SoundSystem:exit()
+end
+
+function SoundSystem:update(framePart, dt, game)
+    for name, sound in pairs(Sound.playing) do
+        local playing = sound.source:isPlaying()
+        if playing and sound.entity and
+            ((sound.stopOn and sound.entity.anim:isTriggered(sound.stopOn)) or sound.entity.disabled)
+        then
+            Sound:stop(sound)
+        end
+    end
+
+    for _, entity in game:iterEntities(game.entitiesByComponent.soundEmitter) do
+        if not entity.soundEmitter.triggers then entity.soundEmitter.triggers = {} end
+        if not entity.soundEmitter.conditions then entity.soundEmitter.conditions = {} end
+
+        for trigger, sound in pairs(entity.soundEmitter.triggers) do
+            if entity.anim:isTriggered(trigger) then
+                sound.entity = entity -- A little sad but oh well
+                Sound:start(sound)
+            end
+        end
+
+        local conditions = entity.soundEmitter.conditions
+        Sound:toggle(conditions.drown, entity.water and entity.water.remainingDrownFrames)
+        Sound:toggle(conditions.light, entity.light and entity.light.alpha >= conditions.light.minimumLight)
     end
 end

@@ -3,6 +3,7 @@ require "src.load"
 require "src.input"
 require "src.input"
 require "src.constants"
+require "src.error"
 require "src.states.StateMachine"
 
 debug = { cycle = 0, physics = false, fps = false, autorefresh = true }

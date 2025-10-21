@@ -190,6 +190,8 @@ function Game:enter(args)
 end
 
 function Game:exit()
+    Sound:fadeout()
+    Music:fadeout()
     self.physics:exit()
 end
 

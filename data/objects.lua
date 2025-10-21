@@ -51,7 +51,7 @@ return {
       id = 92,
       properties = {
         ["height"] = 1000,
-        ["maxTruncateHeight"] = 300,
+        ["maxTruncateHeight"] = 230,
         ["offsetX"] = 510,
         ["offsetY"] = 1210,
         ["randomTruncateHeight"] = false,

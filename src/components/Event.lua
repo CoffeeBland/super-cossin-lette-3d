@@ -206,8 +206,7 @@ function Event:processEvent(framePart, game, index)
     elseif type == "anim" then
         entity.anim:toggle(event.name, event.value)
     elseif type == "sound" then
-        local source = sounds[event.name]
-        game.sounds:start(game, event, source)
+        Sound:start(event)
     elseif type == "image" then
         game.images:setImage(event)
     elseif type == "move" then

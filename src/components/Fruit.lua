@@ -35,6 +35,7 @@ end
 function FruitSystem:update(framePart, dt, game)
     game.vars.remainingFruits = 0
 
+    -- FRUIT STACK
     for _, entity in game:iterEntities(game.entitiesByComponent.fruitStack) do
         if #entity.fruitStack.fruits > 0 then
             if not entity.fruitStack.cooldown then
@@ -73,6 +74,8 @@ function FruitSystem:update(framePart, dt, game)
                 game.vars.eaten = game.vars.eaten + 1
                 entity.anim.baseWiggle.x = entity.anim.baseWiggle.x + entity.fruitStack.sizePerFruit
                 entity.anim.baseWiggle.y = entity.anim.baseWiggle.y + entity.fruitStack.sizePerFruit
+                entity.fruitStack.firstOffset.z = entity.fruitStack.firstOffset.z +
+                    (entity.fruitStack.firstOffset.z + entity.pos.height) * entity.fruitStack.sizePerFruit
                 if entity.actor then
                     entity.actor.mass = entity.actor.mass + (eaten.fruit.mass or 0)
                 end
@@ -83,7 +86,7 @@ function FruitSystem:update(framePart, dt, game)
                 local nextFruitEntity = entity.fruitStack.fruits[1]
                 if nextFruitEntity then
                     nextFruitEntity.fruit.stackEntity = entity
-                    nextFruitEntity.fruit.offset = entity.fruitStack.firstOffset
+                    nextFruitEntity.fruit.offset = self:getStackOffset(entity, true)
                 end
             end
         end
@@ -104,6 +107,7 @@ function FruitSystem:update(framePart, dt, game)
         game.vars.remainingFruits = game.vars.remainingFruits + #entity.fruitStack.fruits
     end
 
+    -- PICNIC
     for _, entity in game:iterEntities(game.entitiesByComponent.picnic) do
         if entity.picnic.dropFrames then
             entity.picnic.dropFrames = math.max(entity.picnic.dropFrames - framePart, 0)
@@ -156,6 +160,7 @@ function FruitSystem:update(framePart, dt, game)
         end
     end
 
+    -- FRUIT
     for _, entity in game:iterEntities(game.entitiesByComponent.fruit) do
         if entity.fruit.animFrames then
             local prevX = entity.pos.x
@@ -224,6 +229,12 @@ function FruitSystem:checkFruitPickup(fruitStackEntity, fruitEntity)
     self:fruitPickup(fruitStackEntity, fruitEntity)
 end
 
+function FruitSystem:getStackOffset(entity, first)
+    return first and
+        entity.fruitStack.firstOffset or
+        entity.fruitStack.otherOffset
+end
+
 function FruitSystem:fruitPickup(fruitStackEntity, fruitEntity)
     local stackEntityVelocity = fruitStackEntity or EMPTY
     table.insert(fruitStackEntity.fruitStack.fruits, fruitEntity)
@@ -231,9 +242,7 @@ function FruitSystem:fruitPickup(fruitStackEntity, fruitEntity)
         fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
         fruitStackEntity
     fruitEntity.fruit.animFrames = fruitStackEntity.fruitStack.pickupAnimFrames
-    fruitEntity.fruit.offset = fruitEntity.fruit.stackEntity == fruitStackEntity and
-        fruitStackEntity.fruitStack.firstOffset or
-        fruitStackEntity.fruitStack.otherOffset
+    fruitEntity.fruit.offset = self:getStackOffset(fruitStackEntity, fruitEntity.fruit.stackEntity == fruitStackEntity)
     fruitEntity.fruit.reachedStack = false
     fruitEntity.physics.body:setType("static")
     fruitEntity.velocity.z =
