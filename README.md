@@ -10,6 +10,5 @@
 * NINJAs
 
 ## BUGS
-* Les layers de tuiles tolèrent pas des gaps
 * Les bulles sont pas bien centrées (mais c'est fiiiiine)
 * reloader ça arrêter pas les sons (ooph)
