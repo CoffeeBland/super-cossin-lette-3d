@@ -88,7 +88,8 @@ function Game:enter(args)
         timer = Game.constants.defaultLevelTimer,
         firstLevel = Game.constants.firstLevel,
         currentMap = args.map,
-        nextMap = nil
+        nextMap = nil,
+        music = "TODO"
     }
     for key, value in pairs(self.map.vars) do
         self.vars[key] = value

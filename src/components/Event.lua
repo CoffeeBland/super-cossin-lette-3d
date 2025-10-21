@@ -207,6 +207,10 @@ function Event:processEvent(framePart, game, index)
         entity.anim:toggle(event.name, event.value)
     elseif type == "sound" then
         Sound:start(event)
+    elseif type == "music" then
+        Music:play(game:eval(event.name), event.loop)
+    elseif type == "fadeoutMusic" then
+        Music:fadeout()
     elseif type == "image" then
         game.images:setImage(event)
     elseif type == "move" then

@@ -1745,7 +1745,7 @@ return {
     {
       id = 82,
       properties = {
-        ["height"] = 80,
+        ["height"] = 40,
         ["offsetX"] = 161,
         ["offsetY"] = 250
       },
@@ -1929,7 +1929,7 @@ return {
     {
       id = 86,
       properties = {
-        ["height"] = 80,
+        ["height"] = 40,
         ["offsetX"] = 161,
         ["offsetY"] = 250
       },

@@ -678,7 +678,7 @@
  </tile>
  <tile id="82">
   <properties>
-   <property name="height" type="float" value="80"/>
+   <property name="height" type="float" value="40"/>
    <property name="offsetX" type="float" value="161"/>
    <property name="offsetY" type="float" value="250"/>
   </properties>
@@ -730,7 +730,7 @@
  </tile>
  <tile id="86">
   <properties>
-   <property name="height" type="float" value="80"/>
+   <property name="height" type="float" value="40"/>
    <property name="offsetX" type="float" value="161"/>
    <property name="offsetY" type="float" value="250"/>
   </properties>

@@ -247,7 +247,7 @@ function FruitSystem:fruitPickup(fruitStackEntity, fruitEntity)
     fruitEntity.physics.body:setType("static")
     fruitEntity.velocity.z =
         math.max(stackEntityVelocity.z or 0, fruitStackEntity.fruitStack.pickupJumpSpeed) *
-        math.pow(#fruitStackEntity.fruitStack.fruits, 1/3) *
+        math.pow(#fruitStackEntity.fruitStack.fruits, 1/4) *
         Game.constants.jumpMultiplier
 end
 

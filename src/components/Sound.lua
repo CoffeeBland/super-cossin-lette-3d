@@ -125,6 +125,19 @@ function SoundSystem:update(framePart, dt, game)
             end
         end
 
+        if entity.soundEmitter.always then
+            if not entity.soundEmitter.always.frames or entity.soundEmitter.always.frames <= 0 then
+                entity.soundEmitter.always.entity = entity -- Same sad, same oh well
+                entity.soundEmitter.always.frames = nil
+                Sound:start(entity.soundEmitter.always)
+            end
+            if entity.soundEmitter.always.frames then
+                entity.soundEmitter.always.frames = math.max(entity.soundEmitter.always.frames - framePart, 0)
+            elseif entity.soundEmitter.always.cooldown then
+                entity.soundEmitter.always.frames = entity.soundEmitter.always.cooldown
+            end
+        end
+
         local conditions = entity.soundEmitter.conditions
         Sound:toggle(conditions.drown, entity.water and entity.water.remainingDrownFrames)
         Sound:toggle(conditions.light, entity.light and entity.light.alpha >= conditions.light.minimumLight)

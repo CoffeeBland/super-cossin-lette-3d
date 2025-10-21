@@ -56,7 +56,7 @@ end
 function Music:loop(name, source)
     local time = source:tell("samples")
     local timestamps = Game.constants.musicLoops[name]
-    if time >= timestamps.loopEnd then
+    if timestamps and time >= timestamps.loopEnd then
         source:seek(timestamps.loopStart + (time - timestamps.loopEnd), "samples")
     end
 end

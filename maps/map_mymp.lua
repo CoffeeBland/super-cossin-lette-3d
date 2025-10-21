@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -16,8 +16,7 @@ return {
     {
       name = "tileset",
       firstgid = 1,
-      filename = "../tiled/tileset.tsx",
-      exportfilename = "../data/tileset.lua"
+      filename = "../tiled/tileset.tsx"
     },
     {
       name = "objects",
@@ -1548,12 +1547,12 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 1838.25,
-          y = 857.75,
-          width = 320,
-          height = 448,
+          x = 1739,
+          y = 3021.67,
+          width = 192,
+          height = 256,
           rotation = 0,
-          gid = 375,
+          gid = 308,
           visible = true,
           properties = {}
         },
@@ -1562,12 +1561,12 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 1182.88,
-          y = 4337.13,
-          width = 192,
-          height = 256,
+          x = 1800.67,
+          y = 801.667,
+          width = 320,
+          height = 448,
           rotation = 0,
-          gid = 308,
+          gid = 375,
           visible = true,
           properties = {}
         }
@@ -1641,7 +1640,9 @@ return {
           rotation = 0,
           gid = 318,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 80
+          }
         },
         {
           id = 26,
@@ -1655,7 +1656,9 @@ return {
           rotation = 0,
           gid = 317,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 80
+          }
         },
         {
           id = 27,
@@ -1963,7 +1966,9 @@ return {
           rotation = 0,
           gid = 326,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 40
+          }
         },
         {
           id = 126,

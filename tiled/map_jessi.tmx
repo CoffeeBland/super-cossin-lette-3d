@@ -2533,7 +2533,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="9" name="BG_Arbres" visible="0">
+ <objectgroup id="9" name="BG_Arbres">
   <object id="595" gid="376" x="918.25" y="3415.75" width="1024" height="1286"/>
   <object id="596" gid="376" x="1060.5" y="2281.5" width="1024" height="1286"/>
   <object id="597" gid="376" x="819.813" y="2850.19" width="1024" height="1286"/>
@@ -3308,7 +3308,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Calque d'Objets 2" visible="0">
+ <objectgroup id="5" name="Calque d'Objets 2">
   <object id="462" gid="316" x="2422.1" y="2283.35" width="128" height="192"/>
   <object id="463" gid="316" x="1943.66" y="3302.15" width="128" height="192"/>
   <object id="464" gid="316" x="1530.85" y="7146.72" width="128" height="192"/>
@@ -3318,7 +3318,7 @@
   <object id="3" gid="308" x="1836.51" y="1741.91" width="192" height="256"/>
   <object id="460" gid="357" x="6636.59" y="4101.23" width="605" height="459"/>
   <object id="461" gid="375" x="6804.24" y="4193.21" width="224" height="404"/>
-  <object id="577" gid="316" x="1034.58" y="1728.33" width="128" height="192"/>
+  <object id="577" gid="316" x="1036" y="1689.67" width="128" height="192"/>
   <object id="578" gid="316" x="3844.66" y="7954.61" width="128" height="192"/>
   <object id="579" gid="316" x="3365.07" y="7240.26" width="128" height="192"/>
   <object id="580" gid="316" x="1874.97" y="8003.09" width="128" height="192"/>

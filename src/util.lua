@@ -162,6 +162,9 @@ end
 
 function table.recset(dest, key, source)
     if not dest[key] or type(source) ~= "table" then
+        if source == "💔" then
+            source = nil
+        end
         dest[key] = source
     else
         for subkey, value in pairs(source) do

@@ -135,6 +135,10 @@ return {
             name = "lookUp",
             value = false
         },
+        { "music",
+            name = "[vars.music]",
+            loop = true
+        },
         { "sound",
             name = "Go"
         },
@@ -248,6 +252,7 @@ return {
             entity = { byName = "picnic" },
             panFrames = 60
         },
+        { "fadeoutMusic" },
         { "waitForPan" },
         { "components",
             entity = { byName = "blonde" },
@@ -288,6 +293,15 @@ return {
         },
         { "waitForBubble",
             entity = { byName = "blonde" }
+        },
+        { "components",
+            entity = { byName = "cossin" },
+            soundEmitter = {
+                always = {
+                    name = "Heartbeat",
+                    cooldown = 60
+                }
+            }
         },
         { "bubble",
             entity = { byName = "blonde" },
@@ -347,6 +361,12 @@ return {
         },
         { "waitForBubble",
             entity = { byName = "cossin" }
+        },
+        { "components",
+            entity = { byName = "cossin" },
+            soundEmitter = {
+                always = "💔"
+            }
         },
         { "if", ">=", "[vars.picnicFruits]", "[vars.targetFruits]" },
         { "bubble",
