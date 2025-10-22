@@ -6,7 +6,7 @@
  <properties>
   <property name="vars.nextMap" value="Niveau2"/>
   <property name="vars.targetFruits" type="int" value="3"/>
-  <property name="vars.timer" type="float" value="30"/>
+  <property name="vars.timer" type="float" value="40"/>
  </properties>
  <tileset firstgid="1" source="objects.tsx"/>
  <tileset firstgid="94" source=":/automap-tiles.tsx"/>
