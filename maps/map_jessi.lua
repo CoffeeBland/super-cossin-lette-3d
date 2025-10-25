@@ -12,8 +12,8 @@ return {
   nextlayerid = 13,
   nextobjectid = 784,
   properties = {
-    ["vars.nextMap"] = "map_jessi",
-    ["vars.targetFruits"] = 2,
+    ["vars.nextMap"] = "Geronimo",
+    ["vars.targetFruits"] = 12,
     ["vars.timer"] = 120
   },
   tilesets = {
@@ -11118,7 +11118,7 @@ return {
       id = 4,
       name = "Arbres",
       class = "",
-      visible = false,
+      visible = true,
       opacity = 0.46,
       offsetx = 0,
       offsety = 0,

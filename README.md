@@ -12,3 +12,4 @@
 ## BUGS
 * Les bulles sont pas bien centrées (mais c'est fiiiiine)
 * reloader ça arrêter pas les sons (ooph)
+* Fix le height map des arbres pliz

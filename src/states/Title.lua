@@ -19,7 +19,7 @@ local grassTiles = {
     "Tuile_gazon-31",
 }
 
-local cossinY = 400
+local cossinY = 450
 local expectedResolution = { 2732, 2048 }
 local bgcol = { 0.686, 0.898, 0.608 }
 local bgGrassTiles = {}

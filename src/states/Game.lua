@@ -470,8 +470,8 @@ end
 
 function Game:drawEntityShadow(entity, floorZ)
     floorZ = floorZ or 0
-    local zscale = entity.velocity and
-        math.pow(1 / math.max((entity.pos.z - floorZ) / METER_SCALE, 1), 1/4) or
+    local zscale = --entity.velocity and
+        --math.pow(1 / math.max((entity.pos.z - floorZ) / METER_SCALE, 1), 1/4) or
         1
     love.graphics.draw(
         textures[entity.shadow.name],
