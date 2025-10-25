@@ -324,7 +324,6 @@ end
 function Title:render()
     local w, h = love.graphics:getDimensions()
     local scale = math.min(math.min(w / expectedResolution[1], h / expectedResolution[2]), 1)
-    love.graphics.push()
     love.graphics.translate(w / 2, h / 2)
     love.graphics.scale(scale)
     love.graphics.clear(unpack(bgcol))
@@ -348,8 +347,6 @@ function Title:render()
                 textScale.from + (textScale.to - textScale.from) * animPart)
         end
     end
-
-    love.graphics.scale(0.5 / scale)
 
     if self.menuActive then
         local x = menu.pos.x - menu.width / 2
@@ -382,9 +379,6 @@ function Title:render()
     for _, entity in self:iterEntities(self.entities) do
         Game:drawEntitySprites(entity)
     end
-
-    love.graphics.pop()
-    love.graphics.scale(0.5)
 
     for _, buisson in pairs(buissons) do
         local animPart = math.min(self.frame / buisson.animFrames, 1) ^ 0.25
