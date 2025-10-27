@@ -28,10 +28,9 @@ function ImageSystem:update(framePart, dt, game)
 end
 
 function ImageSystem:draw()
-    local w, h = love.graphics.getDimensions()
     love.graphics.push()
-    love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(0.5)
+    love.graphics.translate(CURRES[1] / 2, CURRES[2] / 2)
+    love.graphics.scale(SCALE_TO_EXPECTED)
 
     for _, image in pairs(self.imagesById) do
         love.graphics.setColor(unpack(image.color))

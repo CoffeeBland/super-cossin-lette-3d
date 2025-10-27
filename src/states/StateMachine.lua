@@ -2,6 +2,7 @@ require "src.states.Intro"
 require "src.states.Title"
 require "src.states.MapIntro"
 require "src.states.Game"
+require "src.states.Options"
 
 Exit = { fadein = 1, fadeout = 1 }
 function Exit:enter() end
@@ -12,7 +13,9 @@ function Exit:render() end
 StateMachine = {
     fadeOutFrames = 0,
     fadeInFrames = 0,
-    fadeColor = { 0, 0, 0 }
+    fadeColor = { 0, 0, 0 },
+    current = nil,
+    stack = {}
 }
 
 function StateMachine:change(state, params)
@@ -39,6 +42,19 @@ function StateMachine:change(state, params)
     self.nextState = nil
 end
 
+function StateMachine:push(state, params)
+    table.insert(self.stack, state)
+    state:enter(params)
+end
+
+function StateMachine:pop(state)
+    local idx = table.index(self.stack, state)
+    if idx then
+        state:exit()
+        table.remove(self.stack, idx)
+    end
+end
+
 function StateMachine:slopLoad()
     local time = 100
     while time > 0 and load.crawlFiles(nil, true) do
@@ -52,6 +68,9 @@ function StateMachine:update(dt)
         if self.current then
             self.current:exit()
         end
+        for _, state in ipairs(self.stack) do
+            state:exit()
+        end
         self:slopLoad()
         self.current = self.nextState
         DISREGARD_NEXT_UPDATE = true
@@ -59,8 +78,17 @@ function StateMachine:update(dt)
         self.nextParams = nil
         self.nextState = nil
     end
-    if self.current and self.fadeOutFrames == 0 then
-        self.current:update(dt)
+    if self.fadeOutFrames == 0 then
+        local actualActions = actions
+        for i = #self.stack, 1, -1 do
+            self.stack[i]:update(dt)
+            actions = EMPTY
+        end
+        if self.current then
+            self.current:update(dt)
+            actions = EMPTY
+        end
+        actions = actualActions
     end
     Music:update(dt)
     Sound:update(framePart, dt)
@@ -79,9 +107,12 @@ function StateMachine:render()
     if self.current then
         self.current:render()
     end
+    for _, state in ipairs(self.stack) do
+        state:render()
+    end
     if self.fadePart ~= 0 then
         love.graphics.setColor(self.fadeColor[1], self.fadeColor[2], self.fadeColor[3], self.fadePart)
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getDimensions())
+        love.graphics.rectangle("fill", 0, 0, CURRES[1], CURRES[2])
         love.graphics.setColor(1, 1, 1, 1)
     end
 end

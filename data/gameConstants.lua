@@ -9,6 +9,7 @@ return {
     speedMultiplier = 20,
     bgColor = { 0.4, 0.65, 0.4 }, -- Jessi a pâlie la couleur de BG
     shadowColor = { 0.875, 0.867, 0.941, 1 },
+    pauseColor = { 0.5 * 0.875, 0.5 * 0.867, 0.5 * 0.941, 1 },
     lightColor = { 0.875, 0.867, 0.741, 1 },
     autoWalkCutoffFrames = 600,
     autoWalkJumpFrames = 60,
@@ -35,10 +36,41 @@ return {
     musicLoops = {
         Title = { loopStart = 55150, loopEnd = 772810 }
     },
+    musicFilters = {
+        pause =  {
+            type = "lowpass",
+            highgain = 0
+        }
+    },
     lens = {
         textureStepSize = 8,
         textureSteps = 10,
         textureStepAlpha = 0.2
+    },
+    buffs = {
+        super = {
+
+        }
+    },
+    pause = {
+        letters = {
+            { quad = { 4, 7, 119, 200 } },
+            { quad = { 138, 17, 110, 189 } },
+            { quad = { 259, 16, 110, 192 } },
+            { quad = { 375, 10, 104, 205 } },
+            { quad = { 482, 1, 107, 217 } }
+        },
+        letterWidth = 120,
+        letterPos = { x = 0, y = -60 },
+        wave = {
+            dur = 180,
+            letterOffset = 27,
+            amplitude = 30
+        },
+        buttonPos = { x = 0, y = 60 },
+        buttonMargin = 60,
+        buttonActive = { 0.875, 0.867, 0.741, 1 },
+        buttonInactive = { 0.875, 0.867, 0.741, 0.25 },
     },
     icons = {
         size = { w = 64, h = 64 },

@@ -24,6 +24,8 @@ function Music:play(name, loop)
     self.current:setVolume(fadein and 0 or musicVolume)
     self.current:stop()
     self.current:play()
+    self.current:setFilter()
+    self.current:setLooping(loop and not Game.constants.musicLoops[name] or false)
     self.currentLoop = loop
     if fadein then
         self.currentFadeinFrames = fadeFrames

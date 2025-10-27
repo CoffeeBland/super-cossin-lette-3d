@@ -1,8 +1,6 @@
 CameraSystem = {}
 CameraSystem.__index = CameraSystem
 
-local expectedResolution = { 2732, 2048 }
-
 function CameraSystem.new()
     return setmetatable({
         x = 0,
@@ -86,9 +84,9 @@ function CameraSystem:update(framePart, dt, game)
 end
 
 function CameraSystem:applyTransformations()
-    local w, h = love.graphics.getDimensions()
+    local w, h = CURRES[1], CURRES[2]
     love.graphics.translate(w / 2, h / 2)
-    local scale = math.min(math.min(w / expectedResolution[1], h / expectedResolution[2]), 1) * self.zoom
+    local scale = SCALE_TO_EXPECTED * self.zoom
     love.graphics.scale(scale)
     love.graphics.translate(
         -self.x + self.offsetX,

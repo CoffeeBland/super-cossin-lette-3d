@@ -14,6 +14,10 @@ function math.interp(frames, current, target)
     return current * (1 - p) + target * p
 end
 
+function math.sign(x)
+    return x / math.abs(x)
+end
+
 function math.trigterp(time, ts, te, apex)
     if not apex or apex <= 0 then
         return 0

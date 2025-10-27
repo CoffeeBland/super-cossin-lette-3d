@@ -12,9 +12,9 @@ objects = {
 }
 prefabs = {}
 fonts = {}
+fontsSizes = {}
 
 function load.init()
-    fonts.menu = love.graphics.newFont(36)
 end
 
 local function getOrLoadTexture(name)

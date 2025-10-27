@@ -20,7 +20,6 @@ local grassTiles = {
 }
 
 local cossinY = 450
-local expectedResolution = { 2732, 2048 }
 local bgcol = { 0.686, 0.898, 0.608 }
 local bgGrassTiles = {}
 
@@ -124,20 +123,36 @@ local menu = {
             pitch = 1.3,
             move = {
                 "hello",
-                { "walkTo", point = { pos = { x = -40, y = cossinY + 20 } } },
+                { "walkTo", point = { pos = { x = -140, y = cossinY + 20 } } },
                 { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = -120, y = cossinY + 60 } } },
-                { "lookAt", point = { pos = { x = -120, y = cossinY + 70 } } }
+                { "walkTo", point = { pos = { x = -230, y = cossinY + 60 } } },
+                { "lookAt", point = { pos = { x = -230, y = cossinY + 70 } } }
             },
             actionMove = {
                 "hello",
-                { "walkTo", point = { pos = { x = -150, y = cossinY + 60 } } },
+                { "walkTo", point = { pos = { x = -260, y = cossinY + 60 } } },
                 { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = -150, y = cossinY + 180 } } },
+                { "walkTo", point = { pos = { x = -260, y = cossinY + 180 } } },
+            }
+        },
+        {
+            text = "OPTIONS",
+            menuState = "options",
+            sound = "Step",
+            pitch = 1.0,
+            move = {
+                "hello",
+                { "walkTo", point = { pos = { x = 0, y = cossinY + 20 } } },
+                { "jump", jumpSpeed = 100 },
+                { "walkTo", point = { pos = { x = 0, y = cossinY + 60 } } },
+                { "lookAt", point = { pos = { x = 0, y = cossinY + 70 } } }
             },
-            cond = function()
-                return actions.movement.x < -DELTA
-            end
+            actionMove = {
+                "hello",
+                { "walkTo", point = { pos = { x = 0, y = cossinY + 60 } } },
+                { "jump", jumpSpeed = 100 },
+                { "walkTo", point = { pos = { x = 0, y = cossinY + 180 } } },
+            }
         },
         {
             text = "SE RECOUCHER",
@@ -146,20 +161,17 @@ local menu = {
             pitch = 0.6,
             move = {
                 "hello",
-                { "walkTo", point = { pos = { x = 40, y = cossinY + 20 } } },
+                { "walkTo", point = { pos = { x = 140, y = cossinY + 20 } } },
                 { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = 120, y = cossinY + 60 } } },
-                { "lookAt", point = { pos = { x = 120, y = cossinY + 70 } } }
+                { "walkTo", point = { pos = { x = 230, y = cossinY + 60 } } },
+                { "lookAt", point = { pos = { x = 230, y = cossinY + 70 } } }
             },
             actionMove = {
                 "hello",
-                { "walkTo", point = { pos = { x = 150, y = cossinY + 60 } } },
+                { "walkTo", point = { pos = { x = 260, y = cossinY + 60 } } },
                 { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = 150, y = cossinY + 180 } } },
-            },
-            cond = function()
-                return actions.movement.x > DELTA
-            end
+                { "walkTo", point = { pos = { x = 260, y = cossinY + 180 } } },
+            }
         }
     },
     buttonsByMenuState = {}
@@ -204,12 +216,6 @@ function Title:enter()
     self.waitingForEnd = false
     Music:play("Title", true)
 
-    menu.width = -menu.margin
-    for _, button in ipairs(menu.buttons) do
-        button.texture = love.graphics.newText(fonts.menu, button.text)
-        menu.width = menu.width + menu.margin + button.texture:getWidth()
-    end
-
     Requests.new(self)
 
     local cossin = prefabs.cossin()
@@ -242,41 +248,71 @@ end
 function Title:update(dt)
     self.frame = self.frame + 1
 
+    for _, event in ipairs(timeline) do
+        if event.frame == self.frame then
+            if event.text then
+                local source = sounds[event.text]
+                love.audio.play(source)
+            end
+            if event.menu then
+                self.menuActive = true
+            end
+            if event.cossin and self.entitiesByName.cossin.disabled then
+                local w = love.graphics:getDimensions()
+                self.entitiesByName.cossin.disabled = false
+                self.entitiesByName.cossin.pos.x = - (w + 60)
+                self.entitiesByName.cossin.actor:setMoveFromEvent(event)
+            end
+        end
+    end
+
     if self.waitingForEnd then
         if not self.entitiesByName.cossin.actor.autoMoveIndex then
-            Music:fadeout(Title.fadeout)
             if self.menuState == "new" then
+                Music:fadeout(Title.fadeout)
                 StateMachine:change(MapIntro, { map = Game.constants.firstLevel })
+            elseif self.menuState == "options" then
+                StateMachine:push(Options)
+                self.waitingForEnd = false
             elseif self.menuState == "quit" then
+                Music:fadeout(Title.fadeout)
                 StateMachine:change(Exit)
             end
         end
     else
-        for _, event in ipairs(timeline) do
-            if event.frame == self.frame then
-                if event.text then
-                    local source = sounds[event.text]
-                    love.audio.play(source)
-                end
-                if event.menu then
-                    self.menuActive = true
-                end
-                if event.cossin and self.entitiesByName.cossin.disabled then
-                    local w = love.graphics:getDimensions()
-                    self.entitiesByName.cossin.disabled = false
-                    self.entitiesByName.cossin.pos.x = - (w + 60)
-                    self.entitiesByName.cossin.actor:setMoveFromEvent(event)
-                end
-            end
-        end
-
         if self.menuActive and actions.action then
             local button = menu.buttonsByMenuState[self.menuState]
             self.waitingForEnd = true
             self.entitiesByName.cossin.actor:setMoveFromEvent(button.actionMove)
         end
 
-        if actions.action or actions.escape or actions.movement.x ~= 0 then
+        local menuStatei = nil
+        local changedMenuState = false
+        for i, button in ipairs(menu.buttons) do
+            if self.menuState == button.menuState then
+                menuStatei = i
+            end
+        end
+
+        if actions.previous then
+            changedMenuState = true
+        end
+        if actions.next then
+            changedMenuState = true
+        end
+
+        if actions.move then
+            menuStatei = math.clamp(menuStatei + math.sign(actions.movement.x), 1, #menu.buttons)
+            local button = menu.buttons[menuStatei]
+            self.menuState = button.menuState
+            local source = sounds[button.sound]
+            source:setPitch(button.pitch)
+            source:stop()
+            love.audio.play(source)
+            self.entitiesByName.cossin.actor:setMoveFromEvent(button.move)
+        end
+
+        if actions.action or actions.escape or actions.move then
             self.menuActive = true
             if self.entitiesByName.cossin.disabled then
                 local w = love.graphics:getDimensions()
@@ -284,19 +320,6 @@ function Title:update(dt)
                 self.entitiesByName.cossin.pos.x = - (w + 60)
                 local button = menu.buttonsByMenuState[self.menuState]
                 self.entitiesByName.cossin.actor:setMoveFromEvent(button.move)
-            end
-        end
-
-        for _, button in ipairs(menu.buttons) do
-            if button.cond() then
-                if self.menuState ~= button.menuState then
-                    local source = sounds[button.sound]
-                    source:setPitch(button.pitch)
-                    source:stop()
-                    love.audio.play(source)
-                    self.entitiesByName.cossin.actor:setMoveFromEvent(button.move)
-                end
-                self.menuState = button.menuState
             end
         end
     end
@@ -322,10 +345,9 @@ function Title:findPoint(designation)
 end
 
 function Title:render()
-    local w, h = love.graphics:getDimensions()
-    local scale = math.min(math.min(w / expectedResolution[1], h / expectedResolution[2]), 1)
+    local w, h = unpack(CURRES)
     love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(scale)
+    love.graphics.scale(SCALE_TO_EXPECTED)
     love.graphics.clear(unpack(bgcol))
     for _, tile in ipairs(bgGrassTiles) do
         love.graphics.draw(textures[tile.name], tile.x, tile.y)
@@ -349,18 +371,32 @@ function Title:render()
     end
 
     if self.menuActive then
-        local x = menu.pos.x - menu.width / 2
-        local y = menu.pos.y
+        love.graphics.push()
+        love.graphics.translate(menu.pos.x, menu.pos.y)
+        love.graphics.scale(1 / SCALE_TO_EXPECTED)
+        love.graphics.setFont(fonts.menu)
+
+        local margin = menu.margin * SCALE_TO_EXPECTED
+        local menuWidth = -margin
+        for _, button in ipairs(menu.buttons) do
+            button.width = fonts.menu:getWidth(button.text)
+            menuWidth = menuWidth + margin + button.width
+        end
+        love.graphics.translate(-menuWidth / 2, 0)
+
+        local x = 0
         for _, button in ipairs(menu.buttons) do
             local menuState = button.menuState
             local color = self.menuState == menuState and
                 colors.buttonActive or
                 colors.buttonInactive
             love.graphics.setColor(unpack(color))
-            love.graphics.draw(button.texture, x, y)
-            x = x + menu.margin + button.texture:getWidth()
+            love.graphics.print(button.text, x, 0)
+            x = x + margin + button.width
             love.graphics.setColor(1, 1, 1, 1)
         end
+
+        love.graphics.pop()
     end
 
     for _, entity in self:iterEntities(self.entities) do

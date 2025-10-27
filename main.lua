@@ -47,7 +47,7 @@ function love.update(dt)
     end
 
     if debug.autorefresh and StateMachine.current.refresh then
-        local requiresRefresh = load.crawlFiles(frame) or actions.refresh
+        local requiresRefresh = load.crawlFiles(frame)
         StateMachine.current:refresh(requiresRefresh)
     end
 
@@ -64,6 +64,17 @@ function love.update(dt)
 end
 
 function love.draw()
+    CURRES[1], CURRES[2] = love.graphics:getDimensions()
+    local minRatio = math.min(CURRES[1] / EXPRES[1], CURRES[2] / EXPRES[2])
+    SCALE_TO_EXPECTED = math.min(minRatio, 1)
+
+    local menuFontSize = math.ceil(36 * SCALE_TO_EXPECTED)
+    if menuFontSize ~= fontsSizes.menu then
+        fonts.menu = love.graphics.newFont(menuFontSize)
+        fonts.menu:setFilter("nearest")
+        fontsSizes.menu = menuFontSize
+    end
+
     StateMachine:render()
 
     if debug.fps then

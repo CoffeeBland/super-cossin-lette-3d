@@ -5,11 +5,7 @@ local pressActions = {
     },
     action = {
         keys = { "return", "space" },
-        buttons = { "x" }
-    },
-    refresh = {
-        keys = { "f5" },
-        buttons = { "back" }
+        buttons = { "a", "x" }
     },
     toggleDebug = {
         keys = { "f12" },
@@ -87,6 +83,7 @@ function love.joystickremoved(controller)
 end
 
 function input.poll(dt)
+    local wasMove = (math.abs(actions.movement.x) > DELTA or math.abs(actions.movement.y) > DELTA)
     actions.movement.x = 0
     actions.movement.y = 0
     for _, key in ipairs(movementActions.horizontal.negativeKeys) do
@@ -138,6 +135,8 @@ function input.poll(dt)
     else
         actions.movement.angle = nil
     end
+    actions.move = (math.abs(actions.movement.x) > DELTA or math.abs(actions.movement.y) > DELTA) and
+        not wasMove
 end
 
 function input.afterUpdate(dt)

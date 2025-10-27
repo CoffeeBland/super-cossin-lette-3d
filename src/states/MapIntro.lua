@@ -4,7 +4,6 @@ MapIntro = {
     fadeColor = { 1, 1, 1 }
 }
 
-local expectedResolution = { 2732, 2048 }
 local bgcol = { 0.729, 0.941, 0.839 }
 
 local stuff = {
@@ -162,11 +161,10 @@ function MapIntro:update(dt)
 end
 
 function MapIntro:render()
-    local w, h = love.graphics:getDimensions()
-    local scale = math.min(math.min(w / expectedResolution[1], h / expectedResolution[2]), 1)
+    local w, h = CURRES[1], CURRES[2]
     love.graphics.push()
     love.graphics.translate(w / 2, h / 2)
-    love.graphics.scale(scale)
+    love.graphics.scale(SCALE_TO_EXPECTED)
     love.graphics.clear(unpack(bgcol))
 
     for _, thing in pairs(stuff) do

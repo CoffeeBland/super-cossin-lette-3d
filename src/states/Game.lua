@@ -14,6 +14,7 @@ require "src.components.Particle"
 require "src.components.Music"
 require "src.components.Timer"
 require "src.components.Image"
+require "src.components.Pause"
 
 require "src.Map"
 
@@ -29,6 +30,7 @@ function Game:refresh(force)
     local path = "maps/" .. self.map.name .. ".lua"
     local info = love.filesystem.getInfo(path, "file")
     if force or (timestamps[path] and timestamps[path].modtime < info.modtime) then
+        Sound:start({ name = "Refresh", survive = true })
         timestamps[path] = info
         StateMachine:change(Game, { map = self.map.name })
     end
@@ -78,7 +80,6 @@ function Game:enter(args)
         target = nil
     }
     self.time = 0
-    self.endTriggered = false
     self.map = Map.load(args.map)
     self.vars = {
         remainingFruits = 0,
@@ -105,6 +106,7 @@ function Game:enter(args)
     self.particles = ParticleSystem.new(Game.constants.particleCount, self.entities)
     self.timer = TimerSystem.new()
     self.images = ImageSystem.new()
+    self.pause = PauseSystem.new()
 
     self.map:getTileEntities(self.physics.world, self.entities)
     self.map:getEntities(self.entities)
@@ -209,6 +211,12 @@ function Game:update(dt)
 
     self.time = self.time + dt
     local framePart = dt / (1 / 60)
+
+
+    self.pause:update(framePart, dt, self)
+    if self.pause.active then
+        return
+    end
 
     for _, entity in self:iterEntities(self.entitiesByComponent.anim) do
         entity.anim:update(dt, entity.sprites)
@@ -384,6 +392,7 @@ function Game:render(dt)
     end
 
     self.images:draw()
+    self.pause:draw()
 
     if debug.pointHeights then
         local x, y = 0, 0

@@ -2,7 +2,12 @@ return function(object)
     return {
         body = { shape = "circle", size = 70, type = "dynamic" },
         pos = { height = 80 },
-        fruit = { type = object.fruit, mass = 0.05 },
+        fruit = {
+            type = object.fruit,
+            mass = 0.05,
+            buff = object.fruit == "radish" and "super" or nil,
+            buffDuration = 30
+        },
         velocity = { z = 0 },
         shadow = {
             name = object.fruit == "radish" and "fruitOmbrePetit" or "fruitOmbre"

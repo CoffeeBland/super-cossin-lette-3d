@@ -49,7 +49,7 @@ end
 
 function Sound:fadeout(frames)
     for name, sound in pairs(self.playing) do
-        if not sound.volumeFrames or sound.targetVolume ~= 0 then
+        if not sound.survive and (not sound.volumeFrames or sound.targetVolume ~= 0) then
             sound.volumeFrames = frames or fadeFrames
             sound.targetVolume = 0
         end
