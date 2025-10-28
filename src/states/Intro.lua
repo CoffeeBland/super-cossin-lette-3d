@@ -39,22 +39,20 @@ function Intro:enter()
 end
 
 function Intro:exit()
+    Sound:fadeout()
 end
 
 function Intro:update(dt)
     if self.splashFrame >= splashFrames or actions.escape or actions.action then
-        love.audio.stop(sounds.IntroClick)
-        love.audio.stop(sounds.Intro)
         StateMachine:change(Title)
     end
 
     if self.splashFrame == 0 then
-        sounds.IntroClick:setVolume(0.5)
-        love.audio.play(sounds.IntroClick)
+        Sound:start({ name = "IntroClick", volume = 0.5 })
     end
 
     if self.splashFrame == 30 then
-        love.audio.play(sounds.Intro)
+        Sound:start({ name = "Intro" })
     end
     self.splashFrame = self.splashFrame + 1
 end

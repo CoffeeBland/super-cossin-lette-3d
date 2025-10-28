@@ -2010,7 +2010,7 @@
   </object>
   <object id="123" gid="376" x="-1073" y="-493.333" width="1024" height="1286">
    <properties>
-    <property name="truncateHeight" type="float" value="230"/>
+    <property name="truncateHeight" type="float" value="120"/>
    </properties>
   </object>
   <object id="128" gid="2147484007" x="-370" y="-838.667" width="313" height="321"/>

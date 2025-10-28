@@ -281,7 +281,7 @@ function Game:render(dt)
     HEIGHT_MAPPED_SHADER:send("shadowMapHeightOffset", SHADOW_MAP_HEIGHT_OFFSET)
     HEIGHT_MAPPED_SHADER:send("shadowMapOffset", SHADOW_MAP_OFFSET)
     HEIGHT_MAPPED_SHADER:send("skyLimit", SKY_LIMIT)
-    HEIGHT_MAPPED_SHADER:send("scale", scale)
+    HEIGHT_MAPPED_SHADER:send("scale", scale * Game.constants.heightSlop)
 
     tileBatchStartIdx = 0
     tileBatchIdx = 0

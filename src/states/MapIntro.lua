@@ -125,6 +125,7 @@ function MapIntro:enter(params)
 end
 
 function MapIntro:exit()
+    Sound:fadeout()
 end
 
 function MapIntro:update(dt)
@@ -139,7 +140,7 @@ function MapIntro:update(dt)
         if not event.duration then
             if self.frame == event.frame then
                 if event[1] == "sound" then
-                    sounds[event.name]:play()
+                    Sound:start(event)
                 elseif event[1] == "state" then
                     StateMachine:change(Game, self.params)
                 end

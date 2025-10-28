@@ -55,6 +55,7 @@ actions = {
     action = false,
     jump = false,
     movement = { x = 0, y = 0, angle = nil },
+    menu = { x = 0, y = 0, any = 0 },
     refresh = false,
     toggleDebug = false,
     gogogadget = false
@@ -135,8 +136,10 @@ function input.poll(dt)
     else
         actions.movement.angle = nil
     end
-    actions.move = (math.abs(actions.movement.x) > DELTA or math.abs(actions.movement.y) > DELTA) and
-        not wasMove
+    actions.menu.x = math.abs(actions.movement.x) > DELTA and math.sign(actions.movement.x) or 0
+    actions.menu.y = math.abs(actions.movement.y) > DELTA and math.sign(actions.movement.y) or 0
+    actions.menu.any = actions.menu.x ~= 0 and actions.menu.x or actions.menu.y
+    actions.move = not wasMove and (actions.menu.x ~= 0 or actions.menu.y ~= 0)
 end
 
 function input.afterUpdate(dt)

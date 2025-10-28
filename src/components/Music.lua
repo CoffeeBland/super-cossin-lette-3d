@@ -21,7 +21,7 @@ function Music:play(name, loop)
     end
     self.currentName = name
     self.current = music[name]
-    self.current:setVolume(fadein and 0 or musicVolume)
+    self.current:setVolume((fadein and 0 or musicVolume) * Options.values.music / 100)
     self.current:stop()
     self.current:play()
     self.current:setFilter()
@@ -68,7 +68,7 @@ function Music:update(dt)
 
     if self.current then
         local currentVolume = math.interp(self.currentFadeinFrames, self.current:getVolume(), musicVolume)
-        self.current:setVolume(currentVolume)
+        self.current:setVolume(currentVolume * Options.values.music / 100)
         self.currentFadeinFrames = math.max(self.currentFadeinFrames - framePart, 0)
         if self.currentLoop then
             self:loop(self.currentName, self.current)
@@ -82,7 +82,7 @@ function Music:update(dt)
             self.old = nil
             self.oldFadeoutFrames = 0
         else
-            self.old:setVolume(oldVolume)
+            self.old:setVolume(oldVolume * Options.values.music / 100)
             self.oldFadeoutFrames = math.max(self.oldFadeoutFrames - framePart, 0)
             if self.oldLoop then
                 self:loop(self.oldName, self.old)

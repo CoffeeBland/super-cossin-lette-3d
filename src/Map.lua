@@ -131,7 +131,7 @@ function Map:init()
                     if not layerHeightInfo or layerHeightInfo.y < y then
                         layerHeightInfo = { y = y, height = 0 }
                     end
-                    for i = 0, math.floor(height / TILE_HEIGHT) do
+                    for i = 0, math.ceil(height / TILE_HEIGHT) do
                         globali = (tx - i) + (ty - i) * self.width
                         local current = layerHeightInfo.height
                         local new = math.max(current or 0, height + layerHeightInfo.height)

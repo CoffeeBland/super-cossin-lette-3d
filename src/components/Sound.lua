@@ -4,7 +4,28 @@
 
 Sound = {
     playing = {},
-    nextPlayingId = 1
+    nextPlayingId = 1,
+
+    global = {
+        up = { name = "Step", pitchRange = { 1.0, 1.4 } },
+        down = { name = "Step", pitchRange = { 0.6, 1.0 } },
+        act = {
+            name = "Bloop",
+            names = {
+                "Bloop1",
+                "Bloop2",
+                "Bloop3",
+                "Bloop4",
+                "Bloop5",
+                "Bloop6",
+                "Bloop7",
+                "Bloop8",
+                "Bloop9",
+            },
+            volumeRange = { 0.8, 1 },
+            pitchRange = { 1.2, 1.4 }
+        }
+    }
 }
 
 local fadeFrames = 30
@@ -17,7 +38,7 @@ function Sound:start(sound)
         return
     end
     local volume = sound.volumeRange and math.randomRange(sound.volumeRange) or sound.volume or 1
-    source:setVolume(volume)
+    source:setVolume(volume * Options.values.sound / 100)
     source:setPitch(sound.pitchRange and math.randomRange(sound.pitchRange) or sound.pitch or 1)
     source:setLooping(sound.loop or false)
     if sound.fadeIn then
@@ -80,7 +101,7 @@ function Sound:update(framePart, dt)
                 sound.source = nil
                 sound.entity = nil
             else
-                source:setVolume(volume)
+                source:setVolume(volume * Options.values.sound / 100)
             end
             if sound.volumeFrames == 0 then
                 sound.volumeFrames = nil

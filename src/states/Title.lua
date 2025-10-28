@@ -119,8 +119,6 @@ local menu = {
         {
             text = "PIQUE-NIQUER",
             menuState = "new",
-            sound = "Step",
-            pitch = 1.3,
             move = {
                 "hello",
                 { "walkTo", point = { pos = { x = -140, y = cossinY + 20 } } },
@@ -138,8 +136,6 @@ local menu = {
         {
             text = "OPTIONS",
             menuState = "options",
-            sound = "Step",
-            pitch = 1.0,
             move = {
                 "hello",
                 { "walkTo", point = { pos = { x = 0, y = cossinY + 20 } } },
@@ -157,8 +153,6 @@ local menu = {
         {
             text = "SE RECOUCHER",
             menuState = "quit",
-            sound = "Step",
-            pitch = 0.6,
             move = {
                 "hello",
                 { "walkTo", point = { pos = { x = 140, y = cossinY + 20 } } },
@@ -198,8 +192,14 @@ function Title:enter()
             table.insert(soundsToFind, event.text)
         end
     end
-    for _, button in pairs(menu.buttons) do
-        table.insert(soundsToFind, button.sound)
+    for _, sound in pairs(Sound.global) do
+        if sound.names then
+            for _, name in ipairs(sound.names) do
+                table.insert(soundsToFind, name)
+            end
+        else
+            table.insert(soundsToFind, sound.name)
+        end
     end
     for _, buisson in pairs(buissons) do
         table.insert(texturesToFind, buisson.name)
@@ -251,8 +251,7 @@ function Title:update(dt)
     for _, event in ipairs(timeline) do
         if event.frame == self.frame then
             if event.text then
-                local source = sounds[event.text]
-                love.audio.play(source)
+                Sound:start({ name = event.text })
             end
             if event.menu then
                 self.menuActive = true
@@ -268,6 +267,7 @@ function Title:update(dt)
 
     if self.waitingForEnd then
         if not self.entitiesByName.cossin.actor.autoMoveIndex then
+            Sound:start(Sound.global.act)
             if self.menuState == "new" then
                 Music:fadeout(Title.fadeout)
                 StateMachine:change(MapIntro, { map = Game.constants.firstLevel })
@@ -302,13 +302,10 @@ function Title:update(dt)
         end
 
         if actions.move then
-            menuStatei = math.clamp(menuStatei + math.sign(actions.movement.x), 1, #menu.buttons)
+            menuStatei = math.wrap(menuStatei + actions.menu.any, 1, #menu.buttons)
             local button = menu.buttons[menuStatei]
             self.menuState = button.menuState
-            local source = sounds[button.sound]
-            source:setPitch(button.pitch)
-            source:stop()
-            love.audio.play(source)
+            Sound:start(actions.menu.any < 0 and Sound.global.up or Sound.global.down)
             self.entitiesByName.cossin.actor:setMoveFromEvent(button.move)
         end
 

@@ -16,6 +16,7 @@ return {
     autoWalkCutoffDistance2 = 100,
     tileBatchesCount = 16,
     tileBatchesDT = 15 * (1 / 60),
+    heightSlop = 1.015,  -- Dat is very very louche.
     defaultLight = {
         angle = 0.4 * math.pi,
         radiusw = 180,
@@ -71,6 +72,11 @@ return {
         buttonMargin = 60,
         buttonActive = { 0.875, 0.867, 0.741, 1 },
         buttonInactive = { 0.875, 0.867, 0.741, 0.25 },
+    },
+    options = {
+        hmargin = 30,
+        vmargin = 40,
+        base = 800
     },
     icons = {
         size = { w = 64, h = 64 },

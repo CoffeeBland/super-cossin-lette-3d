@@ -1,4 +1,5 @@
 require "src.util"
+require "src.loveutil"
 require "src.load"
 require "src.input"
 require "src.input"
@@ -9,6 +10,7 @@ require "src.states.StateMachine"
 debug = { cycle = 0, physics = false, fps = false, autorefresh = true }
 
 function love.load(args)
+    Options:apply()
     local requestedMap = args[1]
 
     love.graphics.setDefaultFilter("nearest", "nearest")
@@ -68,7 +70,7 @@ function love.draw()
     local minRatio = math.min(CURRES[1] / EXPRES[1], CURRES[2] / EXPRES[2])
     SCALE_TO_EXPECTED = math.min(minRatio, 1)
 
-    local menuFontSize = math.ceil(36 * SCALE_TO_EXPECTED)
+    local menuFontSize = math.max(math.ceil(36 * SCALE_TO_EXPECTED), 18)
     if menuFontSize ~= fontsSizes.menu then
         fonts.menu = love.graphics.newFont(menuFontSize)
         fonts.menu:setFilter("nearest")

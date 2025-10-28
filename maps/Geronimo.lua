@@ -2617,7 +2617,7 @@ return {
           gid = 376,
           visible = true,
           properties = {
-            ["truncateHeight"] = 230
+            ["truncateHeight"] = 120
           }
         },
         {

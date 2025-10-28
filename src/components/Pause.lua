@@ -5,7 +5,6 @@ local buttons = {
     {
         text = "REPIQUER LE NIQUE",
         menuState = "restart",
-        sound = { name = "Step", pitch = 1.3 },
         action = function()
             Game:refresh(true)
         end
@@ -13,7 +12,6 @@ local buttons = {
     {
         text = "OPTIONS",
         menuState = "options",
-        sound = { name = "Step", pitch = 1.0 },
         action = function()
             StateMachine:push(Options)
         end
@@ -21,7 +19,6 @@ local buttons = {
     {
         text = "SE RECOUCHER",
         menuState = "quit",
-        sound = { name = "Step", pitch = 0.6 },
         action = function()
             StateMachine:change(Title)
         end
@@ -53,6 +50,7 @@ end
 function PauseSystem:update(framePart, dt, game)
     if actions.escape then
         self.active = not self.active
+        Sound:start(Sound.global.act)
         if Music.current then
             local filter = self.active and Game.constants.musicFilters.pause or nil
             Music.current:setFilter(filter)
@@ -64,15 +62,16 @@ function PauseSystem:update(framePart, dt, game)
         self.time = self.time + framePart
 
         if actions.move then
-            local newBtnIdx = math.clamp(self.btnIdx + math.sign(actions.movement.x), 1, #buttons)
+            local newBtnIdx = math.wrap(self.btnIdx + actions.menu.any, 1, #buttons)
             if newBtnIdx ~= self.btnIdx then
                 self.btnIdx = newBtnIdx;
                 local button = buttons[self.btnIdx]
-                Sound:start(button.sound)
+                Sound:start(actions.menu.any < 0 and Sound.global.up or Sound.global.down)
             end
         end
 
         if actions.action then
+            Sound:start(Sound.global.act)
             local button = buttons[self.btnIdx]
             button.action()
         end
@@ -80,19 +79,17 @@ function PauseSystem:update(framePart, dt, game)
 end
 
 function PauseSystem:draw()
-    if not self.active then
+    if not self.active or #StateMachine.stack > 0 then
         return
     end
 
     local w, h = CURRES[1], CURRES[2]
 
-    if #StateMachine.stack == 0 then
-        love.graphics.setColor(unpack(Game.constants.pauseColor))
-        love.graphics.setBlendMode("multiply", "premultiplied")
-        love.graphics.rectangle("fill", 0, 0, w, h)
-        love.graphics.setBlendMode("alpha")
-        love.graphics.setColor(1, 1, 1, 1)
-    end
+    love.graphics.setColor(unpack(Game.constants.pauseColor))
+    love.graphics.setBlendMode("multiply", "premultiplied")
+    love.graphics.rectangle("fill", 0, 0, w, h)
+    love.graphics.setBlendMode("alpha")
+    love.graphics.setColor(1, 1, 1, 1)
 
     love.graphics.push()
     love.graphics.translate(w / 2, h / 2)
