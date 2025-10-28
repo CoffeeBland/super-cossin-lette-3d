@@ -30,9 +30,35 @@ Sound = {
 
 local fadeFrames = 30
 
+clones = {}
+
+function Sound:findSource(name)
+    local source = sounds[name]
+    if source:isPlaying() then
+        if not clones[name] then
+            clones[name] = {}
+        end
+        for i = 1, 3 do
+            local clone = clones[name][i]
+            if not clone then
+                clone = source:clone()
+                clones[name][i] = clone
+                return clone
+            end
+            if not clone:isPlaying() then
+                return clone
+            end
+        end
+        source:stop()
+        return source
+    else
+        return source
+    end
+end
+
 function Sound:start(sound)
     local sourceName = sound.names and sound.names[math.random(#sound.names)] or sound.name
-    local source = sounds[sourceName]
+    local source = self:findSource(sourceName)
     if not source then
         error("Could not find source for sound", sound)
         return
@@ -50,7 +76,6 @@ function Sound:start(sound)
     sound.source = source
     sound.playingId = self.nextPlayingId
     self.nextPlayingId = self.nextPlayingId + 1
-    source:stop()
     source:play()
 end
 

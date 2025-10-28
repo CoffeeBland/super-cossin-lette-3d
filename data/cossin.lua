@@ -127,19 +127,13 @@ return function()
                 ["eat:start"] = {
                     name = "Ooh"
                 },
-                -- throwFruit = {
-                --     name = "Shoop"
-                -- },
                 eatFruit = {
                     name = "Gulp"
                 },
-                --["jump:start"] = {
-                --    name = "Ooh",
-                --    stopOn = "jump:stop"
-                --},
-                --["jump:stop"] = {
-                --    name = "Poof"
-                --},
+                ["jump:stop"] = {
+                    name = "Step",
+                    pitchRange = { 0.45, 0.55 }
+                },
                 step = {
                     name = "Step",
                     volumeRange = { 0.3, 0.4 },
@@ -152,7 +146,6 @@ return function()
                 },
                 ["squish:start"] = {
                     name = "Gnieh",
-                    loop = true,
                     stopOn = "squish:stop"
                 }
             }

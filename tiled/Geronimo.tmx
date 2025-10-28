@@ -4,7 +4,6 @@
   <export target="../maps/Geronimo.lua" format="lua"/>
  </editorsettings>
  <properties>
-  <property name="vars.nextMap" value=""/>
   <property name="vars.targetFruits" type="int" value="12"/>
   <property name="vars.timer" type="float" value="60"/>
  </properties>
