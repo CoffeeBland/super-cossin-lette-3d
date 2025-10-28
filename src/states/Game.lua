@@ -625,8 +625,12 @@ end
 
 function Game:sortForDrawing(entities)
     table.sort(entities, function (a, b)
-        local floorA, ay = self.physics:findFloorY(a)
-        local floorB, by = self.physics:findFloorY(b)
+        local floorA, ay, depthA = self.physics:findFloorY(a)
+        local floorB, by, depthB = self.physics:findFloorY(b)
+
+        if floorA == floorB and depthA ~= depthB then
+            return depthA < depthB
+        end
 
         if math.abs(ay - by) < DELTA then
             if math.abs(a.pos.y - b.pos.y) < DELTA then

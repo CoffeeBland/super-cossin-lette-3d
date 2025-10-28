@@ -140,10 +140,10 @@ function PhysicsSystem:findFloorY(entity)
             entity = entity.pos.floorEntity
             y = math.max(entity.pos.y + DELTA * 3, y)
         else
-            return entity, y
+            return entity, y, i
         end
     end
-    return entity, y
+    return entity, y, 0
 end
 
 -- Overlap iterator state (iiish it's all global and sad)
