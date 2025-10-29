@@ -13,8 +13,8 @@ function love.conf(t)
     t.window.vsync = Options.values.vsync and 1 or 0
     t.window.fullscreen = Options.values.fullscreen and 1 or 0
     t.window.resizable = true
+    t.window.highdpi = true
 
-    t.modules.mouse = false
     t.modules.touch = false
     t.modules.video = false
 end

@@ -11,6 +11,7 @@ debug = { cycle = 0, physics = false, fps = false, autorefresh = true }
 
 function love.load(args)
     Options:apply()
+    love.mouse.setVisible(false)
     local requestedMap = args[1]
 
     love.graphics.setDefaultFilter("nearest", "nearest")
