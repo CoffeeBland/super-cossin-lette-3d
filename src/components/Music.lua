@@ -63,12 +63,24 @@ function Music:loop(name, source)
     end
 end
 
+function Music:gameUpdate(framePart, dt, game)
+    local speed = 1
+    for _, entity in game:iterEntities(game.entitiesByComponent.actor) do
+        for buffName, _ in pairs(entity.actor.buffs) do
+            local buff = Game.constants.buffs[buffName]
+            speed = math.max(buff and buff.music and buff.music.speed or 1, speed)
+        end
+    end
+    self.speed = speed
+end
+
 function Music:update(dt)
     local framePart = dt / (1 / 60)
 
     if self.current then
         local currentVolume = math.interp(self.currentFadeinFrames, self.current:getVolume(), musicVolume)
         self.current:setVolume(currentVolume * Options.values.music / 100)
+        self.current:setPitch(self.speed)
         self.currentFadeinFrames = math.max(self.currentFadeinFrames - framePart, 0)
         if self.currentLoop then
             self:loop(self.currentName, self.current)
@@ -89,4 +101,6 @@ function Music:update(dt)
             end
         end
     end
+
+    self.speed = 1
 end

@@ -38,6 +38,14 @@ function ParticleSystem:update(framePart, dt, game)
             if light and entity.light and entity.light.alpha >= light.minimumLight then
                 self:emit(framePart, entity, light)
             end
+
+            if entity.actor then
+                for buffName, _ in pairs(entity.actor.buffs) do
+                    if entity.particleEmitter.conditions[buffName] then
+                        self:emit(framePart, entity, entity.particleEmitter.conditions[buffName])
+                    end
+                end
+            end
         end
         if entity.particleEmitter.always then
             self:emit(framePart, entity, entity.particleEmitter.always)

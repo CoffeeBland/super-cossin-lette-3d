@@ -25,15 +25,58 @@ fancyTypes.actor = Actor
 function Actor.new(params)
     params = params or EMPTY
     local instance = setmetatable({}, Actor)
-    instance.walkSpeed = params.walkSpeed or 0
-    instance.slidingSpeed = params.slidingSpeed or 0
-    instance.airSpeed = params.airSpeed or 0
-    instance.jumpSpeed = params.jumpSpeed or 0
-    instance.mass = params.mass or 1
+    instance.baseStats = {
+        walkSpeed = params.walkSpeed or 0,
+        slidingSpeed = params.slidingSpeed or 0,
+        airSpeed = params.airSpeed or 0,
+        jumpSpeed = params.jumpSpeed or 0,
+        mass = params.mass or 1,
+        hue = params.hue or 0
+    }
+    instance.stats = {}
+    instance.buffs = {}
     instance.autoActions = { movement = { x = 0, y = 0, angle = nil }, jump = false }
     instance.autoMoves = {}
     instance.autoMoveIndex = nil
+    instance:computeStats()
     return instance
+end
+
+function Actor:buff(buff, duration)
+    self.buffs[buff] = (self.buffs[buff] or 0) + duration
+end
+
+local _statsToClear = {}
+
+function Actor:computeStats(framePart)
+    framePart = framePart or 0
+
+    for stat, _ in pairs(self.baseStats) do
+        _statsToClear[stat] = true
+    end
+    for buffName, _ in pairs(self.buffs) do
+        local buff = Game.constants.buffs[buffName]
+        for stat, modification in pairs(buff.stats) do
+            if modification.applied == "frame" then
+                _statsToClear[stat] = false
+            end
+        end
+    end
+    for stat, value in pairs(self.baseStats) do
+        if _statsToClear[stat] then
+            self.stats[stat] = value
+        end
+    end
+    for buffName, _ in pairs(self.buffs) do
+        local buff = Game.constants.buffs[buffName]
+        for stat, modification in pairs(buff.stats) do
+            if modification.type == "*" then
+                self.stats[stat] = self.stats[stat] * modification.value
+            elseif modification.type == "+" then
+                self.stats[stat] = self.stats[stat] + modification.value
+            end
+        end
+    end
 end
 
 function Actor:processMove(framePart, game, nextMove, entity, actions)
@@ -116,6 +159,18 @@ function Actor:update(framePart, game, entity, actions)
         end
     end
 
+    for buffName, duration in pairs(self.buffs) do
+        if duration == 0 then
+            self.buffs[buffName] = nil
+        end
+    end
+    for buffName, duration in pairs(self.buffs) do
+        self.buffs[buffName] = math.max(duration - framePart, 0)
+    end
+    entity.hue = self.stats.hue % 1.0
+
+    self:computeStats(framePart)
+
     actions = actions or self.autoActions
     local pos = entity.pos
     local anim = entity.anim
@@ -128,8 +183,8 @@ function Actor:update(framePart, game, entity, actions)
     end
     if pos.onGround and anim:highestPriority() <= Anim.priorities.squish then
         if actions.jump then
-            local jumpSpeed = type(actions.jump) == "number" and actions.jump or self.jumpSpeed
-            velocity.z = velocity.z + jumpSpeed * Game.constants.jumpMultiplier / self.mass
+            local jumpSpeed = type(actions.jump) == "number" and actions.jump or self.stats.jumpSpeed
+            velocity.z = velocity.z + jumpSpeed * Game.constants.jumpMultiplier / self.stats.mass
             pos.onGround = false
         end
         pos.sliding = actions.prejump
@@ -139,12 +194,12 @@ function Actor:update(framePart, game, entity, actions)
     end
     anim:toggle("jump", not pos.onGround)
     if actions.movement.angle and anim:highestPriority() <= Anim.priorities.jump then
-        local speed = (pos.sliding and self.slidingSpeed) or
-            (pos.onGround and self.walkSpeed) or
-            self.airSpeed or
+        local speed = (pos.sliding and self.stats.slidingSpeed) or
+            (pos.onGround and self.stats.walkSpeed) or
+            self.stats.airSpeed or
             0
-        local dx = speed * actions.movement.x * Game.constants.speedMultiplier / self.mass
-        local dy = speed * actions.movement.y * Game.constants.speedMultiplier / self.mass
+        local dx = speed * actions.movement.x * Game.constants.speedMultiplier / self.stats.mass
+        local dy = speed * actions.movement.y * Game.constants.speedMultiplier / self.stats.mass
         physics.body:applyForce(dx, dy)
 
         anim:release("idle")

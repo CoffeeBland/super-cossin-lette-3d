@@ -24,17 +24,36 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
     uniform float shadowMapOffset;
     uniform float skyLimit;
     uniform float scale;
+    uniform float hue;
 
     const int heightSamples = 1;
     const float heightSampleDst = 1.5;
     const float heightParts = (heightSamples * 2 + 1) * (heightSamples * 2 + 1);
+    const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
 
     const int shadowSamples = 1;
     const float shadowSampleDst = 1.0;
     const float shadowStrParts = 4.0;
 
+    // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
+    vec3 rgb2hsv(vec3 c) {
+        vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+        vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+        vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+        float d = q.x - min(q.w, q.y);
+        float e = 1.0e-10;
+        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+    }
+
+    vec3 hsv2rgb(vec3 c) {
+        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+    }
+
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
-        vec4 texturecolor = Texel(texture, texture_coords);
+        vec4 texturecolor = Texel(texture, texture_coords) * color;
 
         float height = 0.0;
         for (int i = -heightSamples; i <= heightSamples; i++) {
@@ -59,12 +78,15 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
             }
         }
 
+        vec4 finalcol = texturecolor;
+        float touchability = min(1.0, distance(finalcol.rgb, linecol) * 10.0);
         if (votes > 0) {
             float str = min(votes / shadowStrParts, 1.0);
-            return texturecolor * color * ((1.0 - str) * vec4(1.0) + str * vec4(shadowColor.rgb, 1.0));
-        } else {
-            return texturecolor * color;
+            finalcol *= ((1.0 - str) * vec4(1.0) + str * vec4(shadowColor.rgb, 1.0));
         }
+        vec3 hsv = rgb2hsv(finalcol.rgb);
+        hsv.x = mod(hsv.x + hue, 1.0);
+        return touchability * vec4(hsv2rgb(hsv), finalcol.a) + (1.0 - touchability) * texturecolor;
     }
 ]]
 

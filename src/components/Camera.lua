@@ -41,7 +41,7 @@ end
 function CameraSystem:update(framePart, dt, game)
     for _, entity in game:iterEntities(game.entitiesByComponent.shakeEmitter) do
         if entity.anim then
-            local mass = entity.actor and entity.actor.mass or 1
+            local mass = entity.actor and entity.actor.stats.mass or 1
             for trigger, shake in pairs(entity.shakeEmitter.triggers) do
                 if (not shake.minimumMass or mass >= shake.minimumMass) and
                     entity.anim:isTriggered(trigger)

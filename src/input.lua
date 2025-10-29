@@ -28,12 +28,16 @@ local movementActions = {
     horizontal = {
         negativeKeys = { "a", "left" },
         positiveKeys = { "d", "right" },
-        axes = { "leftx" }
+        axes = { "leftx" },
+        negativeButtons = { "dpleft" },
+        positiveButtons = { "dpright" }
     },
     vertical = {
         negativeKeys = { "w", "up" },
         positiveKeys = { "s", "down" },
-        axes = { "lefty" }
+        axes = { "lefty" },
+        negativeButtons = { "dpup" },
+        positiveButtons = { "dpdown" }
     }
 }
 
@@ -121,6 +125,26 @@ function input.poll(dt)
                 lefty = 0
             end
             actions.movement.y = actions.movement.y + lefty
+        end
+        for _, button in ipairs(movementActions.horizontal.negativeButtons) do
+            if controller:isGamepadDown(button) then
+                actions.movement.x = actions.movement.x - 1
+            end
+        end
+        for _, button in ipairs(movementActions.horizontal.positiveButtons) do
+            if controller:isGamepadDown(button) then
+                actions.movement.x = actions.movement.x + 1
+            end
+        end
+        for _, button in ipairs(movementActions.vertical.negativeButtons) do
+            if controller:isGamepadDown(button) then
+                actions.movement.y = actions.movement.y - 1
+            end
+        end
+        for _, button in ipairs(movementActions.vertical.positiveButtons) do
+            if controller:isGamepadDown(button) then
+                actions.movement.y = actions.movement.y + 1
+            end
         end
     end
     if actions.movement.x ~= 0 or actions.movement.y ~= 0 then

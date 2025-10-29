@@ -77,7 +77,10 @@ function FruitSystem:update(framePart, dt, game)
                 entity.fruitStack.firstOffset.z = entity.fruitStack.firstOffset.z +
                     (entity.fruitStack.firstOffset.z + entity.pos.height) * entity.fruitStack.sizePerFruit
                 if entity.actor then
-                    entity.actor.mass = entity.actor.mass + (eaten.fruit.mass or 0)
+                    entity.actor.baseStats.mass = entity.actor.baseStats.mass + (eaten.fruit.mass or 0)
+                    if eaten.fruit.buff then
+                        entity.actor:buff(eaten.fruit.buff, eaten.fruit.buffDuration)
+                    end
                 end
                 entity.anim:startWiggle(entity.fruitStack.eatWiggleAmplitude, entity.fruitStack.eatWiggleFrames)
                 eaten.disabled = true

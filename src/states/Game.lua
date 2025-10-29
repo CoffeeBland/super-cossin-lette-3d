@@ -226,6 +226,7 @@ function Game:update(dt)
     self.actors:update(framePart, dt, self)
     self.fruits:update(framePart, dt, self)
     self.sounds:update(framePart, dt, self)
+    Music:gameUpdate(framePart, dt, self)
     self.particles:update(framePart, dt, self)
     self.camera:update(framePart, dt, self)
     self.images:update(framePart, dt, self)
@@ -282,6 +283,7 @@ function Game:render(dt)
     HEIGHT_MAPPED_SHADER:send("shadowMapOffset", SHADOW_MAP_OFFSET)
     HEIGHT_MAPPED_SHADER:send("skyLimit", SKY_LIMIT)
     HEIGHT_MAPPED_SHADER:send("scale", scale * Game.constants.heightSlop)
+    HEIGHT_MAPPED_SHADER:send("hue", 0)
 
     tileBatchStartIdx = 0
     tileBatchIdx = 0
@@ -408,7 +410,15 @@ end
 
 function Game:drawEntitySprites(entity)
     for _, sprite in ipairs(entity.sprites) do
+        local doTheHue = (entity.hue and entity.hue ~= 0 and sprite.hueMult ~= 0) or sprite.hue
+        if doTheHue then
+            local hue = entity.hue * (sprite.hueMult or 1) + (sprite.hue or 0)
+            HEIGHT_MAPPED_SHADER:send("hue", hue)
+        end
         self:drawEntitySprite(entity, sprite)
+        if doTheHue then
+            HEIGHT_MAPPED_SHADER:send("hue", 0)
+        end
     end
 end
 

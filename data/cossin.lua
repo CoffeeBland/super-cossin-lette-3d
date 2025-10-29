@@ -14,7 +14,8 @@ return function()
         sprites = {
             {
                 name = "cossinPiedBack",
-                anchor = { x = 96, y = 236 }
+                anchor = { x = 96, y = 236 },
+                hueMult = 0
             },
             {
                 name = "cossinCorps",
@@ -24,7 +25,8 @@ return function()
             },
             {
                 name = "cossinPiedFront",
-                anchor = { x = 96, y = 236 }
+                anchor = { x = 96, y = 236 },
+                hueMult = 0
             }
         },
         shadow = {
@@ -119,6 +121,16 @@ return function()
                     angleRange = { 0, math.pi * 2 },
                     cooldown = 10,
                     velocity={ z = 10 }
+                },
+                super = {
+                    name = "Sparkle",
+                    offsetRange = {
+                        x = { -85, 85 },
+                        y = { -85, 85 },
+                        z = { 20, 160 },
+                    },
+                    duration = 60,
+                    cooldown = 5
                 }
             }
         },
@@ -132,7 +144,8 @@ return function()
                 },
                 ["jump:stop"] = {
                     name = "Step",
-                    pitchRange = { 0.45, 0.55 }
+                    pitchRange = { 0.45, 0.55 },
+                    volumeRange = { 0.6, 0.7 }
                 },
                 step = {
                     name = "Step",

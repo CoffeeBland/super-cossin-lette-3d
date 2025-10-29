@@ -111,7 +111,8 @@ function Options:exit()
     if self.dirty then
         self:writeini()
     end
-    if Music.current then
+    -- This condition is bad and you should feel bad.
+    if Music.current and StateMachine.current ~= Game then
         Music.current:setFilter()
     end
 end

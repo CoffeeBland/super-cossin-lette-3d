@@ -6,7 +6,7 @@ return function(object)
             type = object.fruit,
             mass = 0.05,
             buff = object.fruit == "radish" and "super" or nil,
-            buffDuration = 30
+            buffDuration = 600
         },
         velocity = { z = 0 },
         shadow = {

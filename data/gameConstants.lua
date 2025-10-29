@@ -50,7 +50,32 @@ return {
     },
     buffs = {
         super = {
-
+            stats = {
+                walkSpeed = {
+                    type = "*",
+                    value = 1.5
+                },
+                slidingSpeed = {
+                    type = "*",
+                    value = 1.5
+                },
+                airSpeed = {
+                    type = "*",
+                    value = 1.5
+                },
+                jumpSpeed = {
+                    type = "*",
+                    value = 1.25
+                },
+                hue = {
+                    type = "+",
+                    value = 1 / 60,
+                    applied = "frame"
+                }
+            },
+            music = {
+                speed = 1.5
+            }
         }
     },
     pause = {
