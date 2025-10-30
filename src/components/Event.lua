@@ -57,6 +57,10 @@ function Event:isWaitDone(framePart, game, wait)
     local type = wait[1]
     if wait.done then
         return true
+    end
+    local entity = wait.entity and game:findEntity(wait.entity)
+    if entity and entity.disabled then
+        wait.done = true
     elseif type == "waitForAll" then
         local done = true
         for i = 2, #wait do
@@ -72,20 +76,16 @@ function Event:isWaitDone(framePart, game, wait)
             wait.done = true
         end
     elseif type == "waitForTrigger" then
-        local entity = game:findEntity(wait.entity)
         wait.done = (entity or game).anim:isTriggered(wait.trigger)
     elseif type == "waitForPan" then
         wait.done = not game.camera:isPanning()
     elseif type == "waitForZoom" then
         wait.done = not game.camera:isZooming()
     elseif type == "waitForMove" then
-        local entity = game:findEntity(wait.entity)
         wait.done = not entity.actor.autoMoveIndex
     elseif type == "waitForLarp" then
-        local entity = game:findEntity(wait.entity)
         wait.done = entity.larp:empty()
     elseif type == "waitForBubble" then
-        local entity = game:findEntity(wait.entity)
         wait.done = entity.bubble.textLen == 0
     elseif type == "waitForVar" then
         wait.done = self:eval(framePart, game, wait, 2)

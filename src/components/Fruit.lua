@@ -71,6 +71,10 @@ function FruitSystem:update(framePart, dt, game)
         if entity.anim:isTriggered("eatFruit") then
             local eaten = entity.fruitStack.fruits[1]
             if eaten then
+                if entity.actor and entity.actor.playerId then
+                    local eatenKey = "eaten" .. entity.actor.playerId
+                    game.vars[eatenKey] = game.vars[eatenKey] + 1
+                end
                 game.vars.eaten = game.vars.eaten + 1
                 entity.anim.baseWiggle.x = entity.anim.baseWiggle.x + entity.fruitStack.sizePerFruit
                 entity.anim.baseWiggle.y = entity.anim.baseWiggle.y + entity.fruitStack.sizePerFruit
@@ -127,6 +131,7 @@ function FruitSystem:update(framePart, dt, game)
             then
                 otherEntity.velocity.z = entity.picnic.stackDropJumpSpeed * Game.constants.jumpMultiplier
                 otherEntity.physics.body:setLinearVelocity(0, 0)
+                local scoreKey = otherEntity.actor and otherEntity.actor.playerId and ("score" .. otherEntity.actor.playerId)
                 local dropPoints = love.physics.sampleShape(
                     entity.physics.shape,
                     #otherEntity.fruitStack.fruits)
@@ -148,6 +153,9 @@ function FruitSystem:update(framePart, dt, game)
                     fruitEntity.velocity.z = entity.picnic.pickupJumpSpeed * Game.constants.jumpMultiplier
                     table.insert(entity.picnic.fruits, fruitEntity)
                     game.vars.picnicFruits = #entity.picnic.fruits
+                    if scoreKey then
+                        game.vars[scoreKey] = game.vars[scoreKey] + 1
+                    end
                 end
             elseif otherEntity.fruitStack.picnicAction == "pickup" and
                 #entity.picnic.fruits > 0 and

@@ -375,6 +375,15 @@ return {
             text = { 20, "!", 10, "!", 10, "!" }
         },
         { "waitForMove",
+            entity = { byName = "cossin2" }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin3" }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin4" }
+        },
+        { "waitForMove",
             entity = { byName = "cossin" }
         },
         { "waitForBubble",
@@ -427,6 +436,15 @@ return {
         { "larp",
             entity = { byName = "blonde" },
             ["light.alpha"] = { to = 0, frames = 60 }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin2" }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin3" }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin4" }
         },
         { "waitForMove",
             entity = { byName = "cossin" }
@@ -501,6 +519,15 @@ return {
             entity = { byName = "cossin" }
         },
         { "waitForMove",
+            entity = { byName = "cossin2" }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin3" }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin4" }
+        },
+        { "waitForMove",
             entity = { byName = "cossin" }
         },
         { "move",
@@ -521,10 +548,34 @@ return {
         },
         { "bubble",
             entity = { byName = "cossin" },
-            text = { 10, "[vars.eaten]" }
+            text = { 10, "[vars.eaten1]" }
+        },
+        { "waitFrames", 20 },
+        { "bubble",
+            entity = { byName = "cossin2" },
+            text = { 10, "[vars.eaten2]" }
+        },
+        { "waitFrames", 20 },
+        { "bubble",
+            entity = { byName = "cossin3" },
+            text = { 10, "[vars.eaten3]" }
+        },
+        { "waitFrames", 20 },
+        { "bubble",
+            entity = { byName = "cossin4" },
+            text = { 10, "[vars.eaten4]" }
         },
         { "waitForBubble",
             entity = { byName = "cossin" }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin2" }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin3" }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin4" }
         },
         { "if", ">=", "[vars.eaten]", 5 },
         { "bubble",
@@ -548,9 +599,45 @@ return {
         },
         { "bubble",
             entity = { byName = "cossin" },
-            text = { 10, "[vars.picnicFruits]", 10, "!" }
+            text = { 10, "[vars.score1]", 10, "!" }
+        },
+        { "waitFrames", 20 },
+        { "move",
+            entity = { byName = "cossin2" },
+            { "jump", jumpSpeed = 100 }
+        },
+        { "bubble",
+            entity = { byName = "cossin2" },
+            text = { 10, "[vars.score2]", 10, "!"  }
+        },
+        { "waitFrames", 20 },
+        { "move",
+            entity = { byName = "cossin3" },
+            { "jump", jumpSpeed = 100 }
+        },
+        { "bubble",
+            entity = { byName = "cossin3" },
+            text = { 10, "[vars.score3]", 10, "!"  }
+        },
+        { "waitFrames", 20 },
+        { "move",
+            entity = { byName = "cossin4" },
+            { "jump", jumpSpeed = 100 }
+        },
+        { "bubble",
+            entity = { byName = "cossin4" },
+            text = { 10, "[vars.score4]", 10, "!"  }
         },
         { "waitForBubble",
+            entity = { byName = "cossin" }
+        },
+        { "waitForBubble2",
+            entity = { byName = "cossin" }
+        },
+        { "waitForBubble3",
+            entity = { byName = "cossin" }
+        },
+        { "waitForBubble4",
             entity = { byName = "cossin" }
         },
         { "components",
