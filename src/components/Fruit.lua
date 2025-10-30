@@ -293,5 +293,8 @@ end
 
 function FruitSystem.shouldEntitiesContact(e1, e2)
     -- Not ideal, not gonna lie.
-    return not ((e1.fruit or e1.fruitStack) and (e2.fruit or e2.fruitStack))
+    return (
+        not (e1.fruit and e2.fruit) and
+        not (e1.fruitStack and e2.fruit) and
+        not (e1.fruit and e2.fruitStack))
 end

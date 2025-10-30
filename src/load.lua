@@ -40,7 +40,9 @@ local function getTilePos(alignment, tile)
 end
 
 function load.createHeightTextures()
-    heightTextures = {}
+    if debug.autorefresh then
+        heightTextures = {}
+    end
     -- All sprite entities with actual info
     for name, object in pairs(objects.byName) do
         local entity = object.prefab and prefabs[object.prefab]({}) or {}
@@ -128,7 +130,7 @@ function load.createHeightTexture(name, tiles)
     if heightTextures[name] then
         return
     end
-    print("height", name)
+    local time = love.timer.getTime()
     local texture = textures[name]
     local w, h = texture:getDimensions()
     local canvas = love.graphics.newCanvas(w, h)
@@ -199,6 +201,7 @@ function load.createHeightTexture(name, tiles)
 
     love.graphics.reset()
     heightTextures[name] = love.graphics.newImage(canvas:newImageData())
+    print("height", math.round((love.timer.getTime() - time) * 1000), name)
 end
 
 function load.createShadow(name, points)

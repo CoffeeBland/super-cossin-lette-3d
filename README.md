@@ -8,6 +8,7 @@
     * Écran "Un peu plus tard" avant la prochaine lettre
     * Crédits de fin
 * NINJAs
+* Fruit bonus (x3? x5?)
 
 ## BUGS
 * Les bulles sont pas bien centrées (mais c'est fiiiiine)

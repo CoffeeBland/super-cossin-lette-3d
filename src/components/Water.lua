@@ -41,7 +41,7 @@ function Water:createSensors(physics)
         self.sampleSensors = {}
         for i, sample in ipairs(self.samples) do
             local shape = love.physics.newCircleShape(sample[1], sample[2], sample[3])
-            local fixture = physics:newSensor(shape, WATER_SENSOR)
+            local fixture = physics:newSensor(shape, DROWN_SENSOR)
             self.sampleSensors[i] = fixture
         end
     end

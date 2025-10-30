@@ -73,6 +73,37 @@ function Game:iterEntitiesAABB(sx, sy, ex, ey)
     return Game.entitiesAABBIterator, self.entities, 1
 end
 
+function Game:createOtherCossins()
+    -- Hello cossins
+    for key, entity in pairs(self.entities) do
+        if entity.name == "cossin" then
+            for i = 2, 4 do
+                local otherCossin = prefabs.cossin()
+                otherCossin.name = "cossin" .. i
+                local angle = math.random() * 2 * math.pi
+                otherCossin.pos.x = entity.pos.x + math.cos(angle) * 160
+                otherCossin.pos.y = entity.pos.y + math.sin(angle) * 160
+                otherCossin.pos.z = 1250 + math.random(250, 500)
+                otherCossin.pos.onGround = false
+                otherCossin.pos.truncateHeight = 0
+                otherCossin.actor.playerId = i
+                --otherCossin.disabled = not playerActionsById[otherCossin.actor.playerId]
+                for j, hue in ipairs(Game.constants.cossinHues[i - 1]) do
+                    otherCossin.sprites[j].hue = hue
+                end
+                for k, v in pairs(otherCossin) do
+                    if fancyTypes[k] then
+                        otherCossin[k] = fancyTypes[k].new(v)
+                    end
+                end
+                table.insert(self.entities, otherCossin)
+                otherCossin.id = #self.entities
+            end
+            return
+        end
+    end
+end
+
 function Game:enter(args)
     load.crawlFiles()
     self.camera = CameraSystem.new()
@@ -110,6 +141,7 @@ function Game:enter(args)
 
     self.map:getTileEntities(self.physics.world, self.entities)
     self.map:getEntities(self.entities)
+    self:createOtherCossins()
     for key, entity in pairs(self.entities) do
         -- Auto-attaching the input
         if entity.input and not self.input.target then

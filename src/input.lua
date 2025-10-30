@@ -13,7 +13,11 @@ local pressActions = {
     },
     gogogadget = {
         keys = { "f11" },
-        buttons={ "b" }
+        buttons = { "b" }
+    },
+    newPlayer = {
+        keys = {},
+        buttons = { "back" }
     }
 }
 
@@ -53,65 +57,169 @@ for action, mappings in pairs(pressActions) do
 end
 
 local controllers = {}
+local freePlayerIds = { 4, 3, 2 }
 
-actions = {
-    escape = false,
-    action = false,
-    jump = false,
-    movement = { x = 0, y = 0, angle = nil },
-    menu = { x = 0, y = 0, any = 0 },
-    refresh = false,
-    toggleDebug = false,
-    gogogadget = false
+playerActions = {
+    {
+        id = 1,
+        keyboard = true,
+        controllers = {},
+        escape = false,
+        action = false,
+        jump = false,
+        move = false,
+        movement = { x = 0, y = 0, angle = nil },
+        menu = { x = 0, y = 0, any = 0 },
+        refresh = false,
+        toggleDebug = false,
+        gogogadget = false
+    }
 }
+playerActionsById = {}
+
+actions = playerActions[1]
+playerActionsById[playerActions[1].id] = playerActions[1]
 
 input = {}
 
 function love.keypressed(key)
     if pressActionsByKey[key] then
-        actions[pressActionsByKey[key]] = true
+        for _, player in ipairs(playerActions) do
+            if player.keyboard then
+                player[pressActionsByKey[key]] = true
+                return
+            end
+        end
     end
 end
 
 function love.gamepadpressed(controller, button)
+    if button == "back" then
+        input.handlePlayerAddRemove(controller)
+    end
+
+    local id = controller:getID()
     if pressActionsByButton[button] then
-        actions[pressActionsByButton[button]] = true
+        for _, player in ipairs(playerActions) do
+            for _, controller in ipairs(player.controllers) do
+                if controller:getID() == id then
+                    player[pressActionsByButton[button]] = true
+                    return
+                end
+            end
+        end
     end
 end
 
 function love.joystickadded(controller)
-    controllers[controller:getID()] = controller
+    -- All new controllers go to P1 until somebody does something about it
+    for i, actions in ipairs(playerActions) do
+        table.insert(actions.controllers, controller)
+    end
 end
 
 function love.joystickremoved(controller)
-    controllers[controller:getID()] = nil
+    local id = controller:getID()
+    for _, actions in ipairs(playerActions) do
+        for i, otherController in ipairs(actions.controllers) do
+            if otherController:getID() == id then
+                table.remove(actions.controllers, i)
+                return
+            end
+        end
+    end
+end
+
+function input.handlePlayerAddRemove(controller)
+    local id = controller:getID()
+    for _, player in ipairs(playerActions) do
+        for _, controller in ipairs(player.controllers) do
+            if controller:getID() == id then
+                if #player.controllers > 1 then
+                    input.newPlayer(controller)
+                elseif player.id > 1 then
+                    input.removePlayer(player)
+                end
+                return
+            end
+        end
+    end
+    input.newPlayer(controller)
+end
+
+function input.newPlayer(controller)
+    -- Check no player is already using the controller
+    local id = controller:getID()
+    for _, actions in ipairs(playerActions) do
+        for i, otherController in ipairs(actions.controllers) do
+            if otherController:getID() == id then
+                table.remove(actions.controllers, i)
+            end
+        end
+    end
+
+    local player = {
+        id = table.pop(freePlayerIds),
+        keyboard = false,
+        controllers = { controller },
+        escape = false,
+        action = false,
+        jump = false,
+        move = false,
+        movement = { x = 0, y = 0, angle = nil },
+        menu = { x = 0, y = 0, any = 0 },
+        refresh = false,
+        toggleDebug = false,
+        gogogadget = false
+    }
+    table.insert(playerActions, player)
+    playerActionsById[player.id] = player
+end
+
+function input.removePlayer(player)
+    -- Give the controllers back to P1
+    for _, controller in ipairs(player.controllers) do
+        table.insert(actions.controllers, controller)
+    end
+
+    table.remove(playerActions, table.index(playerActions, player))
+    table.insert(freePlayerIds, player.id)
+    playerActionsById[player.id] = nil
 end
 
 function input.poll(dt)
+    for _, forPlayer in pairs(playerActions) do
+        input.pollPlayer(dt, forPlayer)
+    end
+end
+
+function input.pollPlayer(dt, actions)
     local wasMove = (math.abs(actions.movement.x) > DELTA or math.abs(actions.movement.y) > DELTA)
     actions.movement.x = 0
     actions.movement.y = 0
-    for _, key in ipairs(movementActions.horizontal.negativeKeys) do
-        if love.keyboard.isDown(key) then
-            actions.movement.x = actions.movement.x - 1
+    if actions.keyboard then
+        for _, key in ipairs(movementActions.horizontal.negativeKeys) do
+            if love.keyboard.isDown(key) then
+                actions.movement.x = actions.movement.x - 1
+            end
+        end
+        for _, key in ipairs(movementActions.horizontal.positiveKeys) do
+            if love.keyboard.isDown(key) then
+                actions.movement.x = actions.movement.x + 1
+            end
+        end
+        for _, key in ipairs(movementActions.vertical.negativeKeys) do
+            if love.keyboard.isDown(key) then
+                actions.movement.y = actions.movement.y - 1
+            end
+        end
+        for _, key in ipairs(movementActions.vertical.positiveKeys) do
+            if love.keyboard.isDown(key) then
+                actions.movement.y = actions.movement.y + 1
+            end
         end
     end
-    for _, key in ipairs(movementActions.horizontal.positiveKeys) do
-        if love.keyboard.isDown(key) then
-            actions.movement.x = actions.movement.x + 1
-        end
-    end
-    for _, key in ipairs(movementActions.vertical.negativeKeys) do
-        if love.keyboard.isDown(key) then
-            actions.movement.y = actions.movement.y - 1
-        end
-    end
-    for _, key in ipairs(movementActions.vertical.positiveKeys) do
-        if love.keyboard.isDown(key) then
-            actions.movement.y = actions.movement.y + 1
-        end
-    end
-    for _, controller in pairs(controllers) do
+    for _, controller in pairs(actions.controllers) do
         for _, axis in ipairs(movementActions.horizontal.axes) do
             local leftx = controller:getGamepadAxis("leftx")
             if math.abs(leftx) < 0.25 then
@@ -167,6 +275,12 @@ function input.poll(dt)
 end
 
 function input.afterUpdate(dt)
+    for _, forPlayer in pairs(playerActions) do
+        input.afterPlayerUpdate(dt, forPlayer)
+    end
+end
+
+function input.afterPlayerUpdate(dt, actions)
     -- Handle release actions.
     for action, mappings in pairs(releaseActions) do
         local preaction = "pre" .. action
@@ -174,11 +288,13 @@ function input.afterUpdate(dt)
         actions[action] = false
         -- Handle release actions' preaction and action.
         local isActive = false
-        for _, key in ipairs(mappings.keys) do
-            isActive = isActive or love.keyboard.isDown(key)
+        if actions.keyboard then
+            for _, key in ipairs(mappings.keys) do
+                isActive = isActive or love.keyboard.isDown(key)
+            end
         end
         for _, button in ipairs(mappings.buttons) do
-            for _, controller in pairs(controllers) do
+            for _, controller in pairs(actions.controllers) do
                 isActive = isActive or controller:isGamepadDown(button)
             end
         end

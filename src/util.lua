@@ -134,6 +134,12 @@ function table.index(table, obj)
     end
 end
 
+function table.pop(t)
+    local item = t[#t]
+    table.remove(t, #t)
+    return item
+end
+
 function table.setHandlingTable(o, key, value)
     for actualKey in string.gmatch(key, "(%a+)%[%d*%]") do
         if not o[actualKey] then

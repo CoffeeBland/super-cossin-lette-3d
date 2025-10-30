@@ -7,7 +7,11 @@ end
 
 function ActorSystem:update(framePart, dt, game)
     for _, entity in game:iterEntities(game.entitiesByComponent.actor) do
-        local actionsForActor = game.input and game.input.target == entity and actions or nil
+        local actionsForActor = nil
+        -- The sketch, the sketch, the skeeeeeetch
+        if game.input and game.input.target and entity.actor.playerId then
+            actionsForActor = playerActionsById[entity.actor.playerId]
+        end
         entity.actor:update(framePart, game, entity, actionsForActor)
     end
     for _, entity in game:iterEntities(game.entitiesByComponent.bubble) do
@@ -33,6 +37,7 @@ function Actor.new(params)
         mass = params.mass or 1,
         hue = params.hue or 0
     }
+    instance.playerId = params.playerId
     instance.stats = {}
     instance.buffs = {}
     instance.autoActions = { movement = { x = 0, y = 0, angle = nil }, jump = false }

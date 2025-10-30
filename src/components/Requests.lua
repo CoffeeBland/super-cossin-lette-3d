@@ -25,7 +25,11 @@ end
 function Requests.populate(game)
     for key, entity in pairs(game.entities) do
         if entity.name then
-            game.entitiesByName[entity.name] = entity
+            if game.entitiesByName[entity.name] then
+                print("OHHO, name", entity.name, "for", entity.id, "is already taken by", game.entitiesByName[entity.name].id)
+            else
+                game.entitiesByName[entity.name] = entity
+            end
         end
         for componentKey, _ in pairs(entity) do
             if game.entitiesByComponent[componentKey] then

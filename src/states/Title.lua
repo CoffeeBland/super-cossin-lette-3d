@@ -180,6 +180,9 @@ local colors = {
     buttonInactive = { 0.42, 0, 0.118, 0.25 }
 }
 
+local cossin = nil
+local cossins = {}
+
 function Title:enter()
     local texturesToFind = { "Bubble_icons" }
     local soundsToFind = {}
@@ -218,20 +221,34 @@ function Title:enter()
 
     Requests.new(self)
 
-    local cossin = prefabs.cossin()
-    cossin.actor.walkSpeed = cossin.actor.walkSpeed * 1.5
-    cossin.pos.x = 0
-    cossin.pos.y = cossinY
-    cossin.pos.z = 0
-    cossin.pos.onGround = true
-    cossin.disabled = true
-    for k, v in pairs(cossin) do
-        if fancyTypes[k] then
-            cossin[k] = fancyTypes[k].new(v)
+    for i = 1, 4 do
+        local someCossin = prefabs.cossin()
+        someCossin.pos.x = 0
+        someCossin.pos.y = cossinY
+        someCossin.pos.z = 0
+        someCossin.pos.onGround = true
+        someCossin.disabled = true
+        for k, v in pairs(someCossin) do
+            if fancyTypes[k] then
+                someCossin[k] = fancyTypes[k].new(v)
+            end
         end
+        if i == 1 then
+            cossin = someCossin
+            someCossin.actor.baseStats.walkSpeed = someCossin.actor.baseStats.walkSpeed * 1.5
+            someCossin.actor.playerId = nil
+        else
+            someCossin.name = "cossin" .. i
+            someCossin.actor.playerId = i
+            for j, hue in ipairs(Game.constants.cossinHues[i - 1]) do
+                someCossin.sprites[j].hue = hue
+            end
+        end
+        table.insert(self.entities, someCossin)
+        someCossin.id = #self.entities
+        cossins[i] = someCossin
     end
-    table.insert(self.entities, cossin)
-    cossin.id = 1
+    self.input = { target = cossins[1] }
 
     self.physics = PhysicsSystem.new()
     self.actors = ActorSystem.new()
@@ -256,17 +273,17 @@ function Title:update(dt)
             if event.menu then
                 self.menuActive = true
             end
-            if event.cossin and self.entitiesByName.cossin.disabled then
+            if event.cossin and cossin.disabled then
                 local w = love.graphics:getDimensions()
-                self.entitiesByName.cossin.disabled = false
-                self.entitiesByName.cossin.pos.x = - (w + 60)
-                self.entitiesByName.cossin.actor:setMoveFromEvent(event)
+                cossin.disabled = false
+                cossin.pos.x = - (w + 60)
+                cossin.actor:setMoveFromEvent(event)
             end
         end
     end
 
     if self.waitingForEnd then
-        if not self.entitiesByName.cossin.actor.autoMoveIndex then
+        if not cossin.actor.autoMoveIndex then
             Sound:start(Sound.global.act)
             if self.menuState == "new" then
                 Music:fadeout(Title.fadeout)
@@ -283,7 +300,7 @@ function Title:update(dt)
         if self.menuActive and actions.action then
             local button = menu.buttonsByMenuState[self.menuState]
             self.waitingForEnd = true
-            self.entitiesByName.cossin.actor:setMoveFromEvent(button.actionMove)
+            cossin.actor:setMoveFromEvent(button.actionMove)
         end
 
         local menuStatei = nil
@@ -306,18 +323,34 @@ function Title:update(dt)
             local button = menu.buttons[menuStatei]
             self.menuState = button.menuState
             Sound:start(actions.menu.any < 0 and Sound.global.up or Sound.global.down)
-            self.entitiesByName.cossin.actor:setMoveFromEvent(button.move)
+            cossin.actor:setMoveFromEvent(button.move)
         end
 
         if actions.action or actions.escape or actions.move then
             self.menuActive = true
-            if self.entitiesByName.cossin.disabled then
+            if cossin.disabled then
                 local w = love.graphics:getDimensions()
-                self.entitiesByName.cossin.disabled = false
-                self.entitiesByName.cossin.pos.x = - (w + 60)
+                cossin.disabled = false
+                cossin.pos.x = - (w + 60)
                 local button = menu.buttonsByMenuState[self.menuState]
-                self.entitiesByName.cossin.actor:setMoveFromEvent(button.move)
+                cossin.actor:setMoveFromEvent(button.move)
             end
+        end
+    end
+
+    for _, player in ipairs(playerActions) do
+        local cossin = cossins[player.id]
+        if player.newPlayer and cossin.disabled then
+            cossin.disabled = false
+            cossin.pos.x = math.random(-100, 100)
+            cossin.pos.y = math.random(-100, 100) + cossinY
+            cossin.pos.z = 2000
+        end
+    end
+    for _, cossin in ipairs(cossins) do
+        if cossin.actor.playerId and not playerActionsById[cossin.actor.playerId] and not cossin.disabled then
+            self.particles:emit(0, cossin, cossin.particleEmitter.triggers.poof)
+            cossin.disabled = true
         end
     end
 
@@ -325,7 +358,9 @@ function Title:update(dt)
     for _, entity in self:iterEntities(self.entitiesByComponent.anim) do
         entity.anim:update(dt, entity.sprites)
     end
-    self.physics:handleCreation(self.entitiesByName.cossin)
+    for _, entity in ipairs(self.entities) do
+        self.physics:handleCreation(entity)
+    end
     self.physics:update(framePart, dt, self)
     self.actors:update(framePart, dt, self)
     self.particles:update(framePart, dt, self)
@@ -346,6 +381,8 @@ function Title:render()
     love.graphics.translate(w / 2, h / 2)
     love.graphics.scale(SCALE_TO_EXPECTED)
     love.graphics.clear(unpack(bgcol))
+    love.graphics.setShader(TITLE_SHADER)
+    TITLE_SHADER:send("hue", 0)
     for _, tile in ipairs(bgGrassTiles) do
         love.graphics.draw(textures[tile.name], tile.x, tile.y)
     end
@@ -410,8 +447,20 @@ function Title:render()
 
     table.sort(self.entities, function (a, b) return a.pos.y < b.pos.y end)
     for _, entity in self:iterEntities(self.entities) do
-        Game:drawEntitySprites(entity)
+        for _, sprite in ipairs(entity.sprites) do
+            local doTheHue = sprite.hue
+            if doTheHue then
+                local hue = entity.hue * (sprite.hueMult or 1) + (sprite.hue or 0)
+                TITLE_SHADER:send("hue", hue)
+            end
+            Game.drawEntitySprite(self, entity, sprite)
+            if doTheHue then
+                TITLE_SHADER:send("hue", 0)
+            end
+        end
     end
+
+    love.graphics.setShader()
 
     for _, buisson in pairs(buissons) do
         local animPart = math.min(self.frame / buisson.animFrames, 1) ^ 0.25

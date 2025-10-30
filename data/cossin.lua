@@ -2,6 +2,7 @@ return function()
     return {
         name = "cossin",
         actor = {
+            playerId = 1,
             walkSpeed = 150,
             slidingSpeed = 0,
             airSpeed = 25,
@@ -90,6 +91,16 @@ return function()
                     count = 6,
                     durationRange = { 15, 25 },
                     speed = 10,
+                    angleRange = { 0, math.pi * 2 }
+                },
+                poof = {
+                    name = "Fumee",
+                    inherit = { x = 0.25, y = 0.25, z = 0 },
+                    offset = { x = 0, y = 0 },
+                    offsetRange = { z = { 20, 80 } },
+                    count = 20,
+                    durationRange = { 15, 25 },
+                    speedRange = { 10, 30 },
                     angleRange = { 0, math.pi * 2 }
                 },
                 step = {
