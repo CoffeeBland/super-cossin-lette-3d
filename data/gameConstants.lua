@@ -631,14 +631,14 @@ return {
         { "waitForBubble",
             entity = { byName = "cossin" }
         },
-        { "waitForBubble2",
-            entity = { byName = "cossin" }
+        { "waitForBubble",
+            entity = { byName = "cossin2" }
         },
-        { "waitForBubble3",
-            entity = { byName = "cossin" }
+        { "waitForBubble",
+            entity = { byName = "cossin3" }
         },
-        { "waitForBubble4",
-            entity = { byName = "cossin" }
+        { "waitForBubble",
+            entity = { byName = "cossin4" }
         },
         { "components",
             entity = { byName = "cossin" },
