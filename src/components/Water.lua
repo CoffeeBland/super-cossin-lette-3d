@@ -8,7 +8,7 @@ end
 function WaterSystem:handleCreation(entity)
     if entity.water then
         if entity.disabled then
-                entity.water:clearSensors()
+            entity.water:clearSensors()
         end
 
         if entity.physics then
@@ -76,7 +76,7 @@ function Water:update(framePart, game, pos, velocity, physics, anim)
             anim:request("drown")
             physics.body:setLinearVelocity(0, 0)
         end
-        if pos.onGround and self.sensorsInWater == 0 then
+        if pos.onGround and (self.sensorsInWater == 0 or not pos.lastGoodX) then
             pos.lastGoodX = pos.x
             pos.lastGoodY = pos.y
             pos.lastGoodZ = pos.z

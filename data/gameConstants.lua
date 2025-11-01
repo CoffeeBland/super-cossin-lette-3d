@@ -28,6 +28,10 @@ return {
         { 0.6, 0.8, 0.6 },
         { 0.8, 0.63, 0.8 },
     },
+    cossinSpawn = {
+        distance = 100,
+        zRange = { 1000, 2000 }
+    },
     bubble = {
         segment = { w = 32, h = 92 },
         lingerFrames = 60,
@@ -181,40 +185,58 @@ return {
             value = true
         },
         { "if", "==", "[vars.currentMap]", "[vars.firstLevel]" },
-        { "camera",
-            entity = { byName = "picnic" },
-            zoom = 3
-        },
-        { "camera",
-            zoom = 1,
-            zoomFrames = 15
-        },
-        { "waitForZoom" },
-        { "sound",
-            name = "Ohho"
-        },
-        { "waitFrames", 45 },
-        { "camera",
-            entity = { byName = "cossin" },
-            panFrames = 60
-        },
-        { "waitForPan" },
+            { "camera",
+                entity = { byName = "picnic" },
+                zoom = 3
+            },
+            { "camera",
+                zoom = 1,
+                zoomFrames = 15
+            },
+            { "waitForZoom" },
+            { "sound",
+                name = "Ohho"
+            },
+            { "waitFrames", 45 },
+            { "camera",
+                entity = { byName = "cossin" },
+                panFrames = 60
+            },
+            { "waitForPan" },
         { "else" },
-        { "camera",
-            entity = { byName = "cossin" },
-            zoom = 3
-        },
-        { "camera",
-            zoom = 1,
-            zoomFrames = 15
-        },
-        { "waitForZoom" },
+            { "camera",
+                entity = { byName = "cossin" },
+                zoom = 3
+            },
+            { "camera",
+                zoom = 1,
+                zoomFrames = 15
+            },
+            { "waitForZoom" },
         { "end" },
         { "waitFrames", 15 },
         { "bubble",
             entity = { byName = "cossin" },
             text = { 10, "fruit", 5, "[vars.targetFruits]" },
         },
+        { "if", "[vars.player2]" },
+            { "components",
+                entity = { byName = "cossin2" },
+                disabled = false,
+            },
+        { "end" },
+        { "if", "[vars.player3]" },
+            { "components",
+                entity = { byName = "cossin3" },
+                disabled = false,
+            },
+        { "end" },
+        { "if", "[vars.player4]" },
+            { "components",
+                entity = { byName = "cossin4" },
+                disabled = false,
+            },
+        { "end" },
         { "waitForBubble",
             entity = { byName = "cossin" }
         },
@@ -355,24 +377,27 @@ return {
             { "lookAt", point = { byName = "picnic" } },
             { "jump", jumpSpeed = 100 }
         },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 20, "!", 10, "!", 10, "!" }
+        },
+        { "waitFrames", 5 },
         { "move",
             entity = { byName = "cossin2" },
             { "lookAt", point = { byName = "picnic" } },
             { "jump", jumpSpeed = 100 }
         },
+        { "waitFrames", 5 },
         { "move",
             entity = { byName = "cossin3" },
             { "lookAt", point = { byName = "picnic" } },
             { "jump", jumpSpeed = 100 }
         },
+        { "waitFrames", 5 },
         { "move",
             entity = { byName = "cossin4" },
             { "lookAt", point = { byName = "picnic" } },
             { "jump", jumpSpeed = 100 }
-        },
-        { "bubble",
-            entity = { byName = "cossin" },
-            text = { 20, "!", 10, "!", 10, "!" }
         },
         { "waitForMove",
             entity = { byName = "cossin2" }
@@ -394,16 +419,19 @@ return {
             { "walkTo", point = { byName = "picnic", offset = { x = -380, y = 170 } } },
             { "lookAt", point = { byName = "picnic" } },
         },
+        { "waitFrames", 15 },
         { "move",
             entity = { byName = "cossin2" },
             { "walkTo", point = { byName = "picnic", offset = { x = -480, y = 200 } } },
             { "lookAt", point = { byName = "picnic" } },
         },
+        { "waitFrames", 15 },
         { "move",
             entity = { byName = "cossin3" },
             { "walkTo", point = { byName = "picnic", offset = { x = -280, y = 200 } } },
             { "lookAt", point = { byName = "picnic" } },
         },
+        { "waitFrames", 15 },
         { "move",
             entity = { byName = "cossin4" },
             { "walkTo", point = { byName = "picnic", offset = { x = -340, y = 90 } } },
@@ -578,13 +606,13 @@ return {
             entity = { byName = "cossin4" }
         },
         { "if", ">=", "[vars.eaten]", 5 },
-        { "bubble",
-            entity = { byName = "blonde" },
-            text = { 10, ".", 10, ".", 30, ".", 10, "argh" }
-        },
-        { "waitForBubble",
-            entity = { byName = "blonde" }
-        },
+            { "bubble",
+                entity = { byName = "blonde" },
+                text = { 10, ".", 10, ".", 30, ".", 10, "argh" }
+            },
+            { "waitForBubble",
+                entity = { byName = "blonde" }
+            },
         { "end" },
         { "bubble",
             entity = { byName = "blonde" },
@@ -647,71 +675,71 @@ return {
             }
         },
         { "if", ">=", "[vars.picnicFruits]", "[vars.targetFruits]" },
-        { "bubble",
-            entity = { byName = "blonde" },
-            text = { 10, ":", 10, "^", 30, ")" }
-        },
-        { "waitForBubble",
-            entity = { byName = "blonde" }
-        },
-        { "components",
-            entity = { byName = "blonde" },
-            fruitStack = { picnicAction = "pickup" }
-        },
-        { "waitForVar", "==", "[vars.picnicFruits]", 0 },
-        { "waitFrames", 30 },
-        { "bubble",
-            entity = { byName = "blonde" },
-            text = { 10, "<3" }
-        },
-        { "waitForBubble",
-            entity = { byName = "blonde" }
-        },
-        { "if", "[vars.nextMap]" },
-        { "changeState",
-            MapIntro,
-            { map = "[vars.nextMap]" }
-        },
+            { "bubble",
+                entity = { byName = "blonde" },
+                text = { 10, ":", 10, "^", 30, ")" }
+            },
+            { "waitForBubble",
+                entity = { byName = "blonde" }
+            },
+            { "components",
+                entity = { byName = "blonde" },
+                fruitStack = { picnicAction = "pickup" }
+            },
+            { "waitForVar", "==", "[vars.picnicFruits]", 0 },
+            { "waitFrames", 30 },
+            { "bubble",
+                entity = { byName = "blonde" },
+                text = { 10, "<3" }
+            },
+            { "waitForBubble",
+                entity = { byName = "blonde" }
+            },
+            { "if", "[vars.nextMap]" },
+                { "changeState",
+                    MapIntro,
+                    { map = "[vars.nextMap]" }
+                },
+            { "else" },
+                { "changeState",
+                    Intro
+                },
+            { "end" },
         { "else" },
-        { "changeState",
-            Intro
-        },
-        { "end" },
-        { "else" },
-        { "bubble",
-            entity = { byName = "blonde" },
-            text = { 10, ":", 10, "^", 30, "(" }
-        },
-        { "waitForBubble",
-            entity = { byName = "blonde" }
-        },
-        { "larp",
-            entity = { byName = "blonde" },
-            ["light.alpha"] = { to = 0.3, frames = 30 },
-            ["color[4]"] = { to = 0, delay = 30, frames = 30 },
-            ["sprites[1].anchor.x"] = { toOffset = -150, frames = 60 },
-            ["particleEmitter.always.offsetRange.x[1]"] = { toOffset = 200, frames = 60 },
-            ["pos.z"] = { toOffset = 400, frames = 60 }
-        },
-        { "waitForLarp",
-            entity = { byName = "blonde" }
-        },
-        { "larp",
-            entity = { byName = "blonde" },
-            ["light.alpha"] = { to = 0, frames = 30 }
-        },
-        { "waitForLarp",
-            entity = { byName = "blonde" }
-        },
-        { "components",
-            entity = { byName = "blonde" },
-            disabled = true
-        },
-        { "waitFrames", 60 },
-        { "changeState",
-            Game,
-            { map = "[vars.currentMap]" }
-        },
+            { "bubble",
+                entity = { byName = "blonde" },
+                text = { 10, ":", 10, "^", 30, "(" }
+            },
+            { "waitForBubble",
+                entity = { byName = "blonde" }
+            },
+            { "larp",
+                entity = { byName = "blonde" },
+                ["light.alpha"] = { to = 0.3, frames = 30 },
+                ["color[4]"] = { to = 0, delay = 30, frames = 30 },
+                ["sprites[1].anchor.x"] = { toOffset = -150, frames = 60 },
+                ["particleEmitter.always.offsetRange.x[1]"] = { toOffset = 200, frames = 60 },
+                ["pos.z"] = { toOffset = 400, frames = 60 }
+            },
+            { "waitForLarp",
+                entity = { byName = "blonde" }
+            },
+            { "larp",
+                entity = { byName = "blonde" },
+                ["light.alpha"] = { to = 0, frames = 30 }
+            },
+            { "waitForLarp",
+                entity = { byName = "blonde" }
+            },
+            { "components",
+                entity = { byName = "blonde" },
+                disabled = true
+            },
+            { "waitFrames", 60 },
+            { "changeState",
+                Game,
+                { map = "[vars.currentMap]" }
+            },
         { "end" },
         { "waitForBubble",
             entity = { byName = "blonde" }

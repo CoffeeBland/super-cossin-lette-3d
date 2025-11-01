@@ -81,13 +81,12 @@ function Game:createOtherCossins()
                 local otherCossin = prefabs.cossin()
                 otherCossin.name = "cossin" .. i
                 local angle = math.random() * 2 * math.pi
-                otherCossin.pos.x = entity.pos.x + math.cos(angle) * 160
-                otherCossin.pos.y = entity.pos.y + math.sin(angle) * 160
-                otherCossin.pos.z = 1250 + math.random(250, 500)
+                otherCossin.pos.x = entity.pos.x + math.cos(angle) * Game.constants.cossinSpawn.distance
+                otherCossin.pos.y = entity.pos.y + math.sin(angle) * Game.constants.cossinSpawn.distance
+                otherCossin.pos.z = math.randomRange(Game.constants.cossinSpawn.zRange, 0)
                 otherCossin.pos.onGround = false
                 otherCossin.pos.truncateHeight = 0
                 otherCossin.actor.playerId = i
-                --otherCossin.disabled = not playerActionsById[otherCossin.actor.playerId]
                 for j, hue in ipairs(Game.constants.cossinHues[i - 1]) do
                     otherCossin.sprites[j].hue = hue
                 end
@@ -96,8 +95,10 @@ function Game:createOtherCossins()
                         otherCossin[k] = fancyTypes[k].new(v)
                     end
                 end
+                otherCossin.anim:update(0, otherCossin.sprites)
                 table.insert(self.entities, otherCossin)
                 otherCossin.id = #self.entities
+                otherCossin.disabled = true
             end
             return
         end
@@ -123,6 +124,10 @@ function Game:enter(args)
         score2 = 0,
         score3 = 0,
         score4 = 0,
+        player1 = true,
+        player2 = playerActionsById[2] ~= nil,
+        player3 = playerActionsById[3] ~= nil,
+        player4 = playerActionsById[4] ~= nil,
         picnicFruits = 0,
         targetFruits = 1,
         timer = Game.constants.defaultLevelTimer,
@@ -275,16 +280,49 @@ function Game:update(dt)
     self.anim:clearTriggers()
 end
 
+local activeCossins = {}
 local drawnEntities = {}
 local shadowEntities = {}
 local tileBatchStartIdx = 0
 local tileBatchIdx = 0
 local tileBatchi = 0
+local sceneCanvas = nil
 local heightCanvas = nil
 local shadowCanvas = nil
 
 function Game:render(dt)
-    local w, h, sx, sy, ex, ey, scale = self.camera:applyTransformations()
+    local activeCount = 1
+    activeCossins[1] = self.entitiesByName.cossin
+    if not self.entitiesByName.cossin2.disabled then
+        activeCount = activeCount + 1
+        activeCossins[activeCount] = self.entitiesByName.cossin2
+    end
+    if not self.entitiesByName.cossin3.disabled then
+        activeCount = activeCount + 1
+        activeCossins[activeCount] = self.entitiesByName.cossin3
+    end
+    if not self.entitiesByName.cossin4.disabled then
+        activeCount = activeCount + 1
+        activeCossins[activeCount] = self.entitiesByName.cossin4
+    end
+    local rows = math.ceil(math.sqrt(activeCount))
+    local cols = math.ceil(activeCount / rows)
+    local w = CURRES[1] / cols
+    local h = CURRES[2] / rows
+    for i = 1, cols do
+        for j = 1, rows do
+            local cossin = activeCossins[i + (j - 1) * cols]
+            if cossin then
+                self:renderFrame(dt, (i - 1) * w, (j - 1) * h, w, h, cossin)
+            end
+        end
+    end
+    self.images:draw()
+    self.pause:draw()
+end
+
+function Game:renderFrame(dt, x, y, w, h, cameraEntity)
+    local w, h, sx, sy, ex, ey, scale = self.camera:applyTransformations(w, h)
 
     local i = 1
     for _, entity in self:iterEntities() do
@@ -311,8 +349,12 @@ function Game:render(dt)
 
     self:drawHeightMap(w, h, drawnEntities)
     self:drawShadowMap(w, h, sx, sy, ex, ey)
+    if not sceneCanvas or sceneCanvas:getWidth() ~= w or sceneCanvas:getHeight() ~= h then
+        sceneCanvas = love.graphics.newCanvas(w, h)
+    end
 
     -- Draw!
+    love.graphics.setCanvas({ sceneCanvas, stencil = true })
     love.graphics.clear(unpack(Game.constants.bgColor))
     love.graphics.setShader(HEIGHT_MAPPED_SHADER)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
@@ -433,9 +475,6 @@ function Game:render(dt)
         love.graphics.setShader()
     end
 
-    self.images:draw()
-    self.pause:draw()
-
     if debug.pointHeights then
         local x, y = 0, 0
         if self.input.target then
@@ -446,13 +485,16 @@ function Game:render(dt)
         local tx, ty = Map.PosToTileMat:transformPoint(x, y)
         love.graphics.print(tx .. ":" .. ty, 50, 50)
     end
+
+    love.graphics.setCanvas()
+    love.graphics.draw(sceneCanvas, x, y)
 end
 
 function Game:drawEntitySprites(entity)
     for _, sprite in ipairs(entity.sprites) do
         local doTheHue = (entity.hue and entity.hue ~= 0 and sprite.hueMult ~= 0) or sprite.hue
         if doTheHue then
-            local hue = entity.hue * (sprite.hueMult or 1) + (sprite.hue or 0)
+            local hue = (entity.hue or 0) * (sprite.hueMult or 1) + (sprite.hue or 0)
             HEIGHT_MAPPED_SHADER:send("hue", hue)
         end
         self:drawEntitySprite(entity, sprite)

@@ -83,8 +83,7 @@ function CameraSystem:update(framePart, dt, game)
     end
 end
 
-function CameraSystem:applyTransformations()
-    local w, h = CURRES[1], CURRES[2]
+function CameraSystem:applyTransformations(w, h)
     love.graphics.translate(w / 2, h / 2)
     local scale = SCALE_TO_EXPECTED * self.zoom
     love.graphics.scale(scale)
