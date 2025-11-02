@@ -300,11 +300,14 @@ function FruitSystem:checkFruitDrop(entity, stackRootEntity, game, prevX, prevY,
 end
 
 function FruitSystem.shouldEntitiesContact(e1, e2)
+    -- Fruit-fruit does not interact
     if e1.fruit and e2.fruit then
         return false
     end
     local fruitEntity = (e1.fruit and e1) or (e2.fruit and e2)
     local fruitStackEntity = (e1.fruitStack and e1) or (e2.fruitStack and e2)
+
+    -- Fruit-fruit-stack sometimes don't interact, the rest does
     if not fruitEntity or not fruitStackEntity then
         return true
     end
@@ -312,5 +315,6 @@ function FruitSystem.shouldEntitiesContact(e1, e2)
     while fruitRoot and fruitRoot.fruit and fruitRoot.fruit.stackEntity do
         fruitRoot = fruitRoot.fruit.stackEntity
     end
+    -- If the root is not the same and it's not a picnic table, then yes do please interact
     return fruitRoot and fruitRoot.fruitStack and fruitRoot ~= fruitStackEntity
 end

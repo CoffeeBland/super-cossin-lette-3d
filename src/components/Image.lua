@@ -7,15 +7,22 @@ function ImageSystem.new()
     }, ImageSystem)
 end
 
+local defaultOffset = { x = 0, y = 0 }
+local defaultColor = { 1, 1, 1, 1 }
+local defaultScale = { x = 1, y = 1 }
+
 function ImageSystem:setImage(descriptor)
     if not descriptor.name then
         self.imagesById[descriptor.id] = nil
     else
+        local offset = descriptor.offset or defaultOffset
+        local color = descriptor.color or defaultColor
+        local scale = descriptor.scale or defaultScale
         self.imagesById[descriptor.id] = {
             name = descriptor.name,
-            offset = descriptor.offset or { x = 0, y = 0 },
-            color = descriptor.color or { 1, 1, 1, 1 },
-            scale = descriptor.scale or { x = 1, y = 1 },
+            offset = { x = offset.x, y = offset.y },
+            color = { unpack(color) },
+            scale = { x = scale.x, y = scale.y },
             larp = Larp.new()
         }
     end

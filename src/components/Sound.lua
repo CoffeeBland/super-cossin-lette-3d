@@ -71,6 +71,9 @@ function Sound:start(sound)
         sound.volumeFrames = sound.fadeIn
         sound.targetVolume = volume
         source:setVolume(0)
+    else
+        sound.volumeFrames = 0
+        sound.targetVolume = volume
     end
     self.playing[sound.name] = sound
     sound.source = source
