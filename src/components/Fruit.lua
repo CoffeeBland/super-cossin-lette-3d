@@ -300,9 +300,17 @@ function FruitSystem:checkFruitDrop(entity, stackRootEntity, game, prevX, prevY,
 end
 
 function FruitSystem.shouldEntitiesContact(e1, e2)
-    -- Not ideal, not gonna lie.
-    return (
-        not (e1.fruit and e2.fruit) and
-        not (e1.fruitStack and e2.fruit) and
-        not (e1.fruit and e2.fruitStack))
+    if e1.fruit and e2.fruit then
+        return false
+    end
+    local fruitEntity = (e1.fruit and e1) or (e2.fruit and e2)
+    local fruitStackEntity = (e1.fruitStack and e1) or (e2.fruitStack and e2)
+    if not fruitEntity or not fruitStackEntity then
+        return true
+    end
+    local fruitRoot = fruitEntity.fruit.stackEntity
+    while fruitRoot and fruitRoot.fruit and fruitRoot.fruit.stackEntity do
+        fruitRoot = fruitRoot.fruit.stackEntity
+    end
+    return fruitRoot and fruitRoot.fruitStack and fruitRoot ~= fruitStackEntity
 end
