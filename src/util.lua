@@ -65,6 +65,11 @@ function math.randomRange(range, value)
     return range and (range[1] + math.random() * (range[2] - range[1])) or value
 end
 
+function math.scaleToExpected(w, h)
+    local minRatio = math.min(w / EXPRES[1], h / EXPRES[2])
+    return math.min(minRatio, 1)
+end
+
 function str.split(string, search)
     local arr = {}
     for v in string.gmatch(string, "([^" .. search .. "]+)") do

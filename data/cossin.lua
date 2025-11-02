@@ -1,6 +1,7 @@
 return function()
     return {
         name = "cossin",
+        camera = {},
         actor = {
             playerId = 1,
             walkSpeed = 150,
@@ -72,13 +73,13 @@ return function()
             triggers = {
                 land = {
                     minimumMass = 1.25,
-                    amplitude = 10,
-                    frames = 15
+                    amplitude = 15,
+                    frames = 18
                 },
                 step = {
                     minimumMass = 1.5,
-                    amplitude = 5,
-                    frames = 10
+                    amplitude = 8,
+                    frames = 12
                 }
             }
         },

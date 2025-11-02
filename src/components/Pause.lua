@@ -110,11 +110,11 @@ function PauseSystem:draw()
                 0,
                 Game.constants.pause.wave.dur,
                 Game.constants.pause.wave.amplitude),
-                0,
-                1,
-                1,
-                0,
-                textures.Pause:getHeight())
+            0,
+            1,
+            1,
+            0,
+            textures.Pause:getHeight())
     end
 
     love.graphics.pop()

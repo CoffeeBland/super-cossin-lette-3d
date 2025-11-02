@@ -68,8 +68,7 @@ end
 
 function love.draw()
     CURRES[1], CURRES[2] = love.graphics:getDimensions()
-    local minRatio = math.min(CURRES[1] / EXPRES[1], CURRES[2] / EXPRES[2])
-    SCALE_TO_EXPECTED = math.min(minRatio, 1)
+    SCALE_TO_EXPECTED = math.scaleToExpected(CURRES[1], CURRES[2])
 
     local menuFontSize = math.max(math.ceil(36 * SCALE_TO_EXPECTED), 18)
     if menuFontSize ~= fontsSizes.menu then

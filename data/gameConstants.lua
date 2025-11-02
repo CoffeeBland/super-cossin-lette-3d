@@ -11,6 +11,7 @@ return {
     shadowColor = { 0.875, 0.867, 0.941, 1 },
     pauseColor = { 0.5 * 0.875, 0.5 * 0.867, 0.5 * 0.941, 1 },
     lightColor = { 0.875, 0.867, 0.741, 1 },
+    lineColor = { 117.0/255.0, 0, 25.0/255.0, 1 },
     autoWalkCutoffFrames = 600,
     autoWalkJumpFrames = 60,
     autoWalkCutoffDistance2 = 100,
@@ -157,62 +158,41 @@ return {
             name = "lookUp",
             value = true
         },
-        { "move",
-            entity = { byName = "cossin2" },
-            { "lookAt", point = { byName = "cossin" } },
-        },
-        { "anim",
-            entity = { byName = "cossin2" },
-            name = "lookUp",
-            value = true
-        },
-        { "move",
-            entity = { byName = "cossin3" },
-            { "lookAt", point = { byName = "cossin" } },
-        },
-        { "anim",
-            entity = { byName = "cossin3" },
-            name = "lookUp",
-            value = true
-        },
-        { "move",
-            entity = { byName = "cossin4" },
-            { "lookAt", point = { byName = "cossin" } },
-        },
-        { "anim",
-            entity = { byName = "cossin4" },
-            name = "lookUp",
-            value = true
-        },
         { "if", "==", "[vars.currentMap]", "[vars.firstLevel]" },
             { "camera",
-                entity = { byName = "picnic" },
+                target = { byName = "picnic" },
                 zoom = 3
             },
             { "camera",
                 zoom = 1,
                 zoomFrames = 15
             },
-            { "waitForZoom" },
+            { "waitForZoom",
+                entity = { byName = "cossin" },
+            },
             { "sound",
                 name = "Ohho"
             },
             { "waitFrames", 45 },
             { "camera",
                 entity = { byName = "cossin" },
+                target = { byName = "cossin" },
                 panFrames = 60
             },
-            { "waitForPan" },
+            { "waitForPan",
+                entity = { byName = "cossin" }
+            },
         { "else" },
             { "camera",
-                entity = { byName = "cossin" },
                 zoom = 3
             },
             { "camera",
                 zoom = 1,
                 zoomFrames = 15
             },
-            { "waitForZoom" },
+            { "waitForZoom",
+                entity = { byName = "cossin" },
+            },
         { "end" },
         { "waitFrames", 15 },
         { "bubble",
@@ -222,19 +202,61 @@ return {
         { "if", "[vars.player2]" },
             { "components",
                 entity = { byName = "cossin2" },
-                disabled = false,
+                disabled = false
+            },
+            { "camera",
+                entity = { byName = "cossin2" },
+                size = 0
+            },
+            { "camera",
+                entity = { byName = "cossin2" },
+                size = 1,
+                sizeFrames = 30
+            },
+            { "anim",
+                entity = { byName = "cossin2" },
+                name = "lookUp",
+                value = true
             },
         { "end" },
         { "if", "[vars.player3]" },
             { "components",
                 entity = { byName = "cossin3" },
-                disabled = false,
+                disabled = false
+            },
+            { "camera",
+                entity = { byName = "cossin3" },
+                size = 0
+            },
+            { "camera",
+                entity = { byName = "cossin3" },
+                size = 1,
+                sizeFrames = 30
+            },
+            { "anim",
+                entity = { byName = "cossin3" },
+                name = "lookUp",
+                value = true
             },
         { "end" },
         { "if", "[vars.player4]" },
             { "components",
                 entity = { byName = "cossin4" },
-                disabled = false,
+                disabled = false
+            },
+            { "camera",
+                entity = { byName = "cossin4" },
+                size = 0
+            },
+            { "camera",
+                entity = { byName = "cossin4" },
+                size = 1,
+                sizeFrames = 30
+            },
+            { "anim",
+                entity = { byName = "cossin4" },
+                name = "lookUp",
+                value = true
             },
         { "end" },
         { "waitForBubble",
@@ -400,6 +422,9 @@ return {
             { "jump", jumpSpeed = 100 }
         },
         { "waitForMove",
+            entity = { byName = "cossin" }
+        },
+        { "waitForMove",
             entity = { byName = "cossin2" }
         },
         { "waitForMove",
@@ -407,9 +432,6 @@ return {
         },
         { "waitForMove",
             entity = { byName = "cossin4" }
-        },
-        { "waitForMove",
-            entity = { byName = "cossin" }
         },
         { "waitForBubble",
             entity = { byName = "cossin" }
@@ -438,11 +460,28 @@ return {
             { "lookAt", point = { byName = "picnic" } },
         },
         { "camera",
-            entity = { byName = "picnic" },
+            target = { byName = "picnic" },
             panFrames = 60
         },
         { "fadeoutMusic" },
-        { "waitForPan" },
+        { "waitForPan",
+            entity = { byName = "cossin" }
+        },
+        { "camera",
+            entity = { byName = "cossin2" },
+            size = 0,
+            sizeFrames = 30
+        },
+        { "camera",
+            entity = { byName = "cossin3" },
+            size = 0,
+            sizeFrames = 30
+        },
+        { "camera",
+            entity = { byName = "cossin4" },
+            size = 0,
+            sizeFrames = 30
+        },
         { "components",
             entity = { byName = "blonde" },
             disabled = false,
@@ -457,7 +496,20 @@ return {
             ["particleEmitter.always.offsetRange.x[1]"] = { startOffset = 200, toOffset = 0, delay = 30, frames = 120 },
             ["pos.z"] = { startOffset = 400, delay = 30, frames = 120 }
         },
-        { "waitFrames", 60 },
+        { "waitFrames", 30 },
+        {  "components",
+            entity = { byName = "cossin2" },
+            camera = { disabled = true }
+        },
+        {  "components",
+            entity = { byName = "cossin3" },
+            camera = { disabled = true }
+        },
+        {  "components",
+            entity = { byName = "cossin4" },
+            camera = { disabled = true }
+        },
+        { "waitFrames", 30 },
         { "waitForLarp",
             entity = { byName = "blonde" }
         },
@@ -743,14 +795,6 @@ return {
         { "end" },
         { "waitForBubble",
             entity = { byName = "blonde" }
-        },
-
-        -- FOR TEST
-        { "camera",
-            entity = { byName = "cossin" }
-        },
-        { "input",
-            entity = { byName = "cossin" }
-        },
+        }
     }
 }

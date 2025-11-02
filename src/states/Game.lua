@@ -161,7 +161,7 @@ function Game:enter(args)
             self.input.target = entity
         end
         if entity.camera then
-            self.camera:setTarget(entity)
+            entity.camera:setTarget(entity)
         end
         if entity.lens then
             local w = entity.lens.size * ELLIPSE_WIDTH_RATIO
@@ -280,49 +280,24 @@ function Game:update(dt)
     self.anim:clearTriggers()
 end
 
-local activeCossins = {}
+local cameraEntities = {}
+local cameraCols = {}
+local cameraRows = {}
 local drawnEntities = {}
 local shadowEntities = {}
 local tileBatchStartIdx = 0
 local tileBatchIdx = 0
 local tileBatchi = 0
-local sceneCanvas = nil
-local heightCanvas = nil
-local shadowCanvas = nil
 
 function Game:render(dt)
-    local activeCount = 1
-    activeCossins[1] = self.entitiesByName.cossin
-    if not self.entitiesByName.cossin2.disabled then
-        activeCount = activeCount + 1
-        activeCossins[activeCount] = self.entitiesByName.cossin2
-    end
-    if not self.entitiesByName.cossin3.disabled then
-        activeCount = activeCount + 1
-        activeCossins[activeCount] = self.entitiesByName.cossin3
-    end
-    if not self.entitiesByName.cossin4.disabled then
-        activeCount = activeCount + 1
-        activeCossins[activeCount] = self.entitiesByName.cossin4
-    end
-    local rows = math.ceil(math.sqrt(activeCount))
-    local cols = math.ceil(activeCount / rows)
-    local w = CURRES[1] / cols
-    local h = CURRES[2] / rows
-    for i = 1, cols do
-        for j = 1, rows do
-            local cossin = activeCossins[i + (j - 1) * cols]
-            if cossin then
-                self:renderFrame(dt, (i - 1) * w, (j - 1) * h, w, h, cossin)
-            end
-        end
-    end
+    love.graphics.clear(unpack(Game.constants.bgColor))
+    self.camera:draw(dt, self)
     self.images:draw()
     self.pause:draw()
 end
 
-function Game:renderFrame(dt, x, y, w, h, cameraEntity)
-    local w, h, sx, sy, ex, ey, scale = self.camera:applyTransformations(w, h)
+function Game:renderFrame(dt, camera, x, y, w, h)
+    local sx, sy, ex, ey, scale = camera:applyTransformations(w, h)
 
     local i = 1
     for _, entity in self:iterEntities() do
@@ -347,19 +322,16 @@ function Game:renderFrame(dt, x, y, w, h, cameraEntity)
         entity.drawOrder = i
     end
 
-    self:drawHeightMap(w, h, drawnEntities)
-    self:drawShadowMap(w, h, sx, sy, ex, ey)
-    if not sceneCanvas or sceneCanvas:getWidth() ~= w or sceneCanvas:getHeight() ~= h then
-        sceneCanvas = love.graphics.newCanvas(w, h)
-    end
+    self:drawHeightMap(camera, w, h, drawnEntities)
+    self:drawShadowMap(camera, w, h, sx, sy, ex, ey)
 
     -- Draw!
-    love.graphics.setCanvas({ sceneCanvas, stencil = true })
+    love.graphics.setCanvas({ camera.canvas, stencil = true })
     love.graphics.clear(unpack(Game.constants.bgColor))
     love.graphics.setShader(HEIGHT_MAPPED_SHADER)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
-    HEIGHT_MAPPED_SHADER:send("heightMap", heightCanvas)
-    HEIGHT_MAPPED_SHADER:send("shadowMap", shadowCanvas)
+    HEIGHT_MAPPED_SHADER:send("heightMap", camera.heightCanvas)
+    HEIGHT_MAPPED_SHADER:send("shadowMap", camera.shadowCanvas)
     HEIGHT_MAPPED_SHADER:send("shadowColor", Game.constants.shadowColor)
     HEIGHT_MAPPED_SHADER:send("shadowMapHeightOffset", SHADOW_MAP_HEIGHT_OFFSET)
     HEIGHT_MAPPED_SHADER:send("shadowMapOffset", SHADOW_MAP_OFFSET)
@@ -462,16 +434,17 @@ function Game:renderFrame(dt, x, y, w, h, cameraEntity)
     end
 
     love.graphics:reset()
+    love.graphics.setCanvas(camera.canvas)
 
     if debug.heightMap then
         love.graphics.setShader(MAP_DEBUG_SHADER)
-        love.graphics.draw(heightCanvas, 0, 0)
+        love.graphics.draw(camera.heightCanvas, 0, 0)
         love.graphics.setShader()
     end
 
     if debug.shadowMap then
         love.graphics.setShader(MAP_DEBUG_SHADER)
-        love.graphics.draw(shadowCanvas, 0, 0)
+        love.graphics.draw(camera.shadowCanvas, 0, 0)
         love.graphics.setShader()
     end
 
@@ -487,7 +460,6 @@ function Game:renderFrame(dt, x, y, w, h, cameraEntity)
     end
 
     love.graphics.setCanvas()
-    love.graphics.draw(sceneCanvas, x, y)
 end
 
 function Game:drawEntitySprites(entity)
@@ -585,10 +557,7 @@ function Game:drawEntityShadow(entity, floorZ)
         entity.shadow.anchor.y)
 end
 
-function Game:drawHeightMap(w, h, drawnEntities)
-    if not heightCanvas or heightCanvas:getWidth() ~= w or heightCanvas:getHeight() ~= h then
-        heightCanvas = love.graphics.newCanvas(w, h, { format = "r8" })
-    end
+function Game:drawHeightMap(camera, w, h, drawnEntities)
     tileBatchStartIdx = 0
     tileBatchIdx = 0
 
@@ -596,7 +565,7 @@ function Game:drawHeightMap(w, h, drawnEntities)
     textures = heightTextures
     love.graphics.push("all")
     love.graphics.setShader(HEIGHT_MAP_SHADER)
-    love.graphics.setCanvas({ heightCanvas, stencil = true })
+    love.graphics.setCanvas({ camera.heightCanvas, stencil = true })
     love.graphics.clear(0, 0, 0, 1)
     for _, entity in ipairs(drawnEntities) do
         if entity.sprites then
@@ -619,13 +588,9 @@ function Game:drawHeightMap(w, h, drawnEntities)
     love.graphics.pop()
 end
 
-function Game:drawShadowMap(w, h, sx, sy, ex, ey)
-    h = h + SHADOW_MAP_OFFSET
-    if not shadowCanvas or shadowCanvas:getWidth() ~= w or shadowCanvas:getHeight() ~= h then
-        shadowCanvas = love.graphics.newCanvas(w, h, { format = "r8" })
-    end
+function Game:drawShadowMap(camera, w, h, sx, sy, ex, ey)
     love.graphics.push("all")
-    love.graphics.setCanvas(shadowCanvas)
+    love.graphics.setCanvas(camera.shadowCanvas)
     love.graphics.clear(0, 0, 0, 1)
     local i = 1
     for _, entity in self:iterEntities(self.entitiesByComponent.shadow) do

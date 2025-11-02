@@ -18,7 +18,8 @@ function Requests.new(game)
         larp = {},
         lens = {},
         tileSprites = {},
-        shadow = {}
+        shadow = {},
+        camera = {}
     }
 end
 

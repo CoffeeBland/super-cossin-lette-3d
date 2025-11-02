@@ -3,39 +3,9 @@ CameraSystem.__index = CameraSystem
 
 function CameraSystem.new()
     return setmetatable({
-        x = 0,
-        y = 0,
-        z = 0,
-        panFrames = 0,
-        target = nil,
         shakeFrames = 0,
         shakeAmplitude = 0,
-        zoom = 1,
-        targetZoom = 1,
-        zoomFrames = 0,
-        offsetX = 0,
-        offsetY = 0
     }, CameraSystem)
-end
-
-function CameraSystem:setMoveFromEvent(entity, event)
-    if event.entity then
-        self.target = entity
-    end
-    if event.panFrames then
-        self.panFrames = event.panFrames
-    end
-    if event.zoom then
-        self.zoomFrames = event.zoomFrames or 0
-        self.targetZoom = event.zoom
-        if self.zoomFrames == 0 then
-            self.zoom = event.zoom
-        end
-    end
-end
-
-function CameraSystem:setTarget(entity)
-    self.target = entity
 end
 
 function CameraSystem:update(framePart, dt, game)
@@ -53,52 +23,235 @@ function CameraSystem:update(framePart, dt, game)
         end
     end
 
-    self.zoom = math.interp(self.zoomFrames, self.zoom, self.targetZoom or self.zoom)
-    self.zoomFrames = math.max(self.zoomFrames - framePart, 0)
+    for _, entity in game:iterEntities(game.entitiesByComponent.camera) do
+        local camera = entity.camera
+        camera.zoom = math.interp(camera.zoomFrames, camera.zoom, camera.targetZoom or camera.zoom)
+        camera.zoomFrames = math.max(camera.zoomFrames - framePart, 0)
 
-    if self.target then
-        if self.panFrames > 0 then
-            self.x = math.interp(self.panFrames, self.x, self.target.pos.x)
-            self.y = math.interp(self.panFrames, self.y, self.target.pos.y)
-            self.panFrames = math.max(self.panFrames - framePart, 0)
-            if self.panFrames == 0 then
-                game.anim:trigger("camera:finished")
+        if camera.target then
+            if camera.panFrames > 0 then
+                camera.x = math.interp(camera.panFrames, camera.x, camera.target.pos.x)
+                camera.y = math.interp(camera.panFrames, camera.y, camera.target.pos.y)
+                camera.panFrames = math.max(camera.panFrames - framePart, 0)
+            else
+                camera.x = camera.target.pos.x
+                camera.y = camera.target.pos.y
             end
-        else
-            self.x = self.target.pos.x
-            self.y = self.target.pos.y
+            if camera.sizeFrames > 0 then
+                camera.size = math.interp(camera.sizeFrames, camera.size, camera.targetSize)
+                camera.sizeFrames = math.max(camera.sizeFrames - framePart, 0)
+            else
+                camera.size = camera.targetSize or 1
+            end
+            if (camera.z < camera.target.pos.floorZ and camera.target.pos.z > camera.z) or
+                (camera.z > camera.target.pos.floorZ and camera.target.pos.z < camera.z) then
+                camera.z = math.interp(60, camera.z, camera.target.pos.floorZ or 0)
+            end
+            if self.shakeFrames > 0 then
+                camera.offsetX = (math.random() - 0.5) * self.shakeAmplitude
+                camera.offsetY = (math.random() - 0.5) * self.shakeAmplitude
+            else
+                camera.offsetX = 0
+                camera.offsetY = 0
+            end
         end
-        if (self.z < self.target.pos.floorZ and self.target.pos.z > self.z) or
-            (self.z > self.target.pos.floorZ and self.target.pos.z < self.z) then
-            self.z = math.interp(60, self.z, self.target.pos.floorZ or 0)
+    end
+
+    if self.shakeFrames > 0 then
+        self.shakeFrames = math.max(self.shakeFrames - framePart, 0)
+    end
+end
+
+local camEntities = {}
+local colParts = {}
+local colPos = {}
+local rowParts = {}
+local rowPos = {}
+
+function CameraSystem:draw(dt, game)
+    -- Count the cameras
+    local camCount = 0
+    for _, entity in game:iterEntities(game.entitiesByComponent.camera) do
+        if not entity.camera.disabled then
+            camCount = camCount + 1
+            camEntities[camCount] = entity
         end
-        if self.shakeFrames > 0 then
-            self.offsetX = (math.random() - 0.5) * self.shakeAmplitude
-            self.offsetY = (math.random() - 0.5) * self.shakeAmplitude
-            self.shakeFrames = math.max(self.shakeFrames - framePart, 0)
-        else
-            self.offsetX = 0
-            self.offsetY = 0
+    end
+
+    -- Define how many row/columns
+    local rows
+    local cols
+    if CURRES[1] < CURRES[2] then
+        rows = math.ceil(math.sqrt(camCount))
+        cols = math.ceil(camCount / rows)
+    else
+        cols = math.ceil(math.sqrt(camCount))
+        rows = math.ceil(camCount / cols)
+    end
+
+    -- Count the parts by column/row
+    for col = 1, cols do
+        colParts[col] = 0
+    end
+    for row = 1, rows do
+        rowParts[row] = 0
+    end
+
+    for col = 1, cols do
+        for row = 1, rows do
+            local i = col + (row - 1) * cols
+            if i <= camCount then
+                local camEntity = camEntities[i]
+                colParts[col] = math.max(colParts[col], camEntity.camera.size)
+                rowParts[row] = math.max(rowParts[row], camEntity.camera.size)
+            end
+        end
+    end
+
+    -- Count the total parts by column/row
+    local colTotal = 0
+    for col = 1, cols do
+        colTotal = colTotal + colParts[col]
+    end
+    local rowTotal = 0
+    for row = 1, rows do
+        rowTotal = rowTotal + rowParts[row]
+    end
+
+    local camw = math.ceil(CURRES[1] / cols)
+    local camh = math.ceil(CURRES[2] / rows)
+
+    -- Gogogadget
+    local x = 0
+    for col = 1, cols do
+        local w = colParts[col] * (CURRES[1] / colTotal)
+        local y = 0
+        for row = 1, rows do
+            local h = rowParts[row] * (CURRES[2] / rowTotal)
+            local i = col + (row - 1) * cols
+            if i <= camCount then
+                local camEntity = camEntities[i]
+                local quadw, quadh = camEntity.camera:setSize(x, y, w, h, camw, camh)
+                game:renderFrame(dt, camEntity.camera, x, y, camw, camh)
+                love.graphics.draw(camEntity.camera.canvas, camEntity.camera.quad, x, y, 0, w / quadw, h / quadh)
+            end
+            y = y + h
+        end
+        x = x + w
+    end
+
+    -- Lines
+    love.graphics.setColor(unpack(Game.constants.lineColor))
+    local x = 0
+    for col = 1, cols do
+        local w = colParts[col] * (CURRES[1] / colTotal)
+        local y = 0
+        for row = 1, rows do
+            local h = rowParts[row] * (CURRES[2] / rowTotal)
+            love.graphics.rectangle("line", x - 0.5, y - 0.5, w + 1, h + 1)
+            y = y + h
+        end
+        x = x + w
+    end
+    love.graphics.setColor(1, 1, 1, 1)
+end
+
+Camera = {}
+Camera.__index = Camera
+fancyTypes.camera = Camera
+
+function Camera.new(params)
+    return setmetatable({
+        x = params.x or 0,
+        y = params.y or 0,
+        z = params.z or 0,
+        panFrames = params.panFrames or 0,
+        target = params.target or nil,
+        zoom = params.zoom or 1,
+        targetZoom = params.zoom or 1,
+        zoomFrames = params.zoomFrames or 0,
+        offsetX = params.offsetX or 0,
+        offsetY = params.offsetY or 0,
+        size = params.size or 1,
+        targetSize = params.size or 1,
+        sizeFrames = 0,
+        quad = love.graphics.newQuad(0, 0, 0, 0, 0, 0)
+    }, Camera)
+end
+
+local canvas = nil
+local shadowCanvas = nil
+local heightCanvas = nil
+
+function Camera:setSize(x, y, w, h, canvasw, canvash)
+    local ratio = math.max(w / canvasw, h / canvash)
+    local qw = w / ratio
+    local qh = h / ratio
+    local qx = (canvasw - qw) / 2
+    local qy = (canvash - qh) / 2
+    self.quad:setViewport(qx, qy, qw, qh, canvasw, canvash)
+
+    self.scale = math.scaleToExpected(qw, qh) * self.zoom
+
+    if not canvas or canvas:getWidth() ~= canvasw or canvas:getHeight() ~= canvash then
+        canvas = love.graphics.newCanvas(canvasw, canvash)
+    end
+    if not heightCanvas or heightCanvas:getWidth() ~= canvasw or heightCanvas:getHeight() ~= canvash then
+        heightCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "r8" })
+    end
+    canvash = canvash + SHADOW_MAP_OFFSET
+    if not shadowCanvas or shadowCanvas:getWidth() ~= canvasw or shadowCanvas:getHeight() ~= canvash then
+        shadowCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "r8" })
+    end
+
+    self.canvas = canvas
+    self.heightCanvas = heightCanvas
+    self.shadowCanvas = shadowCanvas
+    return qw, qh
+end
+
+function Camera:setMoveFromEvent(target, event)
+    if event.target then
+        self.target = target
+    end
+    if event.panFrames then
+        self.panFrames = event.panFrames
+    end
+    if event.zoom then
+        self.zoomFrames = event.zoomFrames or 0
+        self.targetZoom = event.zoom or 1
+        if self.zoomFrames == 0 then
+            self.zoom = self.targetZoom
+        end
+    end
+    if event.size then
+        self.sizeFrames = event.sizeFrames or 0
+        self.targetSize = event.size or 1
+        if self.sizeFrames == 0 then
+            self.size = self.targetSize
         end
     end
 end
 
-function CameraSystem:applyTransformations(w, h)
+function Camera:setTarget(entity)
+    self.target = entity
+end
+
+function Camera:applyTransformations(w, h)
     love.graphics.translate(w / 2, h / 2)
-    local scale = SCALE_TO_EXPECTED * self.zoom
-    love.graphics.scale(scale)
+    love.graphics.scale(self.scale)
     love.graphics.translate(
         -self.x + self.offsetX,
         -self.y + self.offsetY + self.z)
     local sx, sy = love.graphics.inverseTransformPoint(0, 0)
     local ex, ey = love.graphics.inverseTransformPoint(0 + w, 0 + h)
-    return w, h, sx, sy, ex, ey, scale
+    return sx, sy, ex, ey, self.scale
 end
 
-function CameraSystem:isPanning()
+function Camera:isPanning()
     return self.panFrames and self.panFrames > 0
 end
 
-function CameraSystem:isZooming()
+function Camera:isZooming()
     return self.zoomFrames and self.zoomFrames > 0
 end
