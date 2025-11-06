@@ -82,7 +82,7 @@ return function()
             eatCooldown = 18,
             eatWiggleAmplitude = 0.25,
             eatWiggleFrames = 30,
-            sizePerFruit = 0.01,
+            sizePerFruit = 0.025,
         }
     }
 end

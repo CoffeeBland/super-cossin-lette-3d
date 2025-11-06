@@ -257,7 +257,6 @@ function Game:update(dt)
     self.time = self.time + dt
     local framePart = dt / (1 / 60)
 
-
     self.pause:update(framePart, dt, self)
     if self.pause.active then
         return
@@ -290,9 +289,19 @@ local tileBatchIdx = 0
 local tileBatchi = 0
 
 function Game:render(dt)
+    love.graphics.setCanvas(SCREEN_CANVAS)
+
     love.graphics.clear(unpack(Game.constants.bgColor))
     self.camera:draw(dt, self)
     self.images:draw()
+
+    love.graphics.setCanvas()
+
+    love.graphics.setShader(SCREEN_SHADER)
+    SCREEN_SHADER:send("blur", self.pause.active and Game.constants.pause.blur or self.camera.blur)
+    love.graphics.draw(SCREEN_CANVAS)
+    love.graphics.setShader()
+
     self.pause:draw()
 end
 

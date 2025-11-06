@@ -70,6 +70,11 @@ function love.draw()
     CURRES[1], CURRES[2] = love.graphics:getDimensions()
     SCALE_TO_EXPECTED = math.scaleToExpected(CURRES[1], CURRES[2])
 
+    if not SCREEN_CANVAS or SCREEN_CANVAS:getWidth() ~= CURRES[1] or SCREEN_CANVAS:getHeight() ~= CURRES[2] then
+        SCREEN_CANVAS = love.graphics.newCanvas(CURRES[1], CURRES[2])
+        SCREEN_SHADER:send("size", CURRES)
+    end
+
     local menuFontSize = math.max(math.ceil(36 * SCALE_TO_EXPECTED), 18)
     if menuFontSize ~= fontsSizes.menu then
         fonts.menu = love.graphics.newFont(menuFontSize)

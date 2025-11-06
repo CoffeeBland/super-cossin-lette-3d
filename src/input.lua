@@ -113,9 +113,7 @@ end
 
 function love.joystickadded(controller)
     -- All new controllers go to P1 until somebody does something about it
-    for i, actions in ipairs(playerActions) do
-        table.insert(actions.controllers, controller)
-    end
+    table.insert(actions.controllers, controller)
 end
 
 function love.joystickremoved(controller)
@@ -271,7 +269,9 @@ function input.pollPlayer(dt, actions)
     actions.menu.x = math.abs(actions.movement.x) > DELTA and math.sign(actions.movement.x) or 0
     actions.menu.y = math.abs(actions.movement.y) > DELTA and math.sign(actions.movement.y) or 0
     actions.menu.any = actions.menu.x ~= 0 and actions.menu.x or actions.menu.y
-    actions.move = not wasMove and (actions.menu.x ~= 0 or actions.menu.y ~= 0)
+    if not wasMove and (actions.menu.x ~= 0 or actions.menu.y ~= 0) then
+        actions.move = true
+    end
 end
 
 function input.afterUpdate(dt)
@@ -310,4 +310,6 @@ function input.afterPlayerUpdate(dt, actions)
     for action in pairs(pressActions) do
         actions[action] = false
     end
+
+    actions.move = false
 end

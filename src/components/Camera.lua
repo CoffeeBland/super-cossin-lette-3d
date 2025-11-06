@@ -5,10 +5,34 @@ function CameraSystem.new()
     return setmetatable({
         shakeFrames = 0,
         shakeAmplitude = 0,
+        blur = 0,
+        blurTarget = 0,
+        blurFrames = 0
     }, CameraSystem)
 end
 
+function CameraSystem:setMoveFromEvent(game, event, entity)
+    local target = game:findEntity(event.target)
+    if not event.entity then
+        for _, entity in game:iterEntities(game.entitiesByComponent.camera) do
+            entity.camera:setMoveFromEvent(target, event)
+        end
+    else
+        entity.camera:setMoveFromEvent(target, event)
+    end
+    if event.blur then
+        self.blurFrames = event.blurFrames or 0
+        self.blurTarget = event.blur or 1
+        if self.blurFrames == 0 then
+            self.blur = self.blurTarget
+        end
+    end
+end
+
 function CameraSystem:update(framePart, dt, game)
+    self.blur = math.interp(self.blurFrames, self.blur, self.blurTarget or self.blur)
+    self.blurFrames = math.max(self.blurFrames - framePart, 0)
+
     for _, entity in game:iterEntities(game.entitiesByComponent.shakeEmitter) do
         if entity.anim then
             local mass = entity.actor and entity.actor.stats.mass or 1
@@ -25,7 +49,7 @@ function CameraSystem:update(framePart, dt, game)
 
     for _, entity in game:iterEntities(game.entitiesByComponent.camera) do
         local camera = entity.camera
-        camera.zoom = math.interp(camera.zoomFrames, camera.zoom, camera.targetZoom or camera.zoom)
+        camera.zoom = math.interp(camera.zoomFrames, camera.zoom, camera.zoomTarget or camera.zoom)
         camera.zoomFrames = math.max(camera.zoomFrames - framePart, 0)
 
         if camera.target then
@@ -38,10 +62,10 @@ function CameraSystem:update(framePart, dt, game)
                 camera.y = camera.target.pos.y
             end
             if camera.sizeFrames > 0 then
-                camera.size = math.interp(camera.sizeFrames, camera.size, camera.targetSize)
+                camera.size = math.interp(camera.sizeFrames, camera.size, camera.sizeTarget)
                 camera.sizeFrames = math.max(camera.sizeFrames - framePart, 0)
             else
-                camera.size = camera.targetSize or 1
+                camera.size = camera.sizeTarget or 1
             end
             if (camera.z < camera.target.pos.floorZ and camera.target.pos.z > camera.z) or
                 (camera.z > camera.target.pos.floorZ and camera.target.pos.z < camera.z) then
@@ -69,6 +93,7 @@ local rowParts = {}
 local rowPos = {}
 
 function CameraSystem:draw(dt, game)
+    local origCanvas = love.graphics.getCanvas()
     -- Count the cameras
     local camCount = 0
     for _, entity in game:iterEntities(game.entitiesByComponent.camera) do
@@ -133,6 +158,7 @@ function CameraSystem:draw(dt, game)
                 local camEntity = camEntities[i]
                 local quadw, quadh = camEntity.camera:setSize(x, y, w, h, camw, camh)
                 game:renderFrame(dt, camEntity.camera, x, y, camw, camh)
+                love.graphics.setCanvas(origCanvas)
                 love.graphics.draw(camEntity.camera.canvas, camEntity.camera.quad, x, y, 0, w / quadw, h / quadh)
             end
             y = y + h
@@ -141,6 +167,7 @@ function CameraSystem:draw(dt, game)
     end
 
     -- Lines
+    love.graphics.setCanvas(origCanvas)
     love.graphics.setColor(unpack(Game.constants.lineColor))
     local x = 0
     for col = 1, cols do
@@ -168,12 +195,12 @@ function Camera.new(params)
         panFrames = params.panFrames or 0,
         target = params.target or nil,
         zoom = params.zoom or 1,
-        targetZoom = params.zoom or 1,
+        zoomTarget = params.zoom or 1,
         zoomFrames = params.zoomFrames or 0,
         offsetX = params.offsetX or 0,
         offsetY = params.offsetY or 0,
         size = params.size or 1,
-        targetSize = params.size or 1,
+        sizeTarget = params.size or 1,
         sizeFrames = 0,
         quad = love.graphics.newQuad(0, 0, 0, 0, 0, 0)
     }, Camera)
@@ -219,16 +246,16 @@ function Camera:setMoveFromEvent(target, event)
     end
     if event.zoom then
         self.zoomFrames = event.zoomFrames or 0
-        self.targetZoom = event.zoom or 1
+        self.zoomTarget = event.zoom or 1
         if self.zoomFrames == 0 then
-            self.zoom = self.targetZoom
+            self.zoom = self.zoomTarget
         end
     end
     if event.size then
         self.sizeFrames = event.sizeFrames or 0
-        self.targetSize = event.size or 1
+        self.sizeTarget = event.size or 1
         if self.sizeFrames == 0 then
-            self.size = self.targetSize
+            self.size = self.sizeTarget
         end
     end
 end

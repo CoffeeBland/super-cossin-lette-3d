@@ -170,6 +170,14 @@ function table.recset(dest, key, source)
     end
 end
 
+function table.clone(t)
+    local clone = {}
+    for k, v in pairs(t) do
+        clone[k] = v
+    end
+    return clone
+end
+
 function math.getEllipsePoint(x, y, radiusx, radiusy, angle)
     local w = math.cos(angle) * radiusx
     local h = math.sin(angle) * radiusy

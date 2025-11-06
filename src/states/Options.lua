@@ -71,7 +71,11 @@ function Options:readini()
     end
 
     for _, option in ipairs(options) do
-        self.values[option.name] = config[option.name] or option.default
+        if config[option.name] ~= nil then
+            self.values[option.name] = config[option.name]
+        else
+            self.values[option.name] = option.default
+        end
     end
 end
 

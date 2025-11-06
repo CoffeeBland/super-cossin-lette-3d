@@ -48,13 +48,18 @@ function PauseSystem.new()
 end
 
 function PauseSystem:update(framePart, dt, game)
-    if actions.escape then
+    local escape = false
+    for _, actions in ipairs(playerActions) do
+        escape = escape or actions.escape
+    end
+    if escape then
         self.active = not self.active
         Sound:start(Sound.global.act)
         if Music.current then
             local filter = self.active and Game.constants.musicFilters.pause or nil
             Music.current:setFilter(filter)
         end
+        game.camera.blur = self.active and 3 or 0
         self.btnIdx = 1
     end
 

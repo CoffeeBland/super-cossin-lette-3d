@@ -107,6 +107,7 @@ return {
         buttonMargin = 60,
         buttonActive = { 0.875, 0.867, 0.741, 1 },
         buttonInactive = { 0.875, 0.867, 0.741, 0.25 },
+        blur = 8
     },
     options = {
         hmargin = 30,
@@ -161,11 +162,14 @@ return {
         { "if", "==", "[vars.currentMap]", "[vars.firstLevel]" },
             { "camera",
                 target = { byName = "picnic" },
-                zoom = 3
+                zoom = 3,
+                blur = 8
             },
             { "camera",
                 zoom = 1,
-                zoomFrames = 15
+                zoomFrames = 15,
+                blur = 0,
+                blurFrames = 15
             },
             { "waitForZoom",
                 entity = { byName = "cossin" },
@@ -184,11 +188,14 @@ return {
             },
         { "else" },
             { "camera",
-                zoom = 3
+                zoom = 3,
+                blur = 8
             },
             { "camera",
                 zoom = 1,
-                zoomFrames = 15
+                zoomFrames = 15,
+                blur = 0,
+                blurFrames = 15
             },
             { "waitForZoom",
                 entity = { byName = "cossin" },

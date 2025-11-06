@@ -340,7 +340,7 @@ function Title:update(dt)
 
     for _, player in ipairs(playerActions) do
         local cossin = cossins[player.id]
-        if player.newPlayer and cossin.disabled then
+        if player.id > 1 and self.frame > 60 + player.id * 15 and cossin.disabled then
             cossin.disabled = false
             cossin.pos.x = math.random(-100, 100)
             cossin.pos.y = math.random(-100, 100) + cossinY
@@ -378,6 +378,7 @@ end
 
 function Title:render()
     local w, h = unpack(CURRES)
+    love.graphics.setCanvas(SCREEN_CANVAS)
     love.graphics.translate(w / 2, h / 2)
     love.graphics.scale(SCALE_TO_EXPECTED)
     love.graphics.clear(unpack(bgcol))
@@ -480,4 +481,9 @@ function Title:render()
     end
 
     love.graphics.reset()
+    love.graphics.setShader(SCREEN_SHADER)
+    local blur = math.max(30 - self.frame, 0) / (30 / 8) -- Sketch, from 8 to 0
+    SCREEN_SHADER:send("blur", #StateMachine.stack > 0 and Game.constants.pause.blur or blur)
+    love.graphics.draw(SCREEN_CANVAS)
+    love.graphics.setShader()
 end

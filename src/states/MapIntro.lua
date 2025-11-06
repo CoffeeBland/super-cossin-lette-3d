@@ -19,7 +19,8 @@ local stuff = {
         name = "Lettre_blonde",
         screenAnchor = { x = 0.5, y = 1 },
         textureAnchor = { x = 0.25, y = 0 },
-        initialScale = { x = 1.25, y = 1.25 }
+        initialScale = { x = 1.25, y = 1.25 },
+        initialAlpha = 0
     },
     {
         id = "cloud1",
@@ -30,6 +31,14 @@ local stuff = {
         id = "cloud2",
         name = "Lettre_nuage_2",
         screenAnchor = { x = 0, y = 1 }
+    },
+    {
+        id = "plustard",
+        name = "PlusTard",
+        screenAnchor = { x = 0.5, y = 0.5 },
+        textureAnchor = { 0.5, 0.5 },
+        initialScale = { x = 0.75, y = 0.75 },
+        initialAlpha = 0
     }
 }
 local stuffById = {}
@@ -37,10 +46,75 @@ for _, thing in pairs(stuff) do
     stuffById[thing.id] = thing
 end
 
-local timeline = {
+local laterTimeline = {
+    { "alpha",
+        id = "cloud1",
+        to = 0,
+        frame = 0,
+        duration = 1
+    },
+    { "alpha",
+        id = "cloud2",
+        to = 0,
+        frame = 0,
+        duration = 1
+    },
+    { "scale",
+        id = "plustard",
+        to = { x = 1, y = 1 },
+        frame = 0,
+        duration = 60,
+    },
+    { "alpha",
+        id = "plustard",
+        to = 1,
+        frame = 0,
+        duration = 60
+    },
+    { "sound",
+        name = "PlusTard",
+        frame = 15
+    },
+    { "alpha",
+        id = "plustard",
+        to = 0,
+        frame = 120,
+        duration = 60
+    },
+    { "scale",
+        id = "plustard",
+        to = { x = 1.25, y = 1.25 },
+        frame = 120,
+        duration = 60,
+    },
+}
+
+local letterTimeline = {
+    { "music",
+        name = "MapIntro",
+        frame = 0
+    },
+    { "alpha",
+        id = "cloud1",
+        to = 1,
+        frame = 0,
+        duration = 60
+    },
+    { "alpha",
+        id = "cloud2",
+        to = 1,
+        frame = 0,
+        duration = 60
+    },
     { "scale",
         id = "blonde",
         to = { x = 1, y = 1 },
+        frame = 0,
+        duration = 60
+    },
+    { "alpha",
+        id = "blonde",
+        to = 1,
         frame = 0,
         duration = 60
     },
@@ -96,6 +170,22 @@ local timeline = {
 }
 
 function MapIntro:enter(params)
+    self.timeline = {}
+    local letterFrameOffset = 0
+
+    if params.map ~= Game.constants.firstLevel then
+        for _, event in ipairs(laterTimeline) do
+            letterFrameOffset = math.max(letterFrameOffset, event.frame + (event.duration or 0))
+            table.insert(self.timeline, event)
+        end
+    end
+
+    for _, event in ipairs(letterTimeline) do
+        local offsetEvent = table.clone(event)
+        offsetEvent.frame = offsetEvent.frame + letterFrameOffset
+        table.insert(self.timeline, offsetEvent)
+    end
+
     local texturesToFind = {}
     local soundsToFind = {}
     for _, thing in pairs(stuff) do
@@ -110,7 +200,7 @@ function MapIntro:enter(params)
             y = thing.offset and thing.offset.y or 0
         }
     end
-    for _, event in pairs(timeline) do
+    for _, event in pairs(self.timeline) do
         if event[1] == "sound" then
             table.insert(soundsToFind, event.name)
         end
@@ -121,7 +211,6 @@ function MapIntro:enter(params)
     })
     self.frame = 0
     self.params = params
-    Music:play("MapIntro")
 end
 
 function MapIntro:exit()
@@ -129,18 +218,19 @@ function MapIntro:exit()
 end
 
 function MapIntro:update(dt)
-    self.frame = self.frame + 1
-
     if actions.escape or actions.action then
         Music:fadeout()
         StateMachine:change(Game, self.params)
     end
 
-    for _, event in ipairs(timeline) do
+    for _, event in ipairs(self.timeline) do
         if not event.duration then
             if self.frame == event.frame then
                 if event[1] == "sound" then
                     Sound:start(event)
+                elseif event[1] == "music" then
+                    print("YO", dump(event))
+                    Music:play(event.name)
                 elseif event[1] == "state" then
                     StateMachine:change(Game, self.params)
                 end
@@ -159,6 +249,8 @@ function MapIntro:update(dt)
             end
         end
     end
+
+    self.frame = self.frame + 1
 end
 
 function MapIntro:render()

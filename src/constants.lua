@@ -195,6 +195,30 @@ SPARKLY_SHADER = love.graphics.newShader[[
     }
 ]]
 
+SCREEN_SHADER = love.graphics.newShader[[
+    uniform vec2 size;
+    uniform int blur;
+    const float pi = 3.1415926538;
+
+    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+        if (blur == 0) {
+            return Texel(texture, texture_coords) * color;
+        }
+        float sigma = (float(blur * 2 + 1) - 1.0) / 6.0;
+        float sigma22 = 2 * sigma * sigma;
+        float totalWeight = 0.0;
+        vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
+        for (int i = -blur; i <= blur; i++) {
+            for (int j = -blur; j <= blur; j++) {
+                float weight = exp(-(i*i + j*j) / sigma22);
+                totalWeight += weight;
+                finalColor += weight * Texel(texture, (texture_coords * size + vec2(float(i), float(j))) / size) * color;
+            }
+        }
+        return finalColor / totalWeight;
+    }
+]]
+
 --   2
 --  1 3
 -- 8   4

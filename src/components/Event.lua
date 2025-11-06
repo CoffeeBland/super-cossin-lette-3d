@@ -200,14 +200,7 @@ function Event:processEvent(framePart, game, index)
     if type == "bubble" then
         entity.bubble:show(game, event.text, entity.anim)
     elseif type == "camera" then
-        local target = game:findEntity(event.target)
-        if not event.entity then
-            for _, entity in game:iterEntities(game.entitiesByComponent.camera) do
-                entity.camera:setMoveFromEvent(target, event)
-            end
-        else
-            entity.camera:setMoveFromEvent(target, event)
-        end
+        game.camera:setMoveFromEvent(game, event, entity)
     elseif type == "input" then
         game.input.target = entity
     elseif type == "anim" then
