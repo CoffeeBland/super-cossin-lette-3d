@@ -18,14 +18,14 @@ local pressActions = {
     newPlayer = {
         keys = {},
         buttons = { "back" }
-    }
-}
-
-local releaseActions = {
+    },
     jump = {
         keys = { "space" },
         buttons = { "a" }
     }
+}
+
+local releaseActions = {
 }
 
 local movementActions = {

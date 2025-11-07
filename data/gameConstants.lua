@@ -2,9 +2,9 @@ return {
     g = 150 * METER_SCALE,
     particleCount = 100,
     airFriction = 0.25, -- Per second
-    groundDamping = 8,
-    slidingDamping = 1,
-    airDamping = 1,
+    groundDamping = 32,
+    slidingDamping = 32,
+    airDamping = 32,
     jumpMultiplier = 30,
     speedMultiplier = 20,
     bgColor = { 0.4, 0.65, 0.4 }, -- Jessi a pâlie la couleur de BG

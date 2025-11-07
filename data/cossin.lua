@@ -1,12 +1,13 @@
+
 return function()
     return {
         name = "cossin",
         camera = {},
         actor = {
             playerId = 1,
-            walkSpeed = 150,
-            slidingSpeed = 0,
-            airSpeed = 25,
+            walkSpeed = 450,
+            slidingSpeed = 450,
+            airSpeed = 450,
             jumpSpeed = 150
         },
         pos = { height = 148 },
