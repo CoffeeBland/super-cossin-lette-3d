@@ -481,9 +481,8 @@ function Title:render()
     end
 
     love.graphics.reset()
-    love.graphics.setShader(SCREEN_SHADER)
-    local blur = math.max(30 - self.frame, 0) / (30 / 8) -- Sketch, from 8 to 0
-    SCREEN_SHADER:send("blur", #StateMachine.stack > 0 and Game.constants.pause.blur or blur)
+    local blur = math.max(30 - self.frame, 0) / (30 / Game.constants.pause.blur) -- Sketch, from 8 to 0
+    SET_SCREEN_SHADER_BLUR(#StateMachine.stack > 0 and Game.constants.pause.blur or blur)
     love.graphics.draw(SCREEN_CANVAS)
     love.graphics.setShader()
 end

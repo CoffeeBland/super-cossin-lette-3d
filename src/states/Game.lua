@@ -297,8 +297,7 @@ function Game:render(dt)
 
     love.graphics.setCanvas()
 
-    love.graphics.setShader(SCREEN_SHADER)
-    SCREEN_SHADER:send("blur", self.pause.active and Game.constants.pause.blur or self.camera.blur)
+    SET_SCREEN_SHADER_BLUR(self.pause.active and Game.constants.pause.blur or self.camera.blur)
     love.graphics.draw(SCREEN_CANVAS)
     love.graphics.setShader()
 
