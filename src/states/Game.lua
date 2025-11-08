@@ -509,8 +509,8 @@ function Game:drawEntitySprite(entity, sprite)
             entity.pos.x,
             (entity.pos.y - entity.pos.z - (sprite.anchor.z or 0)),
             0,
-            (sprite.flipX and -1 or 1) * (animData.flipX and -1 or 1) * sprite.scaleX,
-            (sprite.flipY and -1 or 1) * (animData.flipY and -1 or 1) * sprite.scaleY,
+            (sprite.flipX and -1 or 1) * (animData.flipX and -1 or 1) * (sprite.scaleX or 1),
+            (sprite.flipY and -1 or 1) * (animData.flipY and -1 or 1) * (sprite.scaleY or 1),
             sprite.anchor.x,
             sprite.anchor.y)
     else
