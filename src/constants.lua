@@ -93,7 +93,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
 HEIGHT_MAP_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
-        return vec4(texturecolor.rgb + color.rgb, texturecolor.a * color.a);
+        return vec4(texturecolor.rgb * color.g + color.r, texturecolor.a * color.a);
     }
 ]]
 
