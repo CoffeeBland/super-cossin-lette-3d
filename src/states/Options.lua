@@ -107,7 +107,7 @@ end
 function Options:enter(params)
     self.idx = 1
     if Music.current then
-        Music.current:setFilter(Game.constants.musicFilters.pause)
+        Music.current:setFilter(Game.constants.music.filters.pause)
     end
 end
 

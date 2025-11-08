@@ -5,7 +5,6 @@ Music = {
     currentFadeinFrames = 0
 }
 
-local musicVolume = 0.5
 local fadeFrames = 60
 
 function Music:play(name, loop)
@@ -21,11 +20,11 @@ function Music:play(name, loop)
     end
     self.currentName = name
     self.current = music[name]
-    self.current:setVolume((fadein and 0 or musicVolume) * Options.values.music / 100)
+    self.current:setVolume((fadein and 0 or Game.constants.music.volume) * Options.values.music / 100)
     self.current:stop()
     self.current:play()
     self.current:setFilter()
-    self.current:setLooping(loop and not Game.constants.musicLoops[name] or false)
+    self.current:setLooping(loop and not Game.constants.music.loops[name] or false)
     self.currentLoop = loop
     if fadein then
         self.currentFadeinFrames = fadeFrames
@@ -57,7 +56,7 @@ end
 
 function Music:loop(name, source)
     local time = source:tell("samples")
-    local timestamps = Game.constants.musicLoops[name]
+    local timestamps = Game.constants.music.loops[name]
     if timestamps and time >= timestamps.loopEnd then
         source:seek(timestamps.loopStart + (time - timestamps.loopEnd), "samples")
     end
@@ -78,7 +77,7 @@ function Music:update(dt)
     local framePart = dt / (1 / 60)
 
     if self.current then
-        local currentVolume = math.interp(self.currentFadeinFrames, self.current:getVolume(), musicVolume)
+        local currentVolume = math.interp(self.currentFadeinFrames, self.current:getVolume(), Game.constants.music.volume)
         self.current:setVolume(currentVolume * Options.values.music / 100)
         self.current:setPitch(self.speed)
         self.currentFadeinFrames = math.max(self.currentFadeinFrames - framePart, 0)

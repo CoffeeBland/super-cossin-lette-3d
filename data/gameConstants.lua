@@ -44,14 +44,20 @@ return {
             segments = { tiles = { { 2, 0 }, { 3, 0 }, { 4, 0 } } }
         }
     },
-    musicLoops = {
-        Title = { loopStart = 55150, loopEnd = 772810 }
+    music = {
+        loops = {
+            Title = { loopStart = 55150, loopEnd = 772810 }
+        },
+        filters = {
+            pause =  {
+                type = "lowpass",
+                highgain = 0
+            }
+        },
+        volume = 0.5
     },
-    musicFilters = {
-        pause =  {
-            type = "lowpass",
-            highgain = 0
-        }
+    sound = {
+        volume = 0.75
     },
     lens = {
         textureStepSize = 8,
@@ -163,7 +169,7 @@ return {
             { "camera",
                 target = { byName = "picnic" },
                 zoom = 3,
-                blur = 8
+                blur = 128
             },
             { "camera",
                 zoom = 1,
@@ -189,7 +195,7 @@ return {
         { "else" },
             { "camera",
                 zoom = 3,
-                blur = 8
+                blur = 128
             },
             { "camera",
                 zoom = 1,

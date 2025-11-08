@@ -56,7 +56,7 @@ function PauseSystem:update(framePart, dt, game)
         self.active = not self.active
         Sound:start(Sound.global.act)
         if Music.current then
-            local filter = self.active and Game.constants.musicFilters.pause or nil
+            local filter = self.active and Game.constants.music.filters.pause or nil
             Music.current:setFilter(filter)
         end
         game.camera.blur = self.active and 3 or 0

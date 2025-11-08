@@ -18,6 +18,10 @@ local pressActions = {
     newPlayer = {
         keys = {},
         buttons = { "back" }
+    },
+    refresh = {
+        keys = { "f5" },
+        buttons = {}
     }
 }
 

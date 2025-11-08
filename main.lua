@@ -54,6 +54,10 @@ function love.update(dt)
         StateMachine.current:refresh(requiresRefresh)
     end
 
+    if actions.refresh and StateMachine.current.refresh then
+        StateMachine.current:refresh(true)
+    end
+
     frameTime = frameTime + dt
     while frameTime + DELTA > frameDuration do
         frameTime = frameTime - frameDuration

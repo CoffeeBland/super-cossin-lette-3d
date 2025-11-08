@@ -18,11 +18,11 @@ StateMachine = {
     stack = {}
 }
 
-function StateMachine:change(state, params)
+function StateMachine:change(state, params, opts)
     if self.current then
-        self.fadeOutFrames = self.current.fadeout
-        self.fadeInFrames = state and state.fadein
-        self.fadeColor = state and state.fadeColor or { 0, 0, 0 }
+        self.fadeOutFrames = (opts and opts.fadeout) or self.current.fadeout
+        self.fadeInFrames = (opts and opts.fadein) or (state and state.fadein)
+        self.fadeColor = (opts and opts.fadeColor) or (state and state.fadeColor) or { 0, 0, 0 }
         if self.fadeOutFrames > 0 or self.fadeInFrames > 0 then
             self.nextParams = params
             self.nextState = state
@@ -57,8 +57,13 @@ end
 
 function StateMachine:slopLoad()
     local time = 100
-    while time > 0 and load.crawlFiles(nil, true) do
-        time = time - love.timer.getTime()
+    while time > 0 do
+        local before = love.timer.getTime()
+        if not load.crawlFiles(nil, true) then
+            time = 0
+        end
+        local after = love.timer.getTime()
+        time = time - (after - before) * 1000
     end
 end
 

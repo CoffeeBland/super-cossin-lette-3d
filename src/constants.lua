@@ -216,7 +216,6 @@ function SET_SCREEN_SHADER_BLUR(blur)
         love.graphics.setShader()
         return
     end
-    blur = math.min(blur, 8)-- Capped at 8
     SCREEN_SHADER:send("xs", unpack(blurcossin.x))
     SCREEN_SHADER:send("ys", unpack(blurcossin.y))
     SCREEN_SHADER:send("weights", unpack(blurcossin.weights))
