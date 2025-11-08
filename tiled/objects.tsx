@@ -806,15 +806,16 @@
   <properties>
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
-   <property name="height" type="float" value="230"/>
+   <property name="autoshadowScale" type="float" value="0.8"/>
+   <property name="height" type="float" value="260"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="470"/>
-   <property name="posZ" type="float" value="770"/>
+   <property name="posZ" type="float" value="740"/>
   </properties>
   <image source="../img/Feuillage1.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="3">
-   <object id="2" x="170.667" y="214.333" width="682.667" height="428.667">
+   <object id="4" x="56.6667" y="218" width="881.251" height="542.883">
     <ellipse/>
    </object>
   </objectgroup>
@@ -823,15 +824,16 @@
   <properties>
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
-   <property name="height" type="float" value="230"/>
+   <property name="autoshadowScale" type="float" value="0.8"/>
+   <property name="height" type="float" value="260"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="470"/>
-   <property name="posZ" type="float" value="770"/>
+   <property name="posZ" type="float" value="740"/>
   </properties>
   <image source="../img/Feuillage2.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="170.667" y="214.333" width="682.667" height="428.667">
+   <object id="3" x="78.6667" y="270.333" width="881.251" height="542.883">
     <ellipse/>
    </object>
   </objectgroup>
@@ -840,15 +842,16 @@
   <properties>
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
-   <property name="height" type="float" value="230"/>
+   <property name="autoshadowScale" type="float" value="0.8"/>
+   <property name="height" type="float" value="260"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="470"/>
-   <property name="posZ" type="float" value="770"/>
+   <property name="posZ" type="float" value="740"/>
   </properties>
   <image source="../img/Feuillage3.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="170.667" y="214.333" width="682.667" height="428.667">
+   <object id="1" x="66.6667" y="266.333" width="881.251" height="542.883">
     <ellipse/>
    </object>
   </objectgroup>

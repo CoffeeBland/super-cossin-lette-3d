@@ -12,4 +12,3 @@
 
 ## BUGS
 * Les bulles sont pas bien centrées (mais c'est fiiiiine)
-* Fix le height map des arbres pliz
