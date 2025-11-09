@@ -139,6 +139,9 @@ function Game:enter(args)
     for key, value in pairs(self.map.vars) do
         self.vars[key] = value
     end
+    if not Game.constants.bg[self.vars.bg] then
+        self.vars.bg = "grass"
+    end
     Requests.new(self)
     self.physics = PhysicsSystem.new()
     self.sounds = SoundSystem.new()
@@ -305,7 +308,7 @@ local tileBatchi = 0
 function Game:render(dt)
     love.graphics.setCanvas(SCREEN_CANVAS)
 
-    love.graphics.clear(unpack(Game.constants.bgColor))
+    love.graphics.clear(unpack(Game.constants.bg.grass))
     self.camera:draw(dt, self)
     self.images:draw()
 
@@ -349,7 +352,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 
     -- Draw!
     love.graphics.setCanvas({ camera.canvas, stencil = true })
-    love.graphics.clear(unpack(Game.constants.bgColor))
+    love.graphics.clear(unpack(Game.constants.bg[self.vars.bg]))
     love.graphics.setShader(HEIGHT_MAPPED_SHADER)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
     HEIGHT_MAPPED_SHADER:send("heightMap", camera.heightCanvas)

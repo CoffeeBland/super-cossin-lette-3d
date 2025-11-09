@@ -7,7 +7,10 @@ return {
     airDamping = 1,
     jumpMultiplier = 30,
     speedMultiplier = 20,
-    bgColor = { 0.4, 0.65, 0.4 }, -- Jessi a pâlie la couleur de BG
+    bg = {
+        grass = { 0.4, 0.65, 0.4 }, -- Jessi a pâlie la couleur de BG
+        water = { 113.0/255.0, 216.0/255.0, 177.0/255.0 }
+    },
     shadowColor = { 0.875, 0.867, 0.941, 1 },
     pauseColor = { 0.5 * 0.875, 0.5 * 0.867, 0.5 * 0.941, 1 },
     lightColor = { 0.875, 0.867, 0.741, 1 },
