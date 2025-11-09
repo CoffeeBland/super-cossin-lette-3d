@@ -7,7 +7,10 @@ return {
     airDamping = 32,
     jumpMultiplier = 30,
     speedMultiplier = 20,
-    bgColor = { 0.4, 0.65, 0.4 }, -- Jessi a pâlie la couleur de BG
+    bg = {
+        grass = { 0.4, 0.65, 0.4 }, -- Jessi a pâlie la couleur de BG
+        water = { 113.0/255.0, 216.0/255.0, 177.0/255.0 }
+    },
     shadowColor = { 0.875, 0.867, 0.941, 1 },
     pauseColor = { 0.5 * 0.875, 0.5 * 0.867, 0.5 * 0.941, 1 },
     lightColor = { 0.875, 0.867, 0.741, 1 },
@@ -44,14 +47,20 @@ return {
             segments = { tiles = { { 2, 0 }, { 3, 0 }, { 4, 0 } } }
         }
     },
-    musicLoops = {
-        Title = { loopStart = 55150, loopEnd = 772810 }
+    music = {
+        loops = {
+            Title = { loopStart = 55150, loopEnd = 772810 }
+        },
+        filters = {
+            pause =  {
+                type = "lowpass",
+                highgain = 0
+            }
+        },
+        volume = 0.5
     },
-    musicFilters = {
-        pause =  {
-            type = "lowpass",
-            highgain = 0
-        }
+    sound = {
+        volume = 0.75
     },
     lens = {
         textureStepSize = 8,
@@ -163,7 +172,7 @@ return {
             { "camera",
                 target = { byName = "picnic" },
                 zoom = 3,
-                blur = 8
+                blur = 128
             },
             { "camera",
                 zoom = 1,
@@ -189,7 +198,7 @@ return {
         { "else" },
             { "camera",
                 zoom = 3,
-                blur = 8
+                blur = 128
             },
             { "camera",
                 zoom = 1,

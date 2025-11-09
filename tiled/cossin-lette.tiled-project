@@ -11,6 +11,17 @@
     ],
     "propertyTypes": [
         {
+            "id": 4,
+            "name": "bg",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "grass",
+                "water"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "id": 3,
             "name": "flip",
             "storageType": "string",

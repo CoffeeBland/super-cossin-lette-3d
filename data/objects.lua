@@ -2170,11 +2170,12 @@ return {
       properties = {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
-        ["height"] = 230,
+        ["autoshadowScale"] = 0.8,
+        ["height"] = 260,
         ["lensed"] = true,
         ["offsetX"] = 510,
         ["offsetY"] = 470,
-        ["posZ"] = 770
+        ["posZ"] = 740
       },
       image = "../img/Feuillage1.png",
       width = 1024,
@@ -2194,14 +2195,14 @@ return {
         properties = {},
         objects = {
           {
-            id = 2,
+            id = 4,
             name = "",
             type = "",
             shape = "ellipse",
-            x = 170.667,
-            y = 214.333,
-            width = 682.667,
-            height = 428.667,
+            x = 56.6667,
+            y = 218,
+            width = 881.251,
+            height = 542.883,
             rotation = 0,
             visible = true,
             properties = {}
@@ -2214,11 +2215,12 @@ return {
       properties = {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
-        ["height"] = 230,
+        ["autoshadowScale"] = 0.8,
+        ["height"] = 260,
         ["lensed"] = true,
         ["offsetX"] = 510,
         ["offsetY"] = 470,
-        ["posZ"] = 770
+        ["posZ"] = 740
       },
       image = "../img/Feuillage2.png",
       width = 1024,
@@ -2238,14 +2240,14 @@ return {
         properties = {},
         objects = {
           {
-            id = 1,
+            id = 3,
             name = "",
             type = "",
             shape = "ellipse",
-            x = 170.667,
-            y = 214.333,
-            width = 682.667,
-            height = 428.667,
+            x = 78.6667,
+            y = 270.333,
+            width = 881.251,
+            height = 542.883,
             rotation = 0,
             visible = true,
             properties = {}
@@ -2258,11 +2260,12 @@ return {
       properties = {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
-        ["height"] = 230,
+        ["autoshadowScale"] = 0.8,
+        ["height"] = 260,
         ["lensed"] = true,
         ["offsetX"] = 510,
         ["offsetY"] = 470,
-        ["posZ"] = 770
+        ["posZ"] = 740
       },
       image = "../img/Feuillage3.png",
       width = 1024,
@@ -2286,10 +2289,10 @@ return {
             name = "",
             type = "",
             shape = "ellipse",
-            x = 170.667,
-            y = 214.333,
-            width = 682.667,
-            height = 428.667,
+            x = 66.6667,
+            y = 266.333,
+            width = 881.251,
+            height = 542.883,
             rotation = 0,
             visible = true,
             properties = {}

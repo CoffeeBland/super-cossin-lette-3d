@@ -185,7 +185,7 @@ local cossins = {}
 
 function Title:enter()
     local texturesToFind = { "Bubble_icons" }
-    local soundsToFind = {}
+    local soundsToFind = { "Poof" }
     for _, grassTile in pairs(grassTiles) do
         table.insert(texturesToFind, grassTile)
     end
@@ -351,7 +351,15 @@ function Title:update(dt)
         if cossin.actor.playerId and not playerActionsById[cossin.actor.playerId] and not cossin.disabled then
             self.particles:emit(0, cossin, cossin.particleEmitter.triggers.poof)
             cossin.disabled = true
+            Sound:start({ name = "Poof" })
         end
+    end
+
+    -- No auto-refresh, only manual refresh
+    -- Title screen does not do a full load, and auto-refresh thinks unloaded files are new files.
+    -- Oops!
+    if actions.refresh then
+        StateMachine:change(Title, nil, { fadeout = 15, fadein = 15 })
     end
 
     local framePart = 1
@@ -481,9 +489,8 @@ function Title:render()
     end
 
     love.graphics.reset()
-    love.graphics.setShader(SCREEN_SHADER)
-    local blur = math.max(30 - self.frame, 0) / (30 / 8) -- Sketch, from 8 to 0
-    SCREEN_SHADER:send("blur", #StateMachine.stack > 0 and Game.constants.pause.blur or blur)
+    local blur = math.max(30 - self.frame, 0) / (30 / Game.constants.pause.blur) -- Sketch, from 8 to 0
+    SET_SCREEN_SHADER_BLUR(#StateMachine.stack > 0 and Game.constants.pause.blur or blur)
     love.graphics.draw(SCREEN_CANVAS)
     love.graphics.setShader()
 end

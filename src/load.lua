@@ -168,15 +168,15 @@ function load.createHeightTexture(name, tiles)
         love.graphics.push()
         love.graphics.translate(x, y)
 
-        love.graphics.setColor(height / SKY_LIMIT, 0, 0, 1)
+        love.graphics.setColor(height / height, 0, 0, 1)
         love.graphics.rectangle("fill", 0, 0, w, topmost)
 
-        love.graphics.setColor(height / (8 * SKY_LIMIT), 0, 0, 1)
+        love.graphics.setColor(height / (8 * height), 0, 0, 1)
         love.graphics.rectangle("fill", 0, botmost, w, h - botmost)
 
         -- gradient
         for i = 1, height - 1 do
-            love.graphics.setColor((height / 8 + i * (7/8)) / SKY_LIMIT, 0, 0, 1)
+            love.graphics.setColor((height / 8 + i * (7/8)) / height, 0, 0, 1)
 
             local delta = (tile.delta or 0) * (i / height)
             local bulge = math.trigterp(i, 1, height - 1, (tile.bulge or 0) - pw)
@@ -204,10 +204,13 @@ function load.createHeightTexture(name, tiles)
     print("height", math.round((love.timer.getTime() - time) * 1000), name)
 end
 
-function load.createShadow(name, points)
+function load.createShadow(name, points, scale)
+    print("shadow", name)
     local minX, minY, maxX, maxY
     for i = 1, #points / 2 do
-        local x, y = points[i * 2 - 1], points[i * 2]
+        local x, y = points[i * 2 - 1] * scale, points[i * 2] * scale
+        points[i * 2 - 1] = x
+        points[i * 2] = y
         minX = minX and math.min(x, minX) or x
         maxX = maxX and math.max(x, maxX) or x
         minY = minY and math.min(y, minY) or y
@@ -379,7 +382,7 @@ function load.loadData(name, file)
                                 obj.shapeFlipX = love.physics.newPolygonShape(verticesFlipX)
                                 obj.shapeFlipY = love.physics.newPolygonShape(verticesFlipY)
                             end
-                            shadow = load.createShadow(obj.name, vertices)
+                            shadow = obj.autoshadow and load.createShadow(obj.name, vertices, obj.autoshadowScale or 1)
 
                         elseif subobject.shape == "ellipse" then
                             local x = subobject.x + subobject.width / 2 - obj.offsetX
@@ -391,9 +394,9 @@ function load.loadData(name, file)
                             obj.shapeFlipY = obj.shape
 
                             local shadowPts = math.getEllipse(x, y, radiusx, radiusy, 32)
-                            shadow = load.createShadow(obj.name, shadowPts)
+                            shadow = obj.autoshadow and load.createShadow(obj.name, shadowPts, obj.autoshadowScale or 1)
                         end
-                        if shadow and obj.autoshadow then
+                        if shadow then
                             obj.shadow = shadow
                         end
                     end

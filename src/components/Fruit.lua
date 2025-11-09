@@ -78,8 +78,6 @@ function FruitSystem:update(framePart, dt, game)
                 game.vars.eaten = game.vars.eaten + 1
                 entity.anim.baseWiggle.x = entity.anim.baseWiggle.x + entity.fruitStack.sizePerFruit
                 entity.anim.baseWiggle.y = entity.anim.baseWiggle.y + entity.fruitStack.sizePerFruit
-                entity.fruitStack.firstOffset.z = entity.fruitStack.firstOffset.z +
-                    (entity.fruitStack.firstOffset.z + entity.pos.height) * entity.fruitStack.sizePerFruit
                 if entity.actor then
                     entity.actor.baseStats.mass = entity.actor.baseStats.mass + (eaten.fruit.mass or 0)
                     if eaten.fruit.buff then
@@ -186,7 +184,8 @@ function FruitSystem:update(framePart, dt, game)
             local targetX = parentEntity.pos.x + entity.fruit.offset.x
             local targetY = parentEntity.pos.y + entity.fruit.offset.y
             local offsetZ = entity.fruit.offset.z * (parentEntity.anim and parentEntity.anim.baseWiggle.y or 1)
-            local targetZ = parentEntity.pos.z + parentEntity.pos.height + offsetZ
+            local scaleY = (parentEntity.anim and parentEntity.anim.wiggle.y or 1)
+            local targetZ = parentEntity.pos.z + parentEntity.pos.height * scaleY + offsetZ
 
             if entity.fruit.animFrames > 0 then
                 entity.physics.body:setPosition(

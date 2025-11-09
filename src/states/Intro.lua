@@ -14,6 +14,9 @@ Intro = {
 
 function Intro:enter()
     load.crawlFor({
+        data = {
+            "gameConstants"
+        },
         textures = {
             "Sparkle",
             "SceauDeKalitay"

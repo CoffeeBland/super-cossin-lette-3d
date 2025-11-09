@@ -139,6 +139,9 @@ function Game:enter(args)
     for key, value in pairs(self.map.vars) do
         self.vars[key] = value
     end
+    if not Game.constants.bg[self.vars.bg] then
+        self.vars.bg = "grass"
+    end
     Requests.new(self)
     self.physics = PhysicsSystem.new()
     self.sounds = SoundSystem.new()
@@ -217,7 +220,7 @@ function Game:enter(args)
 
                 self.stackedTilesHeightBatches[i]:setColor(
                     (entity.pos.z + (sprite.anchor.z or 0)) / SKY_LIMIT,
-                    0,
+                    (entity.pos.height or 0) / SKY_LIMIT,
                     0,
                     1)
                 self.stackedTilesHeightBatches[i]:add(
@@ -277,6 +280,20 @@ function Game:update(dt)
     self.event:update(framePart, dt, self)
     self.timer:update(framePart, dt, self)
     self.anim:clearTriggers()
+    for _, entity in self:iterEntities(self.entities) do
+        if entity.sprites then
+            for _, sprite in ipairs(entity.sprites) do
+                local spriteWiggleX = sprite.wiggle and sprite.wiggle.x or 0
+                local spriteWiggleY = sprite.wiggle and sprite.wiggle.y or 0
+                local wiggleX = spriteWiggleX * (entity.anim and entity.anim.wiggle.x or 1)
+                local wiggleY = spriteWiggleY * (entity.anim and entity.anim.wiggle.y or 1)
+                local scaleX = wiggleX + (1 - spriteWiggleX)
+                local scaleY = wiggleY + (1 - spriteWiggleY)
+                sprite.scaleX = scaleX
+                sprite.scaleY = scaleY
+            end
+        end
+    end
 end
 
 local cameraEntities = {}
@@ -291,14 +308,13 @@ local tileBatchi = 0
 function Game:render(dt)
     love.graphics.setCanvas(SCREEN_CANVAS)
 
-    love.graphics.clear(unpack(Game.constants.bgColor))
+    love.graphics.clear(unpack(Game.constants.bg.grass))
     self.camera:draw(dt, self)
     self.images:draw()
 
     love.graphics.setCanvas()
 
-    love.graphics.setShader(SCREEN_SHADER)
-    SCREEN_SHADER:send("blur", self.pause.active and Game.constants.pause.blur or self.camera.blur)
+    SET_SCREEN_SHADER_BLUR(self.pause.active and Game.constants.pause.blur or self.camera.blur)
     love.graphics.draw(SCREEN_CANVAS)
     love.graphics.setShader()
 
@@ -336,7 +352,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 
     -- Draw!
     love.graphics.setCanvas({ camera.canvas, stencil = true })
-    love.graphics.clear(unpack(Game.constants.bgColor))
+    love.graphics.clear(unpack(Game.constants.bg[self.vars.bg]))
     love.graphics.setShader(HEIGHT_MAPPED_SHADER)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
     HEIGHT_MAPPED_SHADER:send("heightMap", camera.heightCanvas)
@@ -489,12 +505,6 @@ function Game:drawEntitySprite(entity, sprite)
     local texture = textures[sprite.name]
     local animData = sprite.animData
     local frame = sprite.frame
-    local spriteWiggleX = sprite.wiggle and sprite.wiggle.x or 0
-    local spriteWiggleY = sprite.wiggle and sprite.wiggle.y or 0
-    local wiggleX = spriteWiggleX * (entity.anim and entity.anim.wiggle.x or 1)
-    local wiggleY = spriteWiggleY * (entity.anim and entity.anim.wiggle.y or 1)
-    local scaleX = wiggleX + (1 - spriteWiggleX)
-    local scaleY = wiggleY + (1 - spriteWiggleY)
     if animData and frame then
         love.graphics.draw(
             texture,
@@ -502,8 +512,8 @@ function Game:drawEntitySprite(entity, sprite)
             entity.pos.x,
             (entity.pos.y - entity.pos.z - (sprite.anchor.z or 0)),
             0,
-            (sprite.flipX and -1 or 1) * (animData.flipX and -1 or 1) * scaleX,
-            (sprite.flipY and -1 or 1) * (animData.flipY and -1 or 1) * scaleY,
+            (sprite.flipX and -1 or 1) * (animData.flipX and -1 or 1) * (sprite.scaleX or 1),
+            (sprite.flipY and -1 or 1) * (animData.flipY and -1 or 1) * (sprite.scaleY or 1),
             sprite.anchor.x,
             sprite.anchor.y)
     else
@@ -520,8 +530,8 @@ function Game:drawEntitySprite(entity, sprite)
             entity.pos.x,
             entity.pos.y + entity.pos.truncateHeight - entity.pos.z - (sprite.anchor.z or 0),
             0,
-            sprite.flipX and -1 or 1,
-            sprite.flipY and -1 or 1,
+            (sprite.flipX and -1 or 1) * sprite.scaleX,
+            (sprite.flipY and -1 or 1) * sprite.scaleY,
             sprite.anchor.x,
             sprite.anchor.y)
     end
@@ -581,7 +591,11 @@ function Game:drawHeightMap(camera, w, h, drawnEntities)
             self:drawStackedTileHeightBatch()
             self:stencilLensEntities(entity)
             for _, sprite in ipairs(entity.sprites) do
-                love.graphics.setColor((entity.pos.z + (sprite.anchor.z or 0)) / SKY_LIMIT, 0, 0, 1)
+                love.graphics.setColor(
+                    (entity.pos.z + (sprite.anchor.z or 0)) / SKY_LIMIT,
+                    (entity.pos.height or 0) * sprite.scaleY / SKY_LIMIT,
+                    0,
+                    1)
                 self:drawEntitySprite(entity, sprite)
             end
             love.graphics.setStencilTest()

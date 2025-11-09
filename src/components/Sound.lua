@@ -64,7 +64,7 @@ function Sound:start(sound)
         return
     end
     local volume = sound.volumeRange and math.randomRange(sound.volumeRange) or sound.volume or 1
-    source:setVolume(volume * Options.values.sound / 100)
+    source:setVolume(volume * Game.constants.sound.volume * Options.values.sound / 100)
     source:setPitch(sound.pitchRange and math.randomRange(sound.pitchRange) or sound.pitch or 1)
     source:setLooping(sound.loop or false)
     if sound.fadeIn then
@@ -129,7 +129,7 @@ function Sound:update(framePart, dt)
                 sound.source = nil
                 sound.entity = nil
             else
-                source:setVolume(volume * Options.values.sound / 100)
+                source:setVolume(volume * Game.constants.sound.volume * Options.values.sound / 100)
             end
             if sound.volumeFrames == 0 then
                 sound.volumeFrames = nil

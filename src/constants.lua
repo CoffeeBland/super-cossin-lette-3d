@@ -93,7 +93,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
 HEIGHT_MAP_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
-        return vec4(texturecolor.rgb + color.rgb, texturecolor.a * color.a);
+        return vec4(texturecolor.rgb * color.g + color.r, texturecolor.a * color.a);
     }
 ]]
 
@@ -195,7 +195,59 @@ SPARKLY_SHADER = love.graphics.newShader[[
     }
 ]]
 
+local part1 = 1/2
+local part2 = (1 - part1) * 1/2
+local part3 = (1 - part1 - part2) * 1/2
+local part4 = (1 - part1 - part2 - part3)
+local blurcossin = {
+    x = { -1, -1, 1,  1, 2, -2, 0,  0, -4, -4, 4,  4, 8, -8, 0,  0 },
+    y = { -1,  1, 1, -1, 0,  0, 2, -2, -4,  4, 4, -4, 0,  0, 8, -8 },
+    weights = {
+        1/4 * part1, 1/4 * part1, 1/4 * part1, 1/4 * part1,
+        1/4 * part2, 1/4 * part2, 1/4 * part2, 1/4 * part2,
+        1/4 * part3, 1/4 * part3, 1/4 * part3, 1/4 * part3,
+        1/4 * part4, 1/4 * part4, 1/4 * part4, 1/4 * part4
+    },
+    samples = 16
+}
+
+function SET_SCREEN_SHADER_BLUR(blur)
+    if blur <= 0 then
+        love.graphics.setShader()
+        return
+    end
+    SCREEN_SHADER:send("xs", unpack(blurcossin.x))
+    SCREEN_SHADER:send("ys", unpack(blurcossin.y))
+    SCREEN_SHADER:send("weights", unpack(blurcossin.weights))
+    SCREEN_SHADER:send("samples", blurcossin.samples)
+    SCREEN_SHADER:send("dst", 1 * (blur / 8))
+    love.graphics.setShader(SCREEN_SHADER)
+end
+
 SCREEN_SHADER = love.graphics.newShader[[
+    uniform vec2 size;
+    uniform float[16] xs;
+    uniform float[16] ys;
+    uniform float[16] weights;
+    uniform float dst;
+    uniform int samples;
+
+    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+        if (samples == 0)
+            return Texel(texture, texture_coords) * color;
+        vec4 fcol = vec4(0);
+        for (int i = 0; i < samples; i++) {
+            float x = xs[i];
+            float y = ys[i];
+            float weight = weights[i];
+            vec2 coords = (texture_coords * size + vec2(x, y) * dst) / size;
+            fcol += weight * Texel(texture, coords);
+        }
+        return fcol * color;
+    }
+]]
+
+GAUSSIAN_SCREEN_SHADER = love.graphics.newShader[[
     uniform vec2 size;
     uniform int blur;
     const float pi = 3.1415926538;

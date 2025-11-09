@@ -19,9 +19,9 @@ local pressActions = {
         keys = {},
         buttons = { "back" }
     },
-    jump = {
-        keys = { "space" },
-        buttons = { "a" }
+    refresh = {
+        keys = { "f5" },
+        buttons = {}
     }
 }
 
