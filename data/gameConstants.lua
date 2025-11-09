@@ -86,7 +86,7 @@ return {
                     type = "*",
                     value = 1.25
                 },
-                hue = {
+                hueRot = {
                     type = "+",
                     value = 1 / 60,
                     applied = "frame"

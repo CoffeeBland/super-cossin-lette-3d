@@ -542,6 +542,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "apple",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -555,6 +556,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "banana",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -568,6 +570,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "pineapple",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -581,6 +584,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "pear",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -594,6 +598,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "tomato",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -607,6 +612,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "orange",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -620,6 +626,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "mushroom",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -633,6 +640,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "grape",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -646,6 +654,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "durian",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -659,6 +668,7 @@ return {
       properties = {
         ["autoheightBulge"] = 125,
         ["fruit"] = "peach",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"
@@ -671,6 +681,7 @@ return {
       id = 42,
       properties = {
         ["fruit"] = "radish",
+        ["golden"] = false,
         ["offsetX"] = 64,
         ["offsetY"] = 170,
         ["prefab"] = "fruit"

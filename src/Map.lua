@@ -237,7 +237,7 @@ function Map:createEntity(entities, data, id, flipX, flipY)
         return
     end
 
-    local entity = object.prefab and prefabs[object.prefab](object) or {}
+    local entity = object.prefab and prefabs[object.prefab](object, data, flipX, flipY) or {}
     -- Global props
     entity.pos = entity.pos or {}
     entity.pos.x = x

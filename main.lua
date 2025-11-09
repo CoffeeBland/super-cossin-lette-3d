@@ -7,7 +7,7 @@ require "src.constants"
 require "src.error"
 require "src.states.StateMachine"
 
-debug = { cycle = 0, physics = false, fps = false, autorefresh = true }
+dbg = { cycle = 0, physics = false, fps = false, autorefresh = true }
 
 function love.load(args)
     Options:apply()
@@ -40,16 +40,16 @@ function love.update(dt)
     input.poll(dt)
 
     if actions.toggleDebug then
-        debug.cycle = (debug.cycle + 1) % 6
-        debug.physics = debug.cycle == 2
-        debug.pointHeights = debug.cycle == 3
-        debug.heightMap = debug.cycle == 4
-        debug.shadowMap = debug.cycle == 5
-        debug.fps = debug.cycle >= 1
+        dbg.cycle = (dbg.cycle + 1) % 6
+        dbg.physics = dbg.cycle == 2
+        dbg.pointHeights = dbg.cycle == 3
+        dbg.heightMap = dbg.cycle == 4
+        dbg.shadowMap = dbg.cycle == 5
+        dbg.fps = dbg.cycle >= 1
         actions.toggleDebug = false
     end
 
-    if debug.autorefresh and StateMachine.current.refresh then
+    if dbg.autorefresh and StateMachine.current.refresh then
         local requiresRefresh = load.crawlFiles(frame)
         StateMachine.current:refresh(requiresRefresh)
     end
@@ -88,7 +88,7 @@ function love.draw()
 
     StateMachine:render()
 
-    if debug.fps then
+    if dbg.fps then
         love.graphics.print(math.round(1 / avgDt))
     end
 end

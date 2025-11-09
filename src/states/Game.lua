@@ -87,8 +87,8 @@ function Game:createOtherCossins()
                 otherCossin.pos.onGround = false
                 otherCossin.pos.truncateHeight = 0
                 otherCossin.actor.playerId = i
-                for j, hue in ipairs(Game.constants.cossinHues[i - 1]) do
-                    otherCossin.sprites[j].hue = hue
+                for j, hueRot in ipairs(Game.constants.cossinHues[i - 1]) do
+                    otherCossin.sprites[j].hueRot = hueRot
                 end
                 for k, v in pairs(otherCossin) do
                     if fancyTypes[k] then
@@ -362,7 +362,8 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     HEIGHT_MAPPED_SHADER:send("shadowMapOffset", SHADOW_MAP_OFFSET)
     HEIGHT_MAPPED_SHADER:send("skyLimit", SKY_LIMIT)
     HEIGHT_MAPPED_SHADER:send("scale", scale * Game.constants.heightSlop)
-    HEIGHT_MAPPED_SHADER:send("hue", 0)
+    HEIGHT_MAPPED_SHADER:send("hue", -1)
+    HEIGHT_MAPPED_SHADER:send("hueRot", 0)
 
     tileBatchStartIdx = 0
     tileBatchIdx = 0
@@ -404,8 +405,8 @@ function Game:renderFrame(dt, camera, x, y, w, h)
             local endx, endy = entity.pos.x + rayOffset - radiusw, entity.pos.y - rayHeight
             LIGHT_POINTS[1] = startx
             LIGHT_POINTS[2] = starty
-            local n = 8
-            for i = 1, n do
+            local n = 16
+            for i = 1, n + 1 do
                 local x, y =  math.getEllipsePoint(
                     entity.pos.x, entity.pos.y,
                     radiusw, radiush,
@@ -440,11 +441,11 @@ function Game:renderFrame(dt, camera, x, y, w, h)
         end
     end
 
-    if debug.physics then
+    if dbg.physics then
         PhysicsRenderer.draw_camera(self.physics.world, 0, 0, w, h)
     end
 
-    if debug.pointHeights then
+    if dbg.pointHeights then
         for x = sx, ex, 16 do
             for y = sy, ey, 16 do
                 local height = self.map:getPointHeight(x, y) / (SKY_LIMIT / 2)
@@ -461,19 +462,19 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     love.graphics:reset()
     love.graphics.setCanvas(camera.canvas)
 
-    if debug.heightMap then
+    if dbg.heightMap then
         love.graphics.setShader(MAP_DEBUG_SHADER)
         love.graphics.draw(camera.heightCanvas, 0, 0)
         love.graphics.setShader()
     end
 
-    if debug.shadowMap then
+    if dbg.shadowMap then
         love.graphics.setShader(MAP_DEBUG_SHADER)
         love.graphics.draw(camera.shadowCanvas, 0, 0)
         love.graphics.setShader()
     end
 
-    if debug.pointHeights then
+    if dbg.pointHeights then
         local x, y = 0, 0
         if self.input.target then
             x = math.round(self.input.target.pos.x)
@@ -489,14 +490,21 @@ end
 
 function Game:drawEntitySprites(entity)
     for _, sprite in ipairs(entity.sprites) do
-        local doTheHue = (entity.hue and entity.hue ~= 0 and sprite.hueMult ~= 0) or sprite.hue
+        local doTheHue = entity.hue or sprite.hue
         if doTheHue then
-            local hue = (entity.hue or 0) * (sprite.hueMult or 1) + (sprite.hue or 0)
-            HEIGHT_MAPPED_SHADER:send("hue", hue)
+            HEIGHT_MAPPED_SHADER:send("hue", sprite.hue)
+        end
+        local doTheHueRot = (entity.hueRot and entity.hueRot ~= 0 and sprite.hueMult ~= 0) or sprite.hueRot
+        if doTheHueRot then
+            local hueRot = (entity.hueRot or 0) * (sprite.hueMult or 1) + (sprite.hueRot or 0)
+            HEIGHT_MAPPED_SHADER:send("hueRot", hueRot)
         end
         self:drawEntitySprite(entity, sprite)
         if doTheHue then
-            HEIGHT_MAPPED_SHADER:send("hue", 0)
+            HEIGHT_MAPPED_SHADER:send("hue", -1)
+        end
+        if doTheHueRot then
+            HEIGHT_MAPPED_SHADER:send("hueRot", 0)
         end
     end
 end

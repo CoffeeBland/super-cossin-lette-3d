@@ -24,6 +24,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
     uniform float shadowMapOffset;
     uniform float skyLimit;
     uniform float scale;
+    uniform float hueRot;
     uniform float hue;
 
     const int heightSamples = 1;
@@ -78,15 +79,19 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
             }
         }
 
+        float touchability = max(0.0, min(1.0, (distance(texturecolor.rgb, linecol) - 0.05) * 10.0));
         vec4 finalcol = texturecolor;
-        float touchability = min(1.0, distance(finalcol.rgb, linecol) * 10.0);
         if (votes > 0) {
             float str = min(votes / shadowStrParts, 1.0);
             finalcol *= ((1.0 - str) * vec4(1.0) + str * vec4(shadowColor.rgb, 1.0));
         }
         vec3 hsv = rgb2hsv(finalcol.rgb);
-        hsv.x = mod(hsv.x + hue, 1.0);
-        return touchability * vec4(hsv2rgb(hsv), finalcol.a) + (1.0 - touchability) * texturecolor;
+        if (hue >= 0) {
+            hsv.x = hue;
+        }
+        hsv.x = mod(hsv.x + hueRot, 1.0);
+        finalcol = vec4(hsv2rgb(hsv), finalcol.a);
+        return mix(texturecolor, finalcol, touchability);
     }
 ]]
 
@@ -115,7 +120,7 @@ MAP_DEBUG_SHADER = love.graphics.newShader[[
 
 TITLE_SHADER = love.graphics.newShader[[
     const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
-    uniform float hue;
+    uniform float hueRot;
 
     // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
     vec3 rgb2hsv(vec3 c) {
@@ -139,7 +144,7 @@ TITLE_SHADER = love.graphics.newShader[[
         vec4 finalcol = texturecolor;
         float touchability = min(1.0, distance(finalcol.rgb, linecol) * 10.0);
         vec3 hsv = rgb2hsv(finalcol.rgb);
-        hsv.x = mod(hsv.x + hue, 1.0);
+        hsv.x = mod(hsv.x + hueRot, 1.0);
         return touchability * vec4(hsv2rgb(hsv), finalcol.a) + (1.0 - touchability) * texturecolor;
     }
 ]]

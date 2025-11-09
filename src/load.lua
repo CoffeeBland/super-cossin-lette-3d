@@ -40,12 +40,12 @@ local function getTilePos(alignment, tile)
 end
 
 function load.createHeightTextures()
-    if debug.autorefresh then
+    if dbg.autorefresh then
         heightTextures = {}
     end
     -- All sprite entities with actual info
     for name, object in pairs(objects.byName) do
-        local entity = object.prefab and prefabs[object.prefab]({}) or {}
+        local entity = object.prefab and prefabs[object.prefab](object, {}) or {}
         entity.sprites = entity.sprites or { { name = name, anchor = { x = object.offsetX, y = object.offsetY } } }
         entity.pos = entity.pos or {}
         entity.pos.height = entity.pos.height or object.height or 0

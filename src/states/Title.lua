@@ -240,8 +240,8 @@ function Title:enter()
         else
             someCossin.name = "cossin" .. i
             someCossin.actor.playerId = i
-            for j, hue in ipairs(Game.constants.cossinHues[i - 1]) do
-                someCossin.sprites[j].hue = hue
+            for j, hueRot in ipairs(Game.constants.cossinHues[i - 1]) do
+                someCossin.sprites[j].hueRot = hueRot
             end
         end
         table.insert(self.entities, someCossin)
@@ -391,7 +391,7 @@ function Title:render()
     love.graphics.scale(SCALE_TO_EXPECTED)
     love.graphics.clear(unpack(bgcol))
     love.graphics.setShader(TITLE_SHADER)
-    TITLE_SHADER:send("hue", 0)
+    TITLE_SHADER:send("hueRot", 0)
     for _, tile in ipairs(bgGrassTiles) do
         love.graphics.draw(textures[tile.name], tile.x, tile.y)
     end
@@ -457,14 +457,14 @@ function Title:render()
     table.sort(self.entities, function (a, b) return a.pos.y < b.pos.y end)
     for _, entity in self:iterEntities(self.entities) do
         for _, sprite in ipairs(entity.sprites) do
-            local doTheHue = sprite.hue
+            local doTheHue = sprite.hueRot
             if doTheHue then
-                local hue = entity.hue * (sprite.hueMult or 1) + (sprite.hue or 0)
-                TITLE_SHADER:send("hue", hue)
+                local hueRot = entity.hueRot * (sprite.hueMult or 1) + (sprite.hueRot or 0)
+                TITLE_SHADER:send("hueRot", hueRot)
             end
             Game.drawEntitySprite(self, entity, sprite)
             if doTheHue then
-                TITLE_SHADER:send("hue", 0)
+                TITLE_SHADER:send("hueRot", 0)
             end
         end
     end

@@ -35,7 +35,7 @@ function Actor.new(params)
         airSpeed = params.airSpeed or 0,
         jumpSpeed = params.jumpSpeed or 0,
         mass = params.mass or 1,
-        hue = params.hue or 0
+        hueRot = params.hueRot or 0
     }
     instance.playerId = params.playerId
     instance.stats = {}
@@ -172,7 +172,7 @@ function Actor:update(framePart, game, entity, actions)
     for buffName, duration in pairs(self.buffs) do
         self.buffs[buffName] = math.max(duration - framePart, 0)
     end
-    entity.hue = self.stats.hue % 1.0
+    entity.hueRot = self.stats.hueRot % 1.0
 
     self:computeStats(framePart)
 

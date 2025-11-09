@@ -210,6 +210,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="apple"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -220,6 +221,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="banana"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -230,6 +232,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="pineapple"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -240,6 +243,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="pear"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -250,6 +254,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="tomato"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -260,6 +265,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="orange"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -270,6 +276,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="mushroom"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -280,6 +287,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="grape"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -290,6 +298,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="durian"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -300,6 +309,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="125"/>
    <property name="fruit" value="peach"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>
@@ -309,6 +319,7 @@
  <tile id="42">
   <properties>
    <property name="fruit" value="radish"/>
+   <property name="golden" type="bool" value="false"/>
    <property name="offsetX" type="float" value="64"/>
    <property name="offsetY" type="float" value="170"/>
    <property name="prefab" value="fruit"/>

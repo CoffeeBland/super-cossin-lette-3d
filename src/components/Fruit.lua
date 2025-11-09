@@ -76,8 +76,8 @@ function FruitSystem:update(framePart, dt, game)
                     game.vars[eatenKey] = game.vars[eatenKey] + 1
                 end
                 game.vars.eaten = game.vars.eaten + 1
-                entity.anim.baseWiggle.x = entity.anim.baseWiggle.x + entity.fruitStack.sizePerFruit
-                entity.anim.baseWiggle.y = entity.anim.baseWiggle.y + entity.fruitStack.sizePerFruit
+                entity.anim.baseWiggle.x = entity.anim.baseWiggle.x + entity.fruitStack.sizePerFruit * eaten.fruit.value
+                entity.anim.baseWiggle.y = entity.anim.baseWiggle.y + entity.fruitStack.sizePerFruit * eaten.fruit.value
                 if entity.actor then
                     entity.actor.baseStats.mass = entity.actor.baseStats.mass + (eaten.fruit.mass or 0)
                     if eaten.fruit.buff then
@@ -150,9 +150,9 @@ function FruitSystem:update(framePart, dt, game)
                     fruitEntity.fruit.cooldown = nil
                     fruitEntity.velocity.z = entity.picnic.pickupJumpSpeed * Game.constants.jumpMultiplier
                     table.insert(entity.picnic.fruits, fruitEntity)
-                    game.vars.picnicFruits = #entity.picnic.fruits
+                    game.vars.picnicFruits = game.vars.picnicFruits + fruitEntity.fruit.value
                     if scoreKey then
-                        game.vars[scoreKey] = game.vars[scoreKey] + 1
+                        game.vars[scoreKey] = game.vars[scoreKey] + fruitEntity.fruit.value
                     end
                 end
             elseif otherEntity.fruitStack.picnicAction == "pickup" and
@@ -163,7 +163,7 @@ function FruitSystem:update(framePart, dt, game)
                 local i = math.random(#entity.picnic.fruits)
                 local fruitEntity = entity.picnic.fruits[i]
                 table.remove(entity.picnic.fruits, i)
-                game.vars.picnicFruits = #entity.picnic.fruits
+                game.vars.picnicFruits = game.vars.picnicFruits - fruitEntity.fruit.value
                 self:fruitPickup(otherEntity, fruitEntity)
             end
         end
