@@ -2022,7 +2022,7 @@ return {
       id = 88,
       properties = {
         ["autoshadow"] = true,
-        ["height"] = 240,
+        ["height"] = 200,
         ["lensed"] = true,
         ["offsetX"] = 400,
         ["offsetY"] = 360,
@@ -2072,7 +2072,7 @@ return {
       properties = {
         ["autoheightDelta"] = 220,
         ["autoshadow"] = true,
-        ["height"] = 480,
+        ["height"] = 440,
         ["lensed"] = true,
         ["offsetX"] = 280,
         ["offsetY"] = 560
@@ -2121,7 +2121,7 @@ return {
       properties = {
         ["autoheightDelta"] = -90,
         ["autoshadow"] = true,
-        ["height"] = 480,
+        ["height"] = 440,
         ["lensed"] = true,
         ["offsetX"] = 860,
         ["offsetY"] = 830
@@ -2171,11 +2171,11 @@ return {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
         ["autoshadowScale"] = 0.8,
-        ["height"] = 260,
+        ["height"] = 300,
         ["lensed"] = true,
         ["offsetX"] = 510,
-        ["offsetY"] = 470,
-        ["posZ"] = 740
+        ["offsetY"] = 520,
+        ["posZ"] = 700
       },
       image = "../img/Feuillage1.png",
       width = 1024,
@@ -2216,11 +2216,11 @@ return {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
         ["autoshadowScale"] = 0.8,
-        ["height"] = 260,
+        ["height"] = 300,
         ["lensed"] = true,
         ["offsetX"] = 510,
-        ["offsetY"] = 470,
-        ["posZ"] = 740
+        ["offsetY"] = 520,
+        ["posZ"] = 700
       },
       image = "../img/Feuillage2.png",
       width = 1024,
@@ -2261,11 +2261,11 @@ return {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
         ["autoshadowScale"] = 0.8,
-        ["height"] = 260,
+        ["height"] = 300,
         ["lensed"] = true,
         ["offsetX"] = 510,
-        ["offsetY"] = 470,
-        ["posZ"] = 740
+        ["offsetY"] = 520,
+        ["posZ"] = 700
       },
       image = "../img/Feuillage3.png",
       width = 1024,

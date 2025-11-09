@@ -1,6 +1,7 @@
 local bit = require("bit")
 
 EMPTY = {}
+ONE = { 1, 1, 1, 1 }
 METER_SCALE = 128
 TILE_FLIP_H = math.pow(2, 31)
 TILE_FLIP_V = math.pow(2, 30)
@@ -17,23 +18,26 @@ SCALE_TO_EXPECTED = 1
 
 HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
     uniform vec2 size;
+
+    uniform Image heightTexture;
+
     uniform vec4 shadowColor;
-    uniform Image heightMap;
     uniform Image shadowMap;
     uniform float shadowMapHeightOffset;
     uniform float shadowMapOffset;
+    const int shadowSamples = 1;
+    const float shadowSampleDst = 1.0;
+    const float shadowStrParts = 4.0;
+
     uniform float skyLimit;
     uniform float scale;
     uniform float hue;
 
-    const int heightSamples = 1;
-    const float heightSampleDst = 1.5;
-    const float heightParts = (heightSamples * 2 + 1) * (heightSamples * 2 + 1);
-    const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
+    //const int heightSamples = 1;
+    //const float heightSampleDst = 1.5;
+    //const float heightParts = (heightSamples * 2 + 1) * (heightSamples * 2 + 1);
 
-    const int shadowSamples = 1;
-    const float shadowSampleDst = 1.0;
-    const float shadowStrParts = 4.0;
+    const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
 
     // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
     vec3 rgb2hsv(vec3 c) {
@@ -53,31 +57,38 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
     }
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
-        vec4 texturecolor = Texel(texture, texture_coords) * color;
-
-        float height = 0.0;
-        for (int i = -heightSamples; i <= heightSamples; i++) {
-            for (int j = -heightSamples; j <= heightSamples; j++) {
-                vec2 sampleDst = vec2(i * heightSampleDst, j * heightSampleDst);
-                height += Texel(heightMap, (screen_coords + sampleDst) / size).r * skyLimit;
-            }
+        vec4 heightcolor = Texel(heightTexture, texture_coords);
+        if (heightcolor.a < 0.5) {
+            discard;
         }
+        float height = 80.0;//floor(mod(color.a * skyLimit, skyLimit));
+        float basez = floor(color.a * skyLimit);
+        float z = heightcolor.r * height + basez;
 
-        height /= heightParts;
+        //float height = 0.0;
+        //for (int i = -heightSamples; i <= heightSamples; i++) {
+        //    for (int j = -heightSamples; j <= heightSamples; j++) {
+        //        vec2 sampleDst = vec2(i * heightSampleDst, j * heightSampleDst);
+        //        height += Texel(heightMap, (screen_coords + sampleDst) / size).r * skyLimit;
+        //    }
+        //}
+        //height /= heightParts;
+
+        gl_FragDepth = 1.0 - z / skyLimit;
 
         int votes = 0;
         for (int i = -shadowSamples; i <= shadowSamples; i++) {
             for (int j = -shadowSamples; j <= shadowSamples; j++) {
                 vec2 shadow_map_coords = vec2(
                     (i * shadowSampleDst + screen_coords.x) / size.x,
-                    (j * shadowSampleDst + screen_coords.y + height * scale) / (size.y + shadowMapOffset));
+                    (j * shadowSampleDst + screen_coords.y + z * scale) / (size.y + shadowMapOffset));
                 float shadowHeight = Texel(shadowMap, shadow_map_coords).r * skyLimit - shadowMapHeightOffset;
-                if (height <= shadowHeight + 10) {
+                if (z <= shadowHeight + 10) {
                     votes++;
                 }
             }
         }
-
+        vec4 texturecolor = Texel(texture, texture_coords) * vec4(color.rgb, 1.0);
         vec4 finalcol = texturecolor;
         float touchability = min(1.0, distance(finalcol.rgb, linecol) * 10.0);
         if (votes > 0) {

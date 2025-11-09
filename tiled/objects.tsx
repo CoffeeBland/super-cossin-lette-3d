@@ -807,11 +807,11 @@
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="autoshadowScale" type="float" value="0.8"/>
-   <property name="height" type="float" value="260"/>
+   <property name="height" type="float" value="300"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="470"/>
-   <property name="posZ" type="float" value="740"/>
+   <property name="offsetY" type="float" value="520"/>
+   <property name="posZ" type="float" value="700"/>
   </properties>
   <image source="../img/Feuillage1.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="3">
@@ -825,11 +825,11 @@
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="autoshadowScale" type="float" value="0.8"/>
-   <property name="height" type="float" value="260"/>
+   <property name="height" type="float" value="300"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="470"/>
-   <property name="posZ" type="float" value="740"/>
+   <property name="offsetY" type="float" value="520"/>
+   <property name="posZ" type="float" value="700"/>
   </properties>
   <image source="../img/Feuillage2.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="2">
@@ -843,11 +843,11 @@
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="autoshadowScale" type="float" value="0.8"/>
-   <property name="height" type="float" value="260"/>
+   <property name="height" type="float" value="300"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
-   <property name="offsetY" type="float" value="470"/>
-   <property name="posZ" type="float" value="740"/>
+   <property name="offsetY" type="float" value="520"/>
+   <property name="posZ" type="float" value="700"/>
   </properties>
   <image source="../img/Feuillage3.png" width="1024" height="1286"/>
   <objectgroup draworder="index" id="2">
