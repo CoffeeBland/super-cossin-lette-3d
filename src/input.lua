@@ -19,6 +19,10 @@ local pressActions = {
         keys = {},
         buttons = { "back" }
     },
+    jump = {
+        keys = { "space" },
+        buttons = { "a" }
+    },
     refresh = {
         keys = { "f5" },
         buttons = {}
@@ -49,10 +53,16 @@ local pressActionsByKey = {}
 local pressActionsByButton = {}
 for action, mappings in pairs(pressActions) do
     for _, key in pairs(mappings.keys or EMPTY) do
-        pressActionsByKey[key] = action
+        if not pressActionsByKey[key] then
+            pressActionsByKey[key] = {}
+        end
+        table.insert(pressActionsByKey[key], action)
     end
     for _, button in pairs(mappings.buttons or EMPTY) do
-        pressActionsByButton[button] = action
+        if not pressActionsByButton[button] then
+            pressActionsByButton[button] = {}
+        end
+        table.insert(pressActionsByButton[button], action)
     end
 end
 
@@ -86,7 +96,9 @@ function love.keypressed(key)
     if pressActionsByKey[key] then
         for _, player in ipairs(playerActions) do
             if player.keyboard then
-                player[pressActionsByKey[key]] = true
+                for _, action in ipairs(pressActionsByKey[key]) do
+                    player[action] = true
+                end
                 return
             end
         end
@@ -103,7 +115,9 @@ function love.gamepadpressed(controller, button)
         for _, player in ipairs(playerActions) do
             for _, controller in ipairs(player.controllers) do
                 if controller:getID() == id then
-                    player[pressActionsByButton[button]] = true
+                    for _, action in ipairs(pressActionsByButton[button]) do
+                        player[action] = true
+                    end
                     return
                 end
             end
