@@ -15,7 +15,7 @@ return function(object, data, flipX, flipY)
         pos = { height = 80 },
         fruit = {
             type = object.fruit,
-            mass = golden and 0.5 or 0.05,
+            mass = golden and 0.25 or 0.05,
             value = golden and 5 or 1,
             buff = radish and "super" or nil,
             buffDuration = 600

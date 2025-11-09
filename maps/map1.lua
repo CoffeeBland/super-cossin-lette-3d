@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 8,
-  nextobjectid = 59,
+  nextobjectid = 60,
   properties = {
     ["vars.nextMap"] = "map_mymp",
     ["vars.targetFruits"] = 6,
@@ -692,20 +692,6 @@ return {
           properties = {}
         },
         {
-          id = 50,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1233.33,
-          y = 456.333,
-          width = 128,
-          height = 192,
-          rotation = 0,
-          gid = 320,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 51,
           name = "",
           type = "",
@@ -768,6 +754,22 @@ return {
           gid = 2147484021,
           visible = true,
           properties = {}
+        },
+        {
+          id = 59,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1443,
+          y = 678.333,
+          width = 128,
+          height = 192,
+          rotation = 0,
+          gid = 326,
+          visible = true,
+          properties = {
+            ["golden"] = true
+          }
         }
       }
     }
