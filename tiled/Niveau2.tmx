@@ -467,7 +467,7 @@
  </layer>
  <objectgroup id="81" name="Fruits cachés">
   <object id="2461" gid="41" x="3996" y="444" width="128" height="192"/>
-  <object id="2500" gid="38" x="4292" y="3182" width="128" height="192"/>
+  <object id="2500" gid="38" x="4736" y="2812" width="128" height="192"/>
  </objectgroup>
  <objectgroup id="86" name="Arche">
   <object id="2499" gid="90" x="3552" y="2590" width="1152" height="1024">
@@ -933,11 +933,11 @@
   <object id="2478" gid="93" x="4662" y="444" width="1024" height="1286"/>
   <object id="2480" gid="93" x="1258" y="592" width="1024" height="1286"/>
   <object id="2481" gid="93" x="1998" y="444" width="1024" height="1286"/>
-  <object id="2482" gid="93" x="2442" y="-222" width="1024" height="1286"/>
+  <object id="2482" gid="93" x="2294" y="-148" width="1024" height="1286"/>
   <object id="2483" gid="93" x="1184" y="2368" width="1024" height="1286"/>
   <object id="2484" gid="93" x="2220" y="2146" width="1024" height="1286"/>
   <object id="2485" gid="93" x="4958" y="3108" width="1024" height="1286"/>
-  <object id="2488" gid="93" x="1258" y="3922" width="1024" height="1286"/>
+  <object id="2488" gid="93" x="1184" y="3996" width="1024" height="1286"/>
   <object id="2491" gid="93" x="4292" y="4292" width="1024" height="1286"/>
   <object id="2492" gid="93" x="1258" y="1332" width="1024" height="1286"/>
  </objectgroup>
@@ -950,7 +950,7 @@
   <object id="2469" gid="40" x="2146" y="1110" width="128" height="192"/>
   <object id="2470" gid="43" x="888" y="1924" width="128" height="192"/>
   <object id="2475" gid="34" x="888" y="370" width="128" height="192"/>
-  <object id="2502" gid="42" x="888" y="2886" width="128" height="192"/>
+  <object id="2502" gid="42" x="814" y="2960" width="128" height="192"/>
   <object id="2512" gid="36" x="4514" y="1406" width="128" height="192"/>
  </objectgroup>
 </map>
