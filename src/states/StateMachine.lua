@@ -19,6 +19,9 @@ StateMachine = {
 }
 
 function StateMachine:change(state, params, opts)
+    while #self.stack > 0 do
+        self:pop(self.stack[#self.stack])
+    end
     if self.current then
         self.fadeOutFrames = (opts and opts.fadeout) or self.current.fadeout
         self.fadeInFrames = (opts and opts.fadein) or (state and state.fadein)

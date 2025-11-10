@@ -2,9 +2,9 @@ return {
     g = 150 * METER_SCALE,
     particleCount = 100,
     airFriction = 0.25, -- Per second
-    groundDamping = 32,
-    slidingDamping = 32,
-    airDamping = 32,
+    groundDamping = Options.values.arcade and 32 or 8,
+    slidingDamping = Options.values.arcade and 32 or 1,
+    airDamping = Options.values.arcade and 32 or 1,
     jumpMultiplier = 30,
     speedMultiplier = 20,
     bg = {

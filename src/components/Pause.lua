@@ -3,6 +3,13 @@ PauseSystem.__index = PauseSystem
 
 local buttons = {
     {
+        text = "OK",
+        menuState = "ok",
+        action = function(pause)
+            pause.active = false
+        end
+    },
+    {
         text = "REPIQUER LE NIQUE",
         menuState = "restart",
         action = function()
@@ -78,7 +85,7 @@ function PauseSystem:update(framePart, dt, game)
         if actions.action then
             Sound:start(Sound.global.act)
             local button = buttons[self.btnIdx]
-            button.action()
+            button.action(self)
         end
     end
 end

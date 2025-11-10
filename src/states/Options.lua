@@ -39,6 +39,21 @@ local options = {
         range = { 0, 100, 10 }
     },
     {
+        name = "controls",
+        text = "CONTRÔLES ARCADE",
+        type = "toggle",
+        default = false,
+        apply = function(value)
+            setupActions()
+            load.loadData("cossin", "data/cossin.lua")
+            load.loadData("cossin", "data/gameConstants.lua")
+            if StateMachine.current == Game and Game.map then
+                Game.pause.active = false
+                Game:refresh(true)
+            end
+        end
+    },
+    {
         name = "ok",
         text = "OK",
         type = "button",

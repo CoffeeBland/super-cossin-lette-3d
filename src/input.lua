@@ -1,70 +1,82 @@
-local pressActions = {
-    escape = {
-        keys = { "escape" },
-        buttons = { "start" }
-    },
-    action = {
-        keys = { "return", "space" },
-        buttons = { "a", "x" }
-    },
-    toggleDebug = {
-        keys = { "f12" },
-        buttons = { "y" }
-    },
-    gogogadget = {
-        keys = { "f11" },
-        buttons = { "b" }
-    },
-    newPlayer = {
-        keys = {},
-        buttons = { "back" }
-    },
-    jump = {
-        keys = { "space" },
-        buttons = { "a" }
-    },
-    refresh = {
-        keys = { "f5" },
-        buttons = {}
+local pressActions
+local releaseActions
+local movementActions
+local pressActionsByKey
+local pressActionsByButton
+function setupActions()
+    pressActions = {
+        escape = {
+            keys = { "escape" },
+            buttons = { "start" }
+        },
+        action = {
+            keys = { "return", "space" },
+            buttons = { "a", "x" }
+        },
+        toggleDebug = {
+            keys = { "f12" },
+            buttons = { "y" }
+        },
+        gogogadget = {
+            keys = { "f11" },
+            buttons = { "b" }
+        },
+        newPlayer = {
+            keys = {},
+            buttons = { "back" }
+        },
+        jump = Options.values.arcade and {
+            keys = { "space" },
+            buttons = { "a" }
+        } or nil,
+        refresh = {
+            keys = { "f5" },
+            buttons = {}
+        }
     }
-}
 
-local releaseActions = {
-}
-
-local movementActions = {
-    horizontal = {
-        negativeKeys = { "a", "left" },
-        positiveKeys = { "d", "right" },
-        axes = { "leftx" },
-        negativeButtons = { "dpleft" },
-        positiveButtons = { "dpright" }
-    },
-    vertical = {
-        negativeKeys = { "w", "up" },
-        positiveKeys = { "s", "down" },
-        axes = { "lefty" },
-        negativeButtons = { "dpup" },
-        positiveButtons = { "dpdown" }
+    releaseActions = {
+        jump = (not Options.values.arcade) and {
+            keys = { "space" },
+            buttons = { "a" }
+        } or nil
     }
-}
 
-local pressActionsByKey = {}
-local pressActionsByButton = {}
-for action, mappings in pairs(pressActions) do
-    for _, key in pairs(mappings.keys or EMPTY) do
-        if not pressActionsByKey[key] then
-            pressActionsByKey[key] = {}
+    movementActions = {
+        horizontal = {
+            negativeKeys = { "a", "left" },
+            positiveKeys = { "d", "right" },
+            axes = { "leftx" },
+            negativeButtons = { "dpleft" },
+            positiveButtons = { "dpright" }
+        },
+        vertical = {
+            negativeKeys = { "w", "up" },
+            positiveKeys = { "s", "down" },
+            axes = { "lefty" },
+            negativeButtons = { "dpup" },
+            positiveButtons = { "dpdown" }
+        }
+    }
+
+    pressActionsByKey = {}
+    pressActionsByButton = {}
+    for action, mappings in pairs(pressActions) do
+        for _, key in pairs(mappings.keys or EMPTY) do
+            if not pressActionsByKey[key] then
+                pressActionsByKey[key] = {}
+            end
+            table.insert(pressActionsByKey[key], action)
         end
-        table.insert(pressActionsByKey[key], action)
-    end
-    for _, button in pairs(mappings.buttons or EMPTY) do
-        if not pressActionsByButton[button] then
-            pressActionsByButton[button] = {}
+        for _, button in pairs(mappings.buttons or EMPTY) do
+            if not pressActionsByButton[button] then
+                pressActionsByButton[button] = {}
+            end
+            table.insert(pressActionsByButton[button], action)
         end
-        table.insert(pressActionsByButton[button], action)
     end
 end
+setupActions()
 
 local controllers = {}
 local freePlayerIds = { 4, 3, 2 }
@@ -136,6 +148,9 @@ function love.joystickremoved(controller)
         for i, otherController in ipairs(actions.controllers) do
             if otherController:getID() == id then
                 table.remove(actions.controllers, i)
+                if actions.id > 1 and #actions.controllers == 0 then
+                    input.removePlayer(actions)
+                end
                 return
             end
         end
@@ -147,15 +162,16 @@ function input.handlePlayerAddRemove(controller)
     for _, player in ipairs(playerActions) do
         for _, controller in ipairs(player.controllers) do
             if controller:getID() == id then
-                if #player.controllers > 1 then
+                if player.id == 1 then
                     input.newPlayer(controller)
-                elseif player.id > 1 then
+                else
                     input.removePlayer(player)
                 end
                 return
             end
         end
     end
+    print("SHOULDN'T REALLY HAPPEN SHIT")
     input.newPlayer(controller)
 end
 
