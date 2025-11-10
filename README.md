@@ -8,7 +8,11 @@
     * Écran "Un peu plus tard" avant la prochaine lettre
     * Crédits de fin
 * NINJAs
-* Fruit bonus (x3? x5?)
+
+## MAPS
+* Un heist où y faut rapporter une chiée de fruits dorés mais la distance est louche pis y faut prep son stack correctement
+* Un entonnoir où y faut passer des fruits par une arche pour les dropper par terre pour ensuite les reprendre afin de tous les ramener
+* Une île sur un lac sur un île sur un lac sur une [you get the idea]
 
 ## BUGS
 * Les bulles sont pas bien centrées (mais c'est fiiiiine)

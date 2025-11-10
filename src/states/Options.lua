@@ -39,7 +39,7 @@ local options = {
         range = { 0, 100, 10 }
     },
     {
-        name = "controls",
+        name = "arcade",
         text = "CONTRÔLES ARCADE",
         type = "toggle",
         default = false,
