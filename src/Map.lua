@@ -8,7 +8,6 @@ function Map.load(name)
     local instance = { name = name, _data = loadfile(path)() }
     instance = setmetatable(instance, Map)
     instance:init()
-    print("map", path)
     timestamps[path] = info
     return instance
 end
@@ -48,6 +47,7 @@ function Map:anyTile(tx, ty)
 end
 
 function Map:init()
+    local time = love.timer.getTime()
     -- Chunk iterator. Gotta capture self to simplify things...
     function self.chunkIterator(chunk, i)
         local tile = 0
@@ -89,13 +89,10 @@ function Map:init()
         end
     end
 
-    self.heightMarkers = {}
-    self.layerHeightInfo = {}
-    self.tileEntities = {}
+    -- Do some guaranteeing
     local minx, miny, maxx, maxy = nil, nil, nil, nil
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
-            self.layerHeightInfo[layeri] = {}
             -- Make data into chunks for uniformity
             layer.chunks = layer.chunks or {}
             if layer.data then
@@ -119,6 +116,61 @@ function Map:init()
     end
     self.minx, self.miny, self.maxx, self.maxy = minx, miny, maxx, maxy
     self.width, self.height = maxx - minx, maxy - miny
+
+    -- Splice anim layers
+    if not self._data.properties.skipAnimTileGen then
+        for layeri = #self._data.layers, 1, -1 do
+            local layer = self._data.layers[layeri]
+            if layer.type == "tilelayer" then
+                local animLayer = {
+                    x = layer.x,
+                    y = layer.y,
+                    width = layer.width,
+                    height = layer.height,
+                    chunks = {},
+                    type = "tilelayer"
+                }
+                table.insert(self._data.layers, layeri + 1, animLayer)
+                for chunki, chunk in ipairs(layer.chunks) do
+                    local animChunk = nil
+                    for i, tile, tx, ty, globali, flipX, flipY, og in self:chunkTiles(layer, chunk) do
+                        local tileData = tileset.tiles[tile]
+                        if tileData and tileData.animOverlay then
+                            if not animChunk then
+                                animChunk = {
+                                    x = chunk.x,
+                                    y = chunk.y,
+                                    width = chunk.width,
+                                    height = chunk.height,
+                                    data = {}
+                                }
+                                table.insert(animLayer.chunks, animChunk)
+                                for i, _ in ipairs(chunk.data) do
+                                    animChunk.data[i] = 0
+                                end
+                            end
+
+                            local animDefs = tileset.animDefs[tileData.animOverlay]
+                            local animTileDef = animDefs[math.random(#animDefs)]
+                            if math.random() < animTileDef.prob then
+                                animChunk.data[i] = animTileDef.id + self._data.tilesetFirstGid
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    self.heightMarkers = {}
+    self.layerHeightInfo = {}
+    self.tileEntities = {}
+    for layeri, layer in ipairs(self._data.layers) do
+        if layer.type == "tilelayer" then
+            self.layerHeightInfo[layeri] = {}
+        end
+    end
+
     -- Collate tileset height markers
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
@@ -159,6 +211,8 @@ function Map:init()
             self.vars[path[2]] = value
         end
     end
+
+    print("map", math.round((love.timer.getTime() - time) * 1000), self.name)
 end
 
 function Map:getEntities(entities)

@@ -12,6 +12,7 @@ return {
   nextlayerid = 14,
   nextobjectid = 465,
   properties = {
+    ["autoanim"] = true,
     ["vars.nextMap"] = "Raceway",
     ["vars.targetFruits"] = 100,
     ["vars.timer"] = 90
@@ -20,7 +21,8 @@ return {
     {
       name = "tileset",
       firstgid = 1,
-      filename = "../tiled/tileset.tsx"
+      filename = "../tiled/tileset.tsx",
+      exportfilename = "../data/tileset.lua"
     },
     {
       name = "objects",

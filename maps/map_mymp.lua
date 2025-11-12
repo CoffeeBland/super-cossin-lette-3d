@@ -16,7 +16,8 @@ return {
     {
       name = "tileset",
       firstgid = 1,
-      filename = "../tiled/tileset.tsx"
+      filename = "../tiled/tileset.tsx",
+      exportfilename = "../data/tileset.lua"
     },
     {
       name = "objects",

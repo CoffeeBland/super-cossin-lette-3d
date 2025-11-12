@@ -4,6 +4,7 @@
   <export target="../maps/Heist.lua" format="lua"/>
  </editorsettings>
  <properties>
+  <property name="autoanim" type="bool" value="true"/>
   <property name="vars.nextMap" value="Raceway"/>
   <property name="vars.targetFruits" type="int" value="100"/>
   <property name="vars.timer" type="float" value="90"/>

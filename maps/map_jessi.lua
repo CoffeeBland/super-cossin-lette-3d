@@ -12,6 +12,7 @@ return {
   nextlayerid = 13,
   nextobjectid = 784,
   properties = {
+    ["skipAnimTileGen"] = true,
     ["vars.nextMap"] = "Geronimo",
     ["vars.targetFruits"] = 12,
     ["vars.timer"] = 120

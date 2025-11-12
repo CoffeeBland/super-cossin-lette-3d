@@ -1596,6 +1596,7 @@ return {
     {
       id = 95,
       properties = {
+        ["anim"] = "center",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-1.png",
@@ -1816,6 +1817,7 @@ return {
     {
       id = 44,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-14.png",
@@ -1860,6 +1862,7 @@ return {
     {
       id = 76,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-22.png",
@@ -1905,6 +1908,7 @@ return {
     {
       id = 77,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-23.png",
@@ -1950,6 +1954,7 @@ return {
     {
       id = 78,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-24.png",
@@ -1995,6 +2000,7 @@ return {
     {
       id = 79,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-25.png",
@@ -2040,6 +2046,7 @@ return {
     {
       id = 40,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-10.png",
@@ -2084,6 +2091,7 @@ return {
     {
       id = 62,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-8.png",
@@ -2129,6 +2137,7 @@ return {
     {
       id = 61,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-7.png",
@@ -2174,6 +2183,7 @@ return {
     {
       id = 64,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-10.png",
@@ -2219,6 +2229,7 @@ return {
     {
       id = 63,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-9.png",
@@ -2264,6 +2275,7 @@ return {
     {
       id = 66,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-12.png",
@@ -2309,6 +2321,7 @@ return {
     {
       id = 36,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-6.png",
@@ -2354,6 +2367,7 @@ return {
     {
       id = 67,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-13.png",
@@ -2399,6 +2413,7 @@ return {
     {
       id = 68,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-14.png",
@@ -2444,6 +2459,7 @@ return {
     {
       id = 69,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-15.png",
@@ -2489,6 +2505,7 @@ return {
     {
       id = 32,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-2.png",
@@ -2533,6 +2550,7 @@ return {
     {
       id = 73,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-19.png",
@@ -2578,6 +2596,7 @@ return {
     {
       id = 74,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-20.png",
@@ -2623,6 +2642,7 @@ return {
     {
       id = 71,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-17.png",
@@ -2668,6 +2688,7 @@ return {
     {
       id = 72,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-18.png",
@@ -2713,6 +2734,7 @@ return {
     {
       id = 59,
       properties = {
+        ["anim"] = "center",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-5.png",
@@ -2758,6 +2780,7 @@ return {
     {
       id = 56,
       properties = {
+        ["anim"] = "center",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-2.png",
@@ -2803,6 +2826,7 @@ return {
     {
       id = 58,
       properties = {
+        ["anim"] = "center",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-4.png",
@@ -2848,6 +2872,7 @@ return {
     {
       id = 57,
       properties = {
+        ["anim"] = "center",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau-3.png",
@@ -3246,6 +3271,7 @@ return {
     {
       id = 31,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-1.png",
@@ -3333,6 +3359,7 @@ return {
     {
       id = 45,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-15.png",
@@ -3378,6 +3405,7 @@ return {
     {
       id = 43,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-13.png",
@@ -3467,6 +3495,7 @@ return {
     {
       id = 41,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-11.png",
@@ -3512,6 +3541,7 @@ return {
     {
       id = 39,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-9.png",
@@ -3601,6 +3631,7 @@ return {
     {
       id = 37,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-7.png",
@@ -3647,6 +3678,7 @@ return {
     {
       id = 35,
       properties = {
+        ["anim"] = "tlbr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-5.png",
@@ -3734,6 +3766,7 @@ return {
     {
       id = 33,
       properties = {
+        ["anim"] = "bltr",
         ["type"] = "water"
       },
       image = "../img/Tiles/Tuile_eau_courbe-3.png",
@@ -6755,6 +6788,10 @@ return {
     },
     {
       id = 87,
+      properties = {
+        ["animDef"] = "tlbr",
+        ["prob"] = 0.5
+      },
       image = "../img/Tiles/Tuile_eau-33.png",
       width = 128,
       height = 74,
@@ -6787,6 +6824,10 @@ return {
     },
     {
       id = 83,
+      properties = {
+        ["animDef"] = "bltr",
+        ["prob"] = 0.5
+      },
       image = "../img/Tiles/Tuile_eau-29.png",
       width = 128,
       height = 74,
@@ -6819,6 +6860,10 @@ return {
     },
     {
       id = 90,
+      properties = {
+        ["animDef"] = "center",
+        ["prob"] = 0.125
+      },
       image = "../img/Tiles/Tuile_eau-36.png",
       width = 128,
       height = 74,
@@ -6839,6 +6884,10 @@ return {
     },
     {
       id = 93,
+      properties = {
+        ["animDef"] = "center",
+        ["prob"] = 0.125
+      },
       image = "../img/Tiles/Tuile_eau-39.png",
       width = 128,
       height = 74,

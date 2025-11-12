@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.11.2" name="tileset" tilewidth="256" tileheight="222" tilecount="250" columns="0">
+ <editorsettings>
+  <export target="../data/tileset.lua" format="lua"/>
+ </editorsettings>
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="96" probability="0.8">
   <image source="../img/Tiles/Tuile_herbe-2.png" width="128" height="74"/>
@@ -327,6 +330,7 @@
  </tile>
  <tile id="95">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="center"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-1.png" width="128" height="74"/>
@@ -382,6 +386,7 @@
  </tile>
  <tile id="44">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-14.png" width="128" height="74"/>
@@ -393,6 +398,7 @@
  </tile>
  <tile id="76">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-22.png" width="128" height="74"/>
@@ -404,6 +410,7 @@
  </tile>
  <tile id="77">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-23.png" width="128" height="74"/>
@@ -415,6 +422,7 @@
  </tile>
  <tile id="78">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-24.png" width="128" height="74"/>
@@ -426,6 +434,7 @@
  </tile>
  <tile id="79">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-25.png" width="128" height="74"/>
@@ -437,6 +446,7 @@
  </tile>
  <tile id="40">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-10.png" width="128" height="74"/>
@@ -448,6 +458,7 @@
  </tile>
  <tile id="62">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-8.png" width="128" height="74"/>
@@ -459,6 +470,7 @@
  </tile>
  <tile id="61">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-7.png" width="128" height="74"/>
@@ -470,6 +482,7 @@
  </tile>
  <tile id="64">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-10.png" width="128" height="74"/>
@@ -481,6 +494,7 @@
  </tile>
  <tile id="63">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-9.png" width="128" height="74"/>
@@ -492,6 +506,7 @@
  </tile>
  <tile id="66">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-12.png" width="128" height="74"/>
@@ -503,6 +518,7 @@
  </tile>
  <tile id="36">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-6.png" width="128" height="74"/>
@@ -514,6 +530,7 @@
  </tile>
  <tile id="67">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-13.png" width="128" height="74"/>
@@ -525,6 +542,7 @@
  </tile>
  <tile id="68">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-14.png" width="128" height="74"/>
@@ -536,6 +554,7 @@
  </tile>
  <tile id="69">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-15.png" width="128" height="74"/>
@@ -547,6 +566,7 @@
  </tile>
  <tile id="32">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-2.png" width="128" height="74"/>
@@ -558,6 +578,7 @@
  </tile>
  <tile id="73">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-19.png" width="128" height="74"/>
@@ -569,6 +590,7 @@
  </tile>
  <tile id="74">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-20.png" width="128" height="74"/>
@@ -580,6 +602,7 @@
  </tile>
  <tile id="71">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-17.png" width="128" height="74"/>
@@ -591,6 +614,7 @@
  </tile>
  <tile id="72">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-18.png" width="128" height="74"/>
@@ -602,6 +626,7 @@
  </tile>
  <tile id="59">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="center"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-5.png" width="128" height="74"/>
@@ -613,6 +638,7 @@
  </tile>
  <tile id="56">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="center"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-2.png" width="128" height="74"/>
@@ -624,6 +650,7 @@
  </tile>
  <tile id="58">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="center"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-4.png" width="128" height="74"/>
@@ -635,6 +662,7 @@
  </tile>
  <tile id="57">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="center"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-3.png" width="128" height="74"/>
@@ -734,6 +762,7 @@
  </tile>
  <tile id="31">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-1.png" width="128" height="74"/>
@@ -756,6 +785,7 @@
  </tile>
  <tile id="45">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-15.png" width="128" height="74"/>
@@ -767,6 +797,7 @@
  </tile>
  <tile id="43">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-13.png" width="128" height="74"/>
@@ -789,6 +820,7 @@
  </tile>
  <tile id="41">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-11.png" width="128" height="74"/>
@@ -800,6 +832,7 @@
  </tile>
  <tile id="39">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-9.png" width="128" height="74"/>
@@ -822,6 +855,7 @@
  </tile>
  <tile id="37">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-7.png" width="128" height="74"/>
@@ -833,6 +867,7 @@
  </tile>
  <tile id="35">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="tlbr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-5.png" width="128" height="74"/>
@@ -855,6 +890,7 @@
  </tile>
  <tile id="33">
   <properties>
+   <property name="anim" propertytype="waterAnim" value="bltr"/>
    <property name="type" propertytype="tileType" value="water"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau_courbe-3.png" width="128" height="74"/>
@@ -1591,6 +1627,10 @@
   </objectgroup>
  </tile>
  <tile id="87">
+  <properties>
+   <property name="animDef" propertytype="waterAnim" value="tlbr"/>
+   <property name="prob" type="float" value="0.5"/>
+  </properties>
   <image source="../img/Tiles/Tuile_eau-33.png" width="128" height="74"/>
   <animation>
    <frame tileid="87" duration="200"/>
@@ -1602,6 +1642,10 @@
   </animation>
  </tile>
  <tile id="83">
+  <properties>
+   <property name="animDef" propertytype="waterAnim" value="bltr"/>
+   <property name="prob" type="float" value="0.5"/>
+  </properties>
   <image source="../img/Tiles/Tuile_eau-29.png" width="128" height="74"/>
   <animation>
    <frame tileid="83" duration="200"/>
@@ -1613,6 +1657,10 @@
   </animation>
  </tile>
  <tile id="90">
+  <properties>
+   <property name="animDef" propertytype="waterAnim" value="center"/>
+   <property name="prob" type="float" value="0.125"/>
+  </properties>
   <image source="../img/Tiles/Tuile_eau-36.png" width="128" height="74"/>
   <animation>
    <frame tileid="88" duration="200"/>
@@ -1621,6 +1669,10 @@
   </animation>
  </tile>
  <tile id="93">
+  <properties>
+   <property name="animDef" propertytype="waterAnim" value="center"/>
+   <property name="prob" type="float" value="0.125"/>
+  </properties>
   <image source="../img/Tiles/Tuile_eau-39.png" width="128" height="74"/>
   <animation>
    <frame tileid="91" duration="200"/>

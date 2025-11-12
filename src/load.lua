@@ -407,6 +407,7 @@ function load.loadData(name, file)
         if data.name == "tileset" then
             tileset.tiles = {}
             tileset.anims = {}
+            tileset.animDefs = {}
             tileset.shapes = {}
             if data.image then
                 local name = str.filename(data.image)
@@ -463,6 +464,7 @@ function load.loadData(name, file)
                             originY = -posY,
                             type = tile.properties and tile.properties.type,
                             height = tile.properties and tile.properties.height,
+                            animOverlay = tile.properties and tile.properties.anim
                         }
                         if tile.animation and #tile.animation > 1 then
                             local ids = {}
@@ -473,6 +475,15 @@ function load.loadData(name, file)
                                 fps = 1000 / tile.animation[1].duration,
                                 ids = ids
                             }
+                            if tile.properties and tile.properties.animDef then
+                                if not tileset.animDefs[tile.properties.animDef] then
+                                    tileset.animDefs[tile.properties.animDef] = {}
+                                end
+                                table.insert(tileset.animDefs[tile.properties.animDef], {
+                                    id = tile.id,
+                                    prob  = tile.properties.prob or 1
+                                })
+                            end
                         end
                         if tile.objectGroup and tile.objectGroup.objects then
                             for _, subobject in ipairs(tile.objectGroup.objects) do

@@ -98,6 +98,18 @@
                 "water"
             ],
             "valuesAsFlags": false
+        },
+        {
+            "id": 5,
+            "name": "waterAnim",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "bltr",
+                "tlbr",
+                "center"
+            ],
+            "valuesAsFlags": false
         }
     ]
 }

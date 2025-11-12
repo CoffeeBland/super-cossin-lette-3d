@@ -12,6 +12,7 @@ return {
   nextlayerid = 16,
   nextobjectid = 210,
   properties = {
+    ["skipAnimTileGen"] = true,
     ["vars.bg"] = "water",
     ["vars.nextMap"] = "Heist",
     ["vars.targetFruits"] = 12,
@@ -21,7 +22,8 @@ return {
     {
       name = "tileset",
       firstgid = 1,
-      filename = "../tiled/tileset.tsx"
+      filename = "../tiled/tileset.tsx",
+      exportfilename = "../data/tileset.lua"
     },
     {
       name = "objects",
