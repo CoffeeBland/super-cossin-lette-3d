@@ -39,7 +39,7 @@ return function()
         fruitStack = {
             fruits = {},
             eaten = {},
-            pickupRange = 160,
+            pickupRange = 180,
             pickupForce = 0.7,
             pickupJumpSpeed = 140,
             pickupAnimFrames = 20,

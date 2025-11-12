@@ -25,7 +25,10 @@ return function(object, data, flipX, flipY)
             name = radish and "fruitOmbrePetit" or "fruitOmbre"
         },
         anim = {},
-        light = golden and { alpha = 0.2 } or nil,
+        light = golden and {
+            alpha = 0.2,
+            radiusw = 240,
+        } or nil,
         particleEmitter = {
             always = (radish or golden) and {
                 name = "Sparkle",

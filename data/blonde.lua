@@ -19,7 +19,7 @@ return function()
             anchor = { x = -40, y = -500 }
         },
         anim = {},
-        light = { alpha = 0 },
+        light = { alpha = 0, type = "ray" },
         larp = {},
         particleEmitter = {
             always = {

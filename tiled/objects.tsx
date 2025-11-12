@@ -570,7 +570,7 @@
  <tile id="73">
   <properties>
    <property name="autoshadow" type="bool" value="true"/>
-   <property name="dropRange" type="float" value="800"/>
+   <property name="dropRange" type="float" value="880"/>
    <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="302.5"/>
    <property name="offsetY" type="float" value="300"/>
@@ -817,7 +817,6 @@
   <properties>
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
-   <property name="autoshadowScale" type="float" value="0.8"/>
    <property name="height" type="float" value="260"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
@@ -835,7 +834,6 @@
   <properties>
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
-   <property name="autoshadowScale" type="float" value="0.8"/>
    <property name="height" type="float" value="260"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
@@ -853,7 +851,6 @@
   <properties>
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
-   <property name="autoshadowScale" type="float" value="0.8"/>
    <property name="height" type="float" value="260"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>

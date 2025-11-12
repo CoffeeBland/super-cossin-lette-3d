@@ -5,6 +5,7 @@
  </editorsettings>
  <properties>
   <property name="vars.bg" propertytype="bg" value="water"/>
+  <property name="vars.nextMap" value="Heist"/>
   <property name="vars.targetFruits" type="int" value="12"/>
   <property name="vars.timer" type="float" value="80"/>
  </properties>

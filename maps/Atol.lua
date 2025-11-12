@@ -13,6 +13,7 @@ return {
   nextobjectid = 210,
   properties = {
     ["vars.bg"] = "water",
+    ["vars.nextMap"] = "Heist",
     ["vars.targetFruits"] = 12,
     ["vars.timer"] = 80
   },

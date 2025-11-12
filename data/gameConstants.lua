@@ -25,7 +25,9 @@ return {
         angle = 0.4 * math.pi,
         radiusw = 180,
         radiush = 90,
-        alpha = 0.2
+        alpha = 0.05,
+        type = "halo",
+        haloTexture = "Halo"
     },
     cossinHues = {
         { 0.15, 0.46, 0.15 },

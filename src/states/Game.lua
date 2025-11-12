@@ -395,34 +395,49 @@ function Game:renderFrame(dt, camera, x, y, w, h)
         end
 
         if entity.light and entity.light.alpha > DELTA then
-            local radiusw = entity.light.radiusw or Game.constants.defaultLight.radiusw
-            local radiush = entity.light.radiush or Game.constants.defaultLight.radiush
             local alpha = entity.light.alpha or Game.constants.defaultLight.alpha
-            local angle = entity.light.angle or Game.constants.defaultLight.angle
-            local rayHeight = entity.pos.y - sy
-            local rayOffset = rayHeight * math.tan(math.pi / 2 - angle)
-            local startx, starty = entity.pos.x + rayOffset + radiusw, entity.pos.y - rayHeight
-            local endx, endy = entity.pos.x + rayOffset - radiusw, entity.pos.y - rayHeight
-            LIGHT_POINTS[1] = startx
-            LIGHT_POINTS[2] = starty
-            local n = 16
-            for i = 1, n + 1 do
-                local x, y =  math.getEllipsePoint(
-                    entity.pos.x, entity.pos.y,
-                    radiusw, radiush,
-                    ((i - 1) / (n - 1)) * math.pi)
-                LIGHT_POINTS[i * 2 + 1] = x
-                LIGHT_POINTS[i * 2 + 2] = y
-            end
-            LIGHT_POINTS[#LIGHT_POINTS - 1] = endx
-            LIGHT_POINTS[#LIGHT_POINTS] = endy
             love.graphics.setBlendMode("add")
             love.graphics.setColor(
                 Game.constants.lightColor[1],
                 Game.constants.lightColor[2],
                 Game.constants.lightColor[3],
                 alpha)
-            love.graphics.polygon("fill", unpack(LIGHT_POINTS))
+
+            local radiusw = entity.light.radiusw or Game.constants.defaultLight.radiusw
+            local radiush = entity.light.radiush or Game.constants.defaultLight.radiush
+            local angle = entity.light.angle or Game.constants.defaultLight.angle
+            local type = entity.light.type or Game.constants.defaultLight.type
+            if type == "ray" then
+                local rayHeight = entity.pos.y - sy
+                local rayOffset = rayHeight * math.tan(math.pi / 2 - angle)
+                local startx, starty = entity.pos.x + rayOffset + radiusw, entity.pos.y - rayHeight
+                local endx, endy = entity.pos.x + rayOffset - radiusw, entity.pos.y - rayHeight
+                LIGHT_POINTS[1] = startx
+                LIGHT_POINTS[2] = starty
+                local n = 16
+                for i = 1, n + 1 do
+                    local x, y =  math.getEllipsePoint(
+                        entity.pos.x, entity.pos.y,
+                        radiusw, radiush,
+                        ((i - 1) / (n - 1)) * math.pi)
+                    LIGHT_POINTS[i * 2 + 1] = x
+                    LIGHT_POINTS[i * 2 + 2] = y
+                end
+                LIGHT_POINTS[#LIGHT_POINTS - 1] = endx
+                LIGHT_POINTS[#LIGHT_POINTS] = endy
+                love.graphics.polygon("fill", unpack(LIGHT_POINTS))
+            elseif type == "halo" then
+                local haloTexture = textures[Game.constants.defaultLight.haloTexture]
+                local tw, th = haloTexture:getDimensions()
+                love.graphics.draw(haloTexture,
+                    entity.pos.x,
+                    entity.pos.y - entity.pos.z - entity.pos.height / 2,
+                    0,
+                    radiusw / tw,
+                    radiusw / th,
+                    tw / 2,
+                    th / 2)
+            end
             love.graphics.setColor(1, 1, 1, 1)
             love.graphics.setBlendMode("alpha")
         end

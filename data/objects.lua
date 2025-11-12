@@ -1340,7 +1340,7 @@ return {
       id = 73,
       properties = {
         ["autoshadow"] = true,
-        ["dropRange"] = 800,
+        ["dropRange"] = 880,
         ["height"] = 80,
         ["offsetX"] = 302.5,
         ["offsetY"] = 300,
@@ -2181,7 +2181,6 @@ return {
       properties = {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
-        ["autoshadowScale"] = 0.8,
         ["height"] = 260,
         ["lensed"] = true,
         ["offsetX"] = 510,
@@ -2226,7 +2225,6 @@ return {
       properties = {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
-        ["autoshadowScale"] = 0.8,
         ["height"] = 260,
         ["lensed"] = true,
         ["offsetX"] = 510,
@@ -2271,7 +2269,6 @@ return {
       properties = {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
-        ["autoshadowScale"] = 0.8,
         ["height"] = 260,
         ["lensed"] = true,
         ["offsetX"] = 510,

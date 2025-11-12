@@ -180,6 +180,8 @@ function MapIntro:enter(params)
         end
     end
 
+    letterFrameOffset = letterFrameOffset - 30
+
     for _, event in ipairs(letterTimeline) do
         local offsetEvent = table.clone(event)
         offsetEvent.frame = offsetEvent.frame + letterFrameOffset
@@ -229,7 +231,6 @@ function MapIntro:update(dt)
                 if event[1] == "sound" then
                     Sound:start(event)
                 elseif event[1] == "music" then
-                    print("YO", dump(event))
                     Music:play(event.name)
                 elseif event[1] == "state" then
                     StateMachine:change(Game, self.params)
