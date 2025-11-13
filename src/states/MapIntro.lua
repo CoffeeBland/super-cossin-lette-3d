@@ -178,9 +178,8 @@ function MapIntro:enter(params)
             letterFrameOffset = math.max(letterFrameOffset, event.frame + (event.duration or 0))
             table.insert(self.timeline, event)
         end
+        letterFrameOffset = letterFrameOffset - 30
     end
-
-    letterFrameOffset = letterFrameOffset - 30
 
     for _, event in ipairs(letterTimeline) do
         local offsetEvent = table.clone(event)

@@ -57,6 +57,17 @@ local options = {
         end
     },
     {
+        name = "brun",
+        text = "BRUN",
+        type = "toggle",
+        default = false,
+        apply = function(value)
+            if Music.current then
+                Music.current:setEffect("brun", value)
+            end
+        end
+    },
+    {
         name = "ok",
         text = "OK",
         type = "button",

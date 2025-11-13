@@ -67,6 +67,7 @@ function Sound:start(sound)
     source:setVolume(volume * Game.constants.sound.volume * Options.values.sound / 100)
     source:setPitch(sound.pitchRange and math.randomRange(sound.pitchRange) or sound.pitch or 1)
     source:setLooping(sound.loop or false)
+    source:setEffect("brun", Options.values.brun)
     if sound.fadeIn then
         sound.volumeFrames = sound.fadeIn
         sound.targetVolume = volume

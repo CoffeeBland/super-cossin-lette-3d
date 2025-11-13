@@ -95,6 +95,46 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
     }
 ]]
 
+POST_SHADER = love.graphics.newShader[[
+    uniform Image palette;
+    uniform vec2 size;
+    uniform float pixelLens;
+
+    // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
+    vec3 rgb2hsv(vec3 c) {
+        vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+        vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+        vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+        float d = q.x - min(q.w, q.y);
+        float e = 1.0e-10;
+        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+    }
+
+    vec3 hsv2rgb(vec3 c) {
+        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+    }
+
+    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+        if (pixelLens > 0.0) {
+            vec2 pix_coords = texture_coords * size;
+            float offsize = min(size.x, size.y) / 8.0;
+            float hpixelize = min(max((distance(size.x / 2.0, pix_coords.x) - offsize) * pixelLens, 1.0), 32.0);
+            float vpixelize = min(max((distance(size.y / 2.0, pix_coords.y) - offsize) * pixelLens, 1.0), 32.0);
+            float pixelize = floor(max(hpixelize, vpixelize));
+            texture_coords = floor(pix_coords / pixelize + vec2(0.5, 0.5)) * pixelize / size;
+        }
+
+        vec4 texturecolor = Texel(texture, texture_coords) * color;
+        vec3 hsv = rgb2hsv(texturecolor.rgb);
+        vec2 paletted = Texel(palette, hsv.xy).xy;
+        hsv = vec3(paletted.x, paletted.y, hsv.z);
+        return vec4(hsv2rgb(hsv), texturecolor.a);
+    }
+]]
+
 HEIGHT_MAP_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
@@ -276,6 +316,53 @@ GAUSSIAN_SCREEN_SHADER = love.graphics.newShader[[
     }
 ]]
 
+local palettesize = 100
+DEFAULT_PALETTE = love.graphics.newCanvas(palettesize, palettesize, { format = "rg8" })
+DEFAULT_PALETTE:setFilter("linear")
+DEFAULT_PALETTE:setWrap("clamp", "clamp")
+love.graphics.push("all")
+love.graphics.setCanvas(DEFAULT_PALETTE)
+
+for i = 0, palettesize - 1 do
+    for j = 0,palettesize - 1 do
+        love.graphics.setColor(i/(palettesize-1), j/(palettesize-1), 0, 1)
+        love.graphics.rectangle("fill", i, j, 1, 1)
+    end
+end
+love.graphics.pop()
+
+
+-- It's pretty shitty, but such is le Brun.
+local shifts = {
+    { ohs = 0, ohe =  0.1, fhs = 0, fhe = 0.1, ss = 0.5 },
+    { ohs = 0.1, ohe = 0.16, fhs = 0.1, fhe = 0.16, ss = 1 },
+    { ohs = 0.16, ohe = 0.25, fhs = 0.16, fhe = 0.25, ss = 0.75 },
+    { ohs = 0.25, ohe = 0.45, fhs = 0.25, fhe = 0.35, ss = 0.75 },
+    { ohs = 0.45, ohe = 0.7, fhs = 0.35, fhe = 0.7, ss = 0.5 },
+    { ohs = 0.7, ohe = 1.0, fhs = 0.7, fhe = 1.0, ss = 0.75 }
+}
+BRUN_PALETTE = love.graphics.newCanvas(palettesize, palettesize, { format = "rg8" })
+BRUN_PALETTE:setFilter("linear")
+BRUN_PALETTE:setWrap("clamp", "clamp")
+love.graphics.push("all")
+love.graphics.setCanvas(BRUN_PALETTE)
+
+for i = 0, palettesize - 1 do
+    local h = i / (palettesize-1)
+    local shift = table.find(shifts,
+        function (s)
+            return s.ohs <= h and h <= s.ohe
+        end)
+    print(h, shift.fhs, shift.fhe)
+    h = shift.fhs + (h - shift.ohs) / (shift.ohe - shift.ohs) * (shift.fhe - shift.fhs)
+    for j = 0, palettesize - 1 do
+        local s = shift.ss * j/(palettesize-1)
+        love.graphics.setColor(h, s, 0, 1)
+        love.graphics.rectangle("fill", i, j, 1, 1)
+    end
+end
+love.graphics.pop()
+
 --   2
 --  1 3
 -- 8   4
@@ -301,3 +388,9 @@ TILE_SHAPE = love.physics.newPolygonShape(
 ELLIPSE_WIDTH_RATIO = 0.5 + TILE_WIDTH / (TILE_WIDTH + TILE_HEIGHT)
 ELLIPSE_HEIGHT_RATIO = 0.5 + TILE_HEIGHT / (TILE_WIDTH + TILE_HEIGHT)
 LIGHT_POINTS = {}
+
+love.audio.setEffect("brun", {
+    type = "distortion",
+    gain = 0.5,
+    edge = 0.25
+})

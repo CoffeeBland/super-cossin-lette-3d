@@ -139,6 +139,14 @@ function table.index(table, obj)
     end
 end
 
+function table.find(t, fn)
+    for i, x in ipairs(t) do
+        if fn(x) then
+            return x
+        end
+    end
+end
+
 function table.pop(t)
     local item = t[#t]
     table.remove(t, #t)

@@ -158,7 +158,12 @@ function CameraSystem:draw(dt, game)
                 local camEntity = camEntities[i]
                 local quadw, quadh = camEntity.camera:setSize(x, y, w, h, camw, camh)
                 game:renderFrame(dt, camEntity.camera, x, y, camw, camh)
+
                 love.graphics.setCanvas(origCanvas)
+                love.graphics.setShader(POST_SHADER)
+                POST_SHADER:send("size", { camw, camh })
+                POST_SHADER:send("palette", Options.values.brun and BRUN_PALETTE or DEFAULT_PALETTE)
+                POST_SHADER:send("pixelLens", Options.values.brun and 0.025 or 0)
                 love.graphics.draw(camEntity.camera.canvas, camEntity.camera.quad, x, y, 0, w / quadw, h / quadh)
             end
             y = y + h
@@ -168,6 +173,7 @@ function CameraSystem:draw(dt, game)
 
     -- Lines
     love.graphics.setCanvas(origCanvas)
+    love.graphics.setShader()
     love.graphics.setColor(unpack(Game.constants.lineColor))
     local x = 0
     for col = 1, cols do

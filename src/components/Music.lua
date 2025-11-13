@@ -20,6 +20,8 @@ function Music:play(name, loop)
     end
     self.currentName = name
     self.current = music[name]
+
+    self.current:setEffect("brun", Options.values.brun)
     self.current:setVolume((fadein and 0 or Game.constants.music.volume) * Options.values.music / 100)
     self.current:stop()
     self.current:play()
