@@ -14,3 +14,6 @@
 
 ## BUGS
 * Les bulles sont pas bien centrées (mais c'est fiiiiine)
+
+## Notes
+Les lettres sont 35x70 dans une slice de A-Z

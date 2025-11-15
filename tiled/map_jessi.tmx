@@ -4,6 +4,7 @@
   <export target="../maps/map_jessi.lua" format="lua"/>
  </editorsettings>
  <properties>
+  <property name="name" value="LA FORÊT"/>
   <property name="skipAnimTileGen" type="bool" value="true"/>
   <property name="vars.nextMap" value="Geronimo"/>
   <property name="vars.targetFruits" type="int" value="12"/>

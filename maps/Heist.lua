@@ -13,6 +13,7 @@ return {
   nextobjectid = 465,
   properties = {
     ["autoanim"] = true,
+    ["name"] = "LA BANQUE",
     ["vars.nextMap"] = "Raceway",
     ["vars.targetFruits"] = 100,
     ["vars.timer"] = 90

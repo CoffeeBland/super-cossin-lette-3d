@@ -12,6 +12,7 @@ return {
   nextlayerid = 16,
   nextobjectid = 210,
   properties = {
+    ["name"] = "AU MILIEU DE L'EAU",
     ["skipAnimTileGen"] = true,
     ["vars.bg"] = "water",
     ["vars.nextMap"] = "Heist",
