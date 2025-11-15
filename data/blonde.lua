@@ -1,7 +1,8 @@
 return function()
     return {
-        pos={ height = 430 },
+        pos = { height = 430 },
         disabled = true,
+        actor = {},
         name = "blonde",
         body = { shape = "circle", size = 80, type = "static" },
         sprites = {
@@ -16,7 +17,7 @@ return function()
             anchor = { x = 96, y = 46 }
         },
         bubble = {
-            anchor = { x = -40, y = -500 }
+            anchor = { x = -40, y = -70 }
         },
         anim = {},
         light = { alpha = 0, type = "ray" },
@@ -37,7 +38,8 @@ return function()
             triggers = {
                 eatFruit = {
                     name = "Gulp",
-                    pitchRange = { 1.6, 2 }
+                    pitchRange = { 1.6, 2 },
+                    mass = 0.33
                 },
                 speak = {
                     name = "Bloop",
@@ -53,7 +55,8 @@ return function()
                         "Bloop9",
                     },
                     volumeRange = { 0.8, 1 },
-                    pitchRange = { 1.2, 1.4 }
+                    pitchRange = { 1.2, 1.4 },
+                    mass = 0.33
                 },
             },
             conditions = {

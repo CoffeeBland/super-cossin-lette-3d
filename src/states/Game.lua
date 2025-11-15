@@ -452,7 +452,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
         if entity.bubble then
             love.graphics.push()
             love.graphics.translate(entity.pos.x, entity.pos.y - entity.pos.z)
-            entity.bubble:draw()
+            entity.bubble:draw(entity)
             love.graphics.pop()
         end
     end

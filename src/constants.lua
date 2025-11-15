@@ -393,3 +393,18 @@ love.audio.setEffect("brun", {
     gain = 0.5,
     edge = 0.25
 })
+
+love.audio.setEffect("mass1.33", {
+    type = "reverb",
+    decaytime = 0.75
+})
+
+love.audio.setEffect("mass1.66", {
+    type = "reverb",
+    decaytime = 1.5
+})
+
+love.audio.setEffect("mass2", {
+    type = "reverb",
+    decaytime = 2.5
+})

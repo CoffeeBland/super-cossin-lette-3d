@@ -15,7 +15,7 @@ function Bubble.new(params)
     return instance
 end
 
-function Bubble:draw()
+function Bubble:draw(entity)
     if self.textLen == 0 then
         return
     end
@@ -40,9 +40,10 @@ function Bubble:draw()
     local bgWidth = segments * def.segment.w
     local bgHeight = def.segment.h
 
+    local scaleY = (entity.anim and entity.anim.wiggle.y or 1)
     love.graphics.translate(
         self.anchor.x,
-        self.anchor.y)
+        self.anchor.y - entity.pos.height * scaleY)
 
     love.graphics.draw(
         textures.Bubble,

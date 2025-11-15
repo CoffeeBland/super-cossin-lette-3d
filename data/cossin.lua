@@ -66,7 +66,7 @@ return function()
             }
         },
         bubble = {
-            anchor = { x = -40, y = -260 }
+            anchor = { x = -40, y = -112 }
         },
         larp = {},
         lens = { size = 480, size2 = 480^2 },
@@ -150,29 +150,35 @@ return function()
         soundEmitter = {
             triggers = {
                 ["eat:start"] = {
-                    name = "Ooh"
+                    name = "Ooh",
+                    mass = 0.5
                 },
                 eatFruit = {
-                    name = "Gulp"
+                    name = "Gulp",
+                    mass = 0.5
                 },
                 ["jump:stop"] = {
                     name = "Step",
                     pitchRange = { 0.45, 0.55 },
-                    volumeRange = { 0.6, 0.7 }
+                    volumeRange = { 0.6, 0.7 },
+                    mass = 0.5
                 },
                 step = {
                     name = "Step",
                     volumeRange = { 0.3, 0.4 },
-                    pitchRange = { 0.6, 0.8 }
+                    pitchRange = { 0.6, 0.8 },
+                    mass = 0.5
                 },
                 speak = {
                     name = "Step",
                     volumeRange = { 0.8, 1 },
-                    pitchRange = { 0.8, 1.2 }
+                    pitchRange = { 0.8, 1.2 },
+                    mass = 0.5
                 },
                 ["squish:start"] = {
                     name = "Gnieh",
-                    stopOn = "squish:stop"
+                    stopOn = "squish:stop",
+                    mass = 0.5
                 }
             }
         }

@@ -56,7 +56,7 @@ function Sound:findSource(name)
     end
 end
 
-function Sound:start(sound)
+function Sound:start(sound, entity)
     local sourceName = sound.names and sound.names[math.random(#sound.names)] or sound.name
     local source = self:findSource(sourceName)
     if not source then
@@ -65,9 +65,17 @@ function Sound:start(sound)
     end
     local volume = sound.volumeRange and math.randomRange(sound.volumeRange) or sound.volume or 1
     source:setVolume(volume * Game.constants.sound.volume * Options.values.sound / 100)
-    source:setPitch(sound.pitchRange and math.randomRange(sound.pitchRange) or sound.pitch or 1)
+    local baseMass = entity and entity.actor and entity.actor.stats.mass or 1
+    local massFactor = sound.mass or 0
+    local mass = 1 + (baseMass - 1) * massFactor
+    local massPitch = 1 / mass
+    local basePitch = sound.pitchRange and math.randomRange(sound.pitchRange) or sound.pitch or 1
+    source:setPitch(basePitch * massPitch)
     source:setLooping(sound.loop or false)
     source:setEffect("brun", Options.values.brun)
+    source:setEffect("mass1.33", mass >= 1.33 and mass < 1.66)
+    source:setEffect("mass1.66", mass >= 1.66 and mass < 2)
+    source:setEffect("mass2", mass >= 2)
     if sound.fadeIn then
         sound.volumeFrames = sound.fadeIn
         sound.targetVolume = volume
@@ -113,7 +121,7 @@ function Sound:fadeout(frames)
     end
 end
 
-function Sound:toggle(sound, active)
+function Sound:toggle(sound, active, entity)
     if not sound then
         return
     end
@@ -178,7 +186,7 @@ function SoundSystem:update(framePart, dt, game)
         for trigger, sound in pairs(entity.soundEmitter.triggers) do
             if entity.anim:isTriggered(trigger) then
                 sound.entity = entity -- A little sad but oh well
-                Sound:start(sound)
+                Sound:start(sound, entity)
             end
         end
 
@@ -186,7 +194,7 @@ function SoundSystem:update(framePart, dt, game)
             if not entity.soundEmitter.always.frames or entity.soundEmitter.always.frames <= 0 then
                 entity.soundEmitter.always.entity = entity -- Same sad, same oh well
                 entity.soundEmitter.always.frames = nil
-                Sound:start(entity.soundEmitter.always)
+                Sound:start(entity.soundEmitter.always, entity)
             end
             if entity.soundEmitter.always.frames then
                 entity.soundEmitter.always.frames = math.max(entity.soundEmitter.always.frames - framePart, 0)
@@ -196,7 +204,7 @@ function SoundSystem:update(framePart, dt, game)
         end
 
         local conditions = entity.soundEmitter.conditions
-        Sound:toggle(conditions.drown, entity.water and entity.water.remainingDrownFrames)
-        Sound:toggle(conditions.light, entity.light and entity.light.alpha >= conditions.light.minimumLight)
+        Sound:toggle(conditions.drown, entity.water and entity.water.remainingDrownFrames, entity)
+        Sound:toggle(conditions.light, entity.light and entity.light.alpha >= conditions.light.minimumLight, entity)
     end
 end
