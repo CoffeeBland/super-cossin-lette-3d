@@ -395,13 +395,27 @@ function MapIntro:getErrataTimeline(name)
             duration = 15,
             frame = frame
         })
+    local mapNameSound = self:getMapNameSound(name)
+    local dur = 0
+    if load.loadAudioFile("audio/" .. mapNameSound .. ".ogg", mapNameSound) then
+        table.insert(timeline,
+            { "sound",
+                name = mapNameSound,
+                frame = frame
+            })
+        dur = sounds[mapNameSound]:getDuration("seconds")
+    end
     table.insert(timeline,
         { "sound",
             name = "MapIntro",
             startSample = 82924,
-            frame = frame
+            frame = frame + math.floor(dur * 60)
         })
     return timeline
+end
+
+function MapIntro:getMapNameSound(name)
+    return name:gsub("[^A-Z]", "_")
 end
 
 function MapIntro:queueTimeline(timeline)
@@ -433,13 +447,15 @@ function MapIntro:enter(params)
     if map._data.properties.name then
         local errataTimeline = self:getErrataTimeline(map._data.properties.name)
         self:queueTimeline(errataTimeline)
+        self.timelineFrameOffset = self.timelineFrameOffset + 90
+    else
+        self.timelineFrameOffset = self.timelineFrameOffset + 225
     end
 
-    self.timelineFrameOffset = self.timelineFrameOffset + 225
     self:queueTimeline(letterHideTimeline)
 
     local texturesToFind = { "Lettres" }
-    local soundsToFind = {}
+    local soundsToFind = { }
     for _, thing in pairs(stuff) do
         table.insert(texturesToFind, thing.name)
         thing.alpha = thing.initialAlpha or 1
@@ -455,7 +471,7 @@ function MapIntro:enter(params)
         thing.last = { x = 0, y = 0 }
     end
     for _, event in pairs(self.timeline) do
-        if event[1] == "sound" then
+        if event[1] == "sound" and not table.index(soundsToFind, event.name) then
             table.insert(soundsToFind, event.name)
         end
     end
