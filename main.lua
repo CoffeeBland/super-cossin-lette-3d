@@ -16,7 +16,7 @@ function love.load(args)
     if args[1] == "-s" then
         requestedState = args[2]
         requestedMap = args[3]
-    else
+    elseif args[1] then
         requestedState = "game"
         requestedMap = args[1]
     end
