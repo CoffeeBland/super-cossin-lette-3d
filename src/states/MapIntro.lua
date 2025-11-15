@@ -89,7 +89,7 @@ local laterTimeline = {
     },
 }
 
-local letterTimeline = {
+local letterShowTimeline = {
     { "music",
         name = "MapIntro",
         frame = 0
@@ -159,10 +159,10 @@ local errataTimline = {
         id = "pen",
         to = false,
         frame = 0,
-    }
+    },
     { "pen",
         disabled = false,
-        relativeTo = "letter"
+        relativeTo = "letter",
         pos = { x = 960, y = 576, z = 200 },
         frame = 0,
         duration = 0
