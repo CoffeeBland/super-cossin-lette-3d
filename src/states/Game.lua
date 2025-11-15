@@ -113,6 +113,7 @@ function Game:enter(args)
     }
     self.time = 0
     self.map = Map.load(args.map)
+    self.map:init()
     self.vars = {
         remainingFruits = 0,
         eaten = 0,

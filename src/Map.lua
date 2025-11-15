@@ -7,7 +7,6 @@ function Map.load(name)
     local info = love.filesystem.getInfo(path, "file")
     local instance = { name = name, _data = loadfile(path)() }
     instance = setmetatable(instance, Map)
-    instance:init()
     timestamps[path] = info
     return instance
 end

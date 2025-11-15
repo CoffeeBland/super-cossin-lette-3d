@@ -2,7 +2,8 @@ Music = {
     old = nil,
     oldFadeoutFrames = 0,
     current = nil,
-    currentFadeinFrames = 0
+    currentFadeinFrames = 0,
+    speed = 1
 }
 
 local fadeFrames = 60

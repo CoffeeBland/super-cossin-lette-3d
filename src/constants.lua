@@ -353,7 +353,6 @@ for i = 0, palettesize - 1 do
         function (s)
             return s.ohs <= h and h <= s.ohe
         end)
-    print(h, shift.fhs, shift.fhe)
     h = shift.fhs + (h - shift.ohs) / (shift.ohe - shift.ohs) * (shift.fhe - shift.fhs)
     for j = 0, palettesize - 1 do
         local s = shift.ss * j/(palettesize-1)

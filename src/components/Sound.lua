@@ -81,6 +81,9 @@ function Sound:start(sound)
     sound.playingId = self.nextPlayingId
     self.nextPlayingId = self.nextPlayingId + 1
     source:play()
+    if sound.startSample then
+        source:seek(sound.startSample, "samples")
+    end
 end
 
 function Sound:stop(sound)
@@ -90,7 +93,11 @@ function Sound:stop(sound)
             sound.targetVolume = 0
         end
     else
-        sound.source:stop()
+        if sound.source then
+            sound.source:stop()
+        elseif self.playing[sound.name] and self.playing[sound.name].source then
+            self.playing[sound.name].source:stop()
+        end
         self.playing[sound.name] = nil
         sound.source = nil
         sound.entity = nil

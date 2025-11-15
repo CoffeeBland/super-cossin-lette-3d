@@ -4,7 +4,7 @@
   <export target="../maps/Raceway.lua" format="lua"/>
  </editorsettings>
  <properties>
-  <property name="name" value="LA PISTE"/>
+  <property name="name" value="SUR LA PISTE"/>
   <property name="vars.nextMap" value="map_mymp"/>
   <property name="vars.targetFruits" type="int" value="20"/>
   <property name="vars.timer" type="float" value="45"/>

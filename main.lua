@@ -12,15 +12,31 @@ dbg = { cycle = 0, physics = false, fps = false, autorefresh = true }
 function love.load(args)
     Options:apply()
     love.mouse.setVisible(false)
-    local requestedMap = args[1]
+    local requestedState, requestedMap
+    if args[1] == "-s" then
+        requestedState = args[2]
+        requestedMap = args[3]
+    else
+        requestedState = "game"
+        requestedMap = args[1]
+    end
 
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.physics.setMeter(METER_SCALE)
 
     load.init()
 
-    if requestedMap then
-        StateMachine:change(Game, { map = requestedMap })
+
+    if requestedState then
+        if requestedState == "title" then
+            StateMachine:change(Title)
+        elseif requestedState == "intro" then
+            StateMachine:change(MapIntro, { map = requestedMap })
+        elseif requestedState == "game" then
+            StateMachine:change(Game, { map = requestedMap })
+        else
+            StateMachine:change(Intro)
+        end
     else
         StateMachine:change(Intro)
     end
