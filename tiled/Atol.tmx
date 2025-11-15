@@ -4,6 +4,7 @@
   <export target="../maps/Atol.lua" format="lua"/>
  </editorsettings>
  <properties>
+  <property name="name" value="AU MILIEU DE L'EAU"/>
   <property name="skipAnimTileGen" type="bool" value="true"/>
   <property name="vars.bg" propertytype="bg" value="water"/>
   <property name="vars.nextMap" value="Heist"/>

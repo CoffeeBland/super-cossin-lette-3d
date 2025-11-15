@@ -12,6 +12,7 @@ return {
   nextlayerid = 22,
   nextobjectid = 237,
   properties = {
+    ["name"] = "LE TI LAC",
     ["skipAnimTileGen"] = true,
     ["vars.nextMap"] = "Atol",
     ["vars.targetFruits"] = 12,

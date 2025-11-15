@@ -12,6 +12,7 @@ return {
   nextlayerid = 17,
   nextobjectid = 394,
   properties = {
+    ["name"] = "LA PISTE",
     ["vars.nextMap"] = "map_mymp",
     ["vars.targetFruits"] = 20,
     ["vars.timer"] = 45
@@ -20,7 +21,8 @@ return {
     {
       name = "tileset",
       firstgid = 1,
-      filename = "../tiled/tileset.tsx"
+      filename = "../tiled/tileset.tsx",
+      exportfilename = "../data/tileset.lua"
     },
     {
       name = "objects",
