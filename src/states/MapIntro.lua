@@ -151,41 +151,68 @@ local letterTimeline = {
     { "sound",
         name = "MapIntro",
         frame = 75
-    },
+    }
+}
+
+local errataTimline = {
+    { "disabed",
+        id = "pen",
+        to = false,
+        frame = 0,
+    }
+    { "pen",
+        disabled = false,
+        relativeTo = "letter"
+        pos = { x = 960, y = 576, z = 200 },
+        frame = 0,
+        duration = 0
+    }
+}
+
+local letterHideTimeline = {
     { "alpha",
         id = "blonde",
         to = 0,
-        frame = 90 + 60 * 3.5,
+        frame = 0,
         duration = 60
     },
     { "scale",
         id = "blonde",
         to = { x = 0.9, y = 0.9 },
-        frame = 90 + 60 * 3.5,
+        frame = 0,
         duration = 60
     },
     { "state",
-        frame = 90 + 60 * 4.5
+        frame = 60
     }
 }
 
+function MapIntro:queueTimeline(timeline)
+    local offset = self.timelineFrameOffset
+    for _, origEvent in ipairs(timeline) do
+        local event
+        if offset > 0 then
+            event = table.clone(origEvent)
+            event.frame = event.frame + offset
+        else
+            event = origEvent
+        end
+        self.timelineFrameOffset = math.max(self.timelineFrameOffset, event.frame + (event.duration or 0))
+        table.insert(self.timeline, event)
+    end
+end
+
 function MapIntro:enter(params)
     self.timeline = {}
-    local letterFrameOffset = 0
+    self.timelineFrameOffset = 0
 
     if params.map ~= Game.constants.firstLevel then
-        for _, event in ipairs(laterTimeline) do
-            letterFrameOffset = math.max(letterFrameOffset, event.frame + (event.duration or 0))
-            table.insert(self.timeline, event)
-        end
-        letterFrameOffset = letterFrameOffset - 30
+        self:queueTimeline(laterTimeline)
+        self.timelineFrameOffset = self.timelineFrameOffset - 30
     end
-
-    for _, event in ipairs(letterTimeline) do
-        local offsetEvent = table.clone(event)
-        offsetEvent.frame = offsetEvent.frame + letterFrameOffset
-        table.insert(self.timeline, offsetEvent)
-    end
+    self:queueTimeline(letterShowTimeline)
+    self.timelineFrameOffset = self.timelineFrameOffset + 225
+    self:queueTimeline(letterHideTimeline)
 
     local texturesToFind = {}
     local soundsToFind = {}
@@ -198,7 +225,8 @@ function MapIntro:enter(params)
         }
         thing.offset = {
             x = thing.offset and thing.offset.x or 0,
-            y = thing.offset and thing.offset.y or 0
+            y = thing.offset and thing.offset.y or 0,
+            z = thing.offset and thing.offset.z or 0
         }
     end
     for _, event in pairs(self.timeline) do
@@ -210,6 +238,21 @@ function MapIntro:enter(params)
         textures = texturesToFind,
         sounds = soundsToFind
     })
+
+    for _, thing in ipairs(stuff) do
+        thing.texture = textures[thing.name]
+    end
+
+    stuffById.letter.canvas = love.graphics.newCanvas(stuffById.letter.texture:getDimensions())
+    stuffById.letter.origTexture = stuffById.letter.texture
+    stuffById.letter.texture = stuffById.letter.canvas
+
+    love.graphics.push("all")
+    love.graphics.setCanvas(stuffById.letter.canvas)
+    love.graphics.clear(1, 1, 1, 0)
+    love.graphics.draw(stuffById.letter.origTexture)
+    love.graphics.pop()
+
     self.frame = 0
     self.params = params
 end
@@ -262,10 +305,9 @@ function MapIntro:render()
 
     for _, thing in pairs(stuff) do
         local x, y = love.graphics.inverseTransformPoint(w * thing.screenAnchor.x, h * thing.screenAnchor.y)
-        local texture = textures[thing.name]
-        local tw, th = texture:getWidth(), texture:getHeight()
+        local tw, th = thing.texture:getWidth(), thing.texture:getHeight()
         love.graphics.setColor(1, 1, 1, thing.alpha)
-        love.graphics.draw(texture,
+        love.graphics.draw(thing.texture,
             x + ((thing.textureAnchor or EMPTY).x or 0) * tw + thing.offset.x,
             y + ((thing.textureAnchor or EMPTY).y or 0) * th + thing.offset.y,
             0,
