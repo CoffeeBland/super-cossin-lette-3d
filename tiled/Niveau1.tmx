@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="52" nextobjectid="2670">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="52" nextobjectid="2673">
  <editorsettings>
   <export target="../maps/Niveau1.lua" format="lua"/>
  </editorsettings>
  <properties>
   <property name="vars.nextMap" value="Niveau2"/>
-  <property name="vars.targetFruits" type="int" value="4"/>
+  <property name="vars.targetFruits" type="int" value="5"/>
   <property name="vars.timer" type="float" value="60"/>
  </properties>
  <tileset firstgid="1" source="objects.tsx"/>
@@ -652,16 +652,15 @@
  <layer id="49" name="Details" width="30" height="20" locked="1">
   <data encoding="csv"/>
  </layer>
- <objectgroup id="51" name="Arbres qui délimitent le terrain"/>
  <objectgroup id="43" name="Pic-nic/Blonde a Cossin Lette">
   <object id="2276" gid="74" x="2812" y="2072" width="605" height="459"/>
   <object id="2277" gid="92" x="2925.91" y="2128.09" width="224" height="404"/>
  </objectgroup>
- <objectgroup id="44" name="Cossin Lette" locked="1">
-  <object id="2275" gid="25" x="4588" y="2072" width="192" height="256"/>
+ <objectgroup id="44" name="Cossin Lette">
+  <object id="2275" gid="25" x="4736" y="2072" width="192" height="256"/>
  </objectgroup>
  <objectgroup id="47" name="Fruits">
-  <object id="2286" gid="33" x="4292" y="2072" width="128" height="192"/>
+  <object id="2286" gid="33" x="4440" y="2072" width="128" height="192"/>
   <object id="2287" gid="42" x="1480" y="2368" width="128" height="192"/>
   <object id="2288" gid="39" x="3256" y="666" width="128" height="192"/>
   <object id="2289" gid="40" x="1184" y="666" width="128" height="192"/>
@@ -672,7 +671,10 @@
    </properties>
   </object>
   <object id="2321" gid="38" x="4662" y="370" width="128" height="192"/>
-  <object id="2669" gid="37" x="4070" y="2072" width="128" height="192"/>
+  <object id="2669" gid="37" x="4218" y="2072" width="128" height="192"/>
+  <object id="2670" gid="49" x="3182" y="888" width="128" height="148"/>
+  <object id="2671" gid="57" x="3256" y="962" width="128" height="74"/>
+  <object id="2672" gid="57" x="888" y="888" width="128" height="74"/>
  </objectgroup>
  <objectgroup id="46" name="Objects">
   <object id="2279" gid="2147483738" x="4070" y="2368" width="1152" height="1024"/>
