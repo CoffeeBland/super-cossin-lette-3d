@@ -502,7 +502,11 @@
   </data>
  </layer>
  <objectgroup id="81" name="Fruits cachés">
-  <object id="2461" gid="41" x="3996" y="444" width="128" height="192"/>
+  <object id="2461" gid="41" x="3996" y="444" width="128" height="192">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="2500" gid="38" x="3922" y="2812" width="128" height="192">
    <properties>
     <property name="poZ " type="float" value="500"/>

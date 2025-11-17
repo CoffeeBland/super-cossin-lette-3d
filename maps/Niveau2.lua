@@ -649,7 +649,9 @@ return {
           rotation = 0,
           gid = 41,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 2500,

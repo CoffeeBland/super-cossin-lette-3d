@@ -586,16 +586,13 @@ end
 
 function Game:drawEntityShadow(entity, floorZ)
     floorZ = floorZ or 0
-    local zscale = --entity.velocity and
-        --math.pow(1 / math.max((entity.pos.z - floorZ) / METER_SCALE, 1), 1/4) or
-        1
     love.graphics.draw(
         textures[entity.shadow.name],
         entity.pos.x,
         entity.pos.y - floorZ,
         0,
-        (entity.shadow.flipX and -1 or 1) * zscale,
-        (entity.shadow.flipY and -1 or 1) * zscale,
+        (entity.shadow.flipX and -1 or 1),
+        (entity.shadow.flipY and -1 or 1),
         entity.shadow.anchor.x,
         entity.shadow.anchor.y)
 end
