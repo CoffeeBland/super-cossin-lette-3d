@@ -571,10 +571,15 @@ end
 
 function load.loadAudioFile(file, name, info)
     local time = love.timer.getTime()
-    sounds[name] = love.audio.newSource(file, "static")
+    local ok, source = pcall(love.audio.newSource, file, "static")
     print("audio", math.round((love.timer.getTime() - time) * 1000), file)
-    timestamps[file] = info
-    return true
+    if ok then
+        sounds[name] = source
+        timestamps[file] = info
+        return true
+    else
+        print("Could not read file", source)
+    end
 end
 
 function load.loadMusicFile(file, name, info)

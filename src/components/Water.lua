@@ -19,7 +19,7 @@ end
 
 function WaterSystem:update(framePart, dt, game)
     for _, entity in game:iterEntities(game.entitiesByComponent.water) do
-        entity.water:update(framePart, game, entity.pos, entity.velocity, entity.physics, entity.anim)
+        entity.water:update(framePart, game, entity)
     end
 end
 
@@ -51,7 +51,8 @@ function Water:clearSensors()
     self.sampleSensors = nil
 end
 
-function Water:update(framePart, game, pos, velocity, physics, anim)
+function Water:update(framePart, game, entity)
+    local pos, velocity, physics, anim = entity.pos, entity.velocity, entity.physics, entity.anim
     if self.remainingDrownFrames then
         self.remainingDrownFrames = self.remainingDrownFrames - framePart
         if self.remainingDrownFrames < DELTA then
@@ -63,6 +64,7 @@ function Water:update(framePart, game, pos, velocity, physics, anim)
             physics.body:setPosition(pos.x, pos.y)
             physics.body:setLinearVelocity(0, 0)
             velocity.z = self.respawnJumpSpeed * Game.constants.jumpMultiplier
+            physics:updateHeightSlices(pos)
         end
     else
         self.sensorsInWater = 0

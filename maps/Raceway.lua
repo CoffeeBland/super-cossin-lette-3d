@@ -13,7 +13,7 @@ return {
   nextobjectid = 394,
   properties = {
     ["name"] = "SUR LA PISTE",
-    ["vars.nextMap"] = "map_mymp",
+    ["vars.nextMap"] = "LacLac",
     ["vars.targetFruits"] = 20,
     ["vars.timer"] = 45
   },

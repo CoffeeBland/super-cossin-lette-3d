@@ -5,9 +5,9 @@ return function()
         camera = {},
         actor = {
             playerId = 1,
-            walkSpeed = Options.values.arcade and 450 or 150,
-            slidingSpeed = Options.values.arcade and 450 or 0,
-            airSpeed = Options.values.arcade and 450 or 25,
+            walkSpeed = Options.values.arcade and 475 or 150,
+            slidingSpeed = Options.values.arcade and 475 or 0,
+            airSpeed = Options.values.arcade and 475 or 25,
             jumpSpeed = 150
         },
         pos = { height = 148 },

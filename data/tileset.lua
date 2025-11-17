@@ -6862,7 +6862,7 @@ return {
       id = 90,
       properties = {
         ["animDef"] = "center",
-        ["prob"] = 0.125
+        ["prob"] = 0.075
       },
       image = "../img/Tiles/Tuile_eau-36.png",
       width = 128,
@@ -6886,7 +6886,7 @@ return {
       id = 93,
       properties = {
         ["animDef"] = "center",
-        ["prob"] = 0.125
+        ["prob"] = 0.075
       },
       image = "../img/Tiles/Tuile_eau-39.png",
       width = 128,

@@ -82,7 +82,7 @@ function love.update(dt)
         input.afterUpdate(dt)
     end
 
-    avgDt = avgDt * 0.9 + dt * 0.1
+    avgDt = avgDt * 0.99 + dt * 0.01
     frame = frame + 1
 end
 

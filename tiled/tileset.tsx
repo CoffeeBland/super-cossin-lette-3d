@@ -1659,7 +1659,7 @@
  <tile id="90">
   <properties>
    <property name="animDef" propertytype="waterAnim" value="center"/>
-   <property name="prob" type="float" value="0.125"/>
+   <property name="prob" type="float" value="0.075"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-36.png" width="128" height="74"/>
   <animation>
@@ -1671,7 +1671,7 @@
  <tile id="93">
   <properties>
    <property name="animDef" propertytype="waterAnim" value="center"/>
-   <property name="prob" type="float" value="0.125"/>
+   <property name="prob" type="float" value="0.075"/>
   </properties>
   <image source="../img/Tiles/Tuile_eau-39.png" width="128" height="74"/>
   <animation>
