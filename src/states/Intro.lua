@@ -46,7 +46,10 @@ function Intro:exit()
 end
 
 function Intro:update(dt)
-    if self.splashFrame >= splashFrames or actions.escape or actions.action then
+    if self.splashFrame >= splashFrames or
+        actions.start or
+        actions.back or
+        actions.action then
         StateMachine:change(Title)
     end
 

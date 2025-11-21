@@ -22,21 +22,23 @@ local options = {
         default = true,
         apply = function(value)
             love.window.setVSync(value)
-        end
+        end,
+        spaceAfter = true
     },
     {
         name = "sound",
-        text = "SOUND",
+        text = "SON",
         type = "range",
         default = 100,
         range = { 0, 100, 10 }
     },
     {
         name = "music",
-        text = "MUSIC",
+        text = "MUSIQUE",
         type = "range",
         default = 100,
-        range = { 0, 100, 10 }
+        range = { 0, 100, 10 },
+        spaceAfter = true
     },
     {
         name = "arcade",
@@ -65,7 +67,40 @@ local options = {
             if Music.current then
                 Music.current:setEffect("brun", value)
             end
-        end
+        end,
+        spaceAfter = true
+    },
+    {
+        name = "debug",
+        text = "DEBUG",
+        type = "range",
+        default = 0,
+        range = { 0, 5, 1 },
+        getPrintableValue = function(value)
+            if value == 0 then
+                return "NON"
+            elseif value == 1 then
+                return "FPS"
+            elseif value == 2 then
+                return "COLLISIONS"
+            elseif value == 3 then
+                return "HAUTEUR TUILES"
+            elseif value == 4 then
+                return "HAUTEUR PIXEL"
+            elseif value == 5 then
+                return "OMBRES"
+            end
+        end,
+        apply = function(value)
+            dbg.physics = value == 2
+            dbg.pointHeights = value == 3
+            dbg.heightMap = value == 4
+            dbg.shadowMap = value == 5
+            dbg.fps = value >= 1
+            dbg.autorefresh = value > 0
+            actions.toggleDebug = false
+        end,
+        spaceAfter = true
     },
     {
         name = "ok",
@@ -133,11 +168,43 @@ function Options:apply()
     end
 end
 
+function Options:getPrintableValue(option)
+    if option.getPrintableValue then
+        return option.getPrintableValue(self.values[option.name])
+    elseif option.type == "toggle" then
+        return self.values[option.name] and "OUI" or "NON"
+    elseif option.type == "range" then
+        value = self.values[option.name] .. ""
+        local n = #value + 1
+        for i = n, 3 do
+            value = "  " .. value
+        end
+        return value
+    end
+end
+
+function Options.isOptionItem(item)
+    return item.option
+end
+
 function Options:enter(params)
-    self.idx = 1
     if Music.current then
         Music.current:setFilter(Game.constants.music.filters.pause)
     end
+
+    self.items = {{ text = "OPTIONS", active = true }, {}}
+    for i, option in ipairs(options) do
+        table.insert(self.items, {
+            text = option.text,
+            value = self:getPrintableValue(option),
+            option = option
+        })
+        if option.spaceAfter then
+            table.insert(self.items, {})
+        end
+    end
+
+    self.idx = menu.newIdx(0, self.items, 1, Options.isOptionItem)
 end
 
 function Options:exit()
@@ -151,18 +218,18 @@ function Options:exit()
 end
 
 function Options:update(dt)
-    if actions.escape then
+    if actions.start or actions.back then
         Sound:start(Sound.global.act)
         StateMachine:pop(self)
     end
 
-    local option = options[self.idx]
+    local option = self.items[self.idx].option
 
     if actions.move then
         if actions.menu.y ~= 0 then
-            local newOptionIdx = math.wrap(self.idx + actions.menu.y, 1, #options)
-            if newOptionIdx ~= self.idx then
-                self.idx = newOptionIdx;
+            local newIdx = menu.newIdx(self.idx, self.items, actions.menu.y, Options.isOptionItem)
+            if newIdx ~= self.idx then
+                self.idx = newIdx
                 Sound:start(actions.menu.y < 0 and Sound.global.up or Sound.global.down)
             end
         end
@@ -177,9 +244,11 @@ function Options:update(dt)
     if (actions.action or actions.menu.x ~= 0) and self.actionFrames == 0 then
         local dir = actions.menu.x ~= 0 and actions.menu.x or 1
         if option.range then
+            Sound:start(Sound.global.act)
             self:set(option.name, dir * option.range[3])
         elseif actions.action or actions.move then
             -- No auto-repeat for non-ranges
+            Sound:start(Sound.global.act)
             self:set(option.name, dir)
         end
         self.actionFrames = actionCooldown
@@ -187,10 +256,11 @@ function Options:update(dt)
 end
 
 function Options:set(name, value)
-    Sound:start(Sound.global.act)
     local option = options[name]
     if option.type == "range" then
-        value = math.clamp(self.values[name] + value, option.range[1], option.range[2])
+        local s = option.range[1]
+        local n = option.range[2] - option.range[1] + option.range[3]
+        value = (self.values[name] + value - s) % n + s
     elseif option.type == "toggle" then
         value = not self.values[name]
     elseif option.type == "button" then
@@ -206,6 +276,12 @@ function Options:set(name, value)
 end
 
 function Options:render()
+    for i, item in ipairs(self.items) do
+        if item.option then
+            item.value = self:getPrintableValue(item.option)
+        end
+    end
+
     local w, h = CURRES[1], CURRES[2]
     love.graphics.setColor(unpack(Game.constants.pauseColor))
     love.graphics.setBlendMode("multiply", "premultiplied")
@@ -213,42 +289,5 @@ function Options:render()
     love.graphics.setBlendMode("alpha")
     love.graphics.setColor(1, 1, 1, 1)
 
-    love.graphics.push()
-    love.graphics.translate(w / 2, h / 2)
-
-    love.graphics.setFont(fonts.menu)
-    love.graphics.setBlendMode("add")
-
-
-    local hmargin = Game.constants.options.hmargin * SCALE_TO_EXPECTED
-    local vmargin = fonts.menu:getHeight() + Game.constants.options.vmargin * SCALE_TO_EXPECTED
-    local height = fonts.menu:getHeight() * (#options + 1) + vmargin * #options
-    local base = Game.constants.options.base * SCALE_TO_EXPECTED
-    local y = (fonts.menu:getHeight() - height) / 2
-    love.graphics.printf("OPTIONS", -(base + hmargin / 2), y, base, "right")
-    y = y + vmargin
-    for i, option in ipairs(options) do
-        love.graphics.setColor(unpack(i == self.idx and
-            Game.constants.pause.buttonActive or
-            Game.constants.pause.buttonInactive))
-        love.graphics.printf(option.text, - (base + hmargin / 2), y, base, "right")
-        local value
-        if option.type == "toggle" then
-            value = self.values[option.name] and "OUI" or "NON"
-        elseif option.type == "range" then
-            value = self.values[option.name] .. ""
-            local n = #value + 1
-            for i = n, 3 do
-                value = "  " .. value
-            end
-        end
-        if value then
-            love.graphics.printf(value, hmargin / 2, y, base, "left")
-        end
-        y = y + vmargin
-    end
-    love.graphics.setBlendMode("alpha")
-    love.graphics.setColor(1, 1, 1, 1)
-
-    love.graphics.pop()
+    menu.draw(self.idx, self.items, w, h)
 end

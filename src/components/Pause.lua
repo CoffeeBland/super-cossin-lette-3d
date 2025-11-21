@@ -55,11 +55,11 @@ function PauseSystem.new()
 end
 
 function PauseSystem:update(framePart, dt, game)
-    local escape = false
+    local start = false
     for _, actions in ipairs(playerActions) do
-        escape = escape or actions.escape
+        start = start or actions.start
     end
-    if escape then
+    if start then
         self.active = not self.active
         Sound:start(Sound.global.act)
         if Music.current then

@@ -10,10 +10,10 @@
 * NINJAs
 
 ## MAPS
-* Une île sur un lac sur un île sur un lac sur une [you get the idea]
+* Une plaine avec un arbre solitaire - Y faut faire une bonne pile qu'on drop intentionnellement pour réussir
+    Viendrait après Geronimo, avant Heist
+* Un labyrinthe. That's it
+    Viendrait avant la forêt
 
 ## BUGS
-* Les bulles sont pas bien centrées (mais c'est fiiiiine)
-
-## Notes
-Les lettres sont 35x70 dans une slice de A-Z
+* Y manque de reset les positions de l'intro

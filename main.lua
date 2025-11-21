@@ -5,9 +5,10 @@ require "src.input"
 require "src.input"
 require "src.constants"
 require "src.error"
+require "src.menu"
 require "src.states.StateMachine"
 
-dbg = { cycle = 0, physics = false, fps = false, autorefresh = true }
+dbg = { cycle = 0, physics = false, fps = false, autorefresh = false }
 
 function love.load(args)
     Options:apply()
@@ -16,16 +17,17 @@ function love.load(args)
     if args[1] == "-s" then
         requestedState = args[2]
         requestedMap = args[3]
+        Options:set("debug", 1 - Options.values.debug)
     elseif args[1] then
         requestedState = "game"
         requestedMap = args[1]
+        Options:set("debug", 1 - Options.values.debug)
     end
 
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.physics.setMeter(METER_SCALE)
 
     load.init()
-
 
     if requestedState then
         if requestedState == "title" then
@@ -56,13 +58,7 @@ function love.update(dt)
     input.poll(dt)
 
     if actions.toggleDebug then
-        dbg.cycle = (dbg.cycle + 1) % 6
-        dbg.physics = dbg.cycle == 2
-        dbg.pointHeights = dbg.cycle == 3
-        dbg.heightMap = dbg.cycle == 4
-        dbg.shadowMap = dbg.cycle == 5
-        dbg.fps = dbg.cycle >= 1
-        actions.toggleDebug = false
+        Options:set("debug", 1)
     end
 
     if dbg.autorefresh and StateMachine.current.refresh then
@@ -80,6 +76,14 @@ function love.update(dt)
         StateMachine:update(frameDuration)
 
         input.afterUpdate(dt)
+
+        for i, err in ipairs(errors) do
+            if err.frames == 0 then
+                table.remove(errors, i)
+            else
+                err.frames = math.max(err.frames - 1)
+            end
+        end
     end
 
     avgDt = avgDt * 0.99 + dt * 0.01
@@ -103,6 +107,19 @@ function love.draw()
     end
 
     StateMachine:render()
+
+    local y = 0
+    for i, err in ipairs(errors) do
+        local messageText = love.graphics.newText(fonts.menu, err.message)
+        local detailsText = love.graphics.newText(fonts.menu, err.details)
+        love.graphics.setColor(1, 0.25, 0.25, 1)
+        love.graphics.draw(messageText, 0, y)
+        y = y + messageText:getHeight()
+        love.graphics.setColor(1, 0, 0, 1)
+        love.graphics.draw(detailsText, 40, y)
+        y = y + detailsText:getHeight()
+        love.graphics.setColor(1, 1, 1, 1)
+    end
 
     if dbg.fps then
         love.graphics.print(math.round(1 / avgDt))

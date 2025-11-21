@@ -5,6 +5,12 @@ Map.__index = Map
 function Map.load(name)
     local path = "maps/" .. name .. ".lua"
     local info = love.filesystem.getInfo(path, "file")
+    if not info then
+        error("Could not load map", { name = name, path = path })
+        StateMachine:change(Title, nil, { fadeout = 0, fadein = 0 })
+        StateMachine:push(Maps)
+        return nil
+    end
     local instance = { name = name, _data = loadfile(path)() }
     instance = setmetatable(instance, Map)
     timestamps[path] = info

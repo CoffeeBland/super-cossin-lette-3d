@@ -444,7 +444,7 @@ function MapIntro:enter(params)
     end
     self:queueTimeline(letterShowTimeline)
 
-    if map._data.properties.name then
+    if map and map._data.properties.name then
         local errataTimeline = self:getErrataTimeline(map._data.properties.name)
         self:queueTimeline(errataTimeline)
         self.timelineFrameOffset = self.timelineFrameOffset + 90
@@ -514,7 +514,9 @@ end
 
 function MapIntro:update(dt)
     local w, h = CURRES[1], CURRES[2]
-    if actions.escape or actions.action then
+    if actions.start or
+        actions.back or
+        actions.action then
         Music:fadeout()
         StateMachine:change(Game, self.params)
     end

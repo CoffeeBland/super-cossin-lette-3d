@@ -27,6 +27,9 @@ Game = {
 }
 
 function Game:refresh(force)
+    if not self.map then
+        return
+    end
     local path = "maps/" .. self.map.name .. ".lua"
     local info = love.filesystem.getInfo(path, "file")
     if force or (timestamps[path] and timestamps[path].modtime < info.modtime) then
@@ -113,6 +116,9 @@ function Game:enter(args)
     }
     self.time = 0
     self.map = Map.load(args.map)
+    if not self.map then
+        return
+    end
     self.map:init()
     self.vars = {
         remainingFruits = 0,
@@ -244,7 +250,9 @@ end
 function Game:exit()
     Sound:fadeout()
     Music:fadeout()
-    self.physics:exit()
+    if self.physics then
+        self.physics:exit()
+    end
 end
 
 function Game:handleCreation()

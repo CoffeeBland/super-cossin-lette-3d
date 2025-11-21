@@ -1,5 +1,4 @@
 load = {}
-fonts = {}
 textures = {}
 heightTextures = {}
 sounds = {}

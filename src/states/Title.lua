@@ -119,60 +119,41 @@ local menu = {
         {
             text = "PIQUE-NIQUER",
             menuState = "new",
-            move = {
-                "hello",
-                { "walkTo", point = { pos = { x = -140, y = cossinY + 20 } } },
-                { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = -230, y = cossinY + 60 } } },
-                { "lookAt", point = { pos = { x = -230, y = cossinY + 70 } } }
-            },
-            actionMove = {
-                "hello",
-                { "walkTo", point = { pos = { x = -260, y = cossinY + 60 } } },
-                { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = -260, y = cossinY + 180 } } },
-            }
+        },
+        {
+            text = "ALLER DIRECT",
+            menuState = "maps",
         },
         {
             text = "OPTIONS",
             menuState = "options",
-            move = {
-                "hello",
-                { "walkTo", point = { pos = { x = 0, y = cossinY + 20 } } },
-                { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = 0, y = cossinY + 60 } } },
-                { "lookAt", point = { pos = { x = 0, y = cossinY + 70 } } }
-            },
-            actionMove = {
-                "hello",
-                { "walkTo", point = { pos = { x = 0, y = cossinY + 60 } } },
-                { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = 0, y = cossinY + 180 } } },
-            }
         },
         {
             text = "SE RECOUCHER",
             menuState = "quit",
-            move = {
-                "hello",
-                { "walkTo", point = { pos = { x = 140, y = cossinY + 20 } } },
-                { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = 230, y = cossinY + 60 } } },
-                { "lookAt", point = { pos = { x = 230, y = cossinY + 70 } } }
-            },
-            actionMove = {
-                "hello",
-                { "walkTo", point = { pos = { x = 260, y = cossinY + 60 } } },
-                { "jump", jumpSpeed = 100 },
-                { "walkTo", point = { pos = { x = 260, y = cossinY + 180 } } },
-            }
         }
     },
     buttonsByMenuState = {}
 }
 
-for _, button in ipairs(menu.buttons) do
+for i, button in ipairs(menu.buttons) do
     menu.buttonsByMenuState[button.menuState] = button
+
+    local di = i - (1 + #menu.buttons) / 2
+    local sign = math.sign(di)
+    button.move = {
+        "hello",
+        { "walkTo", point = { pos = { x = di * 320 - sign * 120, y = cossinY + 20 } } },
+        { "jump", jumpSpeed = 100 },
+        { "walkTo", point = { pos = { x = di * 320 - sign * 45, y = cossinY + 60 } } },
+        { "lookAt", point = { pos = { x = di * 320 - sign * 45, y = cossinY + 70 } } }
+    }
+    button.actionMove = {
+        "hello",
+        { "walkTo", point = { pos = { x = di * 320, y = cossinY + 60 } } },
+        { "jump", jumpSpeed = 100 },
+        { "walkTo", point = { pos = { x = di * 320, y = cossinY + 180 } } },
+    }
 end
 
 local colors = {
@@ -291,6 +272,9 @@ function Title:update(dt)
             elseif self.menuState == "options" then
                 StateMachine:push(Options)
                 self.waitingForEnd = false
+            elseif self.menuState == "maps" then
+                StateMachine:push(Maps)
+                self.waitingForEnd = false
             elseif self.menuState == "quit" then
                 Music:fadeout(Title.fadeout)
                 StateMachine:change(Exit)
@@ -326,7 +310,10 @@ function Title:update(dt)
             cossin.actor:setMoveFromEvent(button.move)
         end
 
-        if actions.action or actions.escape or actions.move then
+        if actions.action or
+            actions.start or
+            actions.back or
+            actions.move then
             self.menuActive = true
             if cossin.disabled then
                 local w = love.graphics:getDimensions()

@@ -5,13 +5,17 @@ local pressActionsByKey
 local pressActionsByButton
 function setupActions()
     pressActions = {
-        escape = {
+        start = {
             keys = { "escape" },
             buttons = { "start" }
         },
+        back = {
+            keys = { "escape" },
+            buttons = { "b" }
+        },
         action = {
             keys = { "return", "space" },
-            buttons = { "a", "x" }
+            buttons = { "a" }
         },
         toggleDebug = {
             keys = { "f12" },
@@ -19,7 +23,7 @@ function setupActions()
         },
         gogogadget = {
             keys = { "f11" },
-            buttons = { "b" }
+            buttons = { "x" }
         },
         newPlayer = {
             keys = {},
