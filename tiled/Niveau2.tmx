@@ -2037,7 +2037,7 @@
   <object id="2652" gid="2147483728" x="1702" y="888" width="313" height="321"/>
   <object id="2653" gid="83" x="1776" y="1110" width="322" height="319"/>
  </objectgroup>
- <objectgroup id="79" name="Fruits">
+ <objectgroup id="79" name="Fruits(10)">
   <object id="2467" gid="37" x="2738" y="1480" width="128" height="192">
    <properties>
     <property name="posZ" type="float" value="480"/>

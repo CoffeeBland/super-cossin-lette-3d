@@ -659,7 +659,7 @@
  <objectgroup id="44" name="Cossin Lette">
   <object id="2275" gid="25" x="4736" y="2072" width="192" height="256"/>
  </objectgroup>
- <objectgroup id="47" name="Fruits">
+ <objectgroup id="47" name="Fruits(8)">
   <object id="2286" gid="33" x="4440" y="2072" width="128" height="192"/>
   <object id="2287" gid="42" x="1480" y="2368" width="128" height="192"/>
   <object id="2288" gid="39" x="3256" y="666" width="128" height="192"/>
