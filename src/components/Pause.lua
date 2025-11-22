@@ -57,7 +57,7 @@ end
 function PauseSystem:update(framePart, dt, game)
     local start = false
     for _, actions in ipairs(playerActions) do
-        start = start or actions.start
+        start = start or actions.start or (self.active and actions.back)
     end
     if start then
         self.active = not self.active

@@ -35,7 +35,7 @@ function Maps:enter(params)
         nextmap = map._data.properties["vars.nextMap"]
     end
 
-    if dbg.cycle > 0 then
+    if Options.values.debug > 0 then
         table.insert(self.items, {})
         table.insert(self.items, { text = "DEV", active = true })
         table.insert(self.items, {})
