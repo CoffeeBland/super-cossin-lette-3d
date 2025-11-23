@@ -42,13 +42,8 @@ function Map:getTile(layer, tx, ty)
 end
 
 function Map:anyTile(tx, ty)
-    for _, layer in ipairs(self._data.layers) do
-        local tile = self:getTile(layer, tx, ty)
-        if tile and tile > 0 then
-            return true
-        end
-    end
-    return false
+    local globali = tx + ty * self.width
+    return self.anyTileMarkers[globali] or false
 end
 
 function Map:init()
@@ -74,7 +69,7 @@ function Map:init()
                 if tileData then
                     return i, tile, tx, ty, globali, flipX, flipY, og
                 else
-                    print("Unknown tile gid!", tile, og)
+                    error("Unknown tile gid!", { tile = tile, og = og })
                 end
             end
         end
@@ -167,6 +162,7 @@ function Map:init()
         end
     end
 
+    self.anyTileMarkers = {}
     self.heightMarkers = {}
     self.layerHeightInfo = {}
     self.tileEntities = {}
@@ -181,6 +177,7 @@ function Map:init()
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
                 for i, tile, tx, ty, globali, flipX, flipY, og in self:chunkTiles(layer, chunk) do
+                    self.anyTileMarkers[globali] = true
                     local x, y = Map.TileToPosMat:transformPoint(tx, ty)
                     local tileData = tileset.tiles[tile]
                     local height = tileData.height or 0
@@ -217,7 +214,7 @@ function Map:init()
         end
     end
 
-    print("map", math.round((love.timer.getTime() - time) * 1000), self.name)
+    love.timer.measure(time, "map " .. self.name)
 end
 
 function Map:getEntities(entities)
@@ -232,7 +229,7 @@ function Map:getEntities(entities)
             if id then
                 self:createEntity(entities, data, id, flipX, flipY)
             else
-                print("Unknown object gid!", data.gid, gid)
+                error("Unknown object gid!", { gid = gid, id = id })
             end
         end
     end
@@ -369,14 +366,15 @@ function Map:getPointHeight(x, y)
 end
 
 function Map:adjacentToTile(tx, ty)
-    for dx = tx - 1, tx + 1 do
-        for dy = ty - 1, ty + 1 do
-            if self:anyTile(dx, dy) then
-                return true
-            end
-        end
-    end
-    return false
+    return
+        self:anyTile(tx - 1, ty - 1) or
+        self:anyTile(tx - 1, ty + 0) or
+        self:anyTile(tx - 1, ty + 1) or
+        self:anyTile(tx + 0, ty - 1) or
+        self:anyTile(tx + 0, ty + 1) or
+        self:anyTile(tx + 1, ty - 1) or
+        self:anyTile(tx + 1, ty + 0) or
+        self:anyTile(tx + 1, ty + 1)
 end
 
 function Map:getTileEntities(physics, entities)

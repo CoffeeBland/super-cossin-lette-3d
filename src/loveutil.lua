@@ -77,3 +77,7 @@ function love.keyboard.isAnyDown(keys)
     end
     return false
 end
+
+function love.timer.measure()
+    -- Noop by default. See options.
+end

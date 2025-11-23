@@ -120,6 +120,7 @@ function Game:enter(args)
         return
     end
     self.map:init()
+    local time = love.timer.getTime()
     self.vars = {
         remainingFruits = 0,
         eaten = 0,
@@ -163,6 +164,8 @@ function Game:enter(args)
     self.pause = PauseSystem.new()
 
     self.map:getTileEntities(self.physics.world, self.entities)
+    time = love.timer.measure(time, "tile entities")
+
     self.map:getEntities(self.entities)
     self:createOtherCossins()
     for key, entity in pairs(self.entities) do
@@ -194,6 +197,7 @@ function Game:enter(args)
             entity.lens.height = h
         end
     end
+    time = love.timer.measure(time, "entities")
     Requests.populate(self)
 
     load.createHeightTextures()
@@ -242,6 +246,8 @@ function Game:enter(args)
             end
         end
     end
+
+    time = love.timer.measure(time, "tile batches")
 
     self.event:execute(Game.constants.startLevelCutscene)
     self:update(0)

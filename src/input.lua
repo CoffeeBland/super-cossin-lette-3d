@@ -175,7 +175,7 @@ function input.handlePlayerAddRemove(controller)
             end
         end
     end
-    print("SHOULDN'T REALLY HAPPEN SHIT")
+    error("Unknown controller not associated with any player", { id = id })
     input.newPlayer(controller)
 end
 

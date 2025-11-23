@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 15,
-  nextobjectid = 500,
+  nextobjectid = 501,
   properties = {
     ["name"] = "DANS LA PLAINE",
     ["vars.nextMap"] = "map_jessi",

@@ -1,6 +1,7 @@
 load = {}
 textures = {}
 heightTextures = {}
+dirtyHeightTextures = {}
 sounds = {}
 music = {}
 sprites = {}
@@ -39,9 +40,6 @@ local function getTilePos(alignment, tile)
 end
 
 function load.createHeightTextures()
-    if dbg.autorefresh then
-        heightTextures = {}
-    end
     -- All sprite entities with actual info
     for name, object in pairs(objects.byName) do
         local entity = object.prefab and prefabs[object.prefab](object, {}) or {}
@@ -126,7 +124,7 @@ end
 -- We're gonna bake in a whole lot of assumptions about how textures, sizes and collisions are used
 -- Strap in boyz
 function load.createHeightTexture(name, tiles)
-    if heightTextures[name] then
+    if heightTextures[name] and not dirtyHeightTextures[name] then
         return
     end
     local time = love.timer.getTime()
@@ -200,11 +198,12 @@ function load.createHeightTexture(name, tiles)
 
     love.graphics.reset()
     heightTextures[name] = love.graphics.newImage(canvas:newImageData())
-    print("height", math.round((love.timer.getTime() - time) * 1000), name)
+    dirtyHeightTextures[name] = nil
+    love.timer.measure(time, "height " .. name)
 end
 
 function load.createShadow(name, points, scale)
-    print("shadow", name)
+    local time = love.timer.getTime()
     local minX, minY, maxX, maxY
     for i = 1, #points / 2 do
         local x, y = points[i * 2 - 1] * scale, points[i * 2] * scale
@@ -236,6 +235,7 @@ function load.createShadow(name, points, scale)
     love.graphics.setCanvas()
     local shadowName = "objectShadow" .. name;
     textures[shadowName] = love.graphics.newImage(shadowCanvas:newImageData())
+    love.timer.measure(time, "shadow " .. name)
 
     local centerX = (maxX + minX) / 2
     local centerY = (maxY + minY) / 2
@@ -249,9 +249,9 @@ function load.createShadow(name, points, scale)
 end
 
 function load.loadData(name, file)
-    local loaded, error = loadfile(file)
-    if error then
-        print("Error in", file, ":", error)
+    local loaded, err = loadfile(file)
+    if err then
+        error("Could not read data", { file = file, error = err })
         return
     end
     local data = loaded()
@@ -259,6 +259,12 @@ function load.loadData(name, file)
 
     if isPrefab then
         prefabs[name] = data
+        local entity = data({}, {})
+        for _, sprite in pairs(entity.sprites or EMPTY) do
+            if sprite.name then
+                dirtyHeightTextures[sprite.name] = true
+            end
+        end
         return
     end
 
@@ -317,6 +323,7 @@ function load.loadData(name, file)
             for _, objData in ipairs(data.tiles) do
                 local obj = {}
                 obj.name = str.filename(objData.image)
+                dirtyHeightTextures[obj.name] = true
                 obj.id = objData.id
                 obj.offsetX = 0
                 obj.offsetY = 0
@@ -408,6 +415,7 @@ function load.loadData(name, file)
             tileset.anims = {}
             tileset.animDefs = {}
             tileset.shapes = {}
+            dirtyHeightTextures.tileset = true
             if data.image then
                 local name = str.filename(data.image)
                 local texture = getOrLoadTexture(name)
@@ -551,6 +559,7 @@ function load.loadData(name, file)
                 end
             end
             sprites[spriteName] = sprite
+            dirtyHeightTextures[spriteName] = true
         end
     end
 end
@@ -558,33 +567,34 @@ end
 function load.loadImgFile(file, name, info)
     local time = love.timer.getTime()
     local ok, img = pcall(love.graphics.newImage, file)
-    print("image", math.round((love.timer.getTime() - time) * 1000), file)
+    love.timer.measure(time, "image " .. file)
     if ok then
         textures[name] = img
+        dirtyHeightTextures[name] = true
         timestamps[file] = info
         return true
     else
-        print("Could not read file", img)
+        error("Could not read file ", { file = file, error = img })
     end
 end
 
 function load.loadAudioFile(file, name, info)
     local time = love.timer.getTime()
     local ok, source = pcall(love.audio.newSource, file, "static")
-    print("audio", math.round((love.timer.getTime() - time) * 1000), file)
+    love.timer.measure(time, "audio " .. file)
     if ok then
         sounds[name] = source
         timestamps[file] = info
         return true
     else
-        print("Could not read file", source)
+        error("Could not read file ", { file = file, error = source})
     end
 end
 
 function load.loadMusicFile(file, name, info)
     local time = love.timer.getTime()
     music[name] = love.audio.newSource(file, "stream")
-    print("music", math.round((love.timer.getTime() - time) * 1000), file)
+    love.timer.measure(time, "music " .. file)
     timestamps[file] = info
     return true
 end
@@ -616,7 +626,7 @@ function load.crawlFor(toFind)
             if name == nameToFind then
                 local time = love.timer.getTime()
                 load.loadData(name, file)
-                print("data", math.round((love.timer.getTime() - time) * 1000), file)
+                love.timer.measure(time, "data " .. file)
                 timestamps[file] = info
 
                 if prefabs[name] then
@@ -686,7 +696,7 @@ function load.crawlFiles(frame, stopOnLoad)
             local time = love.timer.getTime()
             local name = str.filename(file)
             load.loadData(name, file)
-            print("data", math.round((love.timer.getTime() - time) * 1000), file)
+            love.timer.measure(time, "data " .. file)
             timestamps[file] = info
             updated = true
             if updated and stopOnLoad then

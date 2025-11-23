@@ -27,7 +27,7 @@ function Requests.populate(game)
     for key, entity in pairs(game.entities) do
         if entity.name then
             if game.entitiesByName[entity.name] then
-                print("OHHO, name", entity.name, "for", entity.id, "is already taken by", game.entitiesByName[entity.name].id)
+                error("Duplicate named entity", { newid = entity.id, alreadyid = game.entitiesByName[entity.name].id })
             else
                 game.entitiesByName[entity.name] = entity
             end

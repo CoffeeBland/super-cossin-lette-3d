@@ -98,6 +98,22 @@ local options = {
             dbg.shadowMap = value == 5
             dbg.fps = value >= 1
             dbg.autorefresh = value > 0
+            love.timer.measure = value > 0 and
+                function (startTime, context)
+                    if Options.values.debug == 0 then
+                        return
+                    end
+                    local endTime = love.timer.getTime()
+                    local ms = tostring(math.round((endTime - startTime) * 1000))
+                    while #ms < 4 do
+                        ms = " " .. ms
+                    end
+                    print(ms, context)
+                    return endTime
+                end or
+                function()
+                end
+
             actions.toggleDebug = false
         end,
         spaceAfter = true

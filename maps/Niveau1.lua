@@ -908,7 +908,7 @@ return {
       type = "objectgroup",
       draworder = "topdown",
       id = 47,
-      name = "Fruits",
+      name = "Fruits(8)",
       class = "",
       visible = true,
       opacity = 1,

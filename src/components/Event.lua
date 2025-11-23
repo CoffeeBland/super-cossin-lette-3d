@@ -112,7 +112,7 @@ function Event:eval(framePart, game, expr, index)
         local atom = expr[i]
         if operators[atom] then
             if evalStackLen < 2 then
-                print("OHNO! THE EXPRESSION WAS BAD!", dump(expr), index)
+                error("Bad event expression", { expr = expr, index = index })
                 return
             end
             local operand1 = evalStack[evalStackLen]
@@ -186,13 +186,13 @@ function Event:processEvent(framePart, game, index)
 
     local entity = event.entity and game:findEntity(event.entity)
     if event.entity and not entity then
-        print("OHNO could not find entity", dump(event))
+        error("Could not find entity", event)
         return true
     end
 
     local image = event.image and game.images.imagesById[event.image.byId]
     if event.image and not image then
-        print("OHNO could not find image", dump(event))
+        error("Could not find image", event)
         return true
     end
 
@@ -252,7 +252,7 @@ function Event:processEvent(framePart, game, index)
         local time = game:eval(event[2])
         game.timer:start(time)
     else
-        print("OHNO", dump(event))
+        error("Unknown event", event)
     end
 
     return true
