@@ -7,7 +7,7 @@
   <property name="name" value="DANS LA PLAINE"/>
   <property name="vars.nextMap" value="map_jessi"/>
   <property name="vars.targetFruits" type="int" value="7"/>
-  <property name="vars.timer" type="float" value="60"/>
+  <property name="vars.timer" type="float" value="80"/>
  </properties>
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="284" source="objects.tsx"/>

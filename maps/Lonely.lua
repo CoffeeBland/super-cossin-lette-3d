@@ -15,7 +15,7 @@ return {
     ["name"] = "DANS LA PLAINE",
     ["vars.nextMap"] = "map_jessi",
     ["vars.targetFruits"] = 7,
-    ["vars.timer"] = 60
+    ["vars.timer"] = 80
   },
   tilesets = {
     {

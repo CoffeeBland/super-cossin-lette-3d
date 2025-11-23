@@ -10,8 +10,6 @@
 * NINJAs
 
 ## MAPS
-* Une plaine avec un arbre solitaire - Y faut faire une bonne pile qu'on drop intentionnellement pour réussir
-    Viendrait après Geronimo, avant Heist
 * Un labyrinthe. That's it
     Viendrait avant la forêt
 
