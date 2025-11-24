@@ -14,4 +14,3 @@
     Viendrait avant la forêt
 
 ## BUGS
-* Y manque de reset les positions de l'intro

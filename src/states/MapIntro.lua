@@ -39,7 +39,7 @@ local stuff = {
         initialAlpha = 0,
         relativeTo = "crayon",
         textureAnchor = { x = 0.5, y = 0.5 },
-        offset = { x = 460, y = 1430, z = 0 },
+        initialOffset = { x = 460, y = 1430, z = 0 },
         type = "shadow",
         lens = "letter"
     },
@@ -49,7 +49,7 @@ local stuff = {
         relativeTo = "letter",
         initialAlpha = 0,
         textureAnchor = { x = 0.6044, y = 1 },
-        offset = { x = 0, y = 0, z = 960 }
+        initialOffset = { x = 0, y = 0, z = 960 }
     },
     {
         id = "blonde",
@@ -464,9 +464,9 @@ function MapIntro:enter(params)
             y = thing.initialScale and thing.initialScale.y or 1
         }
         thing.offset = {
-            x = thing.offset and thing.offset.x or 0,
-            y = thing.offset and thing.offset.y or 0,
-            z = thing.offset and thing.offset.z or 0
+            x = thing.initialOffset and thing.initialOffset.x or 0,
+            y = thing.initialOffset and thing.initialOffset.y or 0,
+            z = thing.initialOffset and thing.initialOffset.z or 0
         }
         thing.last = { x = 0, y = 0 }
     end
