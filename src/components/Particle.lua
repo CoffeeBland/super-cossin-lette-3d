@@ -63,6 +63,9 @@ function ParticleSystem:update(framePart, dt, game)
 end
 
 function ParticleSystem:emit(framePart, entity, emit)
+    if not entity.drawOrder then
+        return
+    end
     if emit.cooldownFrames and emit.cooldownFrames > 0 then
         emit.cooldownFrames = math.max(emit.cooldownFrames - framePart)
         return

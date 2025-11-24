@@ -112,12 +112,12 @@ function StateMachine:update(dt)
     end
 end
 
-function StateMachine:render()
+function StateMachine:render(dt)
     if self.current then
-        self.current:render()
+        self.current:render(dt)
     end
     for _, state in ipairs(self.stack) do
-        state:render()
+        state:render(dt)
     end
     if self.fadePart ~= 0 then
         love.graphics.setColor(self.fadeColor[1], self.fadeColor[2], self.fadeColor[3], self.fadePart)

@@ -51,6 +51,7 @@ function Maps:enter(params)
     table.insert(self.items, { text = "OK", name = "ok" })
 
     self.idx = menu.newIdx(0, self.items, 1, Maps.isMapItem)
+    self.scroll = 0
 end
 
 function Maps:exit()
@@ -83,12 +84,12 @@ function Maps:update(dt)
     end
 end
 
-function Maps:render()
+function Maps:render(dt)
     local w, h = CURRES[1], CURRES[2]
     love.graphics.setColor(unpack(Game.constants.pauseColor))
     love.graphics.setBlendMode("multiply", "premultiplied")
     love.graphics.rectangle("fill", 0, 0, w, h)
     love.graphics.setBlendMode("alpha")
     love.graphics.setColor(1, 1, 1, 1)
-    menu.draw(self.idx, self.items, w, h)
+    self.scroll = menu.draw(self.idx, self.scroll, self.items, w, h, dt)
 end

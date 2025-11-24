@@ -316,6 +316,7 @@ function Game:update(dt)
                 sprite.scaleY = scaleY
             end
         end
+        entity.drawOrder = nil
     end
 end
 

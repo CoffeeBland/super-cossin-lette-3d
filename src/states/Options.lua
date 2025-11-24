@@ -226,6 +226,7 @@ function Options:enter(params)
     end
 
     self.idx = menu.newIdx(0, self.items, 1, Options.isOptionItem)
+    self.scroll = 0
 end
 
 function Options:exit()
@@ -296,7 +297,7 @@ function Options:set(name, value)
     self.dirty = true
 end
 
-function Options:render()
+function Options:render(dt)
     for i, item in ipairs(self.items) do
         if item.option then
             item.value = self:getPrintableValue(item.option)
@@ -310,5 +311,5 @@ function Options:render()
     love.graphics.setBlendMode("alpha")
     love.graphics.setColor(1, 1, 1, 1)
 
-    menu.draw(self.idx, self.items, w, h)
+    menu.draw(self.idx, self.scroll, self.items, w, h, dt)
 end

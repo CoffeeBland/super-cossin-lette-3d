@@ -90,7 +90,12 @@ function love.update(dt)
     frame = frame + 1
 end
 
+local drawTime = love.timer.getTime()
 function love.draw()
+    local time = love.timer.getTime()
+    local dt = time - drawTime
+    drawTime = time
+
     CURRES[1], CURRES[2] = love.graphics:getDimensions()
     SCALE_TO_EXPECTED = math.scaleToExpected(CURRES[1], CURRES[2])
 
@@ -106,7 +111,7 @@ function love.draw()
         fontsSizes.menu = menuFontSize
     end
 
-    StateMachine:render()
+    StateMachine:render(dt)
 
     local y = 0
     for i, err in ipairs(errors) do
