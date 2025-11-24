@@ -582,7 +582,7 @@ end
 function load.loadAudioFile(file, name, info)
     local time = love.timer.getTime()
     local ok, source = pcall(love.audio.newSource, file,
-        (info.size < (100 * 1024)) and "static" or "stream")
+        ((info and info.size or 1) < (100 * 1024)) and "static" or "stream")
     love.timer.measure(time, "audio " .. file)
     if ok then
         sounds[name] = source

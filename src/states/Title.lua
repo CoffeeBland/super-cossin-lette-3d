@@ -255,9 +255,9 @@ function Title:update(dt)
                 self.menuActive = true
             end
             if event.cossin and cossin.disabled then
-                local w = love.graphics:getDimensions()
+                local x = (-CURRES[1] / 2 - 60) / SCALE_TO_EXPECTED
                 cossin.disabled = false
-                cossin.pos.x = - (w + 60)
+                cossin.pos.x = x
                 cossin.actor:setMoveFromEvent(event)
             end
         end
@@ -316,9 +316,9 @@ function Title:update(dt)
             actions.move then
             self.menuActive = true
             if cossin.disabled then
-                local w = love.graphics:getDimensions()
+                local x = (-CURRES[1] / 2 - 60) / SCALE_TO_EXPECTED
                 cossin.disabled = false
-                cossin.pos.x = - (w + 60)
+                cossin.pos.x = x
                 local button = menu.buttonsByMenuState[self.menuState]
                 cossin.actor:setMoveFromEvent(button.move)
             end

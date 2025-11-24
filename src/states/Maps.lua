@@ -1,7 +1,7 @@
 Maps = {}
 
 function Maps.isMapItem(item)
-    return item.map
+    return item.map or item.name == "ok"
 end
 
 function Maps:enter(params)
@@ -47,6 +47,9 @@ function Maps:enter(params)
         end
     end
 
+    table.insert(self.items, {})
+    table.insert(self.items, { text = "OK", name = "ok" })
+
     self.idx = menu.newIdx(0, self.items, 1, Maps.isMapItem)
 end
 
@@ -71,7 +74,12 @@ function Maps:update(dt)
     end
 
     if actions.action then
-        StateMachine:change(MapIntro, { map = self.items[self.idx].name })
+        local item = self.items[self.idx]
+        if item.name == "ok" then
+            StateMachine:pop(self)
+        else
+            StateMachine:change(MapIntro, { map = item.name })
+        end
     end
 end
 

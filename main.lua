@@ -99,7 +99,7 @@ function love.draw()
         SCREEN_SHADER:send("size", CURRES)
     end
 
-    local menuFontSize = math.max(math.ceil(36 * SCALE_TO_EXPECTED), 18)
+    local menuFontSize = math.max(math.ceil(48 * SCALE_TO_EXPECTED), 14)
     if menuFontSize ~= fontsSizes.menu then
         fonts.menu = love.graphics.newFont(menuFontSize)
         fonts.menu:setFilter("nearest")
