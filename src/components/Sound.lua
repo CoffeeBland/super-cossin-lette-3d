@@ -64,6 +64,7 @@ function Sound:start(sound, entity)
         return
     end
     local volume = sound.volumeRange and math.randomRange(sound.volumeRange) or sound.volume or 1
+    sound.currentVolume = volume
     source:setVolume(volume * Game.constants.sound.volume * Options.values.sound / 100)
     local baseMass = entity and entity.actor and entity.actor.stats.mass or 1
     local massFactor = sound.mass or 0
@@ -79,6 +80,7 @@ function Sound:start(sound, entity)
     if sound.fadeIn then
         sound.volumeFrames = sound.fadeIn
         sound.targetVolume = volume
+        sound.currentVolume = 0
         source:setVolume(0)
     else
         sound.volumeFrames = 0
@@ -145,6 +147,7 @@ function Sound:update(framePart, dt)
                 sound.source = nil
                 sound.entity = nil
             else
+                sound.currentVolume = volume
                 source:setVolume(volume * Game.constants.sound.volume * Options.values.sound / 100)
             end
             if sound.volumeFrames == 0 then

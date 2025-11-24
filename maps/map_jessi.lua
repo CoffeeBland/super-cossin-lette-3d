@@ -14,6 +14,7 @@ return {
   properties = {
     ["name"] = "DANS LA FORET",
     ["skipAnimTileGen"] = true,
+    ["vars.ambience"] = "ForestBirds",
     ["vars.nextMap"] = "Geronimo",
     ["vars.targetFruits"] = 12,
     ["vars.timer"] = 120

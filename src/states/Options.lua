@@ -30,7 +30,12 @@ local options = {
         text = "SON",
         type = "range",
         default = 100,
-        range = { 0, 100, 10 }
+        range = { 0, 100, 10 },
+        apply = function(value)
+            for name, sound in pairs(Sound.playing) do
+                sound.source:setVolume(sound.currentVolume * Game.constants.sound.volume * Options.values.sound / 100)
+            end
+        end
     },
     {
         name = "music",

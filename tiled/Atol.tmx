@@ -6,6 +6,7 @@
  <properties>
   <property name="name" value="AU MILIEU DE L'EAU"/>
   <property name="skipAnimTileGen" type="bool" value="true"/>
+  <property name="vars.ambience" value="Sea"/>
   <property name="vars.bg" propertytype="bg" value="water"/>
   <property name="vars.nextMap" value="Heist"/>
   <property name="vars.targetFruits" type="int" value="12"/>

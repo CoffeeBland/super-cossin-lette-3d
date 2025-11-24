@@ -251,6 +251,14 @@ function Game:enter(args)
 
     self.event:execute(Game.constants.startLevelCutscene)
     self:update(0)
+
+    if self.vars.ambience then
+        Sound:start({
+            name = self.vars.ambience,
+            volume = 0.3,
+            loop = true
+        })
+    end
 end
 
 function Game:exit()

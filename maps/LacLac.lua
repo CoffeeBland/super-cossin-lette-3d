@@ -13,6 +13,7 @@ return {
   nextobjectid = 403,
   properties = {
     ["name"] = "SUR L'ILE RECURSIVE",
+    ["vars.ambience"] = "Lake",
     ["vars.nextMap"] = "map_mymp",
     ["vars.targetFruits"] = 13,
     ["vars.timer"] = 60

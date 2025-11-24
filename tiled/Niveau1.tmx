@@ -4,6 +4,7 @@
   <export target="../maps/Niveau1.lua" format="lua"/>
  </editorsettings>
  <properties>
+  <property name="vars.ambience" value="ForestBirds"/>
   <property name="vars.nextMap" value="Niveau2"/>
   <property name="vars.targetFruits" type="int" value="5"/>
   <property name="vars.timer" type="float" value="60"/>

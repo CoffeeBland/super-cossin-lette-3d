@@ -1,6 +1,4 @@
-Maps = {
-    mapsByName = {}
-}
+Maps = {}
 
 function Maps.isMapItem(item)
     return item.map
@@ -8,9 +6,7 @@ end
 
 function Maps:enter(params)
     for file, info in pairs(love.filesystem.crawl("maps")) do
-        local name = str.filename(file)
-        local map = Map.load(name)
-        self.mapsByName[name] = map
+        Map.load(str.filename(file))
     end
 
     self.items = {{ text = "PIQUE-NIQUES", active = true }, {}}
@@ -19,9 +15,9 @@ function Maps:enter(params)
     local nextmap = Game.constants.firstLevel
     local noDisplayIdx = 1
 
-    while self.mapsByName[nextmap] and not seen[nextmap] do
+    while mapsByName[nextmap] and not seen[nextmap] do
         seen[nextmap] = true
-        local map = self.mapsByName[nextmap]
+        local map = mapsByName[nextmap]
         local displayName = map._data.properties.name
         if not displayName then
             displayName = "DANS LES BOIS #" .. noDisplayIdx
@@ -39,7 +35,7 @@ function Maps:enter(params)
         table.insert(self.items, {})
         table.insert(self.items, { text = "DEV", active = true })
         table.insert(self.items, {})
-        for name, map in pairs(self.mapsByName) do
+        for name, map in pairs(mapsByName) do
             if not seen[name] then
                 seen[name] = true
                 table.insert(self.items, {

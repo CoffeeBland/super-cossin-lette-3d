@@ -14,6 +14,7 @@ return {
   properties = {
     ["autoanim"] = true,
     ["name"] = "A LA BANQUE",
+    ["vars.ambience"] = "ForestBirds",
     ["vars.nextMap"] = "Raceway",
     ["vars.targetFruits"] = 100,
     ["vars.timer"] = 90

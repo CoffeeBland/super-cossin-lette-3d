@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -14,6 +14,7 @@ return {
   properties = {
     ["name"] = "AU PETIT LAC",
     ["skipAnimTileGen"] = true,
+    ["vars.ambience"] = "ForestBirds",
     ["vars.nextMap"] = "Atol",
     ["vars.targetFruits"] = 12,
     ["vars.timer"] = 60

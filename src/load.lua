@@ -13,6 +13,7 @@ objects = {
 prefabs = {}
 fonts = {}
 fontsSizes = {}
+mapsByName = {}
 
 function load.init()
 end

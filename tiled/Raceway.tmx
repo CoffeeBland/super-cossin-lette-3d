@@ -5,6 +5,7 @@
  </editorsettings>
  <properties>
   <property name="name" value="SUR LA PISTE"/>
+  <property name="vars.ambience" value="Meadow"/>
   <property name="vars.nextMap" value="LacLac"/>
   <property name="vars.targetFruits" type="int" value="20"/>
   <property name="vars.timer" type="float" value="45"/>

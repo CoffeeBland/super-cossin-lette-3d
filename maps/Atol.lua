@@ -14,6 +14,7 @@ return {
   properties = {
     ["name"] = "AU MILIEU DE L'EAU",
     ["skipAnimTileGen"] = true,
+    ["vars.ambience"] = "Sea",
     ["vars.bg"] = "water",
     ["vars.nextMap"] = "Heist",
     ["vars.targetFruits"] = 12,

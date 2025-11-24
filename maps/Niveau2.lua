@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -12,6 +12,7 @@ return {
   nextlayerid = 94,
   nextobjectid = 2654,
   properties = {
+    ["vars.ambience"] = "ForestBirds",
     ["vars.nextMap"] = "Lonely",
     ["vars.targetFruits"] = 6,
     ["vars.timer"] = 60
@@ -3870,7 +3871,7 @@ return {
       type = "objectgroup",
       draworder = "topdown",
       id = 79,
-      name = "Fruits",
+      name = "Fruits(10)",
       class = "",
       visible = true,
       opacity = 1,

@@ -3,6 +3,7 @@ Map = {}
 Map.__index = Map
 
 function Map.load(name)
+    local time = love.timer.getTime()
     local path = "maps/" .. name .. ".lua"
     local info = love.filesystem.getInfo(path, "file")
     if not info then
@@ -14,6 +15,8 @@ function Map.load(name)
     local instance = { name = name, _data = loadfile(path)() }
     instance = setmetatable(instance, Map)
     timestamps[path] = info
+    mapsByName[name] = instance
+    love.timer.measure(time, "map " .. name)
     return instance
 end
 
@@ -214,7 +217,7 @@ function Map:init()
         end
     end
 
-    love.timer.measure(time, "map " .. self.name)
+    love.timer.measure(time, "map init " .. self.name)
 end
 
 function Map:getEntities(entities)
