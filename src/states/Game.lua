@@ -255,7 +255,7 @@ function Game:enter(args)
     if self.vars.ambience then
         Sound:start({
             name = self.vars.ambience,
-            volume = 0.3,
+            volume = Game.constants.ambienceVolume,
             loop = true
         })
     end
