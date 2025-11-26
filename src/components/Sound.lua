@@ -34,7 +34,7 @@ clones = {}
 
 function Sound:findSource(name)
     local source = sounds[name]
-    if source and source:isPlaying() then
+    if source and source:isPlaying() and not source:isLooping() then
         if not clones[name] then
             clones[name] = {}
         end
