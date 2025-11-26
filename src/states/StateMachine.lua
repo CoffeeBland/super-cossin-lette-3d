@@ -4,6 +4,7 @@ require "src.states.MapIntro"
 require "src.states.Game"
 require "src.states.Options"
 require "src.states.Maps"
+require "src.states.Credits"
 
 Exit = { fadein = 1, fadeout = 1 }
 function Exit:enter() end

@@ -21,7 +21,6 @@ function menu.draw(idx, scroll, items, w, h, dt)
     love.graphics.push()
     love.graphics.translate(w / 2, h / 2)
 
-    love.graphics.setFont(fonts.menu)
     love.graphics.setBlendMode("add")
 
     local fontHeight = fonts.menu:getHeight()
@@ -49,25 +48,27 @@ function menu.draw(idx, scroll, items, w, h, dt)
         end
     end
 
-    local tscroll = scroll
-    for di = -2, 2 do
-        local item = items[math.clamp(idx + di, 1, #items)]
-        local y = item.y + tscroll
-        local hstart = -h/2 + vmargin
-        local hend = h/2 - vmargin - fontHeight
-        if y < hstart then
-            tscroll = tscroll + hstart - y
+    if idx then
+        local tscroll = scroll
+        for di = -2, 2 do
+            local item = items[math.clamp(idx + di, 1, #items)]
+            local y = item.y + tscroll
+            local hstart = -h/2 + vmargin
+            local hend = h/2 - vmargin - fontHeight
+            if y < hstart then
+                tscroll = tscroll + hstart - y
+            end
+            if y > hend then
+                tscroll = tscroll + hend - y
+            end
         end
-        if y > hend then
-            tscroll = tscroll + hend - y
+        local dscroll = tscroll - scroll
+        if dscroll ~= 0 then
+            scroll =
+                math.sign(dscroll) *
+                math.min(dt * Game.constants.options.scrollSpeed, math.abs(dscroll)) +
+                scroll
         end
-    end
-    local dscroll = tscroll - scroll
-    if dscroll ~= 0 then
-        scroll =
-            math.sign(dscroll) *
-            math.min(dt * Game.constants.options.scrollSpeed, math.abs(dscroll)) +
-            scroll
     end
 
     for i, item in ipairs(items) do
@@ -75,6 +76,7 @@ function menu.draw(idx, scroll, items, w, h, dt)
             (item.active or i == idx) and
                 Game.constants.pause.buttonActive or
                 Game.constants.pause.buttonInactive))
+        love.graphics.setFont(item.font or fonts.menu)
         local y = item.y + scroll
         if item.value then
             love.graphics.printf(item.text, - (base + hmargin / 2), y, base, "right")

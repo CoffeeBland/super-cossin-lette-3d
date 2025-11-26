@@ -111,6 +111,13 @@ function love.draw()
         fontsSizes.menu = menuFontSize
     end
 
+    local textFontSize = math.max(math.ceil(40 * SCALE_TO_EXPECTED), 12)
+    if textFontSize ~= fontsSizes.text then
+        fonts.text = love.graphics.newFont(textFontSize)
+        fonts.text:setFilter("nearest")
+        fontsSizes.text = textFontSize
+    end
+
     StateMachine:render(dt)
 
     local y = 0

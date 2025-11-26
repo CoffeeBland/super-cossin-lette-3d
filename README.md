@@ -1,16 +1,18 @@
 ## TODO
 
 * Particle
-    * Y'a le support mais l'actuel est triiiissssssss
+    * Splashs d'eau
 * Sons
-    * Y'a le support mais l'actuel est triiiissssssss
+    * Fruit pickup / drop
+    * Jingle de victoire
+    * Jingle de défaite
+    * Track pour le jeu
+    * Enregistrer le title theme
+    * Track pour la fin
 * Les transitions ont besoin d'amour
-    * Écran "Un peu plus tard" avant la prochaine lettre
-    * Crédits de fin
-* NINJAs
+    * Bisous de fin
 
 ## MAPS
 * Un labyrinthe. That's it
-    Viendrait avant la forêt
 
 ## BUGS

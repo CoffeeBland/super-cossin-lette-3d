@@ -20,7 +20,7 @@ function math.interp(frames, current, target)
 end
 
 function math.sign(x)
-    return x / math.abs(x)
+    return (x < 0 and -1) or (x > 0 and 1) or 0
 end
 
 function math.trigterp(time, ts, te, apex)

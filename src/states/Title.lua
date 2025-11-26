@@ -129,6 +129,10 @@ local menu = {
             menuState = "options",
         },
         {
+            text = "CREDITS",
+            menuState = "credits",
+        },
+        {
             text = "SE RECOUCHER",
             menuState = "quit",
         }
@@ -271,6 +275,9 @@ function Title:update(dt)
                 StateMachine:change(MapIntro, { map = Game.constants.firstLevel })
             elseif self.menuState == "options" then
                 StateMachine:push(Options)
+                self.waitingForEnd = false
+            elseif self.menuState == "credits" then
+                StateMachine:push(Credits)
                 self.waitingForEnd = false
             elseif self.menuState == "maps" then
                 StateMachine:push(Maps)
