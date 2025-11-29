@@ -18,10 +18,12 @@ SCALE_TO_EXPECTED = 1
 HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
     uniform vec2 size;
     uniform vec4 shadowColor;
+    uniform vec4 reflectionColor;
     uniform Image heightMap;
     uniform Image shadowMap;
     uniform float shadowMapHeightOffset;
     uniform float shadowMapOffset;
+    uniform Image reflectionMap;
     uniform float skyLimit;
     uniform float scale;
     uniform float hueRot;
@@ -66,6 +68,12 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
             screen_coords.x / size.x,
             (screen_coords.y + height * scale) / (size.y + shadowMapOffset));
         float shadowHeight = Texel(shadowMap, shadow_map_coords).r * skyLimit - shadowMapHeightOffset;
+
+        if (distance(texturecolor.rgb, reflectionColor.rgb) < 0.1) {
+            vec2 reflection_map_coords = shadow_map_coords;
+            vec4 reflectedcolor = Texel(reflectionMap, reflection_map_coords);
+            texturecolor = vec4(mix(texturecolor.rgb, reflectedcolor.rgb, reflectedcolor.a), texturecolor.a);
+        }
 
         float touchability = max(0.0, min(1.0, (distance(texturecolor.rgb, linecol) - 0.05) * 10.0));
         vec4 finalcol = texturecolor;

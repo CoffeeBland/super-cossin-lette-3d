@@ -324,7 +324,7 @@ local cameraEntities = {}
 local cameraCols = {}
 local cameraRows = {}
 local drawnEntities = {}
-local shadowEntities = {}
+local effectEntities = {}
 local tileBatchStartIdx = 0
 local tileBatchIdx = 0
 local tileBatchi = 0
@@ -373,6 +373,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 
     self:drawHeightMap(camera, w, h, drawnEntities)
     self:drawShadowMap(camera, w, h, sx, sy, ex, ey)
+    self:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
 
     -- Draw!
     love.graphics.setCanvas({ camera.canvas, stencil = true })
@@ -381,9 +382,11 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
     HEIGHT_MAPPED_SHADER:send("heightMap", camera.heightCanvas)
     HEIGHT_MAPPED_SHADER:send("shadowMap", camera.shadowCanvas)
+    HEIGHT_MAPPED_SHADER:send("reflectionMap", camera.reflectionCanvas)
     HEIGHT_MAPPED_SHADER:send("shadowColor", Game.constants.shadowColor)
     HEIGHT_MAPPED_SHADER:send("shadowMapHeightOffset", SHADOW_MAP_HEIGHT_OFFSET)
     HEIGHT_MAPPED_SHADER:send("shadowMapOffset", SHADOW_MAP_OFFSET)
+    HEIGHT_MAPPED_SHADER:send("reflectionColor", Game.constants.waterColor)
     HEIGHT_MAPPED_SHADER:send("skyLimit", SKY_LIMIT)
     HEIGHT_MAPPED_SHADER:send("scale", scale * Game.constants.heightSlop)
     HEIGHT_MAPPED_SHADER:send("hue", -1)
@@ -513,6 +516,10 @@ function Game:renderFrame(dt, camera, x, y, w, h)
         love.graphics.setShader()
     end
 
+    if dbg.reflectionMap then
+        love.graphics.draw(camera.reflectionCanvas, 0, 0)
+    end
+
     if dbg.pointHeights then
         local x, y = 0, 0
         if self.input.target then
@@ -546,6 +553,16 @@ function Game:drawEntitySprites(entity)
             HEIGHT_MAPPED_SHADER:send("hueRot", 0)
         end
     end
+end
+
+function Game:drawEntityReflection(entity)
+    entity.pos.z = -entity.pos.z
+    for _, sprite in ipairs(entity.sprites) do
+        sprite.flipY = not sprite.flipY
+        self:drawEntitySprite(entity, sprite)
+        sprite.flipY = not sprite.flipY
+    end
+    entity.pos.z = -entity.pos.z
 end
 
 function Game:drawEntitySprite(entity, sprite)
@@ -667,18 +684,55 @@ function Game:drawShadowMap(camera, w, h, sx, sy, ex, ey)
         local entityey = entity.pos.y - entity.pos.z + 1200
         if (entity.shadow) and
             entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
-            shadowEntities[i] = entity
+            effectEntities[i] = entity
             i = i + 1
         end
     end
-    for j = i, #shadowEntities do
-        shadowEntities[j] = nil
+    for j = i, #effectEntities do
+        effectEntities[j] = nil
     end
-    self:sortByZ(shadowEntities)
-    for _, entity in ipairs(shadowEntities) do
+    self:sortByZ(effectEntities)
+    for _, entity in ipairs(effectEntities) do
         love.graphics.setColor((entity.pos.z + SHADOW_MAP_HEIGHT_OFFSET) / SKY_LIMIT, 0, 0, 1)
         self:drawEntityShadow(entity)
     end
+    love.graphics.pop()
+end
+
+function Game:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
+    love.graphics.push("all")
+    local i = 1
+    for _, entity in self:iterEntities(self.entitiesByComponent.shadow) do
+        local entitysx = entity.pos.x - 800
+        local entitysy = entity.pos.y - entity.pos.z - 1200
+        local entityex = entity.pos.x + 800
+        local entityey = entity.pos.y - entity.pos.z + 1200
+        if (entity.shadow) and
+            entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
+            effectEntities[i] = entity
+            i = i + 1
+        end
+    end
+    for j = i, #effectEntities do
+        effectEntities[j] = nil
+    end
+    self:sortByZ(effectEntities)
+
+    love.graphics.setCanvas(camera.shadowCanvas)
+    love.graphics.clear(0, 0, 0, 1)
+    for _, entity in ipairs(effectEntities) do
+        love.graphics.setColor((entity.pos.z + SHADOW_MAP_HEIGHT_OFFSET) / SKY_LIMIT, 0, 0, 1)
+        self:drawEntityShadow(entity)
+    end
+    love.graphics.setColor(1, 1, 1, 1)
+
+    love.graphics.setCanvas(camera.reflectionCanvas)
+    love.graphics.setShader()
+    love.graphics.clear(Game.constants.waterColor[1], Game.constants.waterColor[2], Game.constants.waterColor[3], 0)
+    for _, entity in ipairs(effectEntities) do
+        self:drawEntityReflection(entity)
+    end
+
     love.graphics.pop()
 end
 

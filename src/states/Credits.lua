@@ -9,7 +9,7 @@ local credits = {
     },
     {
         "Oui",
-        "Guillame Noël-Martel"
+        "Guillaume Noël-Martel"
     },
     {
         "P'tits bonhommes",
