@@ -233,12 +233,12 @@ function Camera:setSize(x, y, w, h, canvasw, canvash)
     if not heightCanvas or heightCanvas:getWidth() ~= canvasw or heightCanvas:getHeight() ~= canvash then
         heightCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "r8" })
     end
+    if not reflectionCanvas or reflectionCanvas:getWidth() ~= canvasw or reflectionCanvas:getHeight() ~= canvash then
+        reflectionCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "rgba8" })
+    end
     canvash = canvash + SHADOW_MAP_OFFSET
     if not shadowCanvas or shadowCanvas:getWidth() ~= canvasw or shadowCanvas:getHeight() ~= canvash then
         shadowCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "r8" })
-    end
-    if not reflectionCanvas or reflectionCanvas:getWidth() ~= canvasw or reflectionCanvas:getHeight() ~= canvash then
-        reflectionCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "rgba8" })
     end
 
     self.canvas = canvas

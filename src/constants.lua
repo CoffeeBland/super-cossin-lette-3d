@@ -15,7 +15,26 @@ EXPRES = { 2732, 2048 }
 CURRES = { unpack(EXPRES) }
 SCALE_TO_EXPECTED = 1
 
-HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
+local glslHsvFunctions = [[
+    // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
+    vec3 rgb2hsv(vec3 c) {
+        vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+        vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+        vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+        float d = q.x - min(q.w, q.y);
+        float e = 1.0e-10;
+        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+    }
+
+    vec3 hsv2rgb(vec3 c) {
+        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+    }
+]]
+
+HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     uniform vec2 size;
     uniform vec4 shadowColor;
     uniform vec4 reflectionColor;
@@ -37,23 +56,6 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
         2.0, 2.0, 1.0/6.0);
 
     const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
-
-    // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
-    vec3 rgb2hsv(vec3 c) {
-        vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-        vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-        vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-
-        float d = q.x - min(q.w, q.y);
-        float e = 1.0e-10;
-        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-    }
-
-    vec3 hsv2rgb(vec3 c) {
-        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-    }
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords) * color;
@@ -88,29 +90,12 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
         finalcol = vec4(hsv2rgb(hsv), finalcol.a);
         return mix(texturecolor, finalcol, touchability);
     }
-]]
+]])
 
-POST_SHADER = love.graphics.newShader[[
+POST_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     uniform Image palette;
     uniform vec2 size;
     uniform float pixelLens;
-
-    // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
-    vec3 rgb2hsv(vec3 c) {
-        vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-        vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-        vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-
-        float d = q.x - min(q.w, q.y);
-        float e = 1.0e-10;
-        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-    }
-
-    vec3 hsv2rgb(vec3 c) {
-        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-    }
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         if (pixelLens > 0.0) {
@@ -128,14 +113,40 @@ POST_SHADER = love.graphics.newShader[[
         hsv = vec3(paletted.x, paletted.y, hsv.z);
         return vec4(hsv2rgb(hsv), texturecolor.a);
     }
-]]
+]])
 
-HEIGHT_MAP_SHADER = love.graphics.newShader[[
+HEIGHT_MAP_SHADER = love.graphics.newShader([[
+    varying float ptZ;
+    varying float ptHeight;
+    uniform float skyLimit;
+
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
-        return vec4(texturecolor.rgb * color.g + color.r, texturecolor.a * color.a);
+        return vec4(
+            (texturecolor.rgb * ptHeight + ptZ) / skyLimit,
+            texturecolor.a * color.a);
     }
-]]
+]], [[
+    uniform float entityZ;
+    uniform float entityHeight;
+
+    attribute float z;
+    attribute float height;
+
+    varying float ptZ;
+    varying float ptHeight;
+
+    vec4 position(mat4 transform_projection, vec4 vertex_position) {
+        if (entityZ == -1) {
+            ptZ = z;
+            ptHeight = height;
+        } else {
+            ptZ = entityZ;
+            ptHeight = entityHeight;
+        }
+        return transform_projection * vertex_position;
+    }
+]])
 
 MAP_DEBUG_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
