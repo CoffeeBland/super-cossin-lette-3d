@@ -237,11 +237,13 @@ function Game:enter(args)
             end
         end
 
-        local infoMesh = love.graphics.newMesh(
-            {{ "z", "float", 1 }, { "height", "float", 1 }},
-            self.stackedTilesInfo[i])
-        self.stackedTilesBatches[i]:attachAttribute("z", infoMesh)
-        self.stackedTilesBatches[i]:attachAttribute("height", infoMesh)
+        if #self.stackedTilesInfo[i] > 0 then
+            local infoMesh = love.graphics.newMesh(
+                {{ "z", "float", 1 }, { "height", "float", 1 }},
+                self.stackedTilesInfo[i])
+            self.stackedTilesBatches[i]:attachAttribute("z", infoMesh)
+            self.stackedTilesBatches[i]:attachAttribute("height", infoMesh)
+        end
     end
 
     time = love.timer.measure(time, "tile batches")
