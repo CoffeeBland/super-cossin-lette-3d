@@ -498,7 +498,7 @@ return {
             {
                 name = "drown",
                 fps = 0,
-                tiles = { { 6, 3 } }
+                tiles = { { 2, 2 } }
             }
         },
         cossinPiedFront = {

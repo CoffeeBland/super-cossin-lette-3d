@@ -16,6 +16,10 @@ local credits = {
         "Myriam Noël-Martel",
     },
     {
+        "Cossin Lette",
+        "Gabriel Tremblay"
+    },
+    {
         "Manger le pique-nique",
         "Blonde"
     },

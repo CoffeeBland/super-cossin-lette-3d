@@ -515,7 +515,8 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     end
 
     if dbg.reflectionMap then
-        love.graphics.draw(camera.reflectionCanvas, 0, 0)
+        --love.graphics.draw(camera.reflectionCanvas, 0, 0)
+        love.graphics.draw(reflectedHeightTextures["Blonde"], 0, 0)
     end
 
     if dbg.pointHeights then
