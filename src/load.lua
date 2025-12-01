@@ -198,7 +198,37 @@ function load.createHeightTexture(name, tiles)
     end
 
     love.graphics.reset()
-    heightTextures[name] = love.graphics.newImage(canvas:newImageData())
+    local heightImageData = canvas:newImageData()
+
+    local reflectedHeightData = {}
+    local miny, maxy = BIG_NUMBER, -BIG_NUMBER
+    for x = 0, w - 1 do
+        for y = 0, h - 1 do
+            local pixh = heightImageData:getPixel(x, y)
+            local reflecty = math.floor(y + pixh * h)
+            local i = x + reflecty * w
+            local prevpixh = reflectedHeightData[i]
+            reflectedHeightData[i] = not prevpixh and pixh or math.min(prevpixh, pixh)
+            miny = math.min(miny, reflecty)
+            maxy = math.max(maxy, reflecty)
+        end
+    end
+    local reflectedHeightImageData = love.image.newImageData(w, maxy - miny + 1)
+    if maxy - miny + 1 ~= h then
+        print(maxy - miny + 1, h)
+    end
+    for i, pixh in pairs(reflectedHeightData) do
+        local x = i % w
+        local y = (i - x) / w - miny
+        reflectedHeightImageData:setPixel(x, y, pixh, 0, 0, 1)
+    end
+    local reflectedHeightTexture = love.graphics.newImage(reflectedHeightImageData)
+    --REFLECT_IMAGE_SHADER:send("heightTexture", reflectedHeightTexture)
+    --love.graphics.setShader(REFLECT_IMAGE_SHADER)
+    --love.graphics.draw(texture)
+    --love.graphics.setShader()
+
+    heightTextures[name] = love.graphics.newImage(heightImageData)
     dirtyHeightTextures[name] = nil
     love.timer.measure(time, "height " .. name)
 end
