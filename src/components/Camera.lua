@@ -213,8 +213,9 @@ function Camera.new(params)
 end
 
 local canvas = nil
-local shadowCanvas = nil
 local heightCanvas = nil
+local shadowCanvas = nil
+local reflectionCanvas = nil
 
 function Camera:setSize(x, y, w, h, canvasw, canvash)
     local ratio = math.max(w / canvasw, h / canvash)
@@ -230,16 +231,20 @@ function Camera:setSize(x, y, w, h, canvasw, canvash)
         canvas = love.graphics.newCanvas(canvasw, canvash)
     end
     if not heightCanvas or heightCanvas:getWidth() ~= canvasw or heightCanvas:getHeight() ~= canvash then
-        heightCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "r8" })
+        heightCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "r16" })
     end
     canvash = canvash + SHADOW_MAP_OFFSET
     if not shadowCanvas or shadowCanvas:getWidth() ~= canvasw or shadowCanvas:getHeight() ~= canvash then
         shadowCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "r8" })
     end
+    if not reflectionCanvas or reflectionCanvas:getWidth() ~= canvasw or reflectionCanvas:getHeight() ~= canvash then
+        reflectionCanvas = love.graphics.newCanvas(canvasw, canvash, { format = "rgba8" })
+    end
 
     self.canvas = canvas
     self.heightCanvas = heightCanvas
     self.shadowCanvas = shadowCanvas
+    self.reflectionCanvas = reflectionCanvas
     return qw, qh
 end
 

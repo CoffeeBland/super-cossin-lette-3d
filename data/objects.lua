@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -77,7 +77,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 192,
-        ["offsetY"] = 110
+        ["offsetY"] = 130
       },
       image = "../img/Buisson_grand-1.png",
       width = 384,
@@ -123,7 +123,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 192,
-        ["offsetY"] = 120
+        ["offsetY"] = 130
       },
       image = "../img/Buisson_grand-2.png",
       width = 384,
@@ -169,7 +169,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 128,
-        ["offsetY"] = 90
+        ["offsetY"] = 96
       },
       image = "../img/Buisson_moyen-1.png",
       width = 256,
@@ -215,7 +215,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 128,
-        ["offsetY"] = 75
+        ["offsetY"] = 96
       },
       image = "../img/Buisson_moyen-2.png",
       width = 256,
@@ -261,7 +261,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 110
+        ["offsetY"] = 120
       },
       image = "../img/Buisson_petit-1.png",
       width = 128,
@@ -307,7 +307,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 110
+        ["offsetY"] = 117
       },
       image = "../img/Buisson_petit-2.png",
       width = 128,
@@ -353,7 +353,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 110
+        ["offsetY"] = 120
       },
       image = "../img/Buisson_petit-3.png",
       width = 128,
@@ -399,7 +399,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 95
+        ["offsetY"] = 115
       },
       image = "../img/Buisson_petit-4.png",
       width = 128,
@@ -445,7 +445,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 95
+        ["offsetY"] = 110
       },
       image = "../img/Buisson_petit-5.png",
       width = 128,
@@ -1011,7 +1011,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 40
+        ["offsetY"] = 48
       },
       image = "../img/Roche_petit-1.png",
       width = 128,
@@ -1057,7 +1057,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 30
+        ["offsetY"] = 48
       },
       image = "../img/Roche_petit-2.png",
       width = 128,
@@ -1103,7 +1103,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 35
+        ["offsetY"] = 45
       },
       image = "../img/Roche_petit-3.png",
       width = 128,
@@ -1149,7 +1149,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 40
+        ["offsetY"] = 48
       },
       image = "../img/Roche_petit-4.png",
       width = 128,
@@ -1195,7 +1195,7 @@ return {
       properties = {
         ["height"] = 20,
         ["offsetX"] = 64,
-        ["offsetY"] = 40
+        ["offsetY"] = 48
       },
       image = "../img/Roche_petit-5.png",
       width = 128,
@@ -1390,7 +1390,7 @@ return {
       properties = {
         ["height"] = 120,
         ["offsetX"] = 156.5,
-        ["offsetY"] = 190
+        ["offsetY"] = 240
       },
       image = "../img/Roche_gros_mousse-1.png",
       width = 313,
@@ -1528,7 +1528,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 156.5,
-        ["offsetY"] = 250
+        ["offsetY"] = 270
       },
       image = "../img/Roche_gros_mousse-4.png",
       width = 313,
@@ -1574,7 +1574,7 @@ return {
       properties = {
         ["height"] = 80,
         ["offsetX"] = 156.5,
-        ["offsetY"] = 250
+        ["offsetY"] = 260
       },
       image = "../img/Roche_gros_mousse-5.png",
       width = 313,
@@ -1758,7 +1758,7 @@ return {
       properties = {
         ["height"] = 40,
         ["offsetX"] = 161,
-        ["offsetY"] = 250
+        ["offsetY"] = 260
       },
       image = "../img/Roche_gros-2.png",
       width = 322,
@@ -1942,7 +1942,7 @@ return {
       properties = {
         ["height"] = 40,
         ["offsetX"] = 161,
-        ["offsetY"] = 250
+        ["offsetY"] = 270
       },
       image = "../img/Roche_gros-6.png",
       width = 322,

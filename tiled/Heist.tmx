@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="14" nextobjectid="465">
+<map version="1.10" tiledversion="1.11.1" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="14" nextobjectid="465">
  <editorsettings>
   <export target="../maps/Heist.lua" format="lua"/>
  </editorsettings>
@@ -3554,7 +3554,11 @@
   <object id="189" gid="330" x="-1257.25" y="4903.25" width="128" height="74"/>
   <object id="190" gid="327" x="-1318.94" y="4836.94" width="128" height="74"/>
   <object id="191" gid="328" x="2148.86" y="8019.14" width="128" height="74"/>
-  <object id="192" gid="328" x="2240.2" y="8223.8" width="128" height="74"/>
+  <object id="192" gid="328" x="2240.2" y="8223.8" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="193" gid="328" x="1972.63" y="8105.38" width="128" height="74"/>
   <object id="194" gid="327" x="2208.73" y="7977.27" width="128" height="74"/>
   <object id="195" gid="327" x="1886" y="8102" width="128" height="74"/>
@@ -3562,8 +3566,16 @@
   <object id="198" gid="330" x="2231.87" y="8050.13" width="128" height="74"/>
   <object id="199" gid="328" x="2187.48" y="8048.52" width="128" height="74"/>
   <object id="200" gid="328" x="2203.41" y="8176.59" width="128" height="74"/>
-  <object id="201" gid="329" x="2190.86" y="8283.14" width="128" height="74"/>
-  <object id="202" gid="327" x="2128.16" y="8267.84" width="128" height="74"/>
+  <object id="201" gid="329" x="2190.86" y="8283.14" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="202" gid="327" x="2128.16" y="8267.84" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="203" gid="330" x="2137.95" y="8214.05" width="128" height="74"/>
   <object id="204" gid="328" x="1992.86" y="8159.14" width="128" height="74"/>
   <object id="205" gid="329" x="1880.06" y="8183.94" width="128" height="74"/>
@@ -3571,16 +3583,40 @@
   <object id="207" gid="329" x="3914.63" y="6791.38" width="128" height="74"/>
   <object id="208" gid="327" x="3861.45" y="6792.55" width="128" height="74"/>
   <object id="209" gid="327" x="4123.23" y="6820.77" width="128" height="74"/>
-  <object id="210" gid="327" x="4143.8" y="6966.2" width="128" height="74"/>
+  <object id="210" gid="327" x="4143.8" y="6966.2" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="211" gid="328" x="3894.38" y="6863.63" width="128" height="74"/>
-  <object id="212" gid="328" x="4191.27" y="6858.73" width="128" height="74"/>
-  <object id="213" gid="328" x="4090.14" y="7025.86" width="128" height="74"/>
-  <object id="214" gid="329" x="4128.06" y="7027.94" width="128" height="74"/>
-  <object id="215" gid="329" x="4206.5" y="6833.5" width="128" height="74"/>
+  <object id="212" gid="328" x="4191.27" y="6858.73" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="213" gid="328" x="4090.14" y="7025.86" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="214" gid="329" x="4128.06" y="7027.94" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="215" gid="329" x="4206.5" y="6833.5" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="216" gid="329" x="3949.69" y="6840.31" width="128" height="74"/>
   <object id="217" gid="330" x="3947.41" y="6886.59" width="128" height="74"/>
   <object id="218" gid="330" x="4118.13" y="6957.88" width="128" height="74"/>
-  <object id="219" gid="330" x="4200.27" y="6793.73" width="128" height="74"/>
+  <object id="219" gid="330" x="4200.27" y="6793.73" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="220" gid="327" x="4126.19" y="6757.81" width="128" height="74"/>
   <object id="221" gid="327" x="4049.02" y="6956.98" width="128" height="74"/>
   <object id="223" gid="327" x="2516" y="4563.33" width="128" height="74"/>

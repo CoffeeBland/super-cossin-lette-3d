@@ -80,7 +80,7 @@ local options = {
         text = "DEBUG",
         type = "range",
         default = 0,
-        range = { 0, 5, 1 },
+        range = { 0, 6, 1 },
         getPrintableValue = function(value)
             if value == 0 then
                 return "NON"
@@ -94,6 +94,8 @@ local options = {
                 return "HAUTEUR PIXEL"
             elseif value == 5 then
                 return "OMBRES"
+            elseif value == 6 then
+                return "RÉFLECTIONS"
             end
         end,
         apply = function(value)
@@ -101,6 +103,7 @@ local options = {
             dbg.pointHeights = value == 3
             dbg.heightMap = value == 4
             dbg.shadowMap = value == 5
+            dbg.reflectionMap = value == 6
             dbg.fps = value >= 1
             dbg.autorefresh = value > 0
             love.timer.measure = value > 0 and

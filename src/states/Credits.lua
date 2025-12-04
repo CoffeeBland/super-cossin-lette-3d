@@ -9,11 +9,15 @@ local credits = {
     },
     {
         "Oui",
-        "Guillame Noël-Martel"
+        "Guillaume Noël-Martel"
     },
     {
         "P'tits bonhommes",
         "Myriam Noël-Martel",
+    },
+    {
+        "Cossin Lette",
+        "Gabriel Tremblay"
     },
     {
         "Manger le pique-nique",

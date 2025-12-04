@@ -13,6 +13,7 @@ return {
     },
     ambienceVolume = 0.25,
     shadowColor = { 0.875, 0.867, 0.941, 1 },
+    waterColor = { 0.443, 0.847, 0.694, 1 },
     pauseColor = { 0.5 * 0.875, 0.5 * 0.867, 0.5 * 0.941, 1 },
     lightColor = { 0.875, 0.867, 0.741, 1 },
     lineColor = { 117.0/255.0, 0, 25.0/255.0, 1 },

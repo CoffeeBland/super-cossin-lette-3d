@@ -186,6 +186,15 @@ function table.clone(t)
     return clone
 end
 
+function table.uniqInsert(t, obj, fn)
+    for _, x in pairs(t) do
+        if fn(x, obj) then
+            return
+        end
+    end
+    table.insert(t, obj)
+end
+
 function math.getEllipsePoint(x, y, radiusx, radiusy, angle)
     local w = math.cos(angle) * radiusx
     local h = math.sin(angle) * radiusy

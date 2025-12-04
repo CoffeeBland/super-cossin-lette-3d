@@ -15,27 +15,7 @@ EXPRES = { 2732, 2048 }
 CURRES = { unpack(EXPRES) }
 SCALE_TO_EXPECTED = 1
 
-HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
-    uniform vec2 size;
-    uniform vec4 shadowColor;
-    uniform Image heightMap;
-    uniform Image shadowMap;
-    uniform float shadowMapHeightOffset;
-    uniform float shadowMapOffset;
-    uniform float skyLimit;
-    uniform float scale;
-    uniform float hueRot;
-    uniform float hue;
-
-    const float heightSamples[] = float[3 * 5](
-        0.0, 0.0, 2.0/6.0,
-        -2.0, -2.0, 1.0/6.0,
-        2.0, 2.0, 1.0/6.0,
-        -2.0, 2.0, 1.0/6.0,
-        2.0, 2.0, 1.0/6.0);
-
-    const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
-
+local glslHsvFunctions = [[
     // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
     vec3 rgb2hsv(vec3 c) {
         vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
@@ -52,20 +32,87 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
         vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
         return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
     }
+]]
+
+HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
+    uniform vec2 size;
+    uniform vec4 shadowColor;
+    uniform vec4 reflectionColor;
+    uniform Image heightMap;
+    uniform Image shadowMap;
+    uniform float shadowMapHeightOffset;
+    uniform float shadowMapOffset;
+    uniform Image reflectionMap;
+    uniform float skyLimit;
+    uniform float scale;
+    uniform float hueRot;
+    uniform float hue;
+
+    uniform Image noise1;
+    uniform Image noise2;
+    uniform float time;
+    uniform vec2 cameraPos;
+
+    const vec2 noiseOffsetPerSec = vec2(80.0, 51.0);
+    const vec2 noise1Size = vec2(6.0, 4.0);
+    const float noise2Size = 1.5;
+    const float noiseSize = 512.0;
+    const float noise1Distort = 1.5;
+    const float noise2Distort = 0.3;
+    const vec2 noiseDistort = vec2(1.0, 0.4) / 170.0;
+    const float noiseCorrection = -(noise1Distort + noise2Distort) / 2.0;
+    const float reflectionMix = 0.3;
+    const int reflectionSamplesCount = 3 * 3;
+    const float reflectionSamples[] = float[reflectionSamplesCount](
+        0.0, -0.5, 1.0/3.0,
+        0.5, 0.5, 1.0/3.0,
+        -0.5, 0.5, 1.0/3.0);
+
+    const int heightSamplesCount = 5 * 3;
+    const float heightSamples[] = float[heightSamplesCount](
+        1.0, 0.0, 2.0/6.0,
+        0.0, -2.0, 1.0/6.0,
+        2.0, 2.0, 1.0/6.0,
+        -2.0, 2.0, 1.0/6.0,
+        2.0, 2.0, 1.0/6.0);
+
+    const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords) * color;
 
         float height = 0.0;
-        for (int i = 0; i < 15; i += 3) {
+        for (int i = 0; i < heightSamplesCount; i += 3) {
             vec2 sampleDst = vec2(heightSamples[i], heightSamples[i + 1]);
             height += heightSamples[i + 2] * Texel(heightMap, (screen_coords + sampleDst) / size).r * skyLimit;
         }
 
-        vec2 shadow_map_coords = vec2(
-            screen_coords.x / size.x,
-            (screen_coords.y + height * scale) / (size.y + shadowMapOffset));
+        vec2 shadowMapSize = vec2(size.x, size.y + shadowMapOffset);
+        vec2 shadow_map_coords = vec2(screen_coords.x, screen_coords.y + height * scale) / shadowMapSize;
         float shadowHeight = Texel(shadowMap, shadow_map_coords).r * skyLimit - shadowMapHeightOffset;
+
+        if (distance(texturecolor.rgb, reflectionColor.rgb) < 0.1) {
+            vec2 absolutePos = cameraPos + screen_coords;
+            vec2 timeNoiseOffset = noiseOffsetPerSec * time;
+            vec2 noiseCoords = (absolutePos + timeNoiseOffset) / noiseSize;
+            vec2 noiseOffset = (
+                vec2(Texel(noise1, noiseCoords / noise1Size).xy) * noise1Distort +
+                vec2(Texel(noise2, noiseCoords / noise2Size).xy) * noise2Distort +
+                vec2(noiseCorrection, noiseCorrection)
+            ) * noiseDistort;
+
+            vec2 reflectionMapCoords = shadow_map_coords;
+            vec2 reflectionMapSize = shadowMapSize;
+
+            vec4 reflectedColor = vec4(0.0);
+            for (int i = 0; i < reflectionSamplesCount; i += 3) {
+                vec2 sampleDst = vec2(reflectionSamples[i], reflectionSamples[i + 1]);
+                vec2 coords = reflectionMapCoords + sampleDst / reflectionMapSize + noiseOffset;
+                reflectedColor += Texel(reflectionMap, coords) * reflectionSamples[i + 2];
+            }
+
+            texturecolor = vec4(mix(texturecolor.rgb, reflectedColor.rgb, reflectionMix), texturecolor.a);
+        }
 
         float touchability = max(0.0, min(1.0, (distance(texturecolor.rgb, linecol) - 0.05) * 10.0));
         vec4 finalcol = texturecolor;
@@ -80,29 +127,12 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader[[
         finalcol = vec4(hsv2rgb(hsv), finalcol.a);
         return mix(texturecolor, finalcol, touchability);
     }
-]]
+]])
 
-POST_SHADER = love.graphics.newShader[[
+POST_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     uniform Image palette;
     uniform vec2 size;
     uniform float pixelLens;
-
-    // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
-    vec3 rgb2hsv(vec3 c) {
-        vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-        vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-        vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-
-        float d = q.x - min(q.w, q.y);
-        float e = 1.0e-10;
-        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-    }
-
-    vec3 hsv2rgb(vec3 c) {
-        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-    }
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         if (pixelLens > 0.0) {
@@ -120,14 +150,40 @@ POST_SHADER = love.graphics.newShader[[
         hsv = vec3(paletted.x, paletted.y, hsv.z);
         return vec4(hsv2rgb(hsv), texturecolor.a);
     }
-]]
+]])
 
-HEIGHT_MAP_SHADER = love.graphics.newShader[[
+HEIGHT_MAP_SHADER = love.graphics.newShader([[
+    varying float ptZ;
+    varying float ptHeight;
+    uniform float skyLimit;
+
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
-        return vec4(texturecolor.rgb * color.g + color.r, texturecolor.a * color.a);
+        return vec4(
+            (texturecolor.rgb * ptHeight + ptZ) / skyLimit,
+            texturecolor.a * color.a);
     }
-]]
+]], [[
+    uniform float entityZ;
+    uniform float entityHeight;
+
+    attribute float z;
+    attribute float height;
+
+    varying float ptZ;
+    varying float ptHeight;
+
+    vec4 position(mat4 transform_projection, vec4 vertex_position) {
+        if (entityZ == -1) {
+            ptZ = z;
+            ptHeight = height;
+        } else {
+            ptZ = entityZ;
+            ptHeight = entityHeight;
+        }
+        return transform_projection * vertex_position;
+    }
+]])
 
 MAP_DEBUG_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
@@ -145,44 +201,36 @@ MAP_DEBUG_SHADER = love.graphics.newShader[[
     }
 ]]
 
-TITLE_SHADER = love.graphics.newShader[[
+TITLE_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
     uniform float hueRot;
-
-    // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
-    vec3 rgb2hsv(vec3 c) {
-        vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-        vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-        vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-
-        float d = q.x - min(q.w, q.y);
-        float e = 1.0e-10;
-        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-    }
-
-    vec3 hsv2rgb(vec3 c) {
-        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-    }
+    uniform float hue;
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords) * color;
         vec4 finalcol = texturecolor;
         float touchability = min(1.0, distance(finalcol.rgb, linecol) * 10.0);
         vec3 hsv = rgb2hsv(finalcol.rgb);
+        if (hue >= 0) {
+            hsv.x = hue;
+        }
         hsv.x = mod(hsv.x + hueRot, 1.0);
-        return touchability * vec4(hsv2rgb(hsv), finalcol.a) + (1.0 - touchability) * texturecolor;
+        finalcol = vec4(hsv2rgb(hsv), finalcol.a);
+        return mix(texturecolor, finalcol, touchability);
     }
-]]
+]])
 
 MASK_SHADER = love.graphics.newShader[[
+    uniform vec2 size;
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
-        float alpha = Texel(texture, texture_coords).a;
-        if (alpha <= 0.1) {
-            discard;
+        float alpha1 = Texel(texture, texture_coords + vec2(-1.0, 1.0) / size).a;
+        float alpha2 = Texel(texture, texture_coords + vec2(-1.0, -1.0) / size).a;
+        float alpha3 = Texel(texture, texture_coords + vec2(1.0, 1.0) / size).a;
+        float alpha4 = Texel(texture, texture_coords + vec2(1.0, -1.0) / size).a;
+        if (alpha1 > 0.1 || alpha2 > 0.1 || alpha3 > 0.1 || alpha4 > 0.1) {
+            return vec4(1.0);
         }
-        return vec4(1.0);
+        discard;
     }
 ]]
 
@@ -224,6 +272,23 @@ SPARKLY_SHADER = love.graphics.newShader[[
         if (alpha >= 0) {
             return tex * vec4(vec3(color), alpha);
         }
+    }
+]]
+
+REFLECTED_IMAGE_SHADER = love.graphics.newShader[[
+    uniform vec2 size;
+    uniform Image reflectedHeightMap;
+    uniform float height;
+    uniform float offset;
+
+    vec4 effect(vec4 color, Image texture, vec2 textureCoords, vec2 screenCoords) {
+        float pixh = Texel(reflectedHeightMap, textureCoords).r * height;
+        if (pixh < 1.0) {
+            discard;
+        }
+        vec2 pixTextureCoords = textureCoords * size;
+        vec2 reflectedCoords = vec2(pixTextureCoords.x, pixTextureCoords.y + offset - pixh * 2) / size;
+        return Texel(texture, reflectedCoords) * color;
     }
 ]]
 
