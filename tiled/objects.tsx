@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="77" columns="0">
+<tileset version="1.10" tiledversion="1.11.1" name="objects" tilewidth="1152" tileheight="1286" tilecount="77" columns="0">
  <editorsettings>
   <export target="../data/objects.lua" format="lua"/>
  </editorsettings>
@@ -57,7 +57,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="192"/>
-   <property name="offsetY" type="float" value="110"/>
+   <property name="offsetY" type="float" value="130"/>
   </properties>
   <image source="../img/Buisson_grand-1.png" width="384" height="216"/>
   <objectgroup draworder="index" id="2">
@@ -70,7 +70,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="192"/>
-   <property name="offsetY" type="float" value="120"/>
+   <property name="offsetY" type="float" value="130"/>
   </properties>
   <image source="../img/Buisson_grand-2.png" width="384" height="216"/>
   <objectgroup draworder="index" id="2">
@@ -83,7 +83,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="128"/>
-   <property name="offsetY" type="float" value="90"/>
+   <property name="offsetY" type="float" value="96"/>
   </properties>
   <image source="../img/Buisson_moyen-1.png" width="256" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -96,7 +96,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="128"/>
-   <property name="offsetY" type="float" value="75"/>
+   <property name="offsetY" type="float" value="96"/>
   </properties>
   <image source="../img/Buisson_moyen-2.png" width="256" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -109,7 +109,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="110"/>
+   <property name="offsetY" type="float" value="120"/>
   </properties>
   <image source="../img/Buisson_petit-1.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -122,7 +122,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="110"/>
+   <property name="offsetY" type="float" value="117"/>
   </properties>
   <image source="../img/Buisson_petit-2.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -135,7 +135,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="110"/>
+   <property name="offsetY" type="float" value="120"/>
   </properties>
   <image source="../img/Buisson_petit-3.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -148,7 +148,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="95"/>
+   <property name="offsetY" type="float" value="115"/>
   </properties>
   <image source="../img/Buisson_petit-4.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -161,7 +161,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="95"/>
+   <property name="offsetY" type="float" value="110"/>
   </properties>
   <image source="../img/Buisson_petit-5.png" width="128" height="148"/>
   <objectgroup draworder="index" id="2">
@@ -436,7 +436,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="40"/>
+   <property name="offsetY" type="float" value="48"/>
   </properties>
   <image source="../img/Roche_petit-1.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -449,7 +449,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="30"/>
+   <property name="offsetY" type="float" value="48"/>
   </properties>
   <image source="../img/Roche_petit-2.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -462,7 +462,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="35"/>
+   <property name="offsetY" type="float" value="45"/>
   </properties>
   <image source="../img/Roche_petit-3.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -475,7 +475,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="40"/>
+   <property name="offsetY" type="float" value="48"/>
   </properties>
   <image source="../img/Roche_petit-4.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -488,7 +488,7 @@
   <properties>
    <property name="height" type="float" value="20"/>
    <property name="offsetX" type="float" value="64"/>
-   <property name="offsetY" type="float" value="40"/>
+   <property name="offsetY" type="float" value="48"/>
   </properties>
   <image source="../img/Roche_petit-5.png" width="128" height="74"/>
   <objectgroup draworder="index" id="2">
@@ -587,7 +587,7 @@
   <properties>
    <property name="height" type="float" value="120"/>
    <property name="offsetX" type="float" value="156.5"/>
-   <property name="offsetY" type="float" value="190"/>
+   <property name="offsetY" type="float" value="240"/>
   </properties>
   <image source="../img/Roche_gros_mousse-1.png" width="313" height="321"/>
   <objectgroup draworder="index" id="2">
@@ -626,7 +626,7 @@
   <properties>
    <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="156.5"/>
-   <property name="offsetY" type="float" value="250"/>
+   <property name="offsetY" type="float" value="270"/>
   </properties>
   <image source="../img/Roche_gros_mousse-4.png" width="313" height="321"/>
   <objectgroup draworder="index" id="2">
@@ -639,7 +639,7 @@
   <properties>
    <property name="height" type="float" value="80"/>
    <property name="offsetX" type="float" value="156.5"/>
-   <property name="offsetY" type="float" value="250"/>
+   <property name="offsetY" type="float" value="260"/>
   </properties>
   <image source="../img/Roche_gros_mousse-5.png" width="313" height="321"/>
   <objectgroup draworder="index" id="2">
@@ -691,7 +691,7 @@
   <properties>
    <property name="height" type="float" value="40"/>
    <property name="offsetX" type="float" value="161"/>
-   <property name="offsetY" type="float" value="250"/>
+   <property name="offsetY" type="float" value="260"/>
   </properties>
   <image source="../img/Roche_gros-2.png" width="322" height="319"/>
   <objectgroup draworder="index" id="2">
@@ -743,7 +743,7 @@
   <properties>
    <property name="height" type="float" value="40"/>
    <property name="offsetX" type="float" value="161"/>
-   <property name="offsetY" type="float" value="250"/>
+   <property name="offsetY" type="float" value="270"/>
   </properties>
   <image source="../img/Roche_gros-6.png" width="322" height="319"/>
   <objectgroup draworder="index" id="2">

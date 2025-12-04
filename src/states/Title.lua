@@ -385,6 +385,7 @@ function Title:render()
     love.graphics.scale(SCALE_TO_EXPECTED)
     love.graphics.clear(unpack(bgcol))
     love.graphics.setShader(TITLE_SHADER)
+    TITLE_SHADER:send("hue", -1)
     TITLE_SHADER:send("hueRot", 0)
     for _, tile in ipairs(bgGrassTiles) do
         love.graphics.draw(textures[tile.name], tile.x, tile.y)

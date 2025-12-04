@@ -71,7 +71,7 @@ function love.update(dt)
     end
 
     frameTime = frameTime + dt
-    while frameTime + DELTA > frameDuration do
+    while frameTime + DELTA * 100 > frameDuration do
         frameTime = frameTime - frameDuration
         StateMachine:update(frameDuration)
 

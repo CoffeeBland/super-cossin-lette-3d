@@ -607,6 +607,7 @@ function MapIntro:mask(thing)
     love.graphics.stencil(
         function()
             love.graphics.setShader(MASK_SHADER)
+            MASK_SHADER:send("size", { thing.texture:getDimensions() })
             self:draw(thing, true)
             love.graphics.setShader()
         end,

@@ -1,7 +1,7 @@
 load = {}
 textures = {}
 heightTextures = {}
-reflectedHeightTextures = {}
+reflectedTextures = {}
 dirtyHeightTextures = {}
 sounds = {}
 music = {}
@@ -48,6 +48,18 @@ local function areHeightTilesEqual(a, b)
 end
 
 function load.createHeightTextures()
+    -- Lol
+    textures.Noise1:setWrap("repeat")
+    textures.Noise2:setWrap("repeat")
+    HEIGHT_MAPPED_SHADER:send("noise1", textures.Noise1)
+    HEIGHT_MAPPED_SHADER:send("noise2", textures.Noise2)
+    HEIGHT_MAPPED_SHADER:send("shadowColor", Game.constants.shadowColor)
+    HEIGHT_MAPPED_SHADER:send("shadowMapHeightOffset", SHADOW_MAP_HEIGHT_OFFSET)
+    HEIGHT_MAPPED_SHADER:send("shadowMapOffset", SHADOW_MAP_OFFSET)
+    HEIGHT_MAPPED_SHADER:send("reflectionColor", Game.constants.waterColor)
+    HEIGHT_MAPPED_SHADER:send("skyLimit", SKY_LIMIT)
+    HEIGHT_MAP_SHADER:send("skyLimit", SKY_LIMIT)
+
     -- All sprite entities with actual info
     for name, object in pairs(objects.byName) do
         local entity = object.prefab and prefabs[object.prefab](object, {}) or {}
@@ -59,7 +71,6 @@ function load.createHeightTextures()
                 local spriteData = sprites[sprite.name]
                 local tiles = {}
                 local shape = entity.body and Physics.getBodyShape(entity.body) or object.shape
-                local points = (shape and { shape:getPoints() }) or { 0, 0 }
                 if spriteData then
                     for _, anim in ipairs(spriteData) do
                         for _, tile in ipairs(anim.tiles) do
@@ -68,7 +79,7 @@ function load.createHeightTextures()
                                 height = entity.pos.height,
                                 delta = sprite.autoheightDelta or object.autoheightDelta,
                                 bulge = sprite.autoheightBulge or object.autoheightBulge,
-                                points = points,
+                                shape = shape,
                                 pointsX = sprite.anchor.x,
                                 pointsY = sprite.anchor.y,
                             }, areHeightTilesEqual)
@@ -80,7 +91,7 @@ function load.createHeightTextures()
                         height = entity.pos.height,
                         delta = object.autoheightDelta,
                         bulge = sprite.autoheightBulge or object.autoheightBulge,
-                        points = points,
+                        shape = shape,
                         pointsX = sprite.anchor.x,
                         pointsY = sprite.anchor.y,
                     })
@@ -102,9 +113,7 @@ function load.createHeightTextures()
         local tile = {
             quad = tileData.quad,
             height = tileData.height,
-            points =
-                (tileset.shapes[i] and { tileset.shapes[i].default:getPoints() }) or
-                { 0, 0 }
+            shape = tileset.shapes[i] and tileset.shapes[i].default
         }
         tile.pointsX = tileData.originX
         tile.pointsY = tileData.originY - TILE_HEIGHT / 2
@@ -138,11 +147,12 @@ function load.createHeightTexture(name, tiles)
     local time = love.timer.getTime()
     local texture = textures[name]
     local w, h = texture:getDimensions()
-    local canvas = love.graphics.newCanvas(w, h, { format = "r16" })
+    local canvas = love.graphics.newCanvas(w, h, { format = "rgba16" })
     love.graphics.setCanvas({ canvas, stencil = true })
     love.graphics.clear(0, 0, 0, 0)
     love.graphics.stencil(function()
             love.graphics.setShader(MASK_SHADER)
+            MASK_SHADER:send("size", { texture:getDimensions() })
             love.graphics.draw(texture)
             love.graphics.setShader()
         end,
@@ -157,7 +167,8 @@ function load.createHeightTexture(name, tiles)
     for _, tile in pairs(tiles or EMPTY) do
         tile.height = tile.height or 0
         tile.quad = tile.quad or love.graphics.newQuad(0, 0, w, h, w, h)
-        local quad, height, points = tile.quad, tile.height, tile.points
+        local quad, height, shape = tile.quad, tile.height, tile.shape
+        local points = shape and { shape:getPoints() } or { 0, 0 }
         local x, y, w, h = quad:getViewport()
 
         local leftx, lefty = findx(points, math.min)
@@ -206,44 +217,83 @@ function load.createHeightTexture(name, tiles)
 
     love.graphics.reset()
     local heightImageData = canvas:newImageData()
-    local reflectedHeightImageData = love.image.newImageData(w, h)
 
-    for tilei, tile in pairs(tiles or EMPTY) do
-        local quad, height = tile.quad, tile.height
-        if height > DELTA then
-            local reflectedHeightData = {}
-            local miny, maxy = BIG_NUMBER, -BIG_NUMBER
-            local sx, sy, qw, qh = quad:getViewport()
-            for x = 0, qw - 1 do
-                for y = 0, qh - 1 do
-                    local pixh = heightImageData:getPixel(x + sx, y + sy) * height
-                    if pixh > DELTA then
-                        local reflecty = math.floor(y + pixh * 2)
-                        local i = x + reflecty * qw
-                        local prevpixh = reflectedHeightData[i]
-                        if not prevpixh or pixh < prevpixh then
-                            reflectedHeightData[i] = pixh
-                            miny = math.min(miny, reflecty)
-                            maxy = math.max(maxy, reflecty)
+    if name == "tileset" or name == "Arche_top" or name == "Arche_avant" or name == "Arche_arriere" then
+        -- Generate reflected texture
+        local reflectedHeightOffsetByTile = {}
+        local reflectedHeightImageData = love.image.newImageData(w, h, "r16")
+        for tilei, tile in pairs(tiles or EMPTY) do
+            local quad, height = tile.quad, tile.height
+            if height > DELTA then
+                local reflectedHeightData = {}
+                local miny, maxy = BIG_NUMBER, -BIG_NUMBER
+                local qx, qy, qw, qh = quad:getViewport()
+                for x = 0, qw - 1 do
+                    for y = 0, qh - 1 do
+                        local pixh = heightImageData:getPixel(x + qx, y + qy) * height
+                        if pixh > DELTA then
+                            local reflecty = math.floor(y + pixh * 2)
+                            local i = x + reflecty * qw
+                            local prevpixh = reflectedHeightData[i]
+                            if not prevpixh or pixh < prevpixh then
+                                reflectedHeightData[i] = pixh
+                                miny = math.min(miny, reflecty)
+                                maxy = math.max(maxy, reflecty)
+                            end
+                        end
+                    end
+                end
+                if miny ~= BIG_NUMBER and maxy ~= -BIG_NUMBER then
+                    for i, pixh in pairs(reflectedHeightData) do
+                        local x = i % qw
+                        local y = (i - x) / qw
+                        local offset = height + 32
+                        reflectedHeightOffsetByTile[tilei] = offset
+                        for dx = -1, 1 do
+                            for dy = -1, 0 do
+                                local pixx = x + dx
+                                local pixy = y - offset + dy
+                                if pixx < 0 or pixx >= qw or pixy < 0 or pixy >= qh then
+                                else
+                                    local prevpixh = reflectedHeightImageData:getPixel(qx + pixx, qy + pixy)
+                                    prevpixh = prevpixh * height
+                                    if prevpixh < DELTA or pixh < prevpixh then
+                                        reflectedHeightImageData:setPixel(
+                                            qx + pixx,
+                                            qy + pixy,
+                                            pixh / height, 0, 0, 1)
+                                    end
+                                end
+                            end
                         end
                     end
                 end
             end
-            if miny ~= BIG_NUMBER and maxy ~= -BIG_NUMBER then
-                for i, pixh in pairs(reflectedHeightData) do
-                    local x = i % qw
-                    local y = (i - x) / qw
-                    reflectedHeightImageData:setPixel(
-                        sx + x,
-                        sy + y - miny,
-                        pixh / height, 0, 0, 1)
-                end
+        end
+
+        local reflectedHeightMap = love.graphics.newImage(reflectedHeightImageData)
+        local reflectedTextureCanvas = love.graphics.newCanvas(w, h)
+        love.graphics.setCanvas(reflectedTextureCanvas)
+        love.graphics.setShader(REFLECTED_IMAGE_SHADER)
+        REFLECTED_IMAGE_SHADER:send("reflectedHeightMap", reflectedHeightMap)
+        REFLECTED_IMAGE_SHADER:send("size", { w, h })
+        love.graphics.clear(0, 0, 0, 0)
+        for tilei, offset in pairs(reflectedHeightOffsetByTile) do
+            local tile = tiles[tilei]
+            if tile.height > DELTA then
+                local qx, qy, qw, qh = tile.quad:getViewport()
+                REFLECTED_IMAGE_SHADER:send("height", tile.height)
+                REFLECTED_IMAGE_SHADER:send("offset", offset)
+                love.graphics.draw(texture, tile.quad, qx, qy)
             end
         end
+        love.graphics.setCanvas()
+        love.graphics.setShader()
+        local reflectedTextureImageData = reflectedTextureCanvas:newImageData()
+        reflectedTextures[name] = love.graphics.newImage(reflectedTextureImageData)
     end
 
     heightTextures[name] = love.graphics.newImage(heightImageData)
-    reflectedHeightTextures[name] = love.graphics.newImage(reflectedHeightImageData)
     dirtyHeightTextures[name] = nil
     love.timer.measure(time, "height " .. name)
 end

@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -5246,7 +5246,9 @@ return {
           rotation = 0,
           gid = 328,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 193,
@@ -5358,7 +5360,9 @@ return {
           rotation = 0,
           gid = 329,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 202,
@@ -5372,7 +5376,9 @@ return {
           rotation = 0,
           gid = 327,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 203,
@@ -5484,7 +5490,9 @@ return {
           rotation = 0,
           gid = 327,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 211,
@@ -5512,7 +5520,9 @@ return {
           rotation = 0,
           gid = 328,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 213,
@@ -5526,7 +5536,9 @@ return {
           rotation = 0,
           gid = 328,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 214,
@@ -5540,7 +5552,9 @@ return {
           rotation = 0,
           gid = 329,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 215,
@@ -5554,7 +5568,9 @@ return {
           rotation = 0,
           gid = 329,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 216,
@@ -5610,7 +5626,9 @@ return {
           rotation = 0,
           gid = 330,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 220,

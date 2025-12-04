@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 17,
-  nextobjectid = 403,
+  nextobjectid = 407,
   properties = {
     ["name"] = "SUR L'ILE RECURSIVE",
     ["vars.ambience"] = "Lake",
@@ -4983,7 +4983,9 @@ return {
           rotation = 0,
           gid = 329,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 110,
@@ -5326,7 +5328,9 @@ return {
           rotation = 0,
           gid = 339,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 147,
@@ -6570,7 +6574,9 @@ return {
           rotation = 0,
           gid = 341,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 234,
