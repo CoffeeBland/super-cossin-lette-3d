@@ -13,10 +13,6 @@
 * Les transitions ont besoin d'amour
     * Bisous de fin
 
-### Un solide pe/10
-* Réflection?
-* Depth map?
-
 ## MAPS
 * Un labyrinthe. That's it
 
