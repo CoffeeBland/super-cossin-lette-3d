@@ -61,6 +61,7 @@ function Water:update(framePart, game, entity)
             pos.x = pos.lastGoodX
             pos.y = pos.lastGoodY
             pos.z = pos.lastGoodZ
+            pos.onGround = false
             physics.body:setPosition(pos.x, pos.y)
             physics.body:setLinearVelocity(0, 0)
             velocity.z = self.respawnJumpSpeed * Game.constants.jumpMultiplier

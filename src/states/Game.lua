@@ -397,7 +397,6 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 
     -- Draw!
     love.graphics.setCanvas({ camera.canvas, stencil = true })
-    love.graphics.clear(unpack(Game.constants.bg[self.vars.bg]))
     love.graphics.setShader(HEIGHT_MAPPED_SHADER)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
     HEIGHT_MAPPED_SHADER:send("heightMap", camera.heightCanvas)
@@ -408,6 +407,10 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     HEIGHT_MAPPED_SHADER:send("time", self.time)
     HEIGHT_MAPPED_SHADER:send("cameraPos", { camera.x * scale, camera.y * scale })
     HEIGHT_MAPPED_SHADER:send("scale", scale * Game.constants.heightSlop)
+
+    love.graphics.setColor(unpack(Game.constants.bg[self.vars.bg]))
+    love.graphics.rectangle("fill", sx, sy, ex - sx, ey - sy)
+    love.graphics.setColor(1, 1, 1, 1)
 
     tileBatchStartIdx = 0
     tileBatchIdx = 0
