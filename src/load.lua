@@ -103,6 +103,7 @@ function load.createHeightTextures()
                 if object.reflectedOffset then
                     reflectedInfo = {
                         offset = object.reflectedOffset or 0,
+                        heightReadOffset = 0,
                         heightScale = object.reflectionHeightScale or 1
                     }
                 end
@@ -130,7 +131,8 @@ function load.createHeightTextures()
         tilesetTiles[i] = tile
     end
     load.createHeightTexture("tileset", tilesetTiles, {
-        offset = 0,
+        offset = -4,
+        heightReadOffset = 4,
         heightScale = 1
     })
 end
@@ -244,8 +246,10 @@ function load.createHeightTexture(name, tiles, reflectionInfo)
                 local miny, maxy = BIG_NUMBER, -BIG_NUMBER
                 local qx, qy, qw, qh = quad:getViewport()
                 for x = 0, qw - 1 do
-                    for y = 0, qh - 1 do
-                        local pixh = heightImageData:getPixel(x + qx, y + qy) * height * reflectionInfo.heightScale
+                    for y = 0, qh - 1 - reflectionInfo.heightReadOffset do
+                        local pixh = heightImageData:getPixel(x + qx, y + qy + reflectionInfo.heightReadOffset)
+                            * height
+                            * reflectionInfo.heightScale
                         if pixh > DELTA then
                             local reflecty = math.floor(y + pixh * 2)
                             local i = x + reflecty * qw

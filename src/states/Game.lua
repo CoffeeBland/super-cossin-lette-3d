@@ -249,7 +249,7 @@ function Game:enter(args)
                 self.reflectedTilesBatches[i]:add(
                     tileData.quad,
                     entity.pos.x,
-                    (entity.pos.y -1 * (- entity.pos.z - (sprite.anchor.z or 0) - (entity.pos.height or 0))),
+                    (entity.pos.y-(- entity.pos.z - (sprite.anchor.z or 0) - (entity.pos.height or 0) + reflectedInfo.tileset.offset)),
                     0,
                     sprite.flipX and -1 or 1,
                     sprite.flipY and -1 or 1,
