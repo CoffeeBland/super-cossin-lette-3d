@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   name = "objects",
   class = "",
   tilewidth = 1152,
@@ -2037,7 +2037,9 @@ return {
         ["lensed"] = true,
         ["offsetX"] = 400,
         ["offsetY"] = 360,
-        ["posZ"] = 240
+        ["posZ"] = 240,
+        ["reflectedOffset"] = 0,
+        ["reflectionHeightScale"] = 1
       },
       image = "../img/Arche_top.png",
       width = 961,
@@ -2081,12 +2083,15 @@ return {
     {
       id = 0,
       properties = {
-        ["autoheightDelta"] = 220,
+        ["autoheightDeltaX"] = 130,
+        ["autoheightDeltaY"] = 40,
         ["autoshadow"] = true,
         ["height"] = 480,
         ["lensed"] = true,
         ["offsetX"] = 280,
-        ["offsetY"] = 560
+        ["offsetY"] = 560,
+        ["reflectedOffset"] = 80,
+        ["reflectionHeightScale"] = 1.05
       },
       image = "../img/Arche_arriere.png",
       width = 1152,
@@ -2130,12 +2135,15 @@ return {
     {
       id = 1,
       properties = {
-        ["autoheightDelta"] = -90,
+        ["autoheightDeltaX"] = -90,
+        ["autoheightDeltaY"] = -90,
         ["autoshadow"] = true,
         ["height"] = 480,
         ["lensed"] = true,
         ["offsetX"] = 860,
-        ["offsetY"] = 830
+        ["offsetY"] = 830,
+        ["reflectedOffset"] = 92,
+        ["reflectionHeightScale"] = 1.1
       },
       image = "../img/Arche_avant.png",
       width = 1152,

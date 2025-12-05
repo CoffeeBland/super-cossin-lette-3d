@@ -2,6 +2,7 @@ load = {}
 textures = {}
 heightTextures = {}
 reflectedTextures = {}
+reflectedInfo = {}
 dirtyHeightTextures = {}
 sounds = {}
 music = {}
@@ -77,7 +78,8 @@ function load.createHeightTextures()
                             table.uniqInsert(tiles, {
                                 quad = tile.quad,
                                 height = entity.pos.height,
-                                delta = sprite.autoheightDelta or object.autoheightDelta,
+                                deltaX = sprite.autoheightDeltaX or object.autoheightDeltaX,
+                                deltaY = sprite.autoheightDeltaY or object.autoheightDeltaY,
                                 bulge = sprite.autoheightBulge or object.autoheightBulge,
                                 shape = shape,
                                 pointsX = sprite.anchor.x,
@@ -89,14 +91,22 @@ function load.createHeightTextures()
                     table.insert(tiles, {
                         quad = nil,
                         height = entity.pos.height,
-                        delta = object.autoheightDelta,
+                        deltaX = object.autoheightDeltaX,
+                        deltaY = object.autoheightDeltaY,
                         bulge = sprite.autoheightBulge or object.autoheightBulge,
                         shape = shape,
                         pointsX = sprite.anchor.x,
                         pointsY = sprite.anchor.y,
                     })
                 end
-                load.createHeightTexture(sprite.name, tiles)
+                local reflectedInfo = nil
+                if object.reflectedOffset then
+                    reflectedInfo = {
+                        offset = object.reflectedOffset or 0,
+                        heightScale = object.reflectionHeightScale or 1
+                    }
+                end
+                load.createHeightTexture(sprite.name, tiles, reflectedInfo)
             end
         end
     end
@@ -119,7 +129,10 @@ function load.createHeightTextures()
         tile.pointsY = tileData.originY - TILE_HEIGHT / 2
         tilesetTiles[i] = tile
     end
-    load.createHeightTexture("tileset", tilesetTiles)
+    load.createHeightTexture("tileset", tilesetTiles, {
+        offset = 0,
+        heightScale = 1
+    })
 end
 
 local function findx(points, xfn)
@@ -140,7 +153,7 @@ end
 
 -- We're gonna bake in a whole lot of assumptions about how textures, sizes and collisions are used
 -- Strap in boyz
-function load.createHeightTexture(name, tiles)
+function load.createHeightTexture(name, tiles, reflectionInfo)
     if heightTextures[name] and not dirtyHeightTextures[name] then
         return
     end
@@ -194,18 +207,20 @@ function load.createHeightTexture(name, tiles)
         for i = 1, height - 1 do
             love.graphics.setColor((height / 8 + i * (7/8)) / height, 0, 0, 1)
 
-            local delta = (tile.delta or 0) * (i / height)
+            local deltaX = (tile.deltaX or 0) * (i / height)
+            local deltaY = (tile.deltaY or 0) * (i / height)
             local bulge = math.trigterp(i, 1, height - 1, (tile.bulge or 0) - pw)
-            local ldx = delta - bulge / 2
-            local rdx = delta + bulge / 2
+            local ldx = deltaX - bulge / 2
+            local rdx = deltaX + bulge / 2
+            local y = deltaY - i
 
-            love.graphics.rectangle("fill", 0, lefty - i - 0.5, leftx + ldx + 1, 2)
-            love.graphics.rectangle("fill", rightx + rdx - 1, righty - i - 0.5, w - rightx - rdx + 1, 2)
+            love.graphics.rectangle("fill", 0, lefty + y - 0.5, leftx + ldx + 1, 2)
+            love.graphics.rectangle("fill", rightx + rdx - 1, righty + y - 0.5, w - rightx - rdx + 1, 2)
 
             -- If just a single point then no point (ha!) in drawing the polygon
             if #points > 2 and pw > 0 then
                 love.graphics.push()
-                love.graphics.translate(tile.pointsX + delta, tile.pointsY - i)
+                love.graphics.translate(tile.pointsX + deltaX, tile.pointsY + y)
                 love.graphics.scale(((rdx - ldx) + pw) / pw, 1)
                 love.graphics.polygon("fill", points)
                 love.graphics.pop()
@@ -218,7 +233,7 @@ function load.createHeightTexture(name, tiles)
     love.graphics.reset()
     local heightImageData = canvas:newImageData()
 
-    if name == "tileset" or name == "Arche_top" or name == "Arche_avant" or name == "Arche_arriere" then
+    if reflectionInfo then
         -- Generate reflected texture
         local reflectedHeightOffsetByTile = {}
         local reflectedHeightImageData = love.image.newImageData(w, h, "r16")
@@ -230,7 +245,7 @@ function load.createHeightTexture(name, tiles)
                 local qx, qy, qw, qh = quad:getViewport()
                 for x = 0, qw - 1 do
                     for y = 0, qh - 1 do
-                        local pixh = heightImageData:getPixel(x + qx, y + qy) * height
+                        local pixh = heightImageData:getPixel(x + qx, y + qy) * height * reflectionInfo.heightScale
                         if pixh > DELTA then
                             local reflecty = math.floor(y + pixh * 2)
                             local i = x + reflecty * qw
@@ -291,6 +306,7 @@ function load.createHeightTexture(name, tiles)
         love.graphics.setShader()
         local reflectedTextureImageData = reflectedTextureCanvas:newImageData()
         reflectedTextures[name] = love.graphics.newImage(reflectedTextureImageData)
+        reflectedInfo[name] = reflectionInfo
     end
 
     heightTextures[name] = love.graphics.newImage(heightImageData)

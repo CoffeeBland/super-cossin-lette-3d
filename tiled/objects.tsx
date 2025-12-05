@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.1" name="objects" tilewidth="1152" tileheight="1286" tilecount="77" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="1152" tileheight="1286" tilecount="77" columns="0">
  <editorsettings>
   <export target="../data/objects.lua" format="lua"/>
  </editorsettings>
@@ -773,6 +773,8 @@
    <property name="offsetX" type="float" value="400"/>
    <property name="offsetY" type="float" value="360"/>
    <property name="posZ" type="float" value="240"/>
+   <property name="reflectedOffset" type="float" value="0"/>
+   <property name="reflectionHeightScale" type="float" value="1"/>
   </properties>
   <image source="../img/Arche_top.png" width="961" height="622"/>
   <objectgroup draworder="index" id="2">
@@ -783,12 +785,15 @@
  </tile>
  <tile id="0">
   <properties>
-   <property name="autoheightDelta" type="float" value="220"/>
+   <property name="autoheightDeltaX" type="float" value="130"/>
+   <property name="autoheightDeltaY" type="float" value="40"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="480"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="280"/>
    <property name="offsetY" type="float" value="560"/>
+   <property name="reflectedOffset" type="float" value="80"/>
+   <property name="reflectionHeightScale" type="float" value="1.05"/>
   </properties>
   <image source="../img/Arche_arriere.png" width="1152" height="1024"/>
   <objectgroup draworder="index" id="3">
@@ -799,12 +804,15 @@
  </tile>
  <tile id="1">
   <properties>
-   <property name="autoheightDelta" type="float" value="-90"/>
+   <property name="autoheightDeltaX" type="float" value="-90"/>
+   <property name="autoheightDeltaY" type="float" value="-90"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="480"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="860"/>
    <property name="offsetY" type="float" value="830"/>
+   <property name="reflectedOffset" type="float" value="92"/>
+   <property name="reflectionHeightScale" type="float" value="1.1"/>
   </properties>
   <image source="../img/Arche_avant.png" width="1152" height="1024"/>
   <objectgroup draworder="index" id="2">

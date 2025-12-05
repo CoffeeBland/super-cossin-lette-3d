@@ -535,11 +535,6 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 
     if dbg.reflectionMap then
         love.graphics.draw(camera.reflectionCanvas, 0, 0)
-        love.graphics.scale(0.33, 0.33)
-        love.graphics.draw(reflectedTextures.Arche_top)
-        love.graphics.draw(reflectedTextures.Arche_avant, 800, 0)
-        love.graphics.draw(reflectedTextures.Arche_arriere, 0, 800)
-        love.graphics.scale(1.0 / 0.33, 1.0 / 0.33)
     end
 
     if dbg.pointHeights then
@@ -760,12 +755,13 @@ function Game:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
             end
             for _, sprite in ipairs(entity.sprites) do
                 local doTheFlip = not reflectedTextures[sprite.name]
+                local info = reflectedInfo[sprite.name]
                 if doTheFlip then
                     sprite.flipY = not sprite.flipY
                     textures = tmp
                 else
                     textures = reflectedTextures
-                    entity.pos.z = entity.pos.z - (entity.pos.height or 0)
+                    entity.pos.z = entity.pos.z - (entity.pos.height or 0) + info.offset
                 end
                 local doTheHue = entity.hue or sprite.hue
                 if doTheHue then
@@ -786,7 +782,7 @@ function Game:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
                 if doTheFlip then
                     sprite.flipY = not sprite.flipY
                 else
-                    entity.pos.z = entity.pos.z + (entity.pos.height or 0)
+                    entity.pos.z = entity.pos.z + (entity.pos.height or 0) - info.offset
                 end
             end
             entity.pos.z = z

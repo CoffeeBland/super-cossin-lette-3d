@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 17,
-  nextobjectid = 407,
+  nextobjectid = 409,
   properties = {
     ["name"] = "SUR L'ILE RECURSIVE",
     ["vars.ambience"] = "Lake",
