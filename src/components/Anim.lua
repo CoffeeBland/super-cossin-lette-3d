@@ -119,8 +119,8 @@ function Anim:findAnim(spriteData)
     local foundAnim = nil
     local foundRequest = self.emptyRequest
     for _, anim in ipairs(spriteData) do
-        local request = self:getRequest(anim.name)
-        if request and request.priority >= foundRequest.priority then
+        local request = self:getRequest(anim.name) or self.emptyRequest
+        if request.priority >= foundRequest.priority then
             if anim.dirs then
                 for _, dir in ipairs(anim.dirs) do
                     if dir == self.dir then

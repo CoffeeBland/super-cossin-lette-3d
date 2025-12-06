@@ -92,7 +92,11 @@ function Sound:start(sound, entity)
     self.nextPlayingId = self.nextPlayingId + 1
     source:play()
     if sound.startSample then
-        source:seek(sound.startSample, "samples")
+        local sample = sound.startSample
+        if sample == "random" then
+            sample = math.random(source:getDuration("samples"))
+        end
+        source:seek(sample, "samples")
     end
 end
 
@@ -207,7 +211,35 @@ function SoundSystem:update(framePart, dt, game)
         end
 
         local conditions = entity.soundEmitter.conditions
-        Sound:toggle(conditions.drown, entity.water and entity.water.remainingDrownFrames, entity)
-        Sound:toggle(conditions.light, entity.light and entity.light.alpha >= conditions.light.minimumLight, entity)
+        self:checkCondition(
+            conditions.drown,
+            entity.water and entity.water.remainingDrownFrames,
+            entity,
+            framePart)
+        self:checkCondition(
+            conditions.light,
+            entity.light and entity.light.alpha >= conditions.light.minimumLight,
+            entity,
+            framePart)
+    end
+end
+
+function SoundSystem:checkCondition(sound, condition, entity, framePart)
+    if not sound then
+        return
+    end
+    if sound.cooldown or sound.cooldownRange then
+        if condition then
+            if sound.cooldownFrames and sound.cooldownFrames > 0 then
+                sound.cooldownFrames = math.max(sound.cooldownFrames - framePart)
+                return
+            end
+            sound.cooldownFrames = math.randomRange(sound.cooldownRange, sound.cooldown or 0)
+            Sound:start(sound, entity)
+        else
+            sound.cooldownFrames = 0
+        end
+    else
+        Sound:toggle(sound, condition, entity)
     end
 end

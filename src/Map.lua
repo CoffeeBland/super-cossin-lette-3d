@@ -12,7 +12,7 @@ function Map.load(name)
         StateMachine:push(Maps)
         return nil
     end
-    local instance = { name = name, _data = loadfile(path)() }
+    local instance = { name = name, _data = love.filesystem.load(path)() }
     instance = setmetatable(instance, Map)
     timestamps[path] = info
     mapsByName[name] = instance

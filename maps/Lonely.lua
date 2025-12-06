@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.11.1",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -15,8 +15,8 @@ return {
     ["name"] = "DANS LA PLAINE",
     ["vars.ambience"] = "Meadow",
     ["vars.nextMap"] = "map_jessi",
-    ["vars.targetFruits"] = 7,
-    ["vars.timer"] = 80
+    ["vars.targetFruits"] = 6,
+    ["vars.timer"] = 90
   },
   tilesets = {
     {

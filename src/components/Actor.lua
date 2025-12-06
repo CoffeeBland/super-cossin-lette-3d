@@ -129,8 +129,7 @@ function Actor:processMove(framePart, game, nextMove, entity, actions)
                 entity.anim:release("drown")
             end
             if self.autoWalkCutoffFrames == 0 then
-                local _, topy = love.graphics.inverseTransformPoint(0, 0)
-                pos.z = pos.y - topy
+                pos.z = pos.y - 1000
             end
             self.autoWalkJumpFrames = nil
             self.autoWalkCutoffFrames = nil

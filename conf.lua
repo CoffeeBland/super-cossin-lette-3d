@@ -14,6 +14,7 @@ function love.conf(t)
     t.window.fullscreen = Options.values.fullscreen and 1 or 0
     t.window.resizable = true
     t.window.highdpi = true
+    t.window.icon = "img/Icon.png"
 
     t.modules.touch = false
     t.modules.video = false
