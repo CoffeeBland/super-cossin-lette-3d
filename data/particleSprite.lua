@@ -45,7 +45,7 @@ return {
                 name = "idle",
                 fps = 18,
                 oneShot = true,
-                dirs = { "l", "tl", "bl", "t", "b" },
+                dirs = { "l", "tl", "bl" },
                 tiles = {
                     { 0, 0 },
                     { 1, 0 },
@@ -56,6 +56,23 @@ return {
                     { 6, 0 },
                     { 7, 0 },
                     { 8, 0 }
+                }
+            },
+            {
+                name = "idle",
+                fps = 18,
+                oneShot = true,
+                dirs = { "t", "b" },
+                tiles = {
+                    { 0, 1 },
+                    { 1, 1 },
+                    { 2, 1 },
+                    { 3, 1 },
+                    { 4, 1 },
+                    { 5, 1 },
+                    { 6, 1 },
+                    { 7, 1 },
+                    { 8, 1 }
                 }
             },
         }

@@ -1,7 +1,5 @@
 ## TODO
 
-* Particle
-    * Splashs d'eau
 * Sons
     * Fruit pickup / drop
     * Track pour le jeu

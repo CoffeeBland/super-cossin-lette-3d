@@ -5,7 +5,7 @@
  </editorsettings>
  <properties>
   <property name="vars.nextMap" value="map_mymp"/>
-  <property name="vars.targetFruits" type="int" value="2"/>
+  <property name="vars.targetFruits" type="int" value="1"/>
   <property name="vars.timer" type="float" value="15"/>
  </properties>
  <tileset firstgid="1" source="tileset.tsx"/>
@@ -480,7 +480,7 @@
   <object id="47" gid="357" x="-261.208" y="1123.21" width="605" height="459"/>
   <object id="48" gid="375" x="-224.02" y="1288.35" width="224" height="404"/>
   <object id="49" gid="308" x="912.802" y="-574.135" width="192" height="256"/>
-  <object id="50" gid="320" x="931.91" y="848.663" width="128" height="192"/>
+  <object id="50" gid="320" x="931.91" y="847.663" width="128" height="192"/>
   <object id="54" gid="376" x="-61.6667" y="-530.333" width="1024" height="1286">
    <properties>
     <property name="posZ" type="float" value="450"/>
