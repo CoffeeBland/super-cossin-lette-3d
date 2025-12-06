@@ -13,7 +13,7 @@ return {
   nextobjectid = 59,
   properties = {
     ["vars.nextMap"] = "map_mymp",
-    ["vars.targetFruits"] = 2,
+    ["vars.targetFruits"] = 1,
     ["vars.timer"] = 15
   },
   tilesets = {
@@ -698,7 +698,7 @@ return {
           type = "",
           shape = "rectangle",
           x = 931.91,
-          y = 848.663,
+          y = 847.663,
           width = 128,
           height = 192,
           rotation = 0,
