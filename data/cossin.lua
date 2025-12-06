@@ -113,7 +113,7 @@ return function()
                 },
                 ["drown:start"] = {
                     name = "Splash",
-                    offset = { x = 0, y = 0, z = 0 },
+                    offset = { x = 0, y = 0, z = 10 },
                     offsetRange = { x = { -40, 40 }, y = { -60, 20 } },
                     count = 6,
                     durationRange = { 30, 40 },

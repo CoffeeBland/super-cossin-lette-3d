@@ -865,6 +865,7 @@ function Game:eval(operand)
     if type == "vars" then
         return self.vars[name]
     end
+    return operand
 end
 
 function Game:sortForDrawing(entities)

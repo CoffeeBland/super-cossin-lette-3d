@@ -748,6 +748,9 @@ return {
             }
         },
         { "if", ">=", "[vars.picnicFruits]", "[vars.targetFruits]" },
+            { "music",
+                name = "Victoire"
+            },
             { "bubble",
                 entity = { byName = "blonde" },
                 text = { 10, ":", 10, "^", 30, ")" }
@@ -779,6 +782,9 @@ return {
                 },
             { "end" },
         { "else" },
+            { "music",
+                name = "Defaite"
+            },
             { "bubble",
                 entity = { byName = "blonde" },
                 text = { 10, ":", 10, "^", 30, "(" }

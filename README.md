@@ -4,8 +4,6 @@
     * Splashs d'eau
 * Sons
     * Fruit pickup / drop
-    * Jingle de victoire
-    * Jingle de défaite
     * Track pour le jeu
         * Track pour les tableaux "de base" basés sur "promenons-nous dans les bois?"
     * Enregistrer le title theme
