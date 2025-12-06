@@ -365,7 +365,7 @@ function load.createShadow(name, points, scale)
 end
 
 function load.loadData(name, file)
-    local loaded, err = loadfile(file)
+    local loaded, err = love.filesystem.load(file)
     if err then
         error("Could not read data", { file = file, error = err })
         return

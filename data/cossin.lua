@@ -68,7 +68,7 @@ return function()
             anchor = { x = -40, y = -112 }
         },
         larp = {},
-        lens = { size = 480, size2 = 480^2 },
+        lens = { size = 640, size2 = 640^2 },
         shakeEmitter = {
             triggers = {
                 land = {
@@ -112,28 +112,16 @@ return function()
                     durationRange = { 15, 25 }
                 },
                 ["drown:start"] = {
-                    name = "Fumee",
+                    name = "Splash",
                     offset = { x = 0, y = 0, z = 0 },
-                    offsetRange={ x = { -30, 30 }, y = { -20, 20 } },
-                    count = 8,
-                    durationRange = { 15, 25 },
-                    speed = 10,
+                    offsetRange = { x = { -40, 40 }, y = { -60, 20 } },
+                    count = 6,
+                    durationRange = { 30, 40 },
+                    speed = 5,
                     angleRange = { 0, math.pi * 2 }
                 }
             },
             conditions = {
-                drown = {
-                    name = "Fumee",
-                    inherit = { x = 0.25, y = 0.25, z = 0 },
-                    offset = { x = 0, y = 0, z = 0 },
-                    offsetRange={ x = { -30, 30 }, y = { -20, 20 } },
-                    countRange = { 3, 4 },
-                    durationRange = { 15, 25 },
-                    speed = 10,
-                    angleRange = { 0, math.pi * 2 },
-                    cooldown = 10,
-                    velocity={ z = 10 }
-                },
                 super = {
                     name = "Sparkle",
                     offsetRange = {
@@ -178,6 +166,29 @@ return function()
                     name = "Gnieh",
                     stopOn = "squish:stop",
                     mass = 0.5
+                },
+                ["drown:start"] = {
+                    name = "Noyer",
+                    loop = true,
+                    mass = 0.5,
+                    pitchRange = { 1.6, 1.8 },
+                    startSample = "random",
+                    stopOn = "drown:stop"
+                }
+            },
+            conditions = {
+                drown = {
+                    name = "Splash",
+                    names = {
+                        "Splash-1",
+                        "Splash-2",
+                        "Splash-3",
+                        "Splash-4",
+                        "Splash-5",
+                        "Splash-6"
+                    },
+                    pitchRange = { 1.0, 1.5 },
+                    cooldown = 6
                 }
             }
         }
