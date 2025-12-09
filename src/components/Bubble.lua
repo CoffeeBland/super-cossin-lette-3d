@@ -28,7 +28,7 @@ function Bubble:draw(entity)
         local icon = self.text[i * 2]
         local iconWidth = Game.constants.icons.byName[icon].width
         if iconStart == 0 then
-            iconStart = iconWidth / 2
+            iconStart = -iconWidth / 2
         end
         textWidth = textWidth + iconWidth
     end
@@ -67,7 +67,7 @@ function Bubble:draw(entity)
     for i = 2, segments - 1 do
         love.graphics.draw(
             textures.Bubble,
-            def.bg.segments.quads[i],
+            def.bg.segments.quads[i - 1],
             i * halfw,
             0,
             0, 1, 1,
@@ -92,10 +92,11 @@ function Bubble:draw(entity)
         def.segment.w / 2,
         bgHeight / 2)
 
-    local x = iconStart
+    local x = -textWidth / 2
     for i = 1, self.textIndex or 0 do
         local icon = self.text[i * 2]
         local iconData = Game.constants.icons.byName[icon]
+        x = x + iconData.width / 2
         love.graphics.draw(
             textures.Bubble_icons,
             iconData.quad,
@@ -103,7 +104,7 @@ function Bubble:draw(entity)
             0, -- rot,
             1, 1, -- scale,
             Game.constants.icons.size.w / 2, Game.constants.icons.size.h / 2)
-        x = x + iconData.width
+        x = x + iconData.width / 2
     end
 end
 

@@ -254,16 +254,14 @@ return {
                 name = "drown",
                 dirs = { "l", "tl", "bl", "b" },
                 fps = 10,
-                pingPong = true,
-                tiles = { { 0, 9 }, { 1, 9 }, { 2, 9 } }
+                tiles = { { 0, 9 }, { 1, 9 }, { 2, 9 }, { 3, 9 }, { 4, 9 } }
             },
             {
                 name = "drown",
                 dirs = { "r", "tr", "br", "t" },
                 fps = 10,
                 flipX = true,
-                pingPong = true,
-                tiles = { { 0, 9 }, { 1, 9 }, { 2, 9 } }
+                tiles = { { 0, 9 }, { 1, 9 }, { 2, 9 }, { 3, 9 }, { 4, 9 } }
             },
             -- Lookup
             {

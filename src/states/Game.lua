@@ -115,6 +115,7 @@ function Game:enter(args)
         target = nil
     }
     self.time = 0
+    self.tint = { 1, 1, 1, 1 }
     self.map = Map.load(args.map)
     if not self.map then
         return
@@ -137,7 +138,6 @@ function Game:enter(args)
         player3 = playerActionsById[3] ~= nil,
         player4 = playerActionsById[4] ~= nil,
         picnicFruits = 0,
-        targetFruits = 1,
         timer = Game.constants.defaultLevelTimer,
         firstLevel = Game.constants.firstLevel,
         currentMap = args.map,
@@ -269,7 +269,12 @@ function Game:enter(args)
 
     time = love.timer.measure(time, "tile batches")
 
-    self.event:execute(Game.constants.startLevelCutscene)
+    if self.vars.targetFruits then
+        self.event:execute(Game.constants.startLevelCutscene)
+    else
+        self.timer.endTriggered = true
+        self.event:execute(Game.constants.endGameCutscene)
+    end
     self:update(0)
 
     if self.vars.ambience then

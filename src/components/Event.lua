@@ -251,6 +251,8 @@ function Event:processEvent(framePart, game, index)
     elseif type == "timer" then
         local time = game:eval(event[2])
         game.timer:start(time)
+    elseif type == "tint" then
+        game.tint = event.color
     else
         error("Unknown event", event)
     end

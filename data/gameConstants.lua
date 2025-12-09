@@ -134,7 +134,7 @@ return {
             "!", 32,
             "blonde", 50,
             "picnic", 62,
-            "<3", 52,
+            "<3", 56,
             "mange", 50,
             "?", 44,
             ".", 28,
@@ -148,16 +148,17 @@ return {
             "7", 36,
             "8", 36,
             "9", 36,
-            "fruit", 48,
+            "fruit", 52,
             "argh", 48,
             ")", 28,
             ":", 28,
-            "^", 28,
+            "^", 32,
             "(", 28,
             "time3/4", 48,
             "time2/4", 48,
             "time1/4", 48,
             "time4/4", 48,
+            "kiss", 58
         }
     },
     timeWarnings = {
@@ -823,5 +824,112 @@ return {
         { "waitForBubble",
             entity = { byName = "blonde" }
         }
+    },
+    endGameCutscene = {
+        { "tint",
+            color = { 1.0, 0.5, 0.95, 1.0 }
+        },
+        { "components",
+            entity = { byName = "cossin" },
+            actor = {
+                baseStats = {
+                    walkSpeed = (Options.values.arcade and 475 or 150) * 0.7
+                }
+            }
+        },
+        { "camera",
+            zoom = 3,
+            blur = 128
+        },
+        { "camera",
+            zoom = 1,
+            zoomFrames = 15,
+            blur = 0,
+            blurFrames = 15
+        },
+        { "components",
+            entity = { byName = "blonde" },
+            disabled = false,
+        },
+        { "move",
+            entity = { byName = "cossin" },
+            { "walkTo", point = { byName = "blonde", offset = { x = -900, y = 500 } } },
+        },
+        { "components",
+            entity = { byName = "cossin" },
+            actor = {
+                autoWalkJumpFrames = 999999
+            }
+        },
+        { "waitFrames", 120 },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 10, "<3" }
+        },
+        { "components",
+            entity = { byName = "cossin" },
+            actor = {
+                baseStats = {
+                    walkSpeed = (Options.values.arcade and 475 or 150) * 0.4
+                }
+            }
+        },
+        { "waitForMove",
+            entity = { byName = "cossin" }
+        },
+        { "move",
+            entity = { byName = "cossin" },
+            { "walkTo", point = { byName = "blonde", offset = { x = -150, y = -400 } } },
+        },
+        { "waitForMove",
+            entity = { byName = "cossin" }
+        },
+        { "waitFrames", 60 },
+        { "move",
+            entity = { byName = "cossin" },
+            { "lookAt", point = { byName = "blonde" } }
+        },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 10, "blonde", 10, "fruit", 10, "?" }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin" }
+        },
+        { "bubble",
+            entity = { byName = "blonde" },
+            text = { 10, "<3", 10, "kiss", 10, "mange" }
+        },
+        { "waitForBubble",
+            entity = { byName = "blonde" }
+        },
+        { "music",
+            name = "Victoire"
+        },
+        { "bubble",
+            entity = { byName = "cossin" },
+            text = { 10, "!", 10, "!", 10, "!", 40, "<3" }
+        },
+        { "waitForBubble",
+            entity = { byName = "cossin" }
+        },
+        { "components",
+            entity = { byName = "cossin" },
+            actor = {
+                baseStats = {
+                    walkSpeed = (Options.values.arcade and 475 or 150) * 0.2
+                }
+            }
+        },
+        { "move",
+            entity = { byName = "cossin" },
+            { "walkTo", point = { byName = "blonde", offset = { x = 0, y = 0 } } },
+        },
+        { "camera",
+            zoom = 3,
+            zoomFrames = 90,
+            blur = 256,
+            blurFrames = 90
+        },
     }
 }

@@ -164,7 +164,9 @@ function CameraSystem:draw(dt, game)
                 POST_SHADER:send("size", { camw, camh })
                 POST_SHADER:send("palette", Options.values.brun and BRUN_PALETTE or DEFAULT_PALETTE)
                 POST_SHADER:send("pixelLens", Options.values.brun and 0.025 or 0)
+                love.graphics.setColor(unpack(Game.tint))
                 love.graphics.draw(camEntity.camera.canvas, camEntity.camera.quad, x, y, 0, w / quadw, h / quadh)
+                love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
             end
             y = y + h
         end
