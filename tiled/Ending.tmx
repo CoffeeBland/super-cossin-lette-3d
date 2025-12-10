@@ -4,8 +4,8 @@
   <export target="../maps/Ending.lua" format="lua"/>
  </editorsettings>
  <properties>
+  <property name="name" value="A LA FINALE"/>
   <property name="vars.ambience" value="ForestBirds"/>
-  <property name="vars.nextMap" value="map_mymp"/>
  </properties>
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="284" source="objects.tsx"/>

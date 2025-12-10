@@ -7,7 +7,7 @@
   <property name="autoanim" type="bool" value="true"/>
   <property name="name" value="A LA BANQUE"/>
   <property name="vars.ambience" value="ForestBirds"/>
-  <property name="vars.nextMap" value="Raceway"/>
+  <property name="vars.nextMap" value="Ending"/>
   <property name="vars.targetFruits" type="int" value="100"/>
   <property name="vars.timer" type="float" value="90"/>
  </properties>

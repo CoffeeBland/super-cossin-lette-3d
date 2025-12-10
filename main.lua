@@ -36,6 +36,8 @@ function love.load(args)
             StateMachine:change(MapIntro, { map = requestedMap })
         elseif requestedState == "game" then
             StateMachine:change(Game, { map = requestedMap })
+        elseif requestedState == "ending" then
+            StateMachine:change(Ending)
         else
             StateMachine:change(Intro)
         end
@@ -104,17 +106,31 @@ function love.draw()
         SCREEN_SHADER:send("size", CURRES)
     end
 
+    local heroFontSize = math.max(math.ceil(128 * SCALE_TO_EXPECTED), 36)
+    if heroFontSize ~= fontsSizes.hero then
+        fonts.hero = love.graphics.newFont(heroFontSize)
+        fonts.hero:setFilter("nearest", "nearest")
+        fontsSizes.hero = heroFontSize
+    end
+
+    local titleFontSize = math.max(math.ceil(64 * SCALE_TO_EXPECTED), 18)
+    if titleFontSize ~= fontsSizes.title then
+        fonts.title = love.graphics.newFont(titleFontSize)
+        fonts.title:setFilter("nearest", "nearest")
+        fontsSizes.title = titleFontSize
+    end
+
     local menuFontSize = math.max(math.ceil(48 * SCALE_TO_EXPECTED), 14)
     if menuFontSize ~= fontsSizes.menu then
         fonts.menu = love.graphics.newFont(menuFontSize)
-        fonts.menu:setFilter("nearest")
+        fonts.menu:setFilter("nearest", "nearest")
         fontsSizes.menu = menuFontSize
     end
 
     local textFontSize = math.max(math.ceil(40 * SCALE_TO_EXPECTED), 12)
     if textFontSize ~= fontsSizes.text then
         fonts.text = love.graphics.newFont(textFontSize)
-        fonts.text:setFilter("nearest")
+        fonts.text:setFilter("nearest", "nearest")
         fontsSizes.text = textFontSize
     end
 
@@ -134,6 +150,7 @@ function love.draw()
     end
 
     if dbg.fps then
-        love.graphics.print(math.round(1 / avgDt))
+        love.graphics.setFont(fonts.text)
+        love.graphics.print(tostring(math.round(1 / avgDt)))
     end
 end

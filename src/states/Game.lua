@@ -53,29 +53,6 @@ function Game:iterEntities(table)
     return Game.entityIterator, table, 1
 end
 
-local iteratorSx, iteratorSy, iteratorEx, iteratorEy
-function Game.entitiesAABBIterator(entities, i)
-    for j = i, #entities do
-        local entity = entities[j]
-        if not entity.disabled and
-            entity.pos.y >= sy and
-            entity.pos.y <= ey and
-            entity.pos.x >= sx and
-            entity.pos.x <= ex
-        then
-            return j + 1, entity
-        end
-    end
-end
-
-function Game:iterEntitiesAABB(sx, sy, ex, ey)
-    iteratorSx = sx
-    iteratorSy = sy
-    iteratorEx = ex
-    iteratorEy = ey
-    return Game.entitiesAABBIterator, self.entities, 1
-end
-
 function Game:createOtherCossins()
     -- Hello cossins
     for key, entity in pairs(self.entities) do
@@ -209,7 +186,7 @@ function Game:enter(args)
     self.stackedTilesInfo = {}
     for i = 0, Game.constants.tileBatchesCount do
         self.groundTilesBatches[i] = love.graphics.newSpriteBatch(textures.tileset)
-        self.map:drawTiles(self.groundTilesBatches[i], i * Game.constants.tileBatchesDT, true)
+        self.map:drawTiles(self.groundTilesBatches[i], i * Game.constants.tileBatchesDT)
 
         self.stackedTilesBatches[i] = love.graphics.newSpriteBatch(textures.tileset)
         self.reflectedTilesBatches[i] = love.graphics.newSpriteBatch(reflectedTextures.tileset)
@@ -856,8 +833,8 @@ function Game:findPoint(designation)
         x, y = designation.pos.x, designation.pos.y
     end
     if designation.offset then
-        x = x + designation.offset.x or 0
-        y = y + designation.offset.y or 0
+        x = x + (designation.offset.x or 0)
+        y = y + (designation.offset.y or 0)
     end
     return x, y
 end

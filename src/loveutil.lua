@@ -80,4 +80,5 @@ end
 
 function love.timer.measure()
     -- Noop by default. See options.
+    return 0
 end

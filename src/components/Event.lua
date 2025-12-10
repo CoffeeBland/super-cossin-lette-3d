@@ -244,10 +244,14 @@ function Event:processEvent(framePart, game, index)
         end
     elseif type == "changeState" then
         local args = {}
+        local opts = {}
         for key, value in pairs(event[3] or EMPTY) do
             args[key] = game:eval(value)
         end
-        StateMachine:change(event[2], args)
+        for key, value in pairs(event[4] or EMPTY) do
+            opts[key] = game:eval(value)
+        end
+        StateMachine:change(event[2], args, opts)
     elseif type == "timer" then
         local time = game:eval(event[2])
         game.timer:start(time)

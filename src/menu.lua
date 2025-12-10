@@ -89,5 +89,5 @@ function menu.draw(idx, scroll, items, w, h, dt)
     love.graphics.setBlendMode("alpha")
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.pop()
-    return scroll
+    return scroll, height
 end

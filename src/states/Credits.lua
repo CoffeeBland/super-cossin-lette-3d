@@ -26,12 +26,23 @@ local credits = {
     {
         "Préparer le pique-nique",
         "Cossin Lette",
+    },
+    {
+        "3D",
+        "Non"
     }
 }
 
 
 function Credits:enter()
-    self.items = {}
+    self.items = {
+        {
+            text = "Super Cossin Lette 3D",
+            active = true,
+            font = fonts.title
+        },
+        {}
+    }
 
     for _, section in ipairs(credits) do
         table.insert(self.items, {
@@ -71,5 +82,5 @@ function Credits:render(dt)
     love.graphics.setBlendMode("alpha")
     love.graphics.setColor(1, 1, 1, 1)
 
-    menu.draw(nil, 0, self.items, w, h, dt)
+    return menu.draw(nil, 0, self.items, w, h, dt)
 end

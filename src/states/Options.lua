@@ -109,7 +109,7 @@ local options = {
             love.timer.measure = value > 0 and
                 function (startTime, context)
                     if Options.values.debug == 0 then
-                        return
+                        return 0
                     end
                     local endTime = love.timer.getTime()
                     local ms = tostring(math.round((endTime - startTime) * 1000))
@@ -120,6 +120,7 @@ local options = {
                     return endTime
                 end or
                 function()
+                    return 0
                 end
 
             actions.toggleDebug = false

@@ -12,8 +12,8 @@ return {
   nextlayerid = 13,
   nextobjectid = 192,
   properties = {
-    ["vars.ambience"] = "ForestBirds",
-    ["vars.nextMap"] = "map_mymp"
+    ["name"] = "A LA FINALE",
+    ["vars.ambience"] = "ForestBirds"
   },
   tilesets = {
     {

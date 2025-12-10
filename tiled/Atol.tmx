@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="16" nextobjectid="210">
+<map version="1.10" tiledversion="1.11.1" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="16" nextobjectid="210">
  <editorsettings>
   <export target="../maps/Atol.lua" format="lua"/>
  </editorsettings>
@@ -8,7 +8,7 @@
   <property name="skipAnimTileGen" type="bool" value="true"/>
   <property name="vars.ambience" value="Sea"/>
   <property name="vars.bg" propertytype="bg" value="water"/>
-  <property name="vars.nextMap" value="Heist"/>
+  <property name="vars.nextMap" value="LacLac"/>
   <property name="vars.targetFruits" type="int" value="12"/>
   <property name="vars.timer" type="float" value="80"/>
  </properties>

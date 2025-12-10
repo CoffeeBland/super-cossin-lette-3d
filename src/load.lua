@@ -678,6 +678,14 @@ function load.loadData(name, file)
             dirtyHeightTextures[spriteName] = true
         end
     end
+
+    if data.state then
+        for k, v in pairs(data) do
+            if k ~= "state" then
+                data.state[k] = v
+            end
+        end
+    end
 end
 
 function load.loadImgFile(file, name, info)
