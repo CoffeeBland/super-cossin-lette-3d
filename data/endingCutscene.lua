@@ -58,6 +58,9 @@ return {
             name = "Fin_cossin-4",
             duration = 15
         },
+        { "sound",
+            name = "Kiss"
+        },
         { "offset",
             id = "blonde",
             to = { x = -180, y = -40 },
@@ -80,6 +83,9 @@ return {
             to = { x = 0.24, y = 0.24 },
             duration = 5,
         },
+        { "sound",
+            name = "Heartbeat"
+        },
         { "image",
             id = "cossin",
             name = "Fin_cossin-5",
@@ -101,11 +107,16 @@ return {
             to = { x = 400, y = -800 },
             duration = 120
         },
+        { "sound",
+            name = "Slide",
+            volume = 0.5,
+            frameOffset = -70
+        },
         { "scale",
             id = "coeur",
             to = { x = 5, y = 5 },
             duration = 120,
-            frameOffset = -60
+            frameOffset = 10
         }
     },
     creditsScrollSpeed = -240,

@@ -144,6 +144,17 @@ return function()
                     name = "Gulp",
                     mass = 0.5
                 },
+                dropFruit = {
+                    name = "Bonk",
+                    pitchrange = { 0.8, 1.2 },
+                    mass = 0.5
+                },
+                pickupFruit = {
+                    name = "Phoomp",
+                    pitchrange = { 0.8, 1.2 },
+                    volume = 0.4,
+                    mass = 0.5
+                },
                 ["jump:stop"] = {
                     name = "Step",
                     pitchRange = { 0.45, 0.55 },
@@ -174,6 +185,9 @@ return function()
                     pitchRange = { 1.6, 1.8 },
                     startSample = "random",
                     stopOn = "drown:stop"
+                },
+                ["drown:stop"] = {
+                    name = "Respawn"
                 }
             },
             conditions = {

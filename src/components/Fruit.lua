@@ -251,6 +251,7 @@ function FruitSystem:fruitPickup(fruitStackEntity, fruitEntity)
     fruitEntity.fruit.stackEntity = #fruitStackEntity.fruitStack.fruits > 1 and
         fruitStackEntity.fruitStack.fruits[#fruitStackEntity.fruitStack.fruits - 1] or
         fruitStackEntity
+    fruitStackEntity.anim:trigger("pickupFruit")
     fruitEntity.fruit.animFrames = fruitStackEntity.fruitStack.pickupAnimFrames
     fruitEntity.fruit.offset = self:getStackOffset(fruitStackEntity, fruitEntity.fruit.stackEntity == fruitStackEntity)
     fruitEntity.fruit.reachedStack = false
@@ -272,6 +273,7 @@ function FruitSystem:checkFruitDrop(entity, stackRootEntity, game, prevX, prevY,
             entity.pos.y = prevY
             entity.pos.z = prevZ
             entity.physics.body:setPosition(entity.pos.x, entity.pos.y)
+            stackRootEntity.anim:trigger("dropFruit")
             for i = #stackRootEntity.fruitStack.fruits, 1, -1 do
                 local fruitEntity = stackRootEntity.fruitStack.fruits[i]
                 stackRootEntity.fruitStack.fruits[i] = nil

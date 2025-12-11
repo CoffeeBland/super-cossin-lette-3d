@@ -9,6 +9,7 @@ return function(object)
             pickupAnimFrames = 20,
             dropCooldown = 21
         },
-        lens = { size = 640, size2 = 640^2 }
+        anim = {},
+        lens = { size = 640, size2 = 640^2 },
     }
 end

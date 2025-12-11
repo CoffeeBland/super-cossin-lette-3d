@@ -30,6 +30,17 @@ return function(object, data, flipX, flipY)
             radiusw = 240,
         } or nil,
         particleEmitter = {
+            triggers = {
+                land = {
+                    name = "Fumee",
+                    inherit = { x = 0.25, y = 0.25, z = 0 },
+                    offset = { x = 0, y = 0, z = 0 },
+                    count = 4,
+                    durationRange = { 15, 25 },
+                    speed = 6,
+                    angleRange = { 0, math.pi * 2 }
+                },
+            },
             always = (radish or golden) and {
                 name = "Sparkle",
                 offsetRange = {
@@ -39,6 +50,14 @@ return function(object, data, flipX, flipY)
                 },
                 duration = 60,
                 cooldown = 10
+            },
+        },
+        soundEmitter = {
+            triggers = {
+                land = {
+                    name = "Thump",
+                    pitchRange = { 0.6, 1.4 }
+                }
             }
         }
     }
