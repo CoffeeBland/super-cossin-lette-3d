@@ -6,7 +6,7 @@
  <properties>
   <property name="name" value="SUR L'ILE RECURSIVE"/>
   <property name="vars.ambience" value="Lake"/>
-  <property name="vars.nextMap" value="Raceway"/>
+  <property name="vars.nextMap" value="Delivery"/>
   <property name="vars.targetFruits" type="int" value="13"/>
   <property name="vars.timer" type="float" value="60"/>
  </properties>

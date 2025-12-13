@@ -9,6 +9,7 @@ require "src.menu"
 require "src.states.StateMachine"
 
 dbg = { cycle = 0, physics = false, fps = false, autorefresh = false }
+DISREGARD_NEXT_UPDATE = true
 
 function love.load(args)
     Options:apply()
@@ -73,7 +74,7 @@ function love.update(dt)
     end
 
     frameTime = frameTime + dt
-    while frameTime + DELTA * 100 > frameDuration do
+    while frameTime > frameDuration do
         frameTime = frameTime - frameDuration
         StateMachine:update(frameDuration)
 

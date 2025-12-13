@@ -14,7 +14,7 @@ return {
   properties = {
     ["name"] = "SUR L'ILE RECURSIVE",
     ["vars.ambience"] = "Lake",
-    ["vars.nextMap"] = "Raceway",
+    ["vars.nextMap"] = "Delivery",
     ["vars.targetFruits"] = 13,
     ["vars.timer"] = 60
   },

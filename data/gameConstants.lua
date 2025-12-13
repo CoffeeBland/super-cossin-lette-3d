@@ -903,9 +903,6 @@ return {
         { "waitForBubble",
             entity = { byName = "blonde" }
         },
-        { "music",
-            name = "Victoire"
-        },
         { "bubble",
             entity = { byName = "cossin" },
             text = { 10, "!", 10, "!", 10, "!", 40, "<3" }
