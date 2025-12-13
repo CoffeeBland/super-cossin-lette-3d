@@ -928,7 +928,7 @@ return {
         { "camera",
             zoom = 3,
             zoomFrames = 90,
-            blur = 256,
+            blur = 32,
             blurFrames = 90
         },
         { "waitForZoom",

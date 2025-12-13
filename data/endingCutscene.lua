@@ -25,6 +25,9 @@ return {
         }
     },
     events = {
+        { "music",
+            name = "Ending"
+        },
         { "image",
             id = "cossin",
             name = "Fin_cossin-2",
@@ -120,5 +123,5 @@ return {
         }
     },
     creditsScrollSpeed = -240,
-    totalFinFrames = 180
+    totalFinFrames = 240
 }

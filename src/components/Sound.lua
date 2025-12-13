@@ -218,7 +218,7 @@ function SoundSystem:update(framePart, dt, game)
             framePart)
         self:checkCondition(
             conditions.light,
-            entity.light and entity.light.alpha >= conditions.light.minimumLight,
+            entity.light and conditions.light and entity.light.alpha >= conditions.light.minimumLight,
             entity,
             framePart)
     end
