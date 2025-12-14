@@ -109,6 +109,17 @@ function FruitSystem:update(framePart, dt, game)
             self:checkFruitPickup(entity, other)
         end
 
+        for _, other in ipairs(game.physics:getAllOverlappingOfType(
+            entity.fruitStack.sensor,
+            nil,
+            entity.pos,
+            "fruitStack"))
+        do
+            if #other.fruitStack.fruits > 0 then
+                self:dropFruits(other)
+            end
+        end
+
         game.vars.remainingFruits = game.vars.remainingFruits + #entity.fruitStack.fruits
     end
 
@@ -273,29 +284,7 @@ function FruitSystem:checkFruitDrop(entity, stackRootEntity, game, prevX, prevY,
             entity.pos.y = prevY
             entity.pos.z = prevZ
             entity.physics.body:setPosition(entity.pos.x, entity.pos.y)
-            stackRootEntity.anim:trigger("dropFruit")
-            for i = #stackRootEntity.fruitStack.fruits, 1, -1 do
-                local fruitEntity = stackRootEntity.fruitStack.fruits[i]
-                stackRootEntity.fruitStack.fruits[i] = nil
-
-                local dir = math.random() * math.pi * 2
-                local dx = math.cos(dir) * stackRootEntity.fruitStack.dropForce
-                local dy = math.sin(dir) * stackRootEntity.fruitStack.dropForce
-                fruitEntity.fruit.stackEntity = nil
-                fruitEntity.fruit.animFrames = nil
-                fruitEntity.fruit.reachedStack = false
-                fruitEntity.fruit.cooldown = stackRootEntity.fruitStack.dropCooldown
-                fruitEntity.velocity.z = stackRootEntity.fruitStack.dropJumpSpeed * Game.constants.jumpMultiplier
-                fruitEntity.physics.body:setType("dynamic")
-                fruitEntity.physics.body:setLinearDamping(0)
-                fruitEntity.physics.body:applyLinearImpulse(dx, dy)
-                fruitEntity.pos.onGround = false
-                fruitEntity.pos.floorEntity = nil
-
-                if fruitEntity == entity then
-                    return
-                end
-            end
+            self:dropFruits(stackRootEntity, entity)
         end
     end
 end
@@ -318,4 +307,30 @@ function FruitSystem.shouldEntitiesContact(e1, e2)
     end
     -- If the root is not the same and it's not a picnic table, then yes do please interact
     return fruitRoot and fruitRoot.fruitStack and fruitRoot ~= fruitStackEntity
+end
+
+function FruitSystem:dropFruits(stackEntity, dropStopEntity)
+    stackEntity.anim:trigger("dropFruit")
+    for i = #stackEntity.fruitStack.fruits, 1, -1 do
+        local fruitEntity = stackEntity.fruitStack.fruits[i]
+        stackEntity.fruitStack.fruits[i] = nil
+
+        local dir = math.random() * math.pi * 2
+        local dx = math.cos(dir) * stackEntity.fruitStack.dropForce
+        local dy = math.sin(dir) * stackEntity.fruitStack.dropForce
+        fruitEntity.fruit.stackEntity = nil
+        fruitEntity.fruit.animFrames = nil
+        fruitEntity.fruit.reachedStack = false
+        fruitEntity.fruit.cooldown = stackEntity.fruitStack.dropCooldown
+        fruitEntity.velocity.z = stackEntity.fruitStack.dropJumpSpeed * Game.constants.jumpMultiplier
+        fruitEntity.physics.body:setType("dynamic")
+        fruitEntity.physics.body:setLinearDamping(0)
+        fruitEntity.physics.body:applyLinearImpulse(dx, dy)
+        fruitEntity.pos.onGround = false
+        fruitEntity.pos.floorEntity = nil
+
+        if fruitEntity == dropStopEntity then
+            return
+        end
+    end
 end
