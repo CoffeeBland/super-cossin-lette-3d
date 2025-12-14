@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -10,7 +10,7 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 15,
-  nextobjectid = 409,
+  nextobjectid = 410,
   properties = {
     ["name"] = "EN BAS DE LA COLLINE",
     ["vars.nextMap"] = "Raceway",
@@ -5210,20 +5210,6 @@ return {
           properties = {}
         },
         {
-          id = 83,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 679.091,
-          y = -643.939,
-          width = 322,
-          height = 319,
-          rotation = 0,
-          gid = 366,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 84,
           name = "",
           type = "",
@@ -9358,6 +9344,20 @@ return {
           height = 148,
           rotation = 0,
           gid = 299,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 409,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 673.394,
+          y = -644.153,
+          width = 313,
+          height = 321,
+          rotation = 0,
+          gid = 361,
           visible = true,
           properties = {}
         }

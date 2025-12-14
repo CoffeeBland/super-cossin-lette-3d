@@ -33,18 +33,17 @@ local credits = {
     }
 }
 
-
 function Credits:enter()
     self.items = {
         {
             text = "Super Cossin Lette 3D",
             active = true,
             font = fonts.title
-        },
-        {}
+        }
     }
 
     for _, section in ipairs(credits) do
+        table.insert(self.items, {})
         table.insert(self.items, {
             text = section[1],
             value = "",
@@ -60,8 +59,11 @@ function Credits:enter()
                 active = true
             })
         end
-        table.insert(self.items, {})
     end
+
+    self.idx = 1
+    self.scroll = 0
+    self.autoScrollFrames = Game.constants.pause.autoScrollFrames
 end
 
 function Credits:exit()
@@ -72,15 +74,25 @@ function Credits:update(dt)
         Sound:start(Sound.global.act)
         StateMachine:pop(self)
     end
+
+    if actions.move then
+        if actions.menu.y ~= 0 then
+            local newIdx = Menu.newIdx(
+                self.idx,
+                self.items,
+                actions.menu.y,
+                function (item, idx)
+                    return idx == 1 or idx == #self.items
+                end)
+            if newIdx ~= self.idx then
+                self.idx = newIdx
+                Sound:start(actions.menu.y < 0 and Sound.global.up or Sound.global.down)
+            end
+        end
+    end
 end
 
 function Credits:render(dt)
     local w, h = CURRES[1], CURRES[2]
-    love.graphics.setColor(unpack(Game.constants.pauseColor))
-    love.graphics.setBlendMode("multiply", "premultiplied")
-    love.graphics.rectangle("fill", 0, 0, w, h)
-    love.graphics.setBlendMode("alpha")
-    love.graphics.setColor(1, 1, 1, 1)
-
-    return menu.draw(nil, 0, self.items, w, h, dt)
+    self.scroll = Menu.draw(self.idx, self.scroll, self.items, w, h, dt)
 end

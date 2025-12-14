@@ -37,7 +37,7 @@ function Ending:update(dt)
     self.timeline:update(dt)
     if self.timeline.frame == self.timeline.events[#self.timeline.events].frame then
         Credits:enter()
-        local _, creditsHeight = Credits:render(0)
+        local _, creditsHeight = Menu.draw(nil, 0, Credits.items, CURRES[1], CURRES[2], 0)
         self.creditsScroll = (CURRES[2] + creditsHeight) / 2
         self.endCreditsScroll = -(CURRES[2] + creditsHeight) / 2
     end
@@ -75,7 +75,7 @@ function Ending:render(dt)
     if self.creditsScroll then
         love.graphics.push()
         love.graphics.translate(0, self.creditsScroll)
-        menu.draw(nil, 0, Credits.items, CURRES[1], CURRES[2], dt)
+        Menu.draw(nil, 0, Credits.items, CURRES[1], CURRES[2], dt)
         love.graphics.pop()
     end
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="15" nextobjectid="409">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="15" nextobjectid="410">
  <editorsettings>
   <export target="../maps/Delivery.lua" format="lua"/>
  </editorsettings>
@@ -4146,7 +4146,6 @@
   <object id="80" gid="2147483979" x="858.953" y="-698.831" width="128" height="148"/>
   <object id="81" gid="2147483984" x="789.161" y="-677.525" width="128" height="148"/>
   <object id="82" gid="334" x="729.975" y="-757.733" width="128" height="148"/>
-  <object id="83" gid="366" x="679.091" y="-643.939" width="322" height="319"/>
   <object id="84" gid="2147484009" x="845.389" y="-565.814" width="313" height="321"/>
   <object id="85" gid="370" x="1790.93" y="68.4659" width="322" height="319"/>
   <object id="86" gid="2147484014" x="1326.3" y="-2018.42" width="322" height="319"/>
@@ -4485,5 +4484,6 @@
   <object id="404" gid="298" x="-2093.28" y="-1822.72" width="128" height="148"/>
   <object id="405" gid="299" x="-3368.31" y="-3067.69" width="128" height="148"/>
   <object id="406" gid="299" x="-3368.31" y="-3067.69" width="128" height="148"/>
+  <object id="409" gid="361" x="673.394" y="-644.153" width="313" height="321"/>
  </objectgroup>
 </map>

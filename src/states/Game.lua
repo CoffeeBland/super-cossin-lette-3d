@@ -269,6 +269,7 @@ function Game:exit()
     if self.physics then
         self.physics:exit()
     end
+    input.playerAddRemoveEnabled = false
 end
 
 function Game:handleCreation()

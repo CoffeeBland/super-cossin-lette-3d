@@ -56,20 +56,24 @@ end
 
 function PauseSystem:update(framePart, dt, game)
     local start = false
-    for _, actions in ipairs(playerActions) do
-        start = start or actions.start or (self.active and actions.back)
-    end
-    if start then
-        self.active = not self.active
-        Sound:start(Sound.global.act)
-        if Music.current then
-            local filter = self.active and Game.constants.music.filters.pause or nil
-            Music.current:setFilter(filter)
+
+    if actions ~= EMPTY then
+        for _, actions in ipairs(playerActions) do
+            start = start or actions.start or (self.active and actions.back)
         end
-        game.camera.blur = self.active and 3 or 0
-        self.btnIdx = 1
+        if start then
+            self.active = not self.active
+            Sound:start(Sound.global.act)
+            if Music.current then
+                local filter = self.active and Game.constants.music.filters.pause or nil
+                Music.current:setFilter(filter)
+            end
+            game.camera.blur = self.active and 3 or 0
+            self.btnIdx = 1
+        end
     end
 
+    input.playerAddRemoveEnabled = self.active
     if self.active then
         self.time = self.time + framePart
 
@@ -87,11 +91,13 @@ function PauseSystem:update(framePart, dt, game)
             local button = buttons[self.btnIdx]
             button.action(self)
         end
+
+        Cossins:update(dt)
     end
 end
 
 function PauseSystem:draw()
-    if not self.active or #StateMachine.stack > 0 then
+    if not self.active then
         return
     end
 
@@ -102,6 +108,12 @@ function PauseSystem:draw()
     love.graphics.rectangle("fill", 0, 0, w, h)
     love.graphics.setBlendMode("alpha")
     love.graphics.setColor(1, 1, 1, 1)
+
+    Cossins:draw()
+
+    if #StateMachine.stack > 0 then
+        return
+    end
 
     love.graphics.push()
     love.graphics.translate(w / 2, h / 2)

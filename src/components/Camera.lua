@@ -174,21 +174,41 @@ function CameraSystem:draw(dt, game)
     end
 
     -- Lines
+    local iconW, iconH = textures.Icon:getDimensions()
+    local iconScale = SCALE_TO_EXPECTED * 0.5
     love.graphics.setCanvas(origCanvas)
     love.graphics.setShader()
-    love.graphics.setColor(unpack(Game.constants.lineColor))
     local x = 0
     for col = 1, cols do
         local w = colParts[col] * (CURRES[1] / colTotal)
         local y = 0
         for row = 1, rows do
             local h = rowParts[row] * (CURRES[2] / rowTotal)
+
+            if #camEntities > 1 then
+                local i = col + (row - 1) * cols
+                local camEntity = camEntities[i]
+                local camSprite = camEntity.sprites[2]
+                local hueRot = (camEntity.hueRot or 0) * (camSprite.hueMult or 1) + (camSprite.hueRot or 0)
+                love.graphics.setShader(TITLE_SHADER)
+                TITLE_SHADER:send("hue", -1)
+                TITLE_SHADER:send("hueRot", hueRot)
+                love.graphics.draw(textures.Icon,
+                    x + w - iconW * iconScale + 1,
+                    y + h - iconH * iconScale + 1,
+                    0,
+                    iconScale,
+                    iconScale)
+                love.graphics.setShader()
+            end
+
+            love.graphics.setColor(unpack(Game.constants.lineColor))
             love.graphics.rectangle("line", x - 0.5, y - 0.5, w + 1, h + 1)
+            love.graphics.setColor(1, 1, 1, 1)
             y = y + h
         end
         x = x + w
     end
-    love.graphics.setColor(1, 1, 1, 1)
 end
 
 Camera = {}

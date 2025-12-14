@@ -121,6 +121,7 @@ function StateMachine:render(dt)
     for _, state in ipairs(self.stack) do
         state:render(dt)
     end
+    input.draw()
     if self.fadePart ~= 0 then
         love.graphics.setColor(self.fadeColor[1], self.fadeColor[2], self.fadeColor[3], self.fadePart)
         love.graphics.rectangle("fill", 0, 0, CURRES[1], CURRES[2])

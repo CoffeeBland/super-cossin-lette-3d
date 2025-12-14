@@ -106,7 +106,9 @@ playerActionsById = {}
 actions = playerActions[1]
 playerActionsById[playerActions[1].id] = playerActions[1]
 
-input = {}
+input = {
+    playerAddRemoveEnabled = false
+}
 
 function love.keypressed(key)
     if pressActionsByKey[key] then
@@ -162,6 +164,10 @@ function love.joystickremoved(controller)
 end
 
 function input.handlePlayerAddRemove(controller)
+    if not input.playerAddRemoveEnabled then
+        return
+    end
+
     local id = controller:getID()
     for _, player in ipairs(playerActions) do
         for _, controller in ipairs(player.controllers) do
@@ -346,4 +352,45 @@ function input.afterPlayerUpdate(dt, actions)
     end
 
     actions.move = false
+end
+
+function input.draw()
+    if input.playerAddRemoveEnabled then
+        if StateMachine.current == Title and #StateMachine.stack == 0 then
+            love.graphics.setColor(0.42, 0, 0.118, 1)
+        else
+            love.graphics.setColor(1, 1, 1, 1)
+        end
+
+        local text = "  POUR PLUS DE COSSINS"
+        local height = fonts.menu:getHeight()
+        local triangleWidth = height * 0.5
+        local width = fonts.menu:getWidth(text) + triangleWidth
+
+        love.graphics.push()
+        love.graphics.translate(
+            CURRES[1] / 2,
+            CURRES[2] - height - Game.constants.options.hmargin * SCALE_TO_EXPECTED)
+        love.graphics.setFont(fonts.menu)
+
+        love.graphics.push()
+        love.graphics.translate(-width / 2, height / 2)
+        love.graphics.polygon("fill",
+            0, 0,
+            triangleWidth, -triangleWidth / 2,
+            triangleWidth, triangleWidth / 2)
+        love.graphics.pop()
+
+        love.graphics.print(text, -width / 2 + triangleWidth, 0)
+
+        love.graphics.pop()
+        love.graphics.setColor(1, 1, 1, 1)
+    end
+end
+
+function input.getMenuHeight()
+    if input.playerAddRemoveEnabled then
+        return fonts.menu:getHeight() + Game.constants.options.hmargin * SCALE_TO_EXPECTED
+    end
+    return 0
 end

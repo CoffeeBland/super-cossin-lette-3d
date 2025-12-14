@@ -50,7 +50,7 @@ function Maps:enter(params)
     table.insert(self.items, {})
     table.insert(self.items, { text = "OK", name = "ok" })
 
-    self.idx = menu.newIdx(0, self.items, 1, Maps.isMapItem)
+    self.idx = Menu.newIdx(0, self.items, 1, Maps.isMapItem)
     self.scroll = 0
 end
 
@@ -66,7 +66,7 @@ function Maps:update(dt)
 
     if actions.move then
         if actions.menu.y ~= 0 then
-            local newIdx = menu.newIdx(self.idx, self.items, actions.menu.y, Maps.isMapItem)
+            local newIdx = Menu.newIdx(self.idx, self.items, actions.menu.y, Maps.isMapItem)
             if newIdx ~= self.idx then
                 self.idx = newIdx
                 Sound:start(actions.menu.y < 0 and Sound.global.up or Sound.global.down)
@@ -86,10 +86,5 @@ end
 
 function Maps:render(dt)
     local w, h = CURRES[1], CURRES[2]
-    love.graphics.setColor(unpack(Game.constants.pauseColor))
-    love.graphics.setBlendMode("multiply", "premultiplied")
-    love.graphics.rectangle("fill", 0, 0, w, h)
-    love.graphics.setBlendMode("alpha")
-    love.graphics.setColor(1, 1, 1, 1)
-    self.scroll = menu.draw(self.idx, self.scroll, self.items, w, h, dt)
+    self.scroll = Menu.draw(self.idx, self.scroll, self.items, w, h, dt)
 end

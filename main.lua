@@ -5,7 +5,8 @@ require "src.input"
 require "src.input"
 require "src.constants"
 require "src.error"
-require "src.menu"
+require "src.Menu"
+require "src.Cossins"
 require "src.states.StateMachine"
 
 dbg = { cycle = 0, physics = false, fps = false, autorefresh = false }
@@ -29,6 +30,7 @@ function love.load(args)
     love.physics.setMeter(METER_SCALE)
 
     load.init()
+    Cossins:init()
 
     if requestedState then
         if requestedState == "title" then

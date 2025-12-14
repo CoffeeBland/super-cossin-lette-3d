@@ -10,12 +10,11 @@
     * Windô
     * Linux
     * Mac ? Iiiiiiiish
-    * Favicon
-* Indication d'input kekpart man
+* Perf de delivery
+* Statut de complétion
 
 ## MAPS
 * Un labyrinthe. That's it
 * Cherche & trouv
-* Le stack drette 'sua tête
 
 ## BUGS

@@ -242,9 +242,11 @@ function Title:enter()
     Requests.populate(self)
 
     self:update(0)
+    input.playerAddRemoveEnabled = true
 end
 
 function Title:exit()
+    input.playerAddRemoveEnabled = false
 end
 
 function Title:update(dt)
@@ -450,6 +452,9 @@ function Title:render()
     end
 
     table.sort(self.entities, function (a, b) return a.pos.y < b.pos.y end)
+    for i, entity in ipairs(self.entities) do
+        entity.drawOrder = i
+    end
     for _, entity in self:iterEntities(self.entities) do
         for _, sprite in ipairs(entity.sprites) do
             local doTheHue = sprite.hueRot
@@ -488,4 +493,13 @@ function Title:render()
     SET_SCREEN_SHADER_BLUR(#StateMachine.stack > 0 and Game.constants.pause.blur or blur)
     love.graphics.draw(SCREEN_CANVAS)
     love.graphics.setShader()
+
+    if #StateMachine.stack > 0 then
+        local w, h = CURRES[1], CURRES[2]
+        love.graphics.setColor(unpack(Game.constants.pauseColor))
+        love.graphics.setBlendMode("multiply", "premultiplied")
+        love.graphics.rectangle("fill", 0, 0, w, h)
+        love.graphics.setBlendMode("alpha")
+        love.graphics.setColor(1, 1, 1, 1)
+    end
 end

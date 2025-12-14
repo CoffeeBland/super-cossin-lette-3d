@@ -1,6 +1,6 @@
-menu = {}
+Menu = {}
 
-function menu.newIdx(idx, items, shift, fn)
+function Menu.newIdx(idx, items, shift, fn)
     if shift == 0 then
         return idx
     end
@@ -17,9 +17,10 @@ function menu.newIdx(idx, items, shift, fn)
     return idx
 end
 
-function menu.draw(idx, scroll, items, w, h, dt)
+function Menu.draw(idx, scroll, items, w, h, dt)
     love.graphics.push()
     love.graphics.translate(w / 2, h / 2)
+    love.graphics.setScissor(0, 0, CURRES[1], CURRES[2] - input.getMenuHeight())
 
     love.graphics.setBlendMode("add")
 
@@ -50,11 +51,11 @@ function menu.draw(idx, scroll, items, w, h, dt)
 
     if idx then
         local tscroll = scroll
+        local hstart = -h/2 + vmargin
+        local hend = h/2 - vmargin - fontHeight - input.getMenuHeight()
         for di = -2, 2 do
             local item = items[math.clamp(idx + di, 1, #items)]
             local y = item.y + tscroll
-            local hstart = -h/2 + vmargin
-            local hend = h/2 - vmargin - fontHeight
             if y < hstart then
                 tscroll = tscroll + hstart - y
             end
@@ -88,6 +89,7 @@ function menu.draw(idx, scroll, items, w, h, dt)
 
     love.graphics.setBlendMode("alpha")
     love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setScissor()
     love.graphics.pop()
     return scroll, height
 end
