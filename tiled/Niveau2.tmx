@@ -5,7 +5,7 @@
  </editorsettings>
  <properties>
   <property name="vars.ambience" value="ForestBirds"/>
-  <property name="vars.nextMap" value="Lonely"/>
+  <property name="vars.nextMap" value="Niveau3"/>
   <property name="vars.targetFruits" type="int" value="6"/>
   <property name="vars.timer" type="float" value="60"/>
  </properties>

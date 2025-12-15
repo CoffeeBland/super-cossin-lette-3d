@@ -12,7 +12,7 @@ return {
   nextlayerid = 70,
   nextobjectid = 2633,
   properties = {
-    ["vars.nextMap"] = "Niveau4",
+    ["vars.nextMap"] = "Lonely",
     ["vars.targetFruits"] = 8,
     ["vars.timer"] = 120
   },
