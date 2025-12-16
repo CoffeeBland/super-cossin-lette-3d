@@ -129,7 +129,7 @@ function Actor:processMove(framePart, game, nextMove, entity, actions)
                 entity.anim:release("drown")
             end
             if self.autoWalkCutoffFrames == 0 then
-                pos.z = pos.y - 1000
+                pos.z = -1000
             end
             self.autoWalkJumpFrames = nil
             self.autoWalkCutoffFrames = nil
