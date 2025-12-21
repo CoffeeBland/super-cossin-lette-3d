@@ -374,15 +374,16 @@ function Game:renderFrame(dt, camera, x, y, w, h)
         entity.drawOrder = i
     end
 
-    self:drawHeightMap(camera, w, h, drawnEntities)
     self:drawShadowMap(camera, w, h, sx, sy, ex, ey)
     self:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
 
     -- Draw!
     love.graphics.setCanvas({ camera.canvas, stencil = true })
+
+
+    -- Shader go!
     love.graphics.setShader(HEIGHT_MAPPED_SHADER)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
-    HEIGHT_MAPPED_SHADER:send("heightMap", camera.heightCanvas)
     HEIGHT_MAPPED_SHADER:send("shadowMap", camera.shadowCanvas)
     HEIGHT_MAPPED_SHADER:send("reflectionMap", camera.reflectionCanvas)
     HEIGHT_MAPPED_SHADER:send("hue", -1)
@@ -390,18 +391,20 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     HEIGHT_MAPPED_SHADER:send("time", self.time)
     HEIGHT_MAPPED_SHADER:send("cameraPos", { camera.x * scale, camera.y * scale })
     HEIGHT_MAPPED_SHADER:send("scale", scale * Game.constants.heightSlop)
+    HEIGHT_MAPPED_SHADER:send("entityZ", 0)
+    HEIGHT_MAPPED_SHADER:send("entityHeight", 0)
 
-    love.graphics.setColor(unpack(Game.constants.bg[self.vars.bg]))
+    love.graphics.setColor(Game.constants.bg[self.vars.bg])
     love.graphics.rectangle("fill", sx, sy, ex - sx, ey - sy)
     love.graphics.setColor(1, 1, 1, 1)
-
-    tileBatchStartIdx = 0
-    tileBatchIdx = 0
 
     -- Tiles
     love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.draw(self.groundTilesBatches[tileBatchi], 0, 0)
     love.graphics.setBlendMode("alpha")
+
+    tileBatchStartIdx = 0
+    tileBatchIdx = 0
 
     -- Entities
     for _, entity in ipairs(drawnEntities) do
@@ -539,6 +542,9 @@ end
 
 function Game:drawEntitySprites(entity)
     for _, sprite in ipairs(entity.sprites) do
+        HEIGHT_MAPPED_SHADER:send("heightTexture", heightTextures[sprite.name])
+        HEIGHT_MAPPED_SHADER:send("entityZ", entity.pos.z + (sprite.anchor.z or 0))
+        HEIGHT_MAPPED_SHADER:send("entityHeight", (entity.pos.height or 0) * sprite.scaleY)
         local doTheHue = entity.hue or sprite.hue
         if doTheHue then
             HEIGHT_MAPPED_SHADER:send("hue", sprite.hue)
@@ -598,23 +604,14 @@ function Game:drawStackedTileBatch()
     if tileBatchStartIdx == 0 or tileBatchIdx < tileBatchStartIdx then
         return
     end
+    HEIGHT_MAPPED_SHADER:send("heightTexture", heightTextures.tileset)
+    HEIGHT_MAPPED_SHADER:send("entityZ", -1)
     local tileBatch = self.stackedTilesBatches[tileBatchi]
     tileBatch:setDrawRange(tileBatchStartIdx, tileBatchIdx - tileBatchStartIdx + 1)
     tileBatchStartIdx = tileBatchIdx + 1
     love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.draw(tileBatch)
     love.graphics.setBlendMode("alpha")
-end
-
-function Game:drawStackedTileHeightBatch()
-    if tileBatchStartIdx == 0 or tileBatchIdx < tileBatchStartIdx then
-        return
-    end
-    HEIGHT_MAP_SHADER:send("entityZ", -1)
-    local tileBatch = self.stackedTilesBatches[tileBatchi]
-    tileBatch:setDrawRange(tileBatchStartIdx, tileBatchIdx - tileBatchStartIdx + 1)
-    tileBatchStartIdx = tileBatchIdx + 1
-    love.graphics.draw(tileBatch)
 end
 
 function Game:drawStackedTileReflectedBatch()
@@ -640,40 +637,6 @@ function Game:drawEntityShadow(entity, floorZ)
         (entity.shadow.flipY and -1 or 1),
         entity.shadow.anchor.x,
         entity.shadow.anchor.y)
-end
-
-function Game:drawHeightMap(camera, w, h, drawnEntities)
-    tileBatchStartIdx = 0
-    tileBatchIdx = 0
-
-    local tmp = textures
-    self.stackedTilesBatches[tileBatchi]:setTexture(heightTextures.tileset)
-    textures = heightTextures
-    love.graphics.push("all")
-    love.graphics.setShader(HEIGHT_MAP_SHADER)
-    love.graphics.setCanvas({ camera.heightCanvas, stencil = true })
-    love.graphics.clear(0, 0, 0, 1)
-    for _, entity in ipairs(drawnEntities) do
-        if entity.sprites then
-            self:drawStackedTileHeightBatch()
-            self:stencilLensEntities(entity)
-            for _, sprite in ipairs(entity.sprites) do
-                HEIGHT_MAP_SHADER:send("entityZ", entity.pos.z + (sprite.anchor.z or 0))
-                HEIGHT_MAP_SHADER:send("entityHeight", (entity.pos.height or 0) * sprite.scaleY)
-                self:drawEntitySprite(entity, sprite)
-            end
-            love.graphics.setStencilTest()
-        elseif entity.tileSprites then
-            tileBatchIdx = entity.tileSprites[#entity.tileSprites].batchIdx
-            if tileBatchStartIdx == 0 then
-                tileBatchStartIdx = tileBatchIdx
-            end
-        end
-    end
-    self:drawStackedTileHeightBatch()
-    textures = tmp
-    self.stackedTilesBatches[tileBatchi]:setTexture(textures.tileset)
-    love.graphics.pop()
 end
 
 function Game:drawShadowMap(camera, w, h, sx, sy, ex, ey)

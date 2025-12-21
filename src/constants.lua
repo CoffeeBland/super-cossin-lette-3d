@@ -38,7 +38,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     uniform vec2 size;
     uniform vec4 shadowColor;
     uniform vec4 reflectionColor;
-    uniform Image heightMap;
+    uniform Image heightTexture;
     uniform Image shadowMap;
     uniform float shadowMapHeightOffset;
     uniform float shadowMapOffset;
@@ -47,6 +47,8 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     uniform float scale;
     uniform float hueRot;
     uniform float hue;
+    varying float ptZ;
+    varying float ptHeight;
 
     uniform Image noise1;
     uniform Image noise2;
@@ -83,9 +85,10 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
 
         float height = 0.0;
         for (int i = 0; i < heightSamplesCount; i += 3) {
-            vec2 sampleDst = vec2(heightSamples[i], heightSamples[i + 1]);
-            height += heightSamples[i + 2] * Texel(heightMap, (screen_coords + sampleDst) / size).r * skyLimit;
+            vec2 sampleDst = vec2(heightSamples[i], heightSamples[i + 1]) / size;
+            height += heightSamples[i + 2] * Texel(heightTexture, texture_coords + sampleDst).r;
         }
+        height = ptZ + height * ptHeight;
 
         vec2 shadowMapSize = vec2(size.x, size.y + shadowMapOffset);
         vec2 shadow_map_coords = vec2(screen_coords.x, screen_coords.y + height * scale) / shadowMapSize;
@@ -126,6 +129,26 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
         hsv.x = mod(hsv.x + hueRot, 1.0);
         finalcol = vec4(hsv2rgb(hsv), finalcol.a);
         return mix(texturecolor, finalcol, touchability);
+    }
+]], [[
+    uniform float entityZ;
+    uniform float entityHeight;
+
+    attribute float z;
+    attribute float height;
+
+    varying float ptZ;
+    varying float ptHeight;
+
+    vec4 position(mat4 transform_projection, vec4 vertex_position) {
+        if (entityZ == -1) {
+            ptZ = z;
+            ptHeight = height;
+        } else {
+            ptZ = entityZ;
+            ptHeight = entityHeight;
+        }
+        return transform_projection * vertex_position;
     }
 ]])
 

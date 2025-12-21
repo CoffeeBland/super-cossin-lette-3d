@@ -129,7 +129,10 @@ function Actor:processMove(framePart, game, nextMove, entity, actions)
                 entity.anim:release("drown")
             end
             if self.autoWalkCutoffFrames == 0 then
-                pos.z = -1000
+                pos.z = SKY_LIMIT
+                if entity.fruitStack then
+                    game.fruits:dropFruits(entity)
+                end
             end
             self.autoWalkJumpFrames = nil
             self.autoWalkCutoffFrames = nil
