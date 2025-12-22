@@ -624,7 +624,7 @@ function Game:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
     love.graphics.setShader(REFLECTION_SHADER)
     REFLECTION_SHADER:send("hue", -1)
     REFLECTION_SHADER:send("hueRot", 0)
-    REFLECTION_SHADER:send("screenBounds", { (sy - DRAW_Z_SLOP)/256, (ey + DRAW_Z_SLOP)/256 + SKY_LIMIT })
+    REFLECTION_SHADER:send("screenBounds", { (sy - DRAW_Z_SLOP), (ey + DRAW_Z_SLOP) + SKY_LIMIT })
 
     love.graphics.clear(Game.constants.waterColor[1], Game.constants.waterColor[2], Game.constants.waterColor[3], 1)
 
@@ -634,6 +634,7 @@ function Game:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
     love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.draw(self.reflectedTilesBatches[tileBatchi], 0, 0)
     love.graphics.setBlendMode("alpha")
+    REFLECTION_SHADER:send("entityZ", 0)
 
     local i = 1
     for _, entity in self:iterEntities(self.entitiesByComponent.sprites) do
@@ -654,7 +655,6 @@ function Game:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
     local tmp = textures
     for _, entity in ipairs(effectEntities) do
         REFLECTION_SHADER:send("entityDrawOrder", entity.reflectionOrder)
-        REFLECTION_SHADER:send("entityZ", entity.pos.z)
 
         -- Offset the z to fix position
         local z = entity.pos.z
@@ -790,8 +790,7 @@ function Game:getEntityReflectionOrder(entity)
 end
 
 function Game:getReflectionOrder(y, z, id)
-    return y
-    --return y / 256 + (SKY_LIMIT - z)
+    return y + (SKY_LIMIT - z)
 end
 
 function Game.drawOrderSort(a, b)

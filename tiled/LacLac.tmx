@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="17" nextobjectid="409">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="17" nextobjectid="409">
  <editorsettings>
   <export target="../maps/LacLac.lua" format="lua"/>
  </editorsettings>
@@ -3899,7 +3899,11 @@
   <object id="197" gid="335" x="-1874.67" y="703" width="128" height="148"/>
   <object id="198" gid="336" x="-1048.33" y="-1110" width="128" height="148"/>
   <object id="199" gid="338" x="-1295" y="-382.333" width="128" height="74"/>
-  <object id="200" gid="338" x="801.667" y="-394.667" width="128" height="74"/>
+  <object id="200" gid="338" x="801.667" y="-394.667" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="150"/>
+   </properties>
+  </object>
   <object id="201" gid="339" x="1961" y="-444" width="128" height="74"/>
   <object id="202" gid="335" x="1899.33" y="-604.333" width="128" height="148"/>
   <object id="203" gid="2147484011" x="1529.33" y="-1073" width="313" height="321"/>

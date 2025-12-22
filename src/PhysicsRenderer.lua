@@ -78,11 +78,13 @@ local function draw_body(body)
 
     local entity = body:getUserData()
     if entity and entity.pos then
+        love.graphics.scale(0.5, 0.5)
         love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.print("z" .. math.round(entity.pos.z) .. ":" .. entity.pos.height, 0, 0, 0, 3, 3)
+        love.graphics.print("z" .. math.round(entity.pos.z) .. ":" .. entity.pos.height, 0, -30, 0, 3, 3)
         if entity.pos.floorZ and entity.pos.ceilingZ then
             love.graphics.print("z" .. entity.pos.floorZ .. ":" .. entity.pos.ceilingZ, 0, 30, 0, 3, 3)
         end
+        love.graphics.scale(2, 2)
     end
 
     love.graphics.setPointSize(3)
