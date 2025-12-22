@@ -143,8 +143,8 @@ function CameraSystem:draw(dt, game)
         rowTotal = rowTotal + rowParts[row]
     end
 
-    local camw = math.ceil(CURRES[1] / cols)
-    local camh = math.ceil(CURRES[2] / rows)
+    local camw = math.ceil(CURRES[1] / cols) * 1.2
+    local camh = math.ceil(CURRES[2] / rows) * 1.2
 
     -- Gogogadget
     local x = 0
