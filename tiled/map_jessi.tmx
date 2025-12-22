@@ -2624,7 +2624,11 @@
   <object id="710" gid="376" x="7034.13" y="8171.88" width="1024" height="1286"/>
   <object id="711" gid="376" x="7867.63" y="8746.38" width="1024" height="1286"/>
   <object id="712" gid="376" x="6793.13" y="6820.88" width="1024" height="1286"/>
-  <object id="714" gid="376" x="8331.75" y="4354.25" width="1024" height="1286"/>
+  <object id="714" gid="376" x="8331.75" y="4354.25" width="1024" height="1286">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="715" gid="376" x="1591.94" y="1430.06" width="1024" height="1286"/>
   <object id="716" gid="376" x="2371.94" y="1322.06" width="1024" height="1286"/>
   <object id="717" gid="376" x="4567.56" y="1806.44" width="1024" height="1286"/>
@@ -3141,6 +3145,7 @@
   </object>
   <object id="680" gid="376" x="8513.06" y="5788.94" width="1024" height="1286">
    <properties>
+    <property name="posZ" type="float" value="150"/>
     <property name="replaceTo[0]" type="class" propertytype="replaceTo">
      <properties>
       <property name="applyTruncate" type="bool" value="false"/>

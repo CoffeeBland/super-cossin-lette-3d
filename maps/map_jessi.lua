@@ -8995,7 +8995,9 @@ return {
           rotation = 0,
           gid = 376,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 715,
@@ -12395,6 +12397,7 @@ return {
           gid = 376,
           visible = true,
           properties = {
+            ["posZ"] = 150,
             ["replaceTo[0]"] = {
               ["applyTruncate"] = false,
               ["flipX"] = "random",

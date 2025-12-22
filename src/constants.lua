@@ -17,7 +17,7 @@ SCALE_TO_EXPECTED = 1
 
 DRAW_X_SLOP = 800
 DRAW_Y_SLOP = 1200
-DRAW_Z_SLOP = 800
+DRAW_Z_SLOP = 1000
 
 local glslHsvFunctions = [[
     // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
@@ -71,6 +71,8 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
         0.0, -0.5, 1.0/3.0,
         0.5, 0.5, 1.0/3.0,
         -0.5, 0.5, 1.0/3.0);
+
+    uniform Image heightTexture;
 
     uniform vec4 shadowColor;
     uniform Image shadowMap;
