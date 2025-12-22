@@ -72,15 +72,6 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
         0.5, 0.5, 1.0/3.0,
         -0.5, 0.5, 1.0/3.0);
 
-    uniform Image heightTexture;
-    const int heightSamplesCount = 5 * 3;
-    const float heightSamples[] = float[heightSamplesCount](
-        1.0, 0.0, 2.0/6.0,
-        0.0, -2.0, 1.0/6.0,
-        2.0, 2.0, 1.0/6.0,
-        -2.0, 2.0, 1.0/6.0,
-        2.0, 2.0, 1.0/6.0);
-
     uniform vec4 shadowColor;
     uniform Image shadowMap;
     uniform float shadowMapHeightOffset;
@@ -94,12 +85,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
             discard;
         }
 
-        float height = 0.0;
-        for (int i = 0; i < heightSamplesCount; i += 3) {
-            vec2 sampleDst = vec2(heightSamples[i], heightSamples[i + 1]) / size;
-            height += heightSamples[i + 2] * Texel(heightTexture, texture_coords + sampleDst).r;
-        }
-        height = height * ptHeight + ptZ;
+        float height = ptZ + Texel(heightTexture, texture_coords).r * ptHeight;
         gl_FragDepth = 1.0 - (ptDrawOrder - screenBounds[0]) / (screenBounds[1] - screenBounds[0]);
 
         vec2 shadowMapSize = vec2(size.x, size.y + shadowMapOffset);
