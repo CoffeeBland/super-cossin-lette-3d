@@ -503,3 +503,7 @@ function Title:render()
         love.graphics.setColor(1, 1, 1, 1)
     end
 end
+
+function Title:getEntityDrawOrder(entity)
+    return entity.pos.y
+end

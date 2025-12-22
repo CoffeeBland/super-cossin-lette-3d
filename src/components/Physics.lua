@@ -89,7 +89,7 @@ function PhysicsSystem:findStaticFloorAndCeiling(entity)
     entity.pos.floorZ = entity.pos.originalz or entity.pos.z
     entity.pos.ceilingEntity = nil
     entity.pos.ceilingZ = entity.pos.z + entity.pos.height
-    if not entity.tileSprites then
+    if entity.sprites then
         for _, other in ipairs(self:getAllOverlappingOfType(entity.physics.heightSensor)) do
             if not other.velocity then
                 local othersz = other.pos.z
@@ -116,9 +116,8 @@ function PhysicsSystem:findFloorAndCeiling(entity)
             local sz = other.pos.z
             local ez = other.pos.z + other.pos.height
             if other.physics.sliceEnd < entity.physics.sliceStart then
-                local consideredEntity = floorEntity or entity
                 -- If the floors are close enough, pick the one with most render priority
-                if other.pos.y > consideredEntity.pos.y then
+                if not floorEntity or (other.drawOrder or other.pos.y) >= (floorEntity.drawOrder or floorEntity.pos.y) then
                     floorEntity = other
                 end
                 floorZ = math.max(floorZ, ez)
@@ -131,19 +130,6 @@ function PhysicsSystem:findFloorAndCeiling(entity)
     entity.pos.floorEntity = floorEntity
     entity.pos.floorZ = floorZ
     entity.pos.ceilingZ = ceilingZ
-end
-
-function PhysicsSystem:findFloorY(entity)
-    local y = entity.pos.y
-    for i = 1, 10 do
-        if entity.pos.floorEntity then
-            entity = entity.pos.floorEntity
-            y = math.max(entity.pos.y + DELTA * 3, y)
-        else
-            return entity, y, i
-        end
-    end
-    return entity, y, 0
 end
 
 -- Overlap iterator state (iiish it's all global and sad)

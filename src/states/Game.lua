@@ -140,7 +140,7 @@ function Game:enter(args)
     self.images = ImageSystem.new()
     self.pause = PauseSystem.new()
 
-    self.map:getTileEntities(self.physics.world, self.entities)
+    self.map:getTileEntities(self.physics)
     time = love.timer.measure(time, "tile entities")
 
     self.map:getEntities(self.entities)
@@ -180,67 +180,34 @@ function Game:enter(args)
     load.createHeightTextures()
 
     -- Create tile batches
-    self.groundTilesBatches = {}
-    self.stackedTilesBatches = {}
+    self.tilesBatches = {}
+    self.tilesInfo = {}
     self.reflectedTilesBatches = {}
-    self.stackedTilesInfo = {}
+    self.reflectedTilesInfo = {}
     for i = 0, Game.constants.tileBatchesCount do
-        self.groundTilesBatches[i] = love.graphics.newSpriteBatch(textures.tileset)
-        self.map:drawTiles(self.groundTilesBatches[i], i * Game.constants.tileBatchesDT)
-
-        self.stackedTilesBatches[i] = love.graphics.newSpriteBatch(textures.tileset)
+        self.tilesBatches[i] = love.graphics.newSpriteBatch(textures.tileset)
         self.reflectedTilesBatches[i] = love.graphics.newSpriteBatch(reflectedTextures.tileset)
-        self.stackedTilesInfo[i] = {}
-        self:sortForDrawing(self.entitiesByComponent.tileSprites)
-        local idx = 1
-        for _, entity in ipairs(self.entitiesByComponent.tileSprites) do
-            for _, sprite in ipairs(entity.tileSprites) do
-                local tileData = tileset.tiles[sprite.tile]
-                sprite.batchIdx = idx
-                idx = idx + 1
-                self.stackedTilesBatches[i]:add(
-                    tileData.quad,
-                    entity.pos.x,
-                    (entity.pos.y - entity.pos.z - (sprite.anchor.z or 0)),
-                    0,
-                    sprite.flipX and -1 or 1,
-                    sprite.flipY and -1 or 1,
-                    sprite.anchor.x,
-                    sprite.anchor.y)
-                local z = entity.pos.z + (sprite.anchor.z or 0)
-                local h = entity.pos.height or 0
-                table.insert(self.stackedTilesInfo[i], { z, h })
-                table.insert(self.stackedTilesInfo[i], { z, h })
-                table.insert(self.stackedTilesInfo[i], { z, h })
-                table.insert(self.stackedTilesInfo[i], { z, h })
-            end
-        end
-
-        self:sortForReflection(self.entitiesByComponent.tileSprites)
-        idx = 1
-        for _, entity in ipairs(self.entitiesByComponent.tileSprites) do
-            for _, sprite in ipairs(entity.tileSprites) do
-                local tileData = tileset.tiles[sprite.tile]
-                sprite.reflectedBatchIdx = idx
-                idx = idx + 1
-                self.reflectedTilesBatches[i]:add(
-                    tileData.quad,
-                    entity.pos.x,
-                    (entity.pos.y-(- entity.pos.z - (sprite.anchor.z or 0) - (entity.pos.height or 0) + reflectedInfo.tileset.offset)),
-                    0,
-                    sprite.flipX and -1 or 1,
-                    sprite.flipY and -1 or 1,
-                    sprite.anchor.x,
-                    sprite.anchor.y)
-            end
-        end
-
-        if #self.stackedTilesInfo[i] > 0 then
+        self.tilesInfo[i] = {}
+        self.reflectedTilesInfo[i] = {}
+        self.map:drawTiles(
+            self.tilesBatches[i],
+            self.tilesInfo[i],
+            self.reflectedTilesBatches[i],
+            self.reflectedTilesInfo[i],
+            i * Game.constants.tileBatchesDT, self)
+        if #self.tilesInfo[i] > 0 then
             local infoMesh = love.graphics.newMesh(
-                {{ "z", "float", 1 }, { "height", "float", 1 }},
-                self.stackedTilesInfo[i])
-            self.stackedTilesBatches[i]:attachAttribute("z", infoMesh)
-            self.stackedTilesBatches[i]:attachAttribute("height", infoMesh)
+                {{ "z", "float", 1 }, { "height", "float", 1 }, { "drawOrder", "float", 1 }},
+                self.tilesInfo[i])
+            self.tilesBatches[i]:attachAttribute("z", infoMesh)
+            self.tilesBatches[i]:attachAttribute("height", infoMesh)
+            self.tilesBatches[i]:attachAttribute("drawOrder", infoMesh)
+        end
+        if #self.reflectedTilesInfo[i] > 0 then
+            local infoMesh = love.graphics.newMesh(
+                {{ "drawOrder", "float", 1 }},
+                self.reflectedTilesInfo[i])
+            self.reflectedTilesBatches[i]:attachAttribute("drawOrder", infoMesh)
         end
     end
 
@@ -319,7 +286,6 @@ function Game:update(dt)
                 sprite.scaleY = scaleY
             end
         end
-        entity.drawOrder = nil
     end
 end
 
@@ -328,8 +294,6 @@ local cameraCols = {}
 local cameraRows = {}
 local drawnEntities = {}
 local effectEntities = {}
-local tileBatchStartIdx = 0
-local tileBatchIdx = 0
 local tileBatchi = 0
 
 function Game:render(dt)
@@ -350,40 +314,46 @@ end
 
 function Game:renderFrame(dt, camera, x, y, w, h)
     local sx, sy, ex, ey, scale = camera:applyTransformations(w, h)
+    tileBatchi = math.floor(self.time / Game.constants.tileBatchesDT) % #self.tilesBatches
+
+    self:drawShadowMap(camera, w, h, sx, sy, ex, ey)
+    self:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
 
     local i = 1
-    for _, entity in self:iterEntities() do
-        local entitysx = entity.pos.x - 800
-        local entitysy = entity.pos.y - entity.pos.z - 1200
-        local entityex = entity.pos.x + 800
-        local entityey = entity.pos.y - entity.pos.z + 1200
-        if (entity.sprites or entity.tileSprites) and
-            entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
-            drawnEntities[i] = entity
-            i = i + 1
+    local effecti = 1
+    for _, entity in self:iterEntities(self.entitiesByComponent.sprites) do
+        -- Should be derived from display size but OOPS
+        local entitysx = entity.pos.x - DRAW_X_SLOP
+        local entitysy = entity.pos.y - entity.pos.z - DRAW_Y_SLOP
+        local entityex = entity.pos.x + DRAW_X_SLOP
+        local entityey = entity.pos.y - entity.pos.z + DRAW_Y_SLOP
+        if entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
+            entity.drawOrder = self:getEntityDrawOrder(entity)
+            local hasAlpha = entity.color and entity.color[4] < 1
+            local hasLight = entity.light and entity.light.alpha > DELTA
+            if not hasAlpha then
+                drawnEntities[i] = entity
+                i = i + 1
+            end
+            if hasAlpha or hasLight then
+                effectEntities[effecti] = entity
+                effecti = effecti + 1
+            end
         end
     end
     for j = i, #drawnEntities do
         drawnEntities[j] = nil
     end
-    tileBatchi = math.floor(self.time / Game.constants.tileBatchesDT) % #self.groundTilesBatches
-
-    -- Sorting! Fun times!
-    self:sortForDrawing(drawnEntities)
-    for i, entity in ipairs(drawnEntities) do
-        entity.drawOrder = i
+    for j = effecti, #effectEntities do
+        effectEntities[j] = nil
     end
-
-    self:drawShadowMap(camera, w, h, sx, sy, ex, ey)
-    self:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
+    table.sort(effectEntities, Game.drawOrderSort)
 
     -- Draw!
-    love.graphics.setCanvas({ camera.canvas, stencil = true })
-
-
-    -- Shader go!
+    love.graphics.setCanvas({ camera.canvas, stencil = true, depth = true })
     love.graphics.setShader(HEIGHT_MAPPED_SHADER)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
+    HEIGHT_MAPPED_SHADER:send("screenBounds", { sy - DRAW_Z_SLOP, ey + DRAW_Z_SLOP })
     HEIGHT_MAPPED_SHADER:send("shadowMap", camera.shadowCanvas)
     HEIGHT_MAPPED_SHADER:send("reflectionMap", camera.reflectionCanvas)
     HEIGHT_MAPPED_SHADER:send("hue", -1)
@@ -393,91 +363,44 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     HEIGHT_MAPPED_SHADER:send("scale", scale * Game.constants.heightSlop)
     HEIGHT_MAPPED_SHADER:send("entityZ", 0)
     HEIGHT_MAPPED_SHADER:send("entityHeight", 0)
+    HEIGHT_MAPPED_SHADER:send("alphaThreshold", 0.5)
 
+    -- Clear
+    love.graphics.clear()
     love.graphics.setColor(Game.constants.bg[self.vars.bg])
     love.graphics.rectangle("fill", sx, sy, ex - sx, ey - sy)
     love.graphics.setColor(1, 1, 1, 1)
 
-    -- Tiles
-    love.graphics.setBlendMode("alpha", "premultiplied")
-    love.graphics.draw(self.groundTilesBatches[tileBatchi], 0, 0)
-    love.graphics.setBlendMode("alpha")
+    -- Depth go!
+    love.graphics.setDepthMode("lequal", true)
 
-    tileBatchStartIdx = 0
-    tileBatchIdx = 0
+    -- Tiles
+    HEIGHT_MAPPED_SHADER:send("entityZ", -1)
+    HEIGHT_MAPPED_SHADER:send("heightTexture", heightTextures.tileset)
+    love.graphics.setBlendMode("alpha", "premultiplied")
+    love.graphics.draw(self.tilesBatches[tileBatchi], 0, 0)
+    love.graphics.setBlendMode("alpha")
 
     -- Entities
     for _, entity in ipairs(drawnEntities) do
-        if entity.sprites or entity.light and entity.light.alpha > DELTA then
-            self:drawStackedTileBatch()
-        end
+        HEIGHT_MAPPED_SHADER:send("entityDrawOrder", entity.drawOrder)
+        self:drawEntitySprites(entity)
+    end
 
-        if entity.sprites then
-            self:stencilLensEntities(entity)
-            if entity.color then
-                love.graphics.setColor(unpack(entity.color))
-            end
+    HEIGHT_MAPPED_SHADER:send("alphaThreshold", 0.0)
+
+    for _, entity in ipairs(effectEntities) do
+        HEIGHT_MAPPED_SHADER:send("entityDrawOrder", entity.drawOrder)
+        if entity.color and entity.color[4] < 1 then
             self:drawEntitySprites(entity)
-            love.graphics.setColor(1, 1, 1, 1)
-            love.graphics.setStencilTest()
-        elseif entity.tileSprites then
-            tileBatchIdx = entity.tileSprites[#entity.tileSprites].batchIdx
-            if tileBatchStartIdx == 0 then
-                tileBatchStartIdx = tileBatchIdx
-            end
         end
-
         if entity.light and entity.light.alpha > DELTA then
-            local alpha = entity.light.alpha or Game.constants.defaultLight.alpha
-            love.graphics.setBlendMode("add")
-            love.graphics.setColor(
-                Game.constants.lightColor[1],
-                Game.constants.lightColor[2],
-                Game.constants.lightColor[3],
-                alpha)
-
-            local radiusw = entity.light.radiusw or Game.constants.defaultLight.radiusw
-            local radiush = entity.light.radiush or Game.constants.defaultLight.radiush
-            local angle = entity.light.angle or Game.constants.defaultLight.angle
-            local type = entity.light.type or Game.constants.defaultLight.type
-            if type == "ray" then
-                local rayHeight = entity.pos.y - sy
-                local rayOffset = rayHeight * math.tan(math.pi / 2 - angle)
-                local startx, starty = entity.pos.x + rayOffset + radiusw, entity.pos.y - rayHeight
-                local endx, endy = entity.pos.x + rayOffset - radiusw, entity.pos.y - rayHeight
-                LIGHT_POINTS[1] = startx
-                LIGHT_POINTS[2] = starty
-                local n = 16
-                for i = 1, n + 1 do
-                    local x, y =  math.getEllipsePoint(
-                        entity.pos.x, entity.pos.y,
-                        radiusw, radiush,
-                        ((i - 1) / (n - 1)) * math.pi)
-                    LIGHT_POINTS[i * 2 + 1] = x
-                    LIGHT_POINTS[i * 2 + 2] = y
-                end
-                LIGHT_POINTS[#LIGHT_POINTS - 1] = endx
-                LIGHT_POINTS[#LIGHT_POINTS] = endy
-                love.graphics.polygon("fill", unpack(LIGHT_POINTS))
-            elseif type == "halo" then
-                local haloTexture = textures[Game.constants.defaultLight.haloTexture]
-                local tw, th = haloTexture:getDimensions()
-                love.graphics.draw(haloTexture,
-                    entity.pos.x,
-                    entity.pos.y - entity.pos.z - entity.pos.height / 2,
-                    0,
-                    radiusw / tw,
-                    radiusw / th,
-                    tw / 2,
-                    th / 2)
-            end
-            love.graphics.setColor(1, 1, 1, 1)
-            love.graphics.setBlendMode("alpha")
+            self:drawLight(entity, sy)
         end
     end
 
-    self:drawStackedTileBatch()
     love.graphics.setShader()
+    love.graphics.setDepthMode()
 
     -- Bubbles
     for _, entity in ipairs(drawnEntities) do
@@ -511,9 +434,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     love.graphics.setCanvas(camera.canvas)
 
     if dbg.heightMap then
-        love.graphics.setShader(MAP_DEBUG_SHADER)
-        love.graphics.draw(camera.heightCanvas, 0, 0)
-        love.graphics.setShader()
+        print(("OOPS NO LONGER SUPPORTED"))
     end
 
     if dbg.shadowMap then
@@ -541,6 +462,10 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 end
 
 function Game:drawEntitySprites(entity)
+    self:stencilLensEntities(entity)
+    if entity.color then
+        love.graphics.setColor(unpack(entity.color))
+    end
     for _, sprite in ipairs(entity.sprites) do
         HEIGHT_MAPPED_SHADER:send("heightTexture", heightTextures[sprite.name])
         HEIGHT_MAPPED_SHADER:send("entityZ", entity.pos.z + (sprite.anchor.z or 0))
@@ -554,6 +479,9 @@ function Game:drawEntitySprites(entity)
             local hueRot = (entity.hueRot or 0) * (sprite.hueMult or 1) + (sprite.hueRot or 0)
             HEIGHT_MAPPED_SHADER:send("hueRot", hueRot)
         end
+        HEIGHT_MAPPED_SHADER:send("entityZ", entity.pos.z + (sprite.anchor.z or 0))
+        HEIGHT_MAPPED_SHADER:send("entityHeight", (entity.pos.height or 0) * sprite.scaleY)
+        HEIGHT_MAPPED_SHADER:send("heightTexture", heightTextures[sprite.name])
         self:drawEntitySprite(entity, sprite)
         if doTheHue then
             HEIGHT_MAPPED_SHADER:send("hue", -1)
@@ -562,6 +490,8 @@ function Game:drawEntitySprites(entity)
             HEIGHT_MAPPED_SHADER:send("hueRot", 0)
         end
     end
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setStencilTest()
 end
 
 function Game:drawEntitySprite(entity, sprite)
@@ -600,29 +530,51 @@ function Game:drawEntitySprite(entity, sprite)
     end
 end
 
-function Game:drawStackedTileBatch()
-    if tileBatchStartIdx == 0 or tileBatchIdx < tileBatchStartIdx then
-        return
-    end
-    HEIGHT_MAPPED_SHADER:send("heightTexture", heightTextures.tileset)
-    HEIGHT_MAPPED_SHADER:send("entityZ", -1)
-    local tileBatch = self.stackedTilesBatches[tileBatchi]
-    tileBatch:setDrawRange(tileBatchStartIdx, tileBatchIdx - tileBatchStartIdx + 1)
-    tileBatchStartIdx = tileBatchIdx + 1
-    love.graphics.setBlendMode("alpha", "premultiplied")
-    love.graphics.draw(tileBatch)
-    love.graphics.setBlendMode("alpha")
-end
+function Game:drawLight(entity, sy)
+    local alpha = entity.light.alpha or Game.constants.defaultLight.alpha
+    love.graphics.setBlendMode("add")
+    love.graphics.setColor(
+        Game.constants.lightColor[1],
+        Game.constants.lightColor[2],
+        Game.constants.lightColor[3],
+        alpha)
 
-function Game:drawStackedTileReflectedBatch()
-    if tileBatchStartIdx == 0 or tileBatchIdx < tileBatchStartIdx then
-        return
+    local radiusw = entity.light.radiusw or Game.constants.defaultLight.radiusw
+    local radiush = entity.light.radiush or Game.constants.defaultLight.radiush
+    local angle = entity.light.angle or Game.constants.defaultLight.angle
+    local type = entity.light.type or Game.constants.defaultLight.type
+    if type == "ray" then
+        local rayHeight = entity.pos.y - sy
+        local rayOffset = rayHeight * math.tan(math.pi / 2 - angle)
+        local startx, starty = entity.pos.x + rayOffset + radiusw, entity.pos.y - rayHeight
+        local endx, endy = entity.pos.x + rayOffset - radiusw, entity.pos.y - rayHeight
+        LIGHT_POINTS[1] = startx
+        LIGHT_POINTS[2] = starty
+        local n = 16
+        for i = 1, n + 1 do
+            local x, y =  math.getEllipsePoint(
+                entity.pos.x, entity.pos.y,
+                radiusw, radiush,
+                ((i - 1) / (n - 1)) * math.pi)
+            LIGHT_POINTS[i * 2 + 1] = x
+            LIGHT_POINTS[i * 2 + 2] = y
+        end
+        LIGHT_POINTS[#LIGHT_POINTS - 1] = endx
+        LIGHT_POINTS[#LIGHT_POINTS] = endy
+        love.graphics.polygon("fill", unpack(LIGHT_POINTS))
+    elseif type == "halo" then
+        local haloTexture = textures[Game.constants.defaultLight.haloTexture]
+        local tw, th = haloTexture:getDimensions()
+        love.graphics.draw(haloTexture,
+            entity.pos.x,
+            entity.pos.y - entity.pos.z - entity.pos.height / 2,
+            0,
+            radiusw / tw,
+            radiusw / th,
+            tw / 2,
+            th / 2)
     end
-    local tileBatch = self.reflectedTilesBatches[tileBatchi]
-    tileBatch:setDrawRange(tileBatchStartIdx, tileBatchIdx - tileBatchStartIdx + 1)
-    tileBatchStartIdx = tileBatchIdx + 1
-    love.graphics.setBlendMode("alpha", "premultiplied")
-    love.graphics.draw(tileBatch)
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setBlendMode("alpha")
 end
 
@@ -667,24 +619,31 @@ function Game:drawShadowMap(camera, w, h, sx, sy, ex, ey)
 end
 
 function Game:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
-    tileBatchStartIdx = 0
-    tileBatchIdx = 0
-
     love.graphics.push("all")
-    love.graphics.setShader(TITLE_SHADER)
-    TITLE_SHADER:send("hue", -1)
-    TITLE_SHADER:send("hueRot", 0)
-    love.graphics.setCanvas(camera.reflectionCanvas)
+    love.graphics.setCanvas({ camera.reflectionCanvas, depth = true })
+    love.graphics.setShader(REFLECTION_SHADER)
+    REFLECTION_SHADER:send("hue", -1)
+    REFLECTION_SHADER:send("hueRot", 0)
+    REFLECTION_SHADER:send("screenBounds", { (sy - DRAW_Z_SLOP)/256, (ey + DRAW_Z_SLOP)/256 + SKY_LIMIT })
+
     love.graphics.clear(Game.constants.waterColor[1], Game.constants.waterColor[2], Game.constants.waterColor[3], 1)
+
+    love.graphics.setDepthMode("lequal", true)
+
+    REFLECTION_SHADER:send("entityZ", -1)
+    love.graphics.setBlendMode("alpha", "premultiplied")
+    love.graphics.draw(self.reflectedTilesBatches[tileBatchi], 0, 0)
+    love.graphics.setBlendMode("alpha")
+
     local i = 1
-    for _, entity in self:iterEntities(self.entities) do
-        local entitysx = entity.pos.x - 800
+    for _, entity in self:iterEntities(self.entitiesByComponent.sprites) do
+        local entitysx = entity.pos.x - DRAW_X_SLOP
         local entitysy = entity.pos.y - entity.pos.z
-        local entityex = entity.pos.x + 800
-        local entityey = entity.pos.y - entity.pos.z + 2400
-        if (entity.sprites or entity.tileSprites) and
-            entity.pos.height and entity.pos.height > 0 and
+        local entityex = entity.pos.x + DRAW_X_SLOP
+        local entityey = entity.pos.y - entity.pos.z + DRAW_Y_SLOP * 2
+        if entity.pos.height and entity.pos.height > 0 and
             entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
+            entity.reflectionOrder = self:getEntityReflectionOrder(entity)
             effectEntities[i] = entity
             i = i + 1
         end
@@ -693,57 +652,61 @@ function Game:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
         effectEntities[j] = nil
     end
     local tmp = textures
-    self:sortForReflection(effectEntities)
     for _, entity in ipairs(effectEntities) do
-        if entity.sprites then
-            self:drawStackedTileReflectedBatch()
-            local z = entity.pos.z
-            entity.pos.z = - z + entity.pos.truncateHeight * 2
-            if entity.color then
-                love.graphics.setColor(unpack(entity.color))
+        REFLECTION_SHADER:send("entityDrawOrder", entity.reflectionOrder)
+        REFLECTION_SHADER:send("entityZ", entity.pos.z)
+
+        -- Offset the z to fix position
+        local z = entity.pos.z
+        entity.pos.z = - z + entity.pos.truncateHeight * 2
+
+        if entity.color then
+            love.graphics.setColor(unpack(entity.color))
+        end
+        for _, sprite in ipairs(entity.sprites) do
+            -- Check for reflection flipy vs reflection fancy texture thingy
+            local doTheFlip = not reflectedTextures[sprite.name]
+            local info = reflectedInfo[sprite.name]
+            if doTheFlip then
+                sprite.flipY = not sprite.flipY
+                textures = tmp
+            else
+                textures = reflectedTextures
+                entity.pos.z = entity.pos.z - (entity.pos.height or 0) + info.offset
             end
-            for _, sprite in ipairs(entity.sprites) do
-                local doTheFlip = not reflectedTextures[sprite.name]
-                local info = reflectedInfo[sprite.name]
-                if doTheFlip then
-                    sprite.flipY = not sprite.flipY
-                    textures = tmp
-                else
-                    textures = reflectedTextures
-                    entity.pos.z = entity.pos.z - (entity.pos.height or 0) + info.offset
-                end
-                local doTheHue = entity.hue or sprite.hue
-                if doTheHue then
-                    TITLE_SHADER:send("hue", sprite.hue)
-                end
-                local doTheHueRot = (entity.hueRot and entity.hueRot ~= 0 and sprite.hueMult ~= 0) or sprite.hueRot
-                if doTheHueRot then
-                    local hueRot = (entity.hueRot or 0) * (sprite.hueMult or 1) + (sprite.hueRot or 0)
-                    TITLE_SHADER:send("hueRot", hueRot)
-                end
-                self:drawEntitySprite(entity, sprite)
-                if doTheHue then
-                    TITLE_SHADER:send("hue", -1)
-                end
-                if doTheHueRot then
-                    TITLE_SHADER:send("hueRot", 0)
-                end
-                if doTheFlip then
-                    sprite.flipY = not sprite.flipY
-                else
-                    entity.pos.z = entity.pos.z + (entity.pos.height or 0) - info.offset
-                end
+
+            -- The huemanity!
+            local doTheHue = entity.hue or sprite.hue
+            if doTheHue then
+                REFLECTION_SHADER:send("hue", sprite.hue)
             end
-            entity.pos.z = z
-            love.graphics.setColor(1, 1, 1, 1)
-        elseif entity.tileSprites then
-            tileBatchIdx = entity.tileSprites[#entity.tileSprites].reflectedBatchIdx
-            if tileBatchStartIdx == 0 then
-                tileBatchStartIdx = tileBatchIdx
+            local doTheHueRot = (entity.hueRot and entity.hueRot ~= 0 and sprite.hueMult ~= 0) or sprite.hueRot
+            if doTheHueRot then
+                local hueRot = (entity.hueRot or 0) * (sprite.hueMult or 1) + (sprite.hueRot or 0)
+                REFLECTION_SHADER:send("hueRot", hueRot)
+            end
+
+            -- Draw!
+            self:drawEntitySprite(entity, sprite)
+
+            -- Undo all that humane shit
+            if doTheHue then
+                REFLECTION_SHADER:send("hue", -1)
+            end
+            if doTheHueRot then
+                REFLECTION_SHADER:send("hueRot", 0)
+            end
+
+            -- Undo the flipy/fancy
+            if doTheFlip then
+                sprite.flipY = not sprite.flipY
+            else
+                entity.pos.z = entity.pos.z + (entity.pos.height or 0) - info.offset
             end
         end
+        entity.pos.z = z
+        love.graphics.setColor(1, 1, 1, 1)
     end
-    self:drawStackedTileReflectedBatch()
     textures = tmp
     love.graphics.pop()
 end
@@ -760,6 +723,7 @@ function Game:stencilLensEntities(entity)
         if (lensEntity.drawOrder or BIG_NUMBER) < (entity.drawOrder or 0) then
             love.graphics.stencil(
                 function()
+                    love.graphics.setDepthMode()
                     love.graphics.push("all")
                     love.graphics.setShader(DITHER_SHADER)
                     love.graphics.draw(
@@ -767,6 +731,7 @@ function Game:stencilLensEntities(entity)
                         lensx - lensEntity.lens.width / 2,
                         lensy - lensEntity.lens.height / 2)
                     love.graphics.pop()
+                    love.graphics.setDepthMode("lequal", true)
                 end,
                 "decrement",
                 2,
@@ -814,40 +779,43 @@ function Game:eval(operand)
     return operand
 end
 
-function Game:sortForDrawing(entities)
-    table.sort(entities, function (a, b)
-        local floorA, ay, depthA = self.physics:findFloorY(a)
-        local floorB, by, depthB = self.physics:findFloorY(b)
-
-        if floorA == floorB and depthA ~= depthB then
-            return depthA < depthB
-        end
-
-        if math.abs(ay - by) < DELTA then
-            if math.abs(a.pos.y - b.pos.y) < DELTA then
-                if math.abs(a.pos.z - b.pos.z) < DELTA then
-                    return a.id < b.id
-                end
-                return a.pos.z < b.pos.z
-            end
-            return a.pos.y < b.pos.y
-        end
-
-        return ay < by
-    end)
-end
-
 function Game:sortByZ(entities)
     table.sort(entities, function (a, b)
         return a.pos.z < b.pos.z
     end)
 end
 
-function Game:sortForReflection(entities)
-    table.sort(entities, function (a, b)
-        if math.abs(a.pos.z - b.pos.z) < DELTA then
-            return a.pos.y < b.pos.y
+function Game:getEntityReflectionOrder(entity)
+    return self:getReflectionOrder(entity.pos.y, entity.pos.z, entity.id)
+end
+
+function Game:getReflectionOrder(y, z, id)
+    return y
+    --return y / 256 + (SKY_LIMIT - z)
+end
+
+function Game.drawOrderSort(a, b)
+    return a.drawOrder < b.drawOrder
+end
+
+function Game:findFloorY(entity)
+    local y = entity.pos.y
+    for i = 1, 20 do
+        if entity.pos.floorEntity then
+            entity = entity.pos.floorEntity
+            y = math.max(entity.pos.y, y)
+        else
+            return entity, y, i
         end
-        return a.pos.z > b.pos.z
-    end)
+    end
+    return entity, y, 0
+end
+
+function Game:getEntityDrawOrder(entity)
+    local _, y, depth = self:findFloorY(entity)
+    return self:getDrawOrder(y, entity.pos.z, entity.id)
+end
+
+function Game:getDrawOrder(y, z, id)
+    return (id / 1000 + z) / (SKY_LIMIT / 10) + y
 end

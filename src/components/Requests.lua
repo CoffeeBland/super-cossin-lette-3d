@@ -17,7 +17,7 @@ function Requests.new(game)
         bubble = {},
         larp = {},
         lens = {},
-        tileSprites = {},
+        sprites = {},
         shadow = {},
         camera = {}
     }

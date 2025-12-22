@@ -168,7 +168,6 @@ function Map:init()
     self.anyTileMarkers = {}
     self.heightMarkers = {}
     self.layerHeightInfo = {}
-    self.tileEntities = {}
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             self.layerHeightInfo[layeri] = {}
@@ -380,12 +379,12 @@ function Map:adjacentToTile(tx, ty)
         self:anyTile(tx + 1, ty + 1)
 end
 
-function Map:getTileEntities(physics, entities)
+function Map:getTileEntities(physics)
     for tx = self.minx - 1, self.maxx + 1 do
         for ty = self.miny - 1, self.maxy + 1 do
             if not self:anyTile(tx, ty) and self:adjacentToTile(tx, ty) then
                 local x, y = Map.TileToPosMat:transformPoint(tx - 0.5, ty - 0.5)
-                local body = love.physics.newBody(physics, x, y, "static")
+                local body = love.physics.newBody(physics.world, x, y, "static")
                 local fixture = love.physics.newFixture(body, TILE_SHAPE, 1)
                 fixture:setUserData({ type = FIXBODY })
                 fixture:setCategory(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
@@ -417,7 +416,7 @@ function Map:getTileEntities(physics, entities)
                         (flipX and tileShape.flipX) or
                         (flipY and tileShape.flipY) or tileShape.default)
                     if tileData.type == "water" then
-                        local body = love.physics.newBody(physics,
+                        local body = love.physics.newBody(physics.world,
                             x,
                             y + layerHeight,
                             "static")
@@ -435,7 +434,8 @@ function Map:getTileEntities(physics, entities)
                         })
                     end
                     if height > 0 then
-                        local entity = {
+                        physics:handleCreation({
+                            id = -1,
                             pos = {
                                 x = x,
                                 y = y + layerHeight,
@@ -445,49 +445,8 @@ function Map:getTileEntities(physics, entities)
                             body = shape and {
                                 preshape = shape,
                                 type = "static"
-                            },
-                            tileSprites = {
-                                {
-                                    tile = tile,
-                                    flipX = flipX,
-                                    flipY = flipY,
-                                    anchor = {
-                                        x = tileData.originX,
-                                        y = tileData.originY - TILE_HEIGHT / 2
-                                    }
-                                }
                             }
-                        }
-                        -- Hunt for tiles to display on top
-                        local topOffset = math.floor(height / TILE_HEIGHT)
-                        local topx, topy = tx - topOffset, ty - topOffset
-                        local topglobali = topx + topy * self.width
-                        for nextlayeri = layeri + 1, #self._data.layers do
-                            local nextlayer = self._data.layers[nextlayeri]
-                            local toptile, topflipX, topflipY = self:getTile(nextlayer, topx, topy)
-                            if toptile and toptile > 0 then
-                                local toptileData = tileset.tiles[toptile]
-                                local topheight = toptileData.height or 0
-                                local toplayerHeightInfo = self.layerHeightInfo[nextlayeri][topglobali]
-                                local toplayerHeight = toplayerHeightInfo and toplayerHeightInfo.height or 0
-                                if topheight == 0 and toplayerHeight ~= 0 then
-                                    table.insert(entity.tileSprites, {
-                                        tile = toptile,
-                                        flipX = topflipX,
-                                        flipY = topflipY,
-                                        anchor = {
-                                            x = toptileData.originX,
-                                            y = toptileData.originY - TILE_HEIGHT / 2,
-                                            z = height
-                                        }
-                                    })
-                                end
-                            end
-                        end
-                        table.insert(entities, entity)
-                        entity.id = #entities
-
-                        self.tileEntities[tx + ty * self.width] = entity
+                        })
                     end
                 end
             end
@@ -495,7 +454,7 @@ function Map:getTileEntities(physics, entities)
     end
 end
 
-function Map:drawTiles(batch, time)
+function Map:drawTiles(batch, tilesInfo, reflectedBatch, reflectedTilesInfo, time, game)
     for layeri, layer in ipairs(self._data.layers) do
         if layer.type == "tilelayer" then
             for _, chunk in ipairs(layer.chunks) do
@@ -507,21 +466,45 @@ function Map:drawTiles(batch, time)
                     end
                     local x, y = Map.TileToPosMat:transformPoint(tx, ty)
                     local tileData = tileset.tiles[tile]
-                    -- Tiles with heights are handled as entities
                     local height = tileData.height or 0
                     local layerHeightInfo = self.layerHeightInfo[layeri][globali]
                     local layerHeight = layerHeightInfo and layerHeightInfo.height or 0
+                    batch:add(
+                        tileData.quad,
+                        x,
+                        y,
+                        0,
+                        flipX and -1 or 1,
+                        flipY and -1 or 1,
+                        tileData.originX,
+                        tileData.originY)
+                    local posY = y + layerHeight
+                    local posZ = layerHeight
+                    local drawOrder = game:getDrawOrder(posY, posZ, 0) - TILE_HEIGHT
+                    -- Git the ground even lower
                     if height == 0 and layerHeight == 0 then
-                        local tileData = tileData
-                        batch:add(
+                        drawOrder = drawOrder - TILE_HEIGHT * 4
+                    end
+                    table.insert(tilesInfo, { posZ, height, drawOrder })
+                    table.insert(tilesInfo, { posZ, height, drawOrder })
+                    table.insert(tilesInfo, { posZ, height, drawOrder })
+                    table.insert(tilesInfo, { posZ, height, drawOrder })
+
+                    if height > 0 then
+                        local reflectionOrder = game:getReflectionOrder(posY, posZ, 0) - TILE_HEIGHT
+                        reflectedBatch:add(
                             tileData.quad,
                             x,
-                            y,
+                            y + layerHeight * 2 + height - reflectedInfo.tileset.offset,
                             0,
                             flipX and -1 or 1,
                             flipY and -1 or 1,
                             tileData.originX,
                             tileData.originY)
+                        table.insert(reflectedTilesInfo, { reflectionOrder })
+                        table.insert(reflectedTilesInfo, { reflectionOrder })
+                        table.insert(reflectedTilesInfo, { reflectionOrder })
+                        table.insert(reflectedTilesInfo, { reflectionOrder })
                     end
                 end
             end

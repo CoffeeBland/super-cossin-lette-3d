@@ -15,6 +15,10 @@ EXPRES = { 2732, 2048 }
 CURRES = { unpack(EXPRES) }
 SCALE_TO_EXPECTED = 1
 
+DRAW_X_SLOP = 800
+DRAW_Y_SLOP = 1200
+DRAW_Z_SLOP = 800
+
 local glslHsvFunctions = [[
     // Shamelessly stolen from https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
     vec3 rgb2hsv(vec3 c) {
@@ -36,25 +40,23 @@ local glslHsvFunctions = [[
 
 HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     uniform vec2 size;
-    uniform vec4 shadowColor;
-    uniform vec4 reflectionColor;
-    uniform Image heightTexture;
-    uniform Image shadowMap;
-    uniform float shadowMapHeightOffset;
-    uniform float shadowMapOffset;
-    uniform Image reflectionMap;
+    uniform vec2 screenBounds;
     uniform float skyLimit;
     uniform float scale;
     uniform float hueRot;
     uniform float hue;
     varying float ptZ;
     varying float ptHeight;
+    varying float ptDrawOrder;
 
     uniform Image noise1;
     uniform Image noise2;
     uniform float time;
+    uniform float alphaThreshold;
     uniform vec2 cameraPos;
 
+    uniform Image reflectionMap;
+    uniform vec4 reflectionColor;
     const vec2 noiseOffsetPerSec = vec2(80.0, 51.0);
     const vec2 noise1Size = vec2(6.0, 4.0);
     const float noise2Size = 1.5;
@@ -70,6 +72,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
         0.5, 0.5, 1.0/3.0,
         -0.5, 0.5, 1.0/3.0);
 
+    uniform Image heightTexture;
     const int heightSamplesCount = 5 * 3;
     const float heightSamples[] = float[heightSamplesCount](
         1.0, 0.0, 2.0/6.0,
@@ -78,17 +81,26 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
         -2.0, 2.0, 1.0/6.0,
         2.0, 2.0, 1.0/6.0);
 
+    uniform vec4 shadowColor;
+    uniform Image shadowMap;
+    uniform float shadowMapHeightOffset;
+    uniform float shadowMapOffset;
+
     const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords) * color;
+        if (texturecolor.a < alphaThreshold) {
+            discard;
+        }
 
         float height = 0.0;
         for (int i = 0; i < heightSamplesCount; i += 3) {
             vec2 sampleDst = vec2(heightSamples[i], heightSamples[i + 1]) / size;
             height += heightSamples[i + 2] * Texel(heightTexture, texture_coords + sampleDst).r;
         }
-        height = ptZ + height * ptHeight;
+        height = height * ptHeight + ptZ;
+        gl_FragDepth = 1.0 - (ptDrawOrder - screenBounds[0]) / (screenBounds[1] - screenBounds[0]);
 
         vec2 shadowMapSize = vec2(size.x, size.y + shadowMapOffset);
         vec2 shadow_map_coords = vec2(screen_coords.x, screen_coords.y + height * scale) / shadowMapSize;
@@ -133,20 +145,25 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
 ]], [[
     uniform float entityZ;
     uniform float entityHeight;
+    uniform float entityDrawOrder;
 
     attribute float z;
     attribute float height;
+    attribute float drawOrder;
 
     varying float ptZ;
     varying float ptHeight;
+    varying float ptDrawOrder;
 
     vec4 position(mat4 transform_projection, vec4 vertex_position) {
         if (entityZ == -1) {
             ptZ = z;
             ptHeight = height;
+            ptDrawOrder = drawOrder;
         } else {
             ptZ = entityZ;
             ptHeight = entityHeight;
+            ptDrawOrder = entityDrawOrder;
         }
         return transform_projection * vertex_position;
     }
@@ -175,34 +192,43 @@ POST_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     }
 ]])
 
-HEIGHT_MAP_SHADER = love.graphics.newShader([[
-    varying float ptZ;
-    varying float ptHeight;
-    uniform float skyLimit;
+REFLECTION_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
+    const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
+    const float alphaThreshold = 0.5;
+    uniform float hueRot;
+    uniform float hue;
+    uniform vec2 screenBounds;
+    varying float ptDrawOrder;
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
-        vec4 texturecolor = Texel(texture, texture_coords);
-        return vec4(
-            (texturecolor.rgb * ptHeight + ptZ) / skyLimit,
-            texturecolor.a * color.a);
+        vec4 texturecolor = Texel(texture, texture_coords) * color;
+        if (texturecolor.a < alphaThreshold) {
+            discard;
+        }
+        gl_FragDepth = 1.0 - (ptDrawOrder - screenBounds[0]) / (screenBounds[1] - screenBounds[0]);
+        vec4 finalcol = texturecolor;
+        float touchability = min(1.0, distance(finalcol.rgb, linecol) * 10.0);
+        vec3 hsv = rgb2hsv(finalcol.rgb);
+        if (hue >= 0) {
+            hsv.x = hue;
+        }
+        hsv.x = mod(hsv.x + hueRot, 1.0);
+        finalcol = vec4(hsv2rgb(hsv), finalcol.a);
+        return mix(texturecolor, finalcol, touchability);
     }
 ]], [[
     uniform float entityZ;
-    uniform float entityHeight;
+    uniform float entityDrawOrder;
 
-    attribute float z;
-    attribute float height;
+    attribute float drawOrder;
 
-    varying float ptZ;
-    varying float ptHeight;
+    varying float ptDrawOrder;
 
     vec4 position(mat4 transform_projection, vec4 vertex_position) {
         if (entityZ == -1) {
-            ptZ = z;
-            ptHeight = height;
+            ptDrawOrder = drawOrder;
         } else {
-            ptZ = entityZ;
-            ptHeight = entityHeight;
+            ptDrawOrder = entityDrawOrder;
         }
         return transform_projection * vertex_position;
     }

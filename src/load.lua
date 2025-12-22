@@ -59,7 +59,6 @@ function load.createHeightTextures()
     HEIGHT_MAPPED_SHADER:send("shadowMapOffset", SHADOW_MAP_OFFSET)
     HEIGHT_MAPPED_SHADER:send("reflectionColor", Game.constants.waterColor)
     HEIGHT_MAPPED_SHADER:send("skyLimit", SKY_LIMIT)
-    HEIGHT_MAP_SHADER:send("skyLimit", SKY_LIMIT)
 
     -- All sprite entities with actual info
     for name, object in pairs(objects.byName) do
