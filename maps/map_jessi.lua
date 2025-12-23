@@ -10705,7 +10705,9 @@ return {
           rotation = 0,
           gid = 354,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 536,
@@ -10751,7 +10753,9 @@ return {
           rotation = 0,
           gid = 348,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 540,
@@ -10765,7 +10769,9 @@ return {
           rotation = 0,
           gid = 349,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 541,

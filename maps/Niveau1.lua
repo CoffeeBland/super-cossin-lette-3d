@@ -13,6 +13,7 @@ return {
   nextobjectid = 2673,
   properties = {
     ["vars.ambience"] = "ForestBirds",
+    ["vars.music"] = "Promenade",
     ["vars.nextMap"] = "Niveau2",
     ["vars.targetFruits"] = 5,
     ["vars.timer"] = 60

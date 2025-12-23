@@ -2774,7 +2774,11 @@
     <property name="posZ" type="float" value="0"/>
    </properties>
   </object>
-  <object id="535" gid="354" x="4992.5" y="1230.83" width="128" height="74"/>
+  <object id="535" gid="354" x="4992.5" y="1230.83" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="536" gid="351" x="5187.44" y="1214.56" width="128" height="74">
    <properties>
     <property name="posZ" type="float" value="0"/>
@@ -2785,8 +2789,16 @@
     <property name="posZ" type="float" value="0"/>
    </properties>
   </object>
-  <object id="539" gid="348" x="5004.12" y="1208.54" width="128" height="74"/>
-  <object id="540" gid="349" x="4916.52" y="1184.15" width="128" height="74"/>
+  <object id="539" gid="348" x="5004.12" y="1208.54" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="540" gid="349" x="4916.52" y="1184.15" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="541" gid="2147483997" x="5320.06" y="1337.94" width="128" height="74">
    <properties>
     <property name="posZ" type="float" value="0"/>
