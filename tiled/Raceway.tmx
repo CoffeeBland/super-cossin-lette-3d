@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="17" nextobjectid="394">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="17" nextobjectid="394">
  <editorsettings>
   <export target="../maps/Raceway.lua" format="lua"/>
  </editorsettings>
@@ -3635,8 +3635,16 @@
   <object id="386" gid="330" x="-1529.33" y="-8374.33" width="128" height="74"/>
   <object id="387" gid="328" x="-1455.33" y="-8374.33" width="128" height="74"/>
   <object id="388" gid="327" x="-1541.67" y="-8078.33" width="128" height="74"/>
-  <object id="389" gid="337" x="-925" y="-8288" width="128" height="74"/>
-  <object id="390" gid="327" x="-888" y="-8201.67" width="128" height="74"/>
+  <object id="389" gid="337" x="-925" y="-8288" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="390" gid="327" x="-888" y="-8201.67" width="128" height="74">
+   <properties>
+    <property name="posZ" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="391" gid="327" x="-1862.33" y="-11272.7" width="128" height="74"/>
   <object id="392" gid="337" x="-1788.33" y="-11248" width="128" height="74"/>
   <object id="393" gid="327" x="-1776" y="-11161.7" width="128" height="74"/>

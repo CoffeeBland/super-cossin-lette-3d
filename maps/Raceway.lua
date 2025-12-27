@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -8023,7 +8023,9 @@ return {
           rotation = 0,
           gid = 337,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 390,
@@ -8037,7 +8039,9 @@ return {
           rotation = 0,
           gid = 327,
           visible = true,
-          properties = {}
+          properties = {
+            ["posZ"] = 0
+          }
         },
         {
           id = 391,
