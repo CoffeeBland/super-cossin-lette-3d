@@ -388,6 +388,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     end
 
     HEIGHT_MAPPED_SHADER:send("alphaThreshold", 0.0)
+    HEIGHT_MAPPED_SHADER:send("heightPart", dbg.heightMap and 1 or 0)
 
     for _, entity in ipairs(effectEntities) do
         HEIGHT_MAPPED_SHADER:send("entityDrawOrder", entity.drawOrder)
@@ -432,10 +433,6 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 
     love.graphics:reset()
     love.graphics.setCanvas(camera.canvas)
-
-    if dbg.heightMap then
-        print(("OOPS NO LONGER SUPPORTED"))
-    end
 
     if dbg.shadowMap then
         love.graphics.setShader(MAP_DEBUG_SHADER)

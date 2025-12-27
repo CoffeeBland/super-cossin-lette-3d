@@ -38,7 +38,21 @@ local glslHsvFunctions = [[
     }
 ]]
 
-HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
+local glslDebugMap = [[
+    vec4 debugColor(float val, float alpha) {
+        if (val < 0.25) {
+            return vec4(val * 4.0, 0, 0, alpha);
+        } else if (val < 0.5) {
+            return vec4(1.0, val * 4.0 - 1.0, 0, alpha);
+        } else if (val < 0.75) {
+            return vec4(3.0 - val * 4.0, 1.0, 0, alpha);
+        } else {
+            return vec4(0, 1.0, val * 4.0 - 3.0, alpha);
+        }
+    }
+]]
+
+HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. glslDebugMap .. [[
     uniform vec2 size;
     uniform vec2 screenBounds;
     uniform float skyLimit;
@@ -73,6 +87,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
         -0.5, 0.5, 1.0/3.0);
 
     uniform Image heightTexture;
+    uniform float heightPart;
 
     uniform vec4 shadowColor;
     uniform Image shadowMap;
@@ -128,7 +143,8 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
         }
         hsv.x = mod(hsv.x + hueRot, 1.0);
         finalcol = vec4(hsv2rgb(hsv), finalcol.a);
-        return mix(texturecolor, finalcol, touchability);
+        finalcol = mix(texturecolor, finalcol, touchability);
+        return heightPart * debugColor(height / skyLimit, finalcol.a) + (1.0 - heightPart) * finalcol;
     }
 ]], [[
     uniform float entityZ;
@@ -222,21 +238,12 @@ REFLECTION_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     }
 ]])
 
-MAP_DEBUG_SHADER = love.graphics.newShader[[
+MAP_DEBUG_SHADER = love.graphics.newShader(glslDebugMap .. [[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords);
-        float val = texturecolor.r;
-        if (val < 0.25) {
-            return vec4(val * 4.0, 0, 0, texturecolor.a);
-        } else if (val < 0.5) {
-            return vec4(1.0, val * 4.0 - 1.0, 0, texturecolor.a);
-        } else if (val < 0.75) {
-            return vec4(3.0 - val * 4.0, 1.0, 0, texturecolor.a);
-        } else {
-            return vec4(0, 1.0, val * 4.0 - 3.0, texturecolor.a);
-        }
+        return debugColor(texturecolor.r, texturecolor.a);
     }
-]]
+]])
 
 TITLE_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
