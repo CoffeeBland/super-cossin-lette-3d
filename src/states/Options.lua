@@ -79,6 +79,7 @@ options = {
             if StateMachine.current == Title then
                 StateMachine:change(Title, nil, { fadein = 15, fadeout = 15 })
             end
+            Cossins:init()
         end
     },
     {

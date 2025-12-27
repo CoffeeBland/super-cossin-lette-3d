@@ -185,7 +185,7 @@ function CameraSystem:draw(dt, game)
         for row = 1, rows do
             local h = rowParts[row] * (CURRES[2] / rowTotal)
 
-            if #camEntities > 1 then
+            if camCount > 1 then
                 local i = col + (row - 1) * cols
                 local camEntity = camEntities[i]
                 local camSprite = camEntity.sprites[2]
