@@ -5,12 +5,14 @@ Options = {
 
 local actionCooldown = 15
 
-local options = {
+-- Two part so options can be self-referential
+local options = nil
+options = {
     {
         name = "fullscreen",
         text = "PLEIN ÉCRAN",
         type = "toggle",
-        default = false,
+        default = true,
         apply = function(value)
             love.window.setFullscreen(value)
         end
@@ -22,6 +24,22 @@ local options = {
         default = true,
         apply = function(value)
             love.window.setVSync(value)
+        end
+    },
+    {
+        name = "msaa",
+        text = "ANTIALIASING",
+        type = "enum",
+        default = "HAUT",
+        values = { "NON", "BAS", "MOYEN", "HAUT", "WOW" },
+        apply = function(value)
+            SCREEN_MSAA =
+                (value == "BAS" and 4) or
+                (value == "MOYEN" and 8) or
+                (value == "HAUT" and 16) or
+                (value == "WOW" and 32) or
+                0
+            SCREEN_CANVAS = nil
         end,
         spaceAfter = true
     },
@@ -128,6 +146,18 @@ local options = {
         spaceAfter = true
     },
     {
+        name = "default",
+        text = "REMETTRE DÉFAUTS",
+        type = "button",
+        action = function()
+            for _, option in ipairs(options) do
+                if option.default ~= nil and Options.values[option.name] ~= option.default then
+                    Options:reset(option.name)
+                end
+            end
+        end
+    },
+    {
         name = "ok",
         text = "OK",
         type = "button",
@@ -155,6 +185,9 @@ function Options:readini()
                 config[key] = math.clamp(math.parse(value), option.range[1], option.range[2])
             elseif option.type == "toggle" then
                 config[key] = value == "true"
+            elseif option.type == "enum" then
+                local idx = table.index(option.values, value) or table.index(option.values, option.default)
+                config[key] = option.values[idx]
             end
         end
     end
@@ -174,7 +207,7 @@ function Options:writeini()
         local value
         if option.type == "toggle" then
             value = self.values[option.name] and "true" or "false"
-        elseif option.type == "range" then
+        elseif option.type == "range" or option.type == "enum" then
             value = self.values[option.name]
         end
         if value ~= nil then
@@ -205,6 +238,8 @@ function Options:getPrintableValue(option)
             value = "  " .. value
         end
         return value
+    elseif option.type == "enum" then
+        return self.values[option.name]
     end
 end
 
@@ -272,6 +307,9 @@ function Options:update(dt)
         if option.range then
             Sound:start(Sound.global.act)
             self:set(option.name, dir * option.range[3])
+        elseif option.values then
+            Sound:start(Sound.global.act)
+            self:set(option.name, dir)
         elseif actions.action or actions.move then
             -- No auto-repeat for non-ranges
             Sound:start(Sound.global.act)
@@ -289,8 +327,26 @@ function Options:set(name, value)
         value = (self.values[name] + value - s) % n + s
     elseif option.type == "toggle" then
         value = not self.values[name]
+    elseif option.type == "enum" then
+        local idx = table.index(option.values, self.values[name])
+        local newIdx = math.wrap(idx + value, 1, #option.values)
+        value = option.values[newIdx]
     elseif option.type == "button" then
         option.action()
+        return
+    end
+
+    self.values[name] = value
+    if option.apply then
+        option.apply(value)
+    end
+    self.dirty = true
+end
+
+function Options:reset(name)
+    local option = options[name]
+    local value = option.default
+    if option.type == "button" then
         return
     end
 

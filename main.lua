@@ -105,7 +105,7 @@ function love.draw()
     SCALE_TO_EXPECTED = math.scaleToExpected(CURRES[1], CURRES[2])
 
     if not SCREEN_CANVAS or SCREEN_CANVAS:getWidth() ~= CURRES[1] or SCREEN_CANVAS:getHeight() ~= CURRES[2] then
-        SCREEN_CANVAS = love.graphics.newCanvas(CURRES[1], CURRES[2])
+        SCREEN_CANVAS = love.graphics.newCanvas(CURRES[1], CURRES[2], { msaa = SCREEN_MSAA })
         SCREEN_SHADER:send("size", CURRES)
     end
 

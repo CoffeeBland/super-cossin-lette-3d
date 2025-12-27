@@ -67,10 +67,12 @@ function StateMachine:slopLoad()
         local before = love.timer.getTime()
         if not load.crawlFiles(nil, true) then
             time = 0
+            return false
         end
         local after = love.timer.getTime()
         time = time - (after - before) * 1000
     end
+    return true
 end
 
 function StateMachine:update(dt)
