@@ -19,11 +19,11 @@ function setupActions()
         },
         toggleDebug = {
             keys = { "f12" },
-            buttons = { "y" }
+            buttons = {}
         },
         gogogadget = {
             keys = { "f11" },
-            buttons = { "x" }
+            buttons = {}
         },
         newPlayer = {
             keys = {},

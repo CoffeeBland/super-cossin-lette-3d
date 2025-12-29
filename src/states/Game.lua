@@ -529,6 +529,7 @@ end
 
 function Game:drawLight(entity, sy)
     local alpha = entity.light.alpha or Game.constants.defaultLight.alpha
+    HEIGHT_MAPPED_SHADER:send("shadowMapHeightOffset", BIG_NUMBER)
     love.graphics.setBlendMode("add")
     love.graphics.setColor(
         Game.constants.lightColor[1],
@@ -573,6 +574,7 @@ function Game:drawLight(entity, sy)
     end
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setBlendMode("alpha")
+    HEIGHT_MAPPED_SHADER:send("shadowMapHeightOffset", SHADOW_MAP_HEIGHT_OFFSET)
 end
 
 function Game:drawEntityShadow(entity, floorZ)

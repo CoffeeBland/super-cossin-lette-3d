@@ -1,0 +1,8 @@
+name = "Super Cossin Lette 3D"
+default_targets = ["win64", "appimage", "lovejs"]
+build_directory = "bin"
+
+love_files = [
+    "::git-ls-tree::",
+    "-*/.*",
+]

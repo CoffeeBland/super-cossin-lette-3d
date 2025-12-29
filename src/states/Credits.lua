@@ -16,7 +16,7 @@ local credits = {
         "Myriam Noël-Martel",
     },
     {
-        "Cossin Lette",
+        "Cossin lette",
         "Gabriel Tremblay"
     },
     {
@@ -25,7 +25,7 @@ local credits = {
     },
     {
         "Préparer le pique-nique",
-        "Cossin Lette",
+        "Cossin lette",
     },
     {
         "3D",

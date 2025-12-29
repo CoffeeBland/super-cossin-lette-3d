@@ -201,7 +201,7 @@ return function()
                         "Splash-5",
                         "Splash-6"
                     },
-                    volume = 0.5,
+                    volume = 0.4,
                     pitchRange = { 1.0, 1.5 },
                     cooldown = 6
                 }
