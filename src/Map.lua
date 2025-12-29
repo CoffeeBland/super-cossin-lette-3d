@@ -1,4 +1,3 @@
-local bit = require("bit")
 Map = {}
 Map.__index = Map
 

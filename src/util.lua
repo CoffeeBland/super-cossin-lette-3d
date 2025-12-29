@@ -211,3 +211,89 @@ function math.getEllipse(x, y, radiusx, radiusy, segments)
     end
     return points
 end
+
+if _G.bit then
+   bit = _G.bit
+else
+    -- https://stackoverflow.com/questions/78087883/lua-5-1-bitwise-operations-using-arithmetic-for-64bit-numbers
+    -- Looked pretty decent
+    local MOD = 2 ^ 32
+    local MODM = MOD - 1
+
+    local function memoize(f)
+        local mt = { }
+        local t = setmetatable( { }, mt)
+        function mt:__index(k)
+            local v = f(k)
+            t[k] = v
+            return v
+        end
+        return t
+    end
+
+    local function make_bitop_uncached(t, m)
+        local function bitop(a, b)
+            local res, p = 0, 1
+            while a ~= 0 and b ~= 0 do
+                local am, bm = a % m, b % m
+                res = res + t[am][bm] * p
+                a =(a - am) / m
+                b =(b - bm) / m
+                p = p * m
+            end
+            res = res +(a + b) * p
+            return res
+        end
+        return bitop
+    end
+
+    local function make_bitop(t)
+        local op1 = make_bitop_uncached(t, 2 ^ 1)
+        local op2 = memoize( function(a) return memoize( function(b) return op1(a, b) end) end)
+        return make_bitop_uncached(op2, 2 ^(t.n or 1))
+    end
+
+    local bxor1 = make_bitop( { [0] = { [0] = 0, [1] = 1 }, [1] = { [0] = 1, [1] = 0 }, n = 4 })
+
+    local function bxor(a, b)
+        local z = nil
+        if b then
+            a = a % MOD
+            b = b % MOD
+            z = bxor1(a, b)
+            return z
+        elseif a then
+            return a % MOD
+        else
+            return 0
+        end
+    end
+
+    local function band(a, b)
+        local z
+        if b then
+            a = a % MOD
+            b = b % MOD
+            z =((a + b) - bxor1(a, b)) / 2
+            return z
+        elseif a then
+            return a % MOD
+        else
+            return MODM
+        end
+    end
+
+    local function bnot(x)
+        return(-1 - x) % MOD
+    end
+
+    local function bor(x, y)
+        return bnot(band(bnot(x), bnot(y)))
+    end
+
+    bit = {
+        band = band,
+        bnot = bnot,
+        bor = bor
+    }
+end

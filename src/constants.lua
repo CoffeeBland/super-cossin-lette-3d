@@ -1,5 +1,3 @@
-local bit = require("bit")
-
 EMPTY = {}
 METER_SCALE = 128
 TILE_FLIP_H = math.pow(2, 31)
@@ -94,7 +92,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. glslDebugMap 
     uniform float shadowMapHeightOffset;
     uniform float shadowMapOffset;
 
-    const vec3 linecol = vec3(117.0/255.0, 0, 25.0/255.0);
+    const vec3 linecol = vec3(117.0/255.0, 0.0, 25.0/255.0);
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 texturecolor = Texel(texture, texture_coords) * color;
@@ -134,11 +132,11 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. glslDebugMap 
 
         float touchability = max(0.0, min(1.0, (distance(texturecolor.rgb, linecol) - 0.05) * 10.0));
         vec4 finalcol = texturecolor;
-        if (height <= shadowHeight + 10) {
+        if (height <= shadowHeight + 10.0) {
             finalcol *= vec4(shadowColor.rgb, 1.0);
         }
         vec3 hsv = rgb2hsv(finalcol.rgb);
-        if (hue >= 0) {
+        if (hue >= 0.0) {
             hsv.x = hue;
         }
         hsv.x = mod(hsv.x + hueRot, 1.0);
@@ -160,7 +158,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. glslDebugMap 
     varying float ptDrawOrder;
 
     vec4 position(mat4 transform_projection, vec4 vertex_position) {
-        if (entityZ == -1) {
+        if (entityZ == -1.0) {
             ptZ = z;
             ptHeight = height;
             ptDrawOrder = drawOrder;
@@ -213,7 +211,7 @@ REFLECTION_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
         vec4 finalcol = texturecolor;
         float touchability = min(1.0, distance(finalcol.rgb, linecol) * 10.0);
         vec3 hsv = rgb2hsv(finalcol.rgb);
-        if (hue >= 0) {
+        if (hue >= 0.0) {
             hsv.x = hue;
         }
         hsv.x = mod(hsv.x + hueRot, 1.0);
@@ -229,7 +227,7 @@ REFLECTION_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
     varying float ptDrawOrder;
 
     vec4 position(mat4 transform_projection, vec4 vertex_position) {
-        if (entityZ == -1) {
+        if (entityZ == -1.0) {
             ptDrawOrder = drawOrder;
         } else {
             ptDrawOrder = entityDrawOrder;
@@ -255,7 +253,7 @@ TITLE_SHADER = love.graphics.newShader(glslHsvFunctions .. [[
         vec4 finalcol = texturecolor;
         float touchability = min(1.0, distance(finalcol.rgb, linecol) * 10.0);
         vec3 hsv = rgb2hsv(finalcol.rgb);
-        if (hue >= 0) {
+        if (hue >= 0.0) {
             hsv.x = hue;
         }
         hsv.x = mod(hsv.x + hueRot, 1.0);
@@ -287,14 +285,14 @@ DITHER_SHADER = love.graphics.newShader[[
     );
 
     bool dither(float val, vec2 coords) {
-        int x = int(mod(coords.x/2, 4));
-        int y = int(mod(coords.y/2, 4));
+        int x = int(mod(coords.x/2.0, 4.0));
+        int y = int(mod(coords.y/2.0, 4.0));
         return thresholdMatrix[x][y] > val;
     }
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         float alpha = Texel(texture, texture_coords).a;
-        if (alpha == 0 || dither(alpha, screen_coords)) {
+        if (alpha == 0.0 || dither(alpha, screen_coords)) {
             discard;
         }
         return vec4(1.0);
@@ -305,15 +303,15 @@ SPARKLY_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         vec4 tex = Texel(texture, texture_coords);
         float luminosity = sqrt(
-            0.299 * pow(tex.r, 2) +
-            0.587 * pow(tex.g, 2) +
-            0.114 * pow(tex.b, 2));
+            0.299 * pow(tex.r, 2.0) +
+            0.587 * pow(tex.g, 2.0) +
+            0.114 * pow(tex.b, 2.0));
         if (luminosity == 0) {
             discard;
         }
-        float lumalpha = (color.a - (1 - luminosity)) / luminosity;
+        float lumalpha = (color.a - (1.0 - luminosity)) / luminosity;
         float alpha = lumalpha * 0.5 + color.a * 0.5;
-        if (alpha >= 0) {
+        if (alpha >= 0.0) {
             return tex * vec4(vec3(color), alpha);
         }
     }
@@ -331,7 +329,7 @@ REFLECTED_IMAGE_SHADER = love.graphics.newShader[[
             discard;
         }
         vec2 pixTextureCoords = textureCoords * size;
-        vec2 reflectedCoords = vec2(pixTextureCoords.x, pixTextureCoords.y + offset - pixh * 2) / size;
+        vec2 reflectedCoords = vec2(pixTextureCoords.x, pixTextureCoords.y + offset - pixh * 2.0) / size;
         return Texel(texture, reflectedCoords) * color;
     }
 ]]
@@ -376,7 +374,7 @@ SCREEN_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
         if (samples == 0)
             return Texel(texture, texture_coords) * color;
-        vec4 fcol = vec4(0);
+        vec4 fcol = vec4(0.0);
         for (int i = 0; i < samples; i++) {
             float x = xs[i];
             float y = ys[i];
@@ -398,7 +396,7 @@ GAUSSIAN_SCREEN_SHADER = love.graphics.newShader[[
             return Texel(texture, texture_coords) * color;
         }
         float sigma = (float(blur * 2 + 1) - 1.0) / 6.0;
-        float sigma22 = 2 * sigma * sigma;
+        float sigma22 = 2.0 * sigma * sigma;
         float totalWeight = 0.0;
         vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
         for (int i = -blur; i <= blur; i++) {

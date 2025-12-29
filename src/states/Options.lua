@@ -173,8 +173,8 @@ for i, option in ipairs(options) do
 end
 
 function Options:readini()
-    local contents = love.filesystem.read("config.ini")
-    contents = contents or ""
+    local info = love.filesystem.getInfo("config.ini")
+    local contents = info and info.type == "file" and love.filesystem.read("config.ini") or ""
 
     local config = {}
     local lines = str.split(contents, "\n")

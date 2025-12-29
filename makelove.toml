@@ -1,4 +1,4 @@
-name = "Super Cossin Lette 3D"
+name = "SuperCossinLette3D"
 default_targets = ["win64", "appimage", "lovejs"]
 build_directory = "bin"
 
@@ -6,3 +6,6 @@ love_files = [
     "::git-ls-tree::",
     "-*/.*",
 ]
+
+[lovejs]
+memory = "100000000"
