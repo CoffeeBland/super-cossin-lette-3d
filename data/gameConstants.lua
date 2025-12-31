@@ -69,8 +69,8 @@ return {
     },
     lens = {
         textureStepSize = 8,
-        textureSteps = 10,
-        textureStepAlpha = 0.2
+        textureSteps = 20,
+        textureStepAlpha = 0.1
     },
     buffs = {
         super = {

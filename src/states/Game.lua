@@ -174,10 +174,12 @@ function Game:enter(args)
             entity.lens.height = h
         end
     end
-    time = love.timer.measure(time, "entities")
     Requests.populate(self)
+    time = love.timer.measure(time, "entities")
 
     load.createHeightTextures()
+
+    time = love.timer.getTime()
 
     -- Create tile batches
     self.tilesBatches = {}

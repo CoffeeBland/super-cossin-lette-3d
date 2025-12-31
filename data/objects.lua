@@ -2320,6 +2320,7 @@ return {
       id = 5,
       properties = {
         ["height"] = 770,
+        ["lensed"] = true,
         ["offsetX"] = 510,
         ["offsetY"] = 1210
       },
@@ -2368,6 +2369,7 @@ return {
       id = 6,
       properties = {
         ["height"] = 770,
+        ["lensed"] = true,
         ["offsetX"] = 510,
         ["offsetY"] = 1210
       },
@@ -2416,6 +2418,7 @@ return {
       id = 7,
       properties = {
         ["height"] = 770,
+        ["lensed"] = true,
         ["offsetX"] = 510,
         ["offsetY"] = 1210
       },

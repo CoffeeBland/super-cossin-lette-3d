@@ -875,6 +875,7 @@
  <tile id="5">
   <properties>
    <property name="height" type="float" value="770"/>
+   <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
   </properties>
@@ -888,6 +889,7 @@
  <tile id="6">
   <properties>
    <property name="height" type="float" value="770"/>
+   <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
   </properties>
@@ -901,6 +903,7 @@
  <tile id="7">
   <properties>
    <property name="height" type="float" value="770"/>
+   <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
    <property name="offsetY" type="float" value="1210"/>
   </properties>

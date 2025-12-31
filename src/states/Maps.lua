@@ -79,6 +79,7 @@ function Maps:update(dt)
         if item.name == "ok" then
             StateMachine:pop(self)
         else
+            Music:fadeout()
             StateMachine:change(MapIntro, { map = item.name })
         end
     end
