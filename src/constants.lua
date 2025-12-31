@@ -57,6 +57,7 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. glslDebugMap 
     uniform float scale;
     uniform float hueRot;
     uniform float hue;
+    uniform bool lensed;
     varying float ptZ;
     varying float ptHeight;
     varying float ptDrawOrder;
@@ -66,6 +67,9 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. glslDebugMap 
     uniform float time;
     uniform float alphaThreshold;
     uniform vec2 cameraPos;
+
+    uniform Image lensMap;
+    uniform vec4 lensColor;
 
     uniform Image reflectionMap;
     uniform vec4 reflectionColor;
@@ -101,7 +105,8 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. glslDebugMap 
         }
 
         float height = ptZ + Texel(heightTexture, texture_coords).r * ptHeight;
-        gl_FragDepth = 1.0 - (ptDrawOrder - screenBounds[0]) / (screenBounds[1] - screenBounds[0]);
+        float depth = 1.0 - (ptDrawOrder - screenBounds[0]) / (screenBounds[1] - screenBounds[0]);
+        gl_FragDepth = depth;
 
         vec2 shadowMapSize = vec2(size.x, size.y + shadowMapOffset);
         vec2 shadow_map_coords = vec2(screen_coords.x, screen_coords.y + height * scale) / shadowMapSize;
@@ -133,15 +138,27 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. glslDebugMap 
         float touchability = max(0.0, min(1.0, (distance(texturecolor.rgb, linecol) - 0.05) * 10.0));
         vec4 finalcol = texturecolor;
         if (height <= shadowHeight + 10.0) {
-            finalcol *= vec4(shadowColor.rgb, 1.0);
+            finalcol *= shadowColor;
         }
         vec3 hsv = rgb2hsv(finalcol.rgb);
         if (hue >= 0.0) {
             hsv.x = hue;
         }
         hsv.x = mod(hsv.x + hueRot, 1.0);
+
         finalcol = vec4(hsv2rgb(hsv), finalcol.a);
+
+        float lensDepth = Texel(lensMap, screen_coords / size).r;
+        if (lensDepth > 0.0) {
+            if (lensed && touchability > 0.9) {
+                discard;
+            } else if (lensDepth < depth) {
+                finalcol *= lensColor;
+            }
+        }
+
         finalcol = mix(texturecolor, finalcol, touchability);
+
         return heightPart * debugColor(height / skyLimit, finalcol.a) + (1.0 - heightPart) * finalcol;
     }
 ]], [[
@@ -285,8 +302,8 @@ DITHER_SHADER = love.graphics.newShader[[
     );
 
     bool dither(float val, vec2 coords) {
-        int x = int(mod(coords.x/2.0, 4.0));
-        int y = int(mod(coords.y/2.0, 4.0));
+        int x = int(mod(coords.x, 4.0));
+        int y = int(mod(coords.y, 4.0));
         return thresholdMatrix[x][y] > val;
     }
 
@@ -295,7 +312,7 @@ DITHER_SHADER = love.graphics.newShader[[
         if (alpha == 0.0 || dither(alpha, screen_coords)) {
             discard;
         }
-        return vec4(1.0);
+        return color;
     }
 ]]
 

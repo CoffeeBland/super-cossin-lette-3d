@@ -316,6 +316,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     local sx, sy, ex, ey, scale = camera:applyTransformations(w, h)
     tileBatchi = math.floor(self.time / Game.constants.tileBatchesDT) % #self.tilesBatches
 
+    self:drawLensMap(camera, w, h, sx, sy, ex, ey)
     self:drawShadowMap(camera, w, h, sx, sy, ex, ey)
     self:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
 
@@ -350,10 +351,11 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     table.sort(effectEntities, Game.drawOrderSort)
 
     -- Draw!
-    love.graphics.setCanvas({ camera.canvas, stencil = true, depth = true })
+    love.graphics.setCanvas({ camera.canvas, depth = true })
     love.graphics.setShader(HEIGHT_MAPPED_SHADER)
     HEIGHT_MAPPED_SHADER:send("size", { w, h })
     HEIGHT_MAPPED_SHADER:send("screenBounds", { sy - DRAW_Z_SLOP, ey + DRAW_Z_SLOP })
+    HEIGHT_MAPPED_SHADER:send("lensMap", camera.lensCanvas)
     HEIGHT_MAPPED_SHADER:send("shadowMap", camera.shadowCanvas)
     HEIGHT_MAPPED_SHADER:send("reflectionMap", camera.reflectionCanvas)
     HEIGHT_MAPPED_SHADER:send("hue", -1)
@@ -376,6 +378,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 
     -- Tiles
     HEIGHT_MAPPED_SHADER:send("entityZ", -1)
+    HEIGHT_MAPPED_SHADER:send("lensed", false)
     HEIGHT_MAPPED_SHADER:send("heightTexture", heightTextures.tileset)
     love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.draw(self.tilesBatches[tileBatchi], 0, 0)
@@ -384,6 +387,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     -- Entities
     for _, entity in ipairs(drawnEntities) do
         HEIGHT_MAPPED_SHADER:send("entityDrawOrder", entity.drawOrder)
+        HEIGHT_MAPPED_SHADER:send("lensed", entity.pos.lensed and entity.physics and true or false)
         self:drawEntitySprites(entity)
     end
 
@@ -392,6 +396,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 
     for _, entity in ipairs(effectEntities) do
         HEIGHT_MAPPED_SHADER:send("entityDrawOrder", entity.drawOrder)
+        HEIGHT_MAPPED_SHADER:send("lensed", entity.pos.lensed and entity.physics and true or false)
         if entity.color and entity.color[4] < 1 then
             self:drawEntitySprites(entity)
         end
@@ -434,6 +439,11 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     love.graphics:reset()
     love.graphics.setCanvas(camera.canvas)
 
+    if dbg.lensMap then
+        love.graphics.setShader(MAP_DEBUG_SHADER)
+        love.graphics.draw(camera.lensCanvas, 0, 0)
+    end
+
     if dbg.shadowMap then
         love.graphics.setShader(MAP_DEBUG_SHADER)
         love.graphics.draw(camera.shadowCanvas, 0, 0)
@@ -459,7 +469,6 @@ function Game:renderFrame(dt, camera, x, y, w, h)
 end
 
 function Game:drawEntitySprites(entity)
-    self:stencilLensEntities(entity)
     if entity.color then
         love.graphics.setColor(unpack(entity.color))
     end
@@ -488,7 +497,6 @@ function Game:drawEntitySprites(entity)
         end
     end
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.setStencilTest()
 end
 
 function Game:drawEntitySprite(entity, sprite)
@@ -590,18 +598,83 @@ function Game:drawEntityShadow(entity, floorZ)
         entity.shadow.anchor.y)
 end
 
+local lensEntity, lensx, lensy
+function Game.drawLensTexture()
+    love.graphics.draw(
+        lensEntity.lens.texture,
+        lensx - lensEntity.lens.width / 2,
+        lensy - lensEntity.lens.height / 2)
+end
+
+function Game:drawLensMap(camera, w, h, sx, sy, ex, ey)
+    love.graphics.push("all")
+    love.graphics.setCanvas({ camera.lensCanvas, stencil = true })
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setShader(DITHER_SHADER)
+
+    local i = 1
+    for _, entity in self:iterEntities(self.entitiesByComponent.sprites) do
+        if entity.pos and entity.pos.lensed then
+            local entitysx = entity.pos.x - DRAW_X_SLOP
+            local entitysy = entity.pos.y - entity.pos.z - DRAW_Y_SLOP
+            local entityex = entity.pos.x + DRAW_X_SLOP
+            local entityey = entity.pos.y - entity.pos.z + DRAW_Y_SLOP
+            if entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
+                effectEntities[i] = entity
+                entity.drawOrder = self:getEntityDrawOrder(entity)
+                i = i + 1
+            end
+        end
+    end
+    for _, entity in self:iterEntities(self.entitiesByComponent.lens) do
+        entity.drawOrder = self:getEntityDrawOrder(entity)
+    end
+    for j = i, #effectEntities do
+        effectEntities[j] = nil
+    end
+
+    table.sort(effectEntities, Game.drawOrderSort)
+
+    local boundssy = (sy - DRAW_Z_SLOP)
+    local boundsey = (ey + DRAW_Z_SLOP)
+
+    for _, entity in ipairs(effectEntities) do
+        lensEntity = nil
+        -- Stencil the lens
+        love.graphics.clear(false, 128, false)
+        love.graphics.setStencilTest("less", 128)
+        for _, le in self:iterEntities(self.entitiesByComponent.lens) do
+            lensEntity = le
+            lensx = lensEntity.pos.x
+            lensy = lensEntity.pos.y - lensEntity.pos.z - lensEntity.pos.height / 2
+            if lensEntity.drawOrder < entity.drawOrder then
+                love.graphics.stencil(Game.drawLensTexture, "decrement", 2, true)
+            end
+        end
+
+        if lensEntity then
+            -- Draw the occluded stuff
+            local depth = 1.0 - (entity.drawOrder - boundssy) / (boundsey - boundssy)
+            love.graphics.setColor(depth, 0, 0, 1)
+            for _, sprite in ipairs(entity.sprites) do
+                self:drawEntitySprite(entity, sprite)
+            end
+        end
+    end
+    love.graphics.pop()
+end
+
 function Game:drawShadowMap(camera, w, h, sx, sy, ex, ey)
     love.graphics.push("all")
     love.graphics.setCanvas(camera.shadowCanvas)
     love.graphics.clear(0, 0, 0, 1)
     local i = 1
     for _, entity in self:iterEntities(self.entitiesByComponent.shadow) do
-        local entitysx = entity.pos.x - 800
-        local entitysy = entity.pos.y - entity.pos.z - 1200
-        local entityex = entity.pos.x + 800
-        local entityey = entity.pos.y - entity.pos.z + 1200
-        if (entity.shadow) and
-            entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
+        local entitysx = entity.pos.x - DRAW_X_SLOP
+        local entitysy = entity.pos.y - entity.pos.z - DRAW_Y_SLOP
+        local entityex = entity.pos.x + DRAW_X_SLOP
+        local entityey = entity.pos.y - entity.pos.z + DRAW_Y_SLOP
+        if entityex >= sx and entityey >= sy and entitysx <= ex and entitysy <= ey then
             effectEntities[i] = entity
             i = i + 1
         end
@@ -708,35 +781,6 @@ function Game:drawReflectionMap(camera, w, h, sx, sy, ex, ey)
     end
     textures = tmp
     love.graphics.pop()
-end
-
-function Game:stencilLensEntities(entity)
-    if not entity.pos.lensed or not entity.physics then
-        return
-    end
-    love.graphics.clear(false, 128, false)
-    love.graphics.setStencilTest("gequal", 128)
-    for _, lensEntity in self:iterEntities(self.entitiesByComponent.lens) do
-        local lensx = lensEntity.pos.x
-        local lensy = lensEntity.pos.y - lensEntity.pos.z - lensEntity.pos.height / 2
-        if (lensEntity.drawOrder or BIG_NUMBER) < (entity.drawOrder or 0) then
-            love.graphics.stencil(
-                function()
-                    love.graphics.setDepthMode()
-                    love.graphics.push("all")
-                    love.graphics.setShader(DITHER_SHADER)
-                    love.graphics.draw(
-                        lensEntity.lens.texture,
-                        lensx - lensEntity.lens.width / 2,
-                        lensy - lensEntity.lens.height / 2)
-                    love.graphics.pop()
-                    love.graphics.setDepthMode("lequal", true)
-                end,
-                "decrement",
-                2,
-                true)
-        end
-    end
 end
 
 function Game:findEntity(designation)

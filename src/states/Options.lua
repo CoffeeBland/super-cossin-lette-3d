@@ -99,7 +99,7 @@ options = {
         text = "DEBUG",
         type = "range",
         default = 0,
-        range = { 0, 6, 1 },
+        range = { 0, 7, 1 },
         getPrintableValue = function(value)
             if value == 0 then
                 return "NON"
@@ -115,6 +115,8 @@ options = {
                 return "OMBRES"
             elseif value == 6 then
                 return "RÉFLECTIONS"
+            elseif value == 7 then
+                return "LENTILLES"
             end
         end,
         apply = function(value)
@@ -123,6 +125,7 @@ options = {
             dbg.heightMap = value == 4
             dbg.shadowMap = value == 5
             dbg.reflectionMap = value == 6
+            dbg.lensMap = value == 7
             dbg.fps = value >= 1
             dbg.autorefresh = value > 0
             love.timer.measure = value > 0 and
