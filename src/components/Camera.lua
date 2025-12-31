@@ -7,7 +7,8 @@ function CameraSystem.new()
         shakeAmplitude = 0,
         blur = 0,
         blurTarget = 0,
-        blurFrames = 0
+        blurFrames = 0,
+        blurDuration = 0
     }, CameraSystem)
 end
 
@@ -22,6 +23,7 @@ function CameraSystem:setMoveFromEvent(game, event, entity)
     end
     if event.blur then
         self.blurFrames = event.blurFrames or 0
+        self.blurDuration = self.blurFrames
         self.blurTarget = event.blur or 1
         if self.blurFrames == 0 then
             self.blur = self.blurTarget
@@ -30,7 +32,7 @@ function CameraSystem:setMoveFromEvent(game, event, entity)
 end
 
 function CameraSystem:update(framePart, dt, game)
-    self.blur = math.interp(self.blurFrames, self.blur, self.blurTarget or self.blur)
+    self.blur = math.interp(self.blurFrames, self.blur, self.blurTarget or self.blur, self.blurDuration)
     self.blurFrames = math.max(self.blurFrames - framePart, 0)
 
     for _, entity in game:iterEntities(game.entitiesByComponent.shakeEmitter) do
@@ -49,20 +51,20 @@ function CameraSystem:update(framePart, dt, game)
 
     for _, entity in game:iterEntities(game.entitiesByComponent.camera) do
         local camera = entity.camera
-        camera.zoom = math.interp(camera.zoomFrames, camera.zoom, camera.zoomTarget or camera.zoom)
+        camera.zoom = math.interp(camera.zoomFrames, camera.zoom, camera.zoomTarget or camera.zoom, camera.zoomDuration)
         camera.zoomFrames = math.max(camera.zoomFrames - framePart, 0)
 
         if camera.target then
             if camera.panFrames > 0 then
-                camera.x = math.interp(camera.panFrames, camera.x, camera.target.pos.x)
-                camera.y = math.interp(camera.panFrames, camera.y, camera.target.pos.y)
+                camera.x = math.interp(camera.panFrames, camera.x, camera.target.pos.x, camera.panDuration)
+                camera.y = math.interp(camera.panFrames, camera.y, camera.target.pos.y, camera.panDuration)
                 camera.panFrames = math.max(camera.panFrames - framePart, 0)
             else
                 camera.x = camera.target.pos.x
                 camera.y = camera.target.pos.y
             end
             if camera.sizeFrames > 0 then
-                camera.size = math.interp(camera.sizeFrames, camera.size, camera.sizeTarget)
+                camera.size = math.interp(camera.sizeFrames, camera.size, camera.sizeTarget, camera.sizeDuration)
                 camera.sizeFrames = math.max(camera.sizeFrames - framePart, 0)
             else
                 camera.size = camera.sizeTarget or 1
@@ -221,15 +223,18 @@ function Camera.new(params)
         y = params.y or 0,
         z = params.z or 0,
         panFrames = params.panFrames or 0,
+        panDuration = params.panFrames or 0,
         target = params.target or nil,
         zoom = params.zoom or 1,
         zoomTarget = params.zoom or 1,
         zoomFrames = params.zoomFrames or 0,
+        zoomDuration = params.zoomFrames or 0,
         offsetX = params.offsetX or 0,
         offsetY = params.offsetY or 0,
         size = params.size or 1,
         sizeTarget = params.size or 1,
         sizeFrames = 0,
+        sizeDuration = 0,
         quad = love.graphics.newQuad(0, 0, 0, 0, 0, 0)
     }, Camera)
 end
@@ -271,9 +276,11 @@ function Camera:setMoveFromEvent(target, event)
     end
     if event.panFrames then
         self.panFrames = event.panFrames
+        self.panDuration = self.panFrames
     end
     if event.zoom then
         self.zoomFrames = event.zoomFrames or 0
+        self.zoomDuration = self.zoomFrames
         self.zoomTarget = event.zoom or 1
         if self.zoomFrames == 0 then
             self.zoom = self.zoomTarget
@@ -281,6 +288,7 @@ function Camera:setMoveFromEvent(target, event)
     end
     if event.size then
         self.sizeFrames = event.sizeFrames or 0
+        self.sizeDuration = self.sizeFrames
         self.sizeTarget = event.size or 1
         if self.sizeFrames == 0 then
             self.size = self.sizeTarget

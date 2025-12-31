@@ -92,6 +92,20 @@ local laterTimeline = {
         frame = 0,
         duration = 1
     },
+    { "oscillate",
+        id = "plustard",
+        offset = {
+            from = { x = 0, y = 0 },
+            to = { x  = 0, y = 0 }
+        },
+        scale = {
+            from = { x = 0.99, y = 0.99 },
+            to = { x = 1.01, y = 1.01 },
+        },
+        frame = 0,
+        duration = 180,
+        period = 121
+    },
     { "scale",
         id = "plustard",
         to = { x = 1, y = 1 },
@@ -138,6 +152,42 @@ local letterShowTimeline = {
         to = 1,
         frame = 0,
         duration = 60
+    },
+    { "oscillate",
+        id = "cloud1",
+        scale = {
+            from = { x = 0.99, y = 0.99 },
+            to = { x = 1.01, y = 1.01 },
+        },
+        frame = 0,
+        period = 341
+    },
+    { "oscillate",
+        id = "cloud2",
+        scale = {
+            from = { x = 0.99, y = 0.99 },
+            to = { x = 1.01, y = 1.01 },
+        },
+        frame = 0,
+        period = 343
+    },
+    { "oscillate",
+        id = "blonde",
+        offset = {
+            from = { x = 100, y = 0 },
+            to = { x = -100, y = 0 }
+        },
+        frame = 0,
+        period = 4000
+    },
+    { "oscillate",
+        id = "letter",
+        offset = {
+            from = { x = 50, y = 0 },
+            to = { x = -50, y = 0 }
+        },
+        frame = 0,
+        period = 4000
     },
     { "scale",
         id = "blonde",

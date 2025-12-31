@@ -17,6 +17,7 @@ function Larp:add(key, larp)
         from = larp.from,
         to = larp.to,
         frames = larp.frames,
+        duration = larp.frames,
         delay = larp.delay,
         startOffset = larp.startOffset,
         toOffset = larp.toOffset
@@ -59,7 +60,7 @@ function Larp:update(framePart, obj)
             larp.delay = math.max(larp.delay - framePart, 0)
         elseif (larp.frames or 0) > 0 then
             larp.frames = math.max(larp.frames - framePart, 0)
-            local value = math.interp(larp.frames, current, larp.to)
+            local value = math.interp(larp.frames, current, larp.to, larp.duration)
             Larp.set[key](obj, value)
         else
             Larp.set[key](obj, larp.to)

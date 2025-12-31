@@ -14,9 +14,30 @@ function math.round(n)
     return math.floor(n + 0.5)
 end
 
-function math.interp(frames, current, target)
+local function trigPart(frames, duration)
+    local part = (duration - frames) / duration
+    return (1 - math.cos(part * math.pi)) / 2
+end
+
+function math.interp(frames, current, target, duration)
+    if duration then
+        if frames < 1 then
+            return target
+        end
+        local nextPart = trigPart(frames - 1, duration)
+        local part = trigPart(frames, duration)
+        local deltaPart = nextPart - part
+        local remainingPart = 1 - part
+        local ratio = (nextPart - part) / remainingPart
+        return current + ratio * (target - current)
+    end
+
     local p = 1 / math.max(frames or 1, 1)
     return current * (1 - p) + target * p
+end
+
+function math.larp(from, to, part)
+    return from + part * (to - from)
 end
 
 function math.sign(x)

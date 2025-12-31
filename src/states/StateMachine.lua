@@ -107,7 +107,7 @@ function StateMachine:update(dt)
     Sound:update(framePart, dt)
     if self.fadeOutFrames > 0 then
         self.fadeOutFrames = math.max(self.fadeOutFrames - framePart, 0)
-        self.fadePart = 1 - self.fadeOutFrames / self.current.fadeout
+        self.fadePart = 1 - (self.fadeOutFrames - 1) / self.current.fadeout
     elseif self.fadeInFrames > 0 then
         self.fadeInFrames = math.max(self.fadeInFrames - framePart, 0)
         self.fadePart = self.fadeInFrames / self.current.fadein

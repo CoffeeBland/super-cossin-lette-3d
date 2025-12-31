@@ -21,6 +21,8 @@
 
 ## BUGS
 
+## Tuto
+
 Bonjour, je suis Guillaume Noël-Martel. Cossin lette a été invité à un pique-nique par sa blonde, mais il a oublié d'apporter les fruits!
 
 [Cossin qui prend un fruit sur sa tête, avec un joystick et des flèches directionnelles]

@@ -54,6 +54,17 @@ function Timeline:load()
             y = thing.initialOffset and thing.initialOffset.y or 0,
             z = thing.initialOffset and thing.initialOffset.z or 0
         }
+        thing.after = {
+            scale = {
+                x = 1,
+                y = 1
+            },
+            offset = {
+                x = 0,
+                y = 0,
+                z = 0
+            }
+        }
         thing.last = { x = 0, y = 0 }
     end
     for _, event in pairs(self.events) do
@@ -100,7 +111,25 @@ end
 
 function Timeline:update(dt)
     for _, event in ipairs(self.events) do
-        if not event.duration then
+        local thing = event.id and self.stuffById[event.id]
+        if self.frame >= event.frame and
+            event[1] == "oscillate" and
+            (not event.duration or (self.frame <= event.frame + event.duration))
+        then
+            local part = (event.frame - self.frame) / (event.period or 60)
+            local ratio = (1 - math.cos(part * 2 * math.pi)) / 2
+            if event.scale then
+                thing.after.scale.x = math.larp(event.scale.from.x, event.scale.to.x, ratio)
+                thing.after.scale.y = math.larp(event.scale.from.y, event.scale.to.y, ratio)
+            end
+            if event.offset then
+                thing.after.offset.x = math.larp(event.offset.from.x, event.offset.to.x, ratio)
+                thing.after.offset.y = math.larp(event.offset.from.y, event.offset.to.y, ratio)
+                if event.offset.from.z then
+                    thing.after.offset.z = math.larp(event.offset.from.z, event.offset.to.z, ratio)
+                end
+            end
+        elseif not event.duration then
             if self.frame == event.frame then
                 if event[1] == "sound" then
                     Sound:start(event)
@@ -111,7 +140,6 @@ function Timeline:update(dt)
                 elseif event[1] == "state" then
                     StateMachine:change(event.state, event.params, event.opts)
                 elseif event[1] == "print" then
-                    local thing = event.id and self.stuffById[event.id]
                     local target = self.stuffById[event.target]
                     love.graphics.push("all")
                     love.graphics.setCanvas({ target.canvas, stencil = true })
@@ -122,24 +150,22 @@ function Timeline:update(dt)
                         thing.offset.y - Timeline.letters.size.y / 2)
                     love.graphics.pop()
                 elseif event[1] == "image" then
-                    local thing = event.id and self.stuffById[event.id]
                     thing.texture = textures[event.name]
                 end
             end
         elseif self.frame >= event.frame and self.frame <= event.frame + event.duration then
             local remaining = event.frame + (event.duration or 0) - self.frame
-            local thing = event.id and self.stuffById[event.id]
             if event[1] == "scale" then
-                thing.scale.x = math.interp(remaining, thing.scale.x, event.to.x)
-                thing.scale.y = math.interp(remaining, thing.scale.y, event.to.y)
+                thing.scale.x = math.interp(remaining, thing.scale.x, event.to.x, event.duration)
+                thing.scale.y = math.interp(remaining, thing.scale.y, event.to.y, event.duration)
             elseif event[1] == "offset" then
-                thing.offset.x = math.interp(remaining, thing.offset.x, event.to.x)
-                thing.offset.y = math.interp(remaining, thing.offset.y, event.to.y)
+                thing.offset.x = math.interp(remaining, thing.offset.x, event.to.x, event.duration)
+                thing.offset.y = math.interp(remaining, thing.offset.y, event.to.y, event.duration)
                 if event.to.z then
-                    thing.offset.z = math.interp(remaining, thing.offset.z, event.to.z)
+                    thing.offset.z = math.interp(remaining, thing.offset.z, event.to.z, event.duration)
                 end
             elseif event[1] == "alpha" then
-                thing.alpha = math.interp(remaining, thing.alpha, event.to)
+                thing.alpha = math.interp(remaining, thing.alpha, event.to, event.duration)
             elseif event[1] == "trace" then
                 local target = self.stuffById[event.target]
                 love.graphics.push("all")
@@ -150,7 +176,6 @@ function Timeline:update(dt)
                 love.graphics.circle("fill", thing.offset.x, thing.offset.y, event.size / 2)
                 love.graphics.pop()
             elseif event[1] == "image" then
-                local thing = event.id and self.stuffById[event.id]
                 thing.texture = textures[event.name]
             end
         end
@@ -173,15 +198,15 @@ function Timeline:getPos(thing)
         x = x - relativeThing.textureAnchor.x * rttw
         y = y - relativeThing.textureAnchor.y * rtth
         return
-            x + thing.offset.x,
-            y + thing.offset.y,
-            thing.offset.z
+            x + thing.offset.x + thing.after.offset.x,
+            y + thing.offset.y + thing.after.offset.y,
+            thing.offset.z + thing.after.offset.z
     else
         local x, y = love.graphics.inverseTransformPoint(w * thing.screenAnchor.x, h * thing.screenAnchor.y)
         return
-            x + thing.offset.x,
-            y + thing.offset.y,
-            thing.offset.z
+            x + thing.offset.x + thing.after.offset.x,
+            y + thing.offset.y + thing.after.offset.y,
+            thing.offset.z + thing.after.offset.z
     end
 end
 
@@ -205,8 +230,8 @@ function Timeline:draw(thing, mask)
         x,
         y - z,
         0,
-        thing.scale.x,
-        thing.scale.y,
+        thing.scale.x * thing.after.scale.x,
+        thing.scale.y * thing.after.scale.y,
         thing.textureAnchor.x * tw,
         thing.textureAnchor.y * th)
 end
