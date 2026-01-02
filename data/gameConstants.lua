@@ -60,6 +60,10 @@ return {
             pause =  {
                 type = "lowpass",
                 highgain = 0
+            },
+            speech = {
+                type = "lowpass",
+                highgain = 0.25
             }
         },
         volume = 0.5

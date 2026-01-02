@@ -141,6 +141,10 @@ local letterShowTimeline = {
         name = "MapIntro",
         frame = 0
     },
+    { "musicFilter",
+        filter = Game.constants.music.filters.speech,
+        frame = 0
+    },
     { "alpha",
         id = "cloud1",
         to = 1,
@@ -281,6 +285,8 @@ function MapIntro:getErrataTimeline(name)
     local offset = { x = errata.linesPos[1].x, y = errata.linesPos[1].y }
     local switchedLines = false
     local printed = 0
+    local writeDur = 1
+    local switchDur = 5
     for i = 1, #name do
         local letter = name:sub(i, i):upper()
         local letteri = string.byte(letter) - string.byte("A")
@@ -289,14 +295,14 @@ function MapIntro:getErrataTimeline(name)
                 name = "Crayon",
                 frame = frame - 11,
                 pitchRange = { 0.8, 1.2 },
-                volumeRange = { 0.8, 1 }
+                volumeRange = { 0.3, 0.4 }
             })
         for i, move in ipairs(errata.move) do
             table.insert(timeline,
                 { "offset",
                     id = "crayon",
                     to = { x = offset.x + move.x, y = offset.y + move.y },
-                    duration = 2,
+                    duration = writeDur,
                     frame = frame
                 })
             if i > 1 then
@@ -307,10 +313,10 @@ function MapIntro:getErrataTimeline(name)
                         size = 32,
                         color = { 0.9, 0.9, 1 },
                         frame = frame,
-                        duration = 2
+                        duration = writeDur
                     })
             end
-            frame = frame + 2
+            frame = frame + writeDur
         end
         printed = printed + 1
         offset.x = offset.x + Timeline.letters.size.x
@@ -339,14 +345,14 @@ function MapIntro:getErrataTimeline(name)
                             name = "Crayon",
                             frame = frame,
                             pitchRange = { 1.0, 1.5 },
-                            volumeRange = { 0.8, 1 }
+                            volumeRange = { 0.3, 0.4 }
                         })
                     for i, move in ipairs(errata.move) do
                         table.insert(timeline,
                             { "offset",
                                 id = "crayon",
                                 to = { x = offset.x + move.x, y = offset.y + move.y },
-                                duration = 2,
+                                duration = writeDur,
                                 frame = frame
                             })
                         if i > 1 then
@@ -357,10 +363,10 @@ function MapIntro:getErrataTimeline(name)
                                     size = 32,
                                     color = { 0.9, 0.9, 1 },
                                     frame = frame,
-                                    duration = 2
+                                    duration = writeDur
                                 })
                         end
-                        frame = frame + 2
+                        frame = frame + writeDur
                     end
                     offset.x = offset.x + Timeline.letters.size.x
                 end
@@ -372,10 +378,10 @@ function MapIntro:getErrataTimeline(name)
                     { "offset",
                         id = "crayon",
                         to = errata.linesPos[2],
-                        duration = 5,
+                        duration = switchDur,
                         frame = frame
                     })
-                    frame = frame + 5
+                    frame = frame + switchDur
             end
         end
     end
@@ -385,14 +391,14 @@ function MapIntro:getErrataTimeline(name)
                 name = "Crayon",
                 frame = frame,
                 pitchRange = { 1.0, 1.5 },
-                volumeRange = { 0.8, 1 }
+                volumeRange = { 0.3, 0.4 }
             })
         for i, move in ipairs(errata.move) do
             table.insert(timeline,
                 { "offset",
                     id = "crayon",
                     to = { x = offset.x + move.x, y = offset.y + move.y },
-                    duration = 2,
+                    duration = writeDur,
                     frame = frame
                 })
             if i > 1 then
@@ -403,10 +409,10 @@ function MapIntro:getErrataTimeline(name)
                         size = 32,
                         color = { 0.9, 0.9, 1 },
                         frame = frame,
-                        duration = 2
+                        duration = writeDur
                     })
             end
-            frame = frame + 2
+            frame = frame + writeDur
         end
         offset.x = offset.x + Timeline.letters.size.x
     end
@@ -438,6 +444,7 @@ function MapIntro:getErrataTimeline(name)
         })
     local mapNameSound = self:getMapNameSound(name)
     local dur = 0
+    frame = 60
     if load.loadAudioFile("audio/" .. mapNameSound .. ".ogg", mapNameSound) then
         table.insert(timeline,
             { "sound",

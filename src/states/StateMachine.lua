@@ -1,7 +1,7 @@
 require "src.states.Intro"
+require "src.states.Game"
 require "src.states.Title"
 require "src.states.MapIntro"
-require "src.states.Game"
 require "src.states.Ending"
 require "src.states.Options"
 require "src.states.Maps"

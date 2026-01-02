@@ -2,7 +2,9 @@
 
 * Sons
     * Track pour le jeu
-        * Track pour les tableaux "de base" basés sur "promenons-nous dans les bois?"
+        * Course!
+        * Atol / chill
+        * Heist / tension
     * Enregistrer le title theme
     * Enregistrer les jingles
     * Pitch shift la musique selon le poid de cossin

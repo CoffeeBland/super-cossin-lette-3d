@@ -7,6 +7,8 @@ Timeline.letters = {
     size = { x = 70, y = 140 }
 }
 
+load.loadData("cossin", "data/gameConstants.lua")
+
 function Timeline.new(stuff, events)
     local stuffById = {}
     for _, thing in pairs(stuff) do
@@ -137,6 +139,10 @@ function Timeline:update(dt)
                     Sound:stop(event)
                 elseif event[1] == "music" then
                     Music:play(event.name)
+                elseif event[1] == "musicFilter" then
+                    if Music.current then
+                        Music.current:setFilter(event.filter)
+                    end
                 elseif event[1] == "state" then
                     StateMachine:change(event.state, event.params, event.opts)
                 elseif event[1] == "print" then
