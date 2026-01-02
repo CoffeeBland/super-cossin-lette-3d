@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -16,6 +16,7 @@ return {
     ["skipAnimTileGen"] = true,
     ["vars.ambience"] = "Sea",
     ["vars.bg"] = "water",
+    ["vars.music"] = "VasYCossin",
     ["vars.nextMap"] = "LacLac",
     ["vars.targetFruits"] = 12,
     ["vars.timer"] = 80

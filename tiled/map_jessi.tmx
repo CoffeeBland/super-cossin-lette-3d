@@ -7,6 +7,7 @@
   <property name="name" value="DANS LA FORET"/>
   <property name="skipAnimTileGen" type="bool" value="true"/>
   <property name="vars.ambience" value="ForestBirds"/>
+  <property name="vars.music" value="Promenade"/>
   <property name="vars.nextMap" value="Geronimo"/>
   <property name="vars.targetFruits" type="int" value="12"/>
   <property name="vars.timer" type="float" value="120"/>

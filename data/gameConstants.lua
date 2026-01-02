@@ -54,7 +54,8 @@ return {
     },
     music = {
         loops = {
-            Title = { loopStart = 55150, loopEnd = 772810 }
+            Title = { loopStart = 55150, loopEnd = 772810 },
+            VasYCossin = { loopStart = 211680, loopEnd = 2434320 }
         },
         filters = {
             pause =  {

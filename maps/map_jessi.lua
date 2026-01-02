@@ -15,6 +15,7 @@ return {
     ["name"] = "DANS LA FORET",
     ["skipAnimTileGen"] = true,
     ["vars.ambience"] = "ForestBirds",
+    ["vars.music"] = "Promenade",
     ["vars.nextMap"] = "Geronimo",
     ["vars.targetFruits"] = 12,
     ["vars.timer"] = 120
