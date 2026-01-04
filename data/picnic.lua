@@ -2,7 +2,7 @@ return function(object)
     return {
         name = "picnic",
         picnic = {
-            dropRange = object.dropRange,
+            dropRange = object and object.dropRange,
             fruits = {},
             stackDropJumpSpeed = 120,
             pickupJumpSpeed = 120,

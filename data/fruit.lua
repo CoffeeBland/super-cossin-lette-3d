@@ -1,9 +1,9 @@
 return function(object, data, flipX, flipY)
-    local radish = object.fruit == "radish"
-    local golden = data.properties and data.properties.golden
+    local radish = object and object.fruit == "radish"
+    local golden = data and data.properties and data.properties.golden
     return {
         body = { shape = "circle", size = 70, type = "dynamic" },
-        sprites = {
+        sprites = object and {
             {
                 name = object.name,
                 anchor = { x = object.offsetX, y = object.offsetY },
@@ -14,7 +14,7 @@ return function(object, data, flipX, flipY)
         },
         pos = { height = 80 },
         fruit = {
-            type = object.fruit,
+            type = object and object.fruit,
             mass = golden and 0.25 or 0.05,
             value = golden and 5 or 1,
             buff = radish and "super" or nil,

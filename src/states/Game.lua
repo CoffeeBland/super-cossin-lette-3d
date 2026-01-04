@@ -215,7 +215,9 @@ function Game:enter(args)
 
     time = love.timer.measure(time, "tile batches")
 
-    if self.vars.targetFruits then
+    if self.vars.currentMap == "Tutorial" then
+        self.event:execute(Game.constants.tutorialCutscene)
+    elseif self.vars.targetFruits then
         self.event:execute(Game.constants.startLevelCutscene)
     else
         self.timer.endTriggered = true
@@ -260,9 +262,7 @@ function Game:update(dt)
         return
     end
 
-    for _, entity in self:iterEntities(self.entitiesByComponent.anim) do
-        entity.anim:update(dt, entity.sprites)
-    end
+    self.anim:systemBeginUpdate(framePart, dt, self)
     self.physics:update(framePart, dt, self)
     self.water:update(framePart, dt, self)
     self.actors:update(framePart, dt, self)
@@ -274,26 +274,9 @@ function Game:update(dt)
     self.images:update(framePart, dt, self)
     self.event:update(framePart, dt, self)
     self.timer:update(framePart, dt, self)
-    self.anim:clearTriggers()
-    for _, entity in self:iterEntities(self.entities) do
-        if entity.sprites then
-            for _, sprite in ipairs(entity.sprites) do
-                local spriteWiggleX = sprite.wiggle and sprite.wiggle.x or 0
-                local spriteWiggleY = sprite.wiggle and sprite.wiggle.y or 0
-                local wiggleX = spriteWiggleX * (entity.anim and entity.anim.wiggle.x or 1)
-                local wiggleY = spriteWiggleY * (entity.anim and entity.anim.wiggle.y or 1)
-                local scaleX = wiggleX + (1 - spriteWiggleX)
-                local scaleY = wiggleY + (1 - spriteWiggleY)
-                sprite.scaleX = scaleX
-                sprite.scaleY = scaleY
-            end
-        end
-    end
+    self.anim:systemEndUpdate(framePart, dt, self)
 end
 
-local cameraEntities = {}
-local cameraCols = {}
-local cameraRows = {}
 local drawnEntities = {}
 local effectEntities = {}
 local tileBatchi = 0
@@ -814,7 +797,8 @@ function Game:findPoint(designation)
 end
 
 function Game:eval(operand)
-    if type(operand) == "number" then
+    local t = type(operand)
+    if t == "number" or t == "boolean" then
         return operand
     end
     local type, name = operand:match"%[(%w+)%.(%w+)%]"

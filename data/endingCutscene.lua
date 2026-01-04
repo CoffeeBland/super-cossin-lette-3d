@@ -122,6 +122,6 @@ return {
             frameOffset = 10
         }
     },
-    creditsScrollSpeed = -240,
-    totalFinFrames = 240
+    creditsScrollSpeed = -340,
+    totalFinFrames = 200
 }

@@ -5,6 +5,7 @@ function ParticleSystem.new(particleCount, entities)
     local instance = setmetatable({}, ParticleSystem)
     instance.particles = {}
     instance.nextFreeParticleIndex = 1
+    instance.particleCount = particleCount
     for i = 1, particleCount do
         local particle = {
             id = #entities + 1,
@@ -125,7 +126,7 @@ function ParticleSystem:emit(framePart, entity, emit)
 end
 
 function ParticleSystem:acquire()
-    if self.nextFreeParticleIndex <= Game.constants.particleCount then
+    if self.nextFreeParticleIndex <= self.particleCount then
         local particle = self.particles[self.nextFreeParticleIndex]
         self.nextFreeParticleIndex = self.nextFreeParticleIndex + 1
         particle.disabled = false

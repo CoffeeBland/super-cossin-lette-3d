@@ -51,10 +51,10 @@ function Cossins:draw()
     self.screenLeft, self.screenTop = love.graphics.inverseTransformPoint(0, 0)
     self.screenRight, self.screenBottom = love.graphics.inverseTransformPoint(CURRES[1], CURRES[2])
 
-    table.sort(self.entities, function (a, b) return a.pos.y < b.pos.y end)
     for i, entity in ipairs(self.entities) do
-        entity.drawOrder = i
+        entity.drawOrder = Game:getEntityDrawOrder(entity)
     end
+    table.sort(self.entities, Game.drawOrderSort)
     for _, entity in self:iterEntities(self.entities) do
         for _, sprite in ipairs(entity.sprites) do
             local doTheHue = sprite.hueRot

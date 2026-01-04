@@ -104,6 +104,16 @@ function Actor:processMove(framePart, game, nextMove, entity, actions)
             actions.jump = nextMove.jumpSpeed
             self.autoJumped = true
         end
+    elseif type == "squish" then
+        self.squishFrames = self.squishFrames or nextMove[2]
+        if self.squishFrames > 0 then
+            self.squishFrames = math.max(self.squishFrames - framePart, 0)
+            actions.prejump = true
+        else
+            self.squishFrames = nil
+            actions.prejump = false
+            return true
+        end
     elseif type == "walkTo" then
         local x, y = game:findPoint(nextMove.point)
         local dx, dy = x - pos.x, y - pos.y

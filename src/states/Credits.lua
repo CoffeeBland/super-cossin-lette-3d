@@ -30,6 +30,14 @@ local credits = {
     {
         "3D",
         "Non"
+    },
+    {
+        "Tutoriel de Sang Froid",
+        "Brian Perro",
+    },
+    {
+        "Veut un jeu vidéo",
+        "Emery",
     }
 }
 

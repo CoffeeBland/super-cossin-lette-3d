@@ -116,6 +116,10 @@ function Map:init()
             end
         end
     end
+    minx = minx or 0
+    miny = miny or 0
+    maxx = maxx or 0
+    maxy = maxy or 0
     self.minx, self.miny, self.maxx, self.maxy = minx, miny, maxx, maxy
     self.width, self.height = maxx - minx, maxy - miny
 
@@ -262,6 +266,7 @@ function Map:createEntity(entities, data, id, flipX, flipY)
             truncateHeight = math.random(data.properties.maxTruncateHeight or object.maxTruncateHeight)
         end
 
+        local lastName = nil
         for _, rep in pairs(object.replaceTo) do
             local id = rep.id or 0
             if rep.ids and #rep.ids > 0 then
@@ -290,6 +295,11 @@ function Map:createEntity(entities, data, id, flipX, flipY)
             entity.pos.originalx = x
             entity.pos.originaly = y
             entity.pos.originalz = z
+            if entity.name == lastName then
+                entity.name = nil
+            else
+                lastName = entity.name
+            end
         end
         return
     end
@@ -305,6 +315,9 @@ function Map:createEntity(entities, data, id, flipX, flipY)
     entity.pos.lensed = object.lensed or data.properties.lensed or false
     if object.height and not entity.pos.height then
         entity.pos.height = object.height
+    end
+    if data.properties.name then
+        entity.name = data.properties.name
     end
     if not entity.sprites then
         entity.sprites = {

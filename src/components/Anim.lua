@@ -187,3 +187,26 @@ function Anim:update(dt, entitySprites)
         end
     end
 end
+
+function Anim:systemBeginUpdate(framePart, dt, game)
+    for _, entity in game:iterEntities(game.entitiesByComponent.anim) do
+        entity.anim:update(dt, entity.sprites)
+    end
+end
+
+function Anim:systemEndUpdate(framePart, dt, game)
+    self:clearTriggers()
+
+    for _, entity in game:iterEntities(game.entitiesByComponent.sprites) do
+        for _, sprite in ipairs(entity.sprites) do
+            local spriteWiggleX = sprite.wiggle and sprite.wiggle.x or 0
+            local spriteWiggleY = sprite.wiggle and sprite.wiggle.y or 0
+            local wiggleX = spriteWiggleX * (entity.anim and entity.anim.wiggle.x or 1)
+            local wiggleY = spriteWiggleY * (entity.anim and entity.anim.wiggle.y or 1)
+            local scaleX = wiggleX + (1 - spriteWiggleX)
+            local scaleY = wiggleY + (1 - spriteWiggleY)
+            sprite.scaleX = scaleX
+            sprite.scaleY = scaleY
+        end
+    end
+end

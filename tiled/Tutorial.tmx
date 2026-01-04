@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="14" nextobjectid="72">
+ <editorsettings>
+  <export target="../maps/Tutorial.lua" format="lua"/>
+ </editorsettings>
+ <properties>
+  <property name="name" value="TUTORIEL"/>
+  <property name="vars.nextMap" value="Niveau1"/>
+  <property name="vars.targetFruits" type="int" value="1"/>
+  <property name="vars.timer" type="float" value="15"/>
+ </properties>
+ <tileset firstgid="1" source="tileset.tsx"/>
+ <tileset firstgid="284" source="objects.tsx"/>
+ <objectgroup id="10" name="O">
+  <object id="59" gid="308" x="-209.667" y="-801.667" width="192" height="256"/>
+  <object id="60" gid="357" x="-740" y="1245.67" width="605" height="459">
+   <properties>
+    <property name="disabled" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="61" gid="316" x="-1850" y="-3034" width="128" height="192">
+   <properties>
+    <property name="disabled" type="bool" value="true"/>
+    <property name="name" value="fruit1"/>
+   </properties>
+  </object>
+  <object id="62" gid="325" x="-2207.67" y="-3034" width="128" height="192">
+   <properties>
+    <property name="disabled" type="bool" value="true"/>
+    <property name="name" value="fruit2"/>
+   </properties>
+  </object>
+  <object id="63" gid="321" x="-2553" y="-3021.67" width="128" height="192">
+   <properties>
+    <property name="disabled" type="bool" value="true"/>
+    <property name="name" value="fruit3"/>
+   </properties>
+  </object>
+  <object id="65" gid="373" x="-3379.33" y="-727.667" width="1152" height="1024">
+   <properties>
+    <property name="name" value="arch"/>
+   </properties>
+  </object>
+  <object id="66" gid="376" x="-2762.67" y="1221" width="1024" height="1286">
+   <properties>
+    <property name="name" value="tree"/>
+    <property name="truncateHeight" type="float" value="230"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

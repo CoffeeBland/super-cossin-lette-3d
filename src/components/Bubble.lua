@@ -116,10 +116,10 @@ function Bubble:show(game, text, anim)
         return
     end
 
-    local i = 0
-    while i < #text / 2 do
-        local iconName = text[i * 2 + 2]
-        local duration = text[i * 2 + 1]
+    local n = 0
+    for i = 1, #text / 2 do
+        local iconName = text[i * 2]
+        local duration = text[i * 2 - 1]
         local value = game:eval(iconName)
         if value and type(value) == "number" then
             local foundNonZero
@@ -131,18 +131,18 @@ function Bubble:show(game, text, anim)
                 local digit = math.floor((value % next) / unit)
                 if digit ~= 0 or foundNonZero or j == 1 then
                     foundNonZero = true
-                    i = i + 1
-                    self.text[i * 2 - 1] = duration
-                    self.text[i * 2] = tostring(digit)
+                    n = n + 1
+                    self.text[n * 2 - 1] = duration
+                    self.text[n * 2] = tostring(digit)
                 end
             end
         else
-            i = i + 1
-            self.text[i * 2 - 1] = duration
-            self.text[i * 2] = iconName
+            n = n + 1
+            self.text[n * 2 - 1] = duration
+            self.text[n * 2] = iconName
         end
     end
-    self.textLen = i
+    self.textLen = n
     self.textIndex = 0
     self.textFrames = self.text[1]
     anim:trigger("speak:start")
@@ -159,7 +159,7 @@ function Bubble:update(framePart, game, anim)
             self.textIndex = self.textIndex + 1
             self.textFrames = self.textIndex < self.textLen and
                 self.text[self.textIndex * 2 - 1] or
-                Game.constants.bubble.lingerFrames
+                self.text[self.textIndex * 2 - 1] + Game.constants.bubble.lingerFrames
             anim:trigger("speak")
         else
             self.textLen = 0

@@ -9,6 +9,11 @@ function Event.new()
 end
 
 function Event:execute(list)
+    if not list then
+        self.list = nil
+        self.index = nil
+        return
+    end
     self.index = 1
     self.depth = 0
     self.list = list
@@ -28,6 +33,8 @@ function Event:update(framePart, dt, game)
     if self.wait then
         if not self:isWaitDone(framePart, game, self.wait) then
             return
+        else
+            self.wait = nil
         end
     end
 
@@ -50,7 +57,8 @@ function Event:isWait(event)
         type == "waitForMove" or
         type == "waitForLarp" or
         type == "waitForBubble" or
-        type == "waitForVar"
+        type == "waitForVar" or
+        type == "waitForSound"
 end
 
 function Event:isWaitDone(framePart, game, wait)
@@ -89,6 +97,8 @@ function Event:isWaitDone(framePart, game, wait)
         wait.done = entity.bubble.textLen == 0
     elseif type == "waitForVar" then
         wait.done = self:eval(framePart, game, wait, 2)
+    elseif type == "waitForSound" then
+        wait.done = not Sound.playing[wait.name]
     end
     return wait.done
 end
@@ -213,6 +223,8 @@ function Event:processEvent(framePart, game, index)
         Music:fadeout()
     elseif type == "image" then
         game.images:setImage(event)
+    elseif type == "subtitle" then
+        game.images:setText(event)
     elseif type == "move" then
         entity.actor:setMoveFromEvent(event)
     elseif type == "larp" then
@@ -242,7 +254,7 @@ function Event:processEvent(framePart, game, index)
                 table.recset(entity, key, component)
             end
         end
-    elseif type == "changeState" then
+    elseif type == "changeState" or type == "pushState" then
         local args = {}
         local opts = {}
         for key, value in pairs(event[3] or EMPTY) do
@@ -251,7 +263,11 @@ function Event:processEvent(framePart, game, index)
         for key, value in pairs(event[4] or EMPTY) do
             opts[key] = game:eval(value)
         end
-        StateMachine:change(event[2], args, opts)
+        if type == "changeState" then
+            StateMachine:change(event[2], args, opts)
+        elseif type == "pushState" then
+            StateMachine:push(event[2], args, opts)
+        end
     elseif type == "timer" then
         local time = game:eval(event[2])
         game.timer:start(time)

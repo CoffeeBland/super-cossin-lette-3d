@@ -485,13 +485,23 @@ function MapIntro:enter(params)
     end
 
     self.timeline:queue(letterHideTimeline)
-    self.timeline:queue({
-        { "state",
-            frame = 0,
-            state = Game,
-            params = params
-        }
-    })
+    if params.map == Game.constants.firstLevel then
+        self.timeline:queue({
+            { "state",
+                frame = 0,
+                state = Game,
+                params = { map = "Tutorial" }
+            }
+        })
+    else
+        self.timeline:queue({
+            { "state",
+                frame = 0,
+                state = Game,
+                params = params
+            }
+        })
+    end
     self.timeline:load()
 
     self.params = params
@@ -506,7 +516,9 @@ function MapIntro:update(dt)
         actions.back or
         actions.action then
         Music:fadeout()
-        StateMachine:change(Game, self.params)
+        StateMachine:change(Game, self.params.map == Game.constants.firstLevel and
+            { map = "Tutorial" } or
+            self.params)
     end
 
     self.timeline:update(dt)
