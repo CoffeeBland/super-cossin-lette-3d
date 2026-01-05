@@ -12,10 +12,6 @@
     * Windô
     * Linux
     * Mac ? Iiiiiiiish
-* Statut de complétion
-* Tutorial
-* Renormaliser à -6
-* Balançage spectral
 
 ## MAPS
 * Un labyrinthe. That's it

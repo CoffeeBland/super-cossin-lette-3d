@@ -1005,7 +1005,7 @@ return {
 
         { "subtitle",
             text = [[
-                Il doit vite courrir pour aller chercher suffisament de fruits avant son arrivée
+                Il doit vite courir pour aller chercher suffisament de fruits avant son arrivée
                 afin de fournir un pique-nique digne de ce nom.
             ]]
         },
