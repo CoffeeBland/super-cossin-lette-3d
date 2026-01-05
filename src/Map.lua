@@ -481,13 +481,14 @@ function Map:drawTiles(batch, tilesInfo, reflectedBatch, reflectedTilesInfo, tim
                     local height = tileData.height or 0
                     local layerHeightInfo = self.layerHeightInfo[layeri][globali]
                     local layerHeight = layerHeightInfo and layerHeightInfo.height or 0
+                    local scale = height > 0 and 1 or 1.02
                     batch:add(
                         tileData.quad,
                         x,
                         y,
                         0,
-                        flipX and -1 or 1,
-                        flipY and -1 or 1,
+                        flipX and -scale or scale,
+                        flipY and -scale or scale,
                         tileData.originX,
                         tileData.originY)
                     local posY = y + layerHeight
