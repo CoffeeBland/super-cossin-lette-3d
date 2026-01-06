@@ -1,38 +1,7 @@
 PauseSystem = {}
 PauseSystem.__index = PauseSystem
 
-local buttons = {
-    {
-        text = "OK",
-        menuState = "ok",
-        action = function(pause)
-            pause.active = false
-        end
-    },
-    {
-        text = "REPIQUER LE NIQUE",
-        menuState = "restart",
-        action = function()
-            Game:refresh(true)
-        end
-    },
-    {
-        text = "OPTIONS",
-        menuState = "options",
-        action = function()
-            StateMachine:push(Options)
-        end
-    },
-    {
-        text = "SE RECOUCHER",
-        menuState = "quit",
-        action = function()
-            StateMachine:change(Title)
-        end
-    }
-}
-
-function PauseSystem.new()
+function PauseSystem.new(showSkip, showRestart)
     local texture = textures.Pause
     local instance = setmetatable({
         active = false,
@@ -51,6 +20,52 @@ function PauseSystem.new()
             )
         })
     end
+
+    local buttons = {
+        {
+            text = "OK",
+            menuState = "ok",
+            action = function()
+                instance.active = false
+            end
+        },
+        showRestart and {
+            text = "REPIQUER LE NIQUE",
+            menuState = "restart",
+            action = function()
+                Game:refresh(true)
+            end
+        },
+        showSkip and {
+            text = "PASSER",
+            menuState = "skip",
+            action = function(game)
+                StateMachine:change(Game, { map = game.vars.nextMap })
+            end
+        },
+        {
+            text = "OPTIONS",
+            menuState = "options",
+            action = function()
+                StateMachine:push(Options)
+            end
+        },
+        {
+            text = "SE RECOUCHER",
+            menuState = "quit",
+            action = function()
+                StateMachine:change(Title)
+            end
+        }
+    }
+
+    instance.buttons = {}
+    for _, btn in ipairs(buttons) do
+        if btn then
+            table.insert(instance.buttons, btn)
+        end
+    end
+
     return instance
 end
 
@@ -78,18 +93,18 @@ function PauseSystem:update(framePart, dt, game)
         self.time = self.time + framePart
 
         if actions.move then
-            local newBtnIdx = math.wrap(self.btnIdx + actions.menu.any, 1, #buttons)
+            local newBtnIdx = math.wrap(self.btnIdx + actions.menu.any, 1, #self.buttons)
             if newBtnIdx ~= self.btnIdx then
                 self.btnIdx = newBtnIdx;
-                local button = buttons[self.btnIdx]
+                local button = self.buttons[self.btnIdx]
                 Sound:start(actions.menu.any < 0 and Sound.global.up or Sound.global.down)
             end
         end
 
         if actions.action then
             Sound:start(Sound.global.act)
-            local button = buttons[self.btnIdx]
-            button.action(self)
+            local button = self.buttons[self.btnIdx]
+            button.action(game)
         end
 
         Cossins:update(dt)
@@ -148,8 +163,8 @@ function PauseSystem:draw()
     love.graphics.scale(1 / SCALE_TO_EXPECTED)
 
     local margin = Game.constants.pause.buttonMargin * SCALE_TO_EXPECTED
-    local buttonsWidth = (#buttons - 1) * margin
-    for i, button in ipairs(buttons) do
+    local buttonsWidth = (#self.buttons - 1) * margin
+    for i, button in ipairs(self.buttons) do
         button.width = fonts.menu:getWidth(button.text)
         buttonsWidth = buttonsWidth + button.width
     end
@@ -158,7 +173,7 @@ function PauseSystem:draw()
     love.graphics.setFont(fonts.menu)
     love.graphics.setBlendMode("add")
     local x = 0
-    for i, button in ipairs(buttons) do
+    for i, button in ipairs(self.buttons) do
         love.graphics.setColor(unpack(i == self.btnIdx and
             Game.constants.pause.buttonActive or
             Game.constants.pause.buttonInactive))

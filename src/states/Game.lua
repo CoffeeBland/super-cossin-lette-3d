@@ -127,6 +127,13 @@ function Game:enter(args)
     if not Game.constants.bg[self.vars.bg] then
         self.vars.bg = "grass"
     end
+    if args.nextMap then
+        self.vars.nextMap = args.nextMap
+    end
+
+    local showSkip = self.vars.currentMap == "Tutorial"
+    local showRestart = self.vars.currentMap ~= "Tutorial"
+
     Requests.new(self)
     self.physics = PhysicsSystem.new()
     self.sounds = SoundSystem.new()
@@ -138,7 +145,7 @@ function Game:enter(args)
     self.particles = ParticleSystem.new(Game.constants.particleCount, self.entities)
     self.timer = TimerSystem.new()
     self.images = ImageSystem.new()
-    self.pause = PauseSystem.new()
+    self.pause = PauseSystem.new(showSkip, showRestart)
 
     self.map:getTileEntities(self.physics)
     time = love.timer.measure(time, "tile entities")

@@ -274,7 +274,7 @@ function Title:update(dt)
             Sound:start(Sound.global.act)
             if self.menuState == "new" then
                 Music:fadeout(Title.fadeout)
-                StateMachine:change(MapIntro, { map = Game.constants.firstLevel })
+                StateMachine:change(MapIntro, { map = "Tutorial", nextMap = Game.constants.firstLevel })
             elseif self.menuState == "options" then
                 StateMachine:push(Options)
                 self.waitingForEnd = false

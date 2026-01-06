@@ -1078,7 +1078,7 @@ return {
             entity = { byName = "cossin" },
             { "walkTo", point = { byName = "fruit1" } },
             { "walkTo", point = { byName = "fruit3" } },
-            { "walkTo", point = { byName = "arch", offset = { x = 800, y = -500 } } },
+            { "walkTo", point = { byName = "arch", offset = { x = 600, y = -600 } } },
         },
         { "waitForMove", entity = { byName = "cossin" } },
         { "waitForSound", name = "TutoPasDeBras" },

@@ -467,10 +467,11 @@ function MapIntro:getMapNameSound(name)
 end
 
 function MapIntro:enter(params)
-    local map = Map.load(params.map)
+    local mapName = params.nextMap or params.map
+    local map = Map.load(mapName)
     self.timeline = Timeline.new(stuff)
 
-    if params.map ~= Game.constants.firstLevel then
+    if mapName ~= Game.constants.firstLevel then
         self.timeline:queue(laterTimeline)
         self.timeline.eventFrameOffset = self.timeline.eventFrameOffset - 30
     end
@@ -485,23 +486,13 @@ function MapIntro:enter(params)
     end
 
     self.timeline:queue(letterHideTimeline)
-    if params.map == Game.constants.firstLevel then
-        self.timeline:queue({
-            { "state",
-                frame = 0,
-                state = Game,
-                params = { map = "Tutorial" }
-            }
-        })
-    else
-        self.timeline:queue({
-            { "state",
-                frame = 0,
-                state = Game,
-                params = params
-            }
-        })
-    end
+    self.timeline:queue({
+        { "state",
+            frame = 0,
+            state = Game,
+            params = params
+        }
+    })
     self.timeline:load()
 
     self.params = params
@@ -516,9 +507,7 @@ function MapIntro:update(dt)
         actions.back or
         actions.action then
         Music:fadeout()
-        StateMachine:change(Game, self.params.map == Game.constants.firstLevel and
-            { map = "Tutorial" } or
-            self.params)
+        StateMachine:change(Game, self.params)
     end
 
     self.timeline:update(dt)

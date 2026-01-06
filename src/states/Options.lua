@@ -95,6 +95,25 @@ options = {
         spaceAfter = true
     },
     {
+        name = "tutorial",
+        text = "TUTORIEL",
+        type = "button",
+        action = function()
+            if StateMachine.current == Game then
+                StateMachine:change(Game, {
+                    map = "Tutorial",
+                    nextMap = StateMachine.current.vars.currentMap
+                })
+            else
+                StateMachine:change(Game, {
+                    map = "Tutorial",
+                    nextMap = Game.constants.firstLevel
+                })
+            end
+        end,
+        spaceAfter = true
+    },
+    {
         name = "debug",
         text = "DEBUG",
         type = "range",
