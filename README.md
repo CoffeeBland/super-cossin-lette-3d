@@ -18,9 +18,7 @@
 * Cherche & trouv
 
 ## BUGS
-* Niveau 2 tuile qui flotte
 * Dans la forêt tuile pété? Pe problème de z-fighting
 * z-fighting en général :(
-* Musique aller direct fadeout
 * Sound balance dans la musique forreal
 * Tutoooo
