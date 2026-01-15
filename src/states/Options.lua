@@ -67,7 +67,7 @@ options = {
         name = "arcade",
         text = "CONTRÔLES ARCADE",
         type = "toggle",
-        default = false,
+        default = true,
         apply = function(value)
             setupActions()
             load.loadData("cossin", "data/cossin.lua")
@@ -99,6 +99,7 @@ options = {
         text = "TUTORIEL",
         type = "button",
         action = function()
+            Music:fadeout()
             if StateMachine.current == Game then
                 StateMachine:change(Game, {
                     map = "Tutorial",

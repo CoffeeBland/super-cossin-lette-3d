@@ -434,6 +434,7 @@ function Game:renderFrame(dt, camera, x, y, w, h)
     if dbg.lensMap then
         love.graphics.setShader(MAP_DEBUG_SHADER)
         love.graphics.draw(camera.lensCanvas, 0, 0)
+        love.graphics.setShader()
     end
 
     if dbg.shadowMap then
@@ -838,7 +839,8 @@ function Game:findFloorY(entity)
     for i = 1, 20 do
         if entity.pos.floorEntity then
             entity = entity.pos.floorEntity
-            y = math.max(entity.pos.y, y)
+            local diff = entity.pos.y - y
+            y = math.max(entity.pos.y, y + diff / 100 + DELTA * 10)
         else
             return entity, y, i
         end

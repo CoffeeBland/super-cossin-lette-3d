@@ -150,9 +150,11 @@ HEIGHT_MAPPED_SHADER = love.graphics.newShader(glslHsvFunctions .. glslDebugMap 
 
         float lensDepth = Texel(lensMap, screen_coords / size).r;
         if (lensDepth > 0.0) {
+            // In front
             if (lensed && touchability > 0.9) {
                 discard;
-            } else if (lensDepth < depth) {
+            // Behind
+            } else if (lensDepth + 0.01 < depth) {
                 finalcol *= lensColor;
             }
         }
