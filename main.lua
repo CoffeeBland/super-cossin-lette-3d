@@ -53,6 +53,7 @@ local avgDt = 1 / 60
 local frame = 0
 local frameTime = 0
 local frameDuration = 1 / 60
+local previousFrames = 0
 
 function love.update(dt)
     if DISREGARD_NEXT_UPDATE then
@@ -76,8 +77,12 @@ function love.update(dt)
     end
 
     frameTime = frameTime + dt
-    while frameTime > frameDuration do
-        frameTime = frameTime - frameDuration
+    local frames = math.floor(frameTime / frameDuration)
+    frameTime = frameTime - frameDuration * frames
+    -- Cap the amount of frames we ever do to one-away from the previous frames we did.
+    -- This (maybe) avoids zigzagging the frames.
+    local actualFrames = math.sign(frames - previousFrames) + previousFrames
+    for i = 1, actualFrames do
         StateMachine:update(frameDuration)
 
         input.afterUpdate(dt)
@@ -90,6 +95,7 @@ function love.update(dt)
             end
         end
     end
+    previousFrames = actualFrames
 
     avgDt = avgDt * 0.99 + dt * 0.01
     frame = frame + 1

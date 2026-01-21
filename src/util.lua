@@ -207,6 +207,12 @@ function table.clone(t)
     return clone
 end
 
+function table.clear(t)
+    for k, _ in pairs(t) do
+        t[k] = nil
+    end
+end
+
 function table.uniqInsert(t, obj, fn)
     for _, x in pairs(t) do
         if fn(x, obj) then

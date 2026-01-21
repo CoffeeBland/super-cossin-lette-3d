@@ -49,6 +49,7 @@ function StateMachine:change(state, params, opts)
 end
 
 function StateMachine:push(state, params)
+    DISREGARD_NEXT_UPDATE = true
     table.insert(self.stack, state)
     state:enter(params)
 end
