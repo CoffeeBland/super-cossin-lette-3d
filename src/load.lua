@@ -532,18 +532,7 @@ function load.loadData(name, file)
             tileset.animDefs = {}
             tileset.shapes = {}
             dirtyHeightTextures.tileset = true
-            if data.image then
-                local name = str.filename(data.image)
-                local texture = getOrLoadTexture(name)
-                for i = 1, data.tilecount do
-                    tileset.tiles[i] = love.graphics.newQuad(
-                        ((i - 1) % data.columns) * data.tilewidth,
-                        math.floor((i - 1) / data.columns) * data.tileheight,
-                        data.tilewidth,
-                        data.tileheight,
-                        texture)
-                end
-            elseif data.tiles then
+            if data.tiles then
                 -- Tiles can be of non-uniform size.
                 -- As such, this is fucked.
                 -- Sort by greatest height first, make rows of the given height, and fuck being optimal
@@ -585,6 +574,7 @@ function load.loadData(name, file)
                             quad = love.graphics.newQuad(x, y, tile.width, tile.height, canvas),
                             originX = -posX,
                             originY = -posY,
+                            drawOrder = tile.properties and tile.properties.drawOrder or 0,
                             type = tile.properties and tile.properties.type,
                             height = tile.properties and tile.properties.height,
                             animOverlay = tile.properties and tile.properties.anim

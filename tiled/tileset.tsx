@@ -305,21 +305,33 @@
   <image source="../img/Tiles/Tuile_chemin-4.png" width="128" height="74"/>
  </tile>
  <tile id="167">
+  <properties>
+   <property name="drawOrder" type="float" value="37"/>
+  </properties>
   <image source="../img/Tiles/Tuile_chemin_courbe-1.png" width="256" height="74"/>
  </tile>
  <tile id="168">
   <image source="../img/Tiles/Tuile_chemin_courbe-2.png" width="128" height="148"/>
  </tile>
  <tile id="169">
+  <properties>
+   <property name="drawOrder" type="float" value="37"/>
+  </properties>
   <image source="../img/Tiles/Tuile_chemin_courbe-3.png" width="256" height="74"/>
  </tile>
  <tile id="170">
   <image source="../img/Tiles/Tuile_chemin_courbe-4.png" width="128" height="148"/>
  </tile>
  <tile id="197">
+  <properties>
+   <property name="drawOrder" type="float" value="37"/>
+  </properties>
   <image source="../img/Tiles/Tuile_chemin_courbe-5.png" width="256" height="74"/>
  </tile>
  <tile id="198">
+  <properties>
+   <property name="drawOrder" type="float" value="37"/>
+  </properties>
   <image source="../img/Tiles/Tuile_chemin_courbe-6.png" width="256" height="74"/>
  </tile>
  <tile id="199">

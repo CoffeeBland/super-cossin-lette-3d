@@ -493,7 +493,7 @@ function Map:drawTiles(batch, tilesInfo, reflectedBatch, reflectedTilesInfo, tim
                         tileData.originY)
                     local posY = y + layerHeight
                     local posZ = layerHeight
-                    local drawOrder = game:getDrawOrder(posY, posZ, 0) - TILE_HEIGHT
+                    local drawOrder = game:getDrawOrder(posY, posZ, 0) + tileData.drawOrder - TILE_HEIGHT
                     -- Git the ground even lower
                     if height == 0 and layerHeight == 0 then
                         drawOrder = drawOrder - TILE_HEIGHT * 4
@@ -504,7 +504,7 @@ function Map:drawTiles(batch, tilesInfo, reflectedBatch, reflectedTilesInfo, tim
                     table.insert(tilesInfo, { posZ, height, drawOrder })
 
                     if height > 0 then
-                        local reflectionOrder = game:getReflectionOrder(posY, posZ, 0) - TILE_HEIGHT
+                        local reflectionOrder = game:getReflectionOrder(posY, posZ, 0) - tileData.drawOrder - TILE_HEIGHT
                         reflectedBatch:add(
                             tileData.quad,
                             x,

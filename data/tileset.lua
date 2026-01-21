@@ -1547,6 +1547,9 @@ return {
     },
     {
       id = 167,
+      properties = {
+        ["drawOrder"] = 37
+      },
       image = "../img/Tiles/Tuile_chemin_courbe-1.png",
       width = 256,
       height = 74
@@ -1559,6 +1562,9 @@ return {
     },
     {
       id = 169,
+      properties = {
+        ["drawOrder"] = 37
+      },
       image = "../img/Tiles/Tuile_chemin_courbe-3.png",
       width = 256,
       height = 74
@@ -1571,12 +1577,18 @@ return {
     },
     {
       id = 197,
+      properties = {
+        ["drawOrder"] = 37
+      },
       image = "../img/Tiles/Tuile_chemin_courbe-5.png",
       width = 256,
       height = 74
     },
     {
       id = 198,
+      properties = {
+        ["drawOrder"] = 37
+      },
       image = "../img/Tiles/Tuile_chemin_courbe-6.png",
       width = 256,
       height = 74

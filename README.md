@@ -18,7 +18,4 @@
 * Cherche & trouv
 
 ## BUGS
-* Dans la forêt tuile pété? Pe problème de z-fighting
-* z-fighting en général :(
 * Sound balance dans la musique forreal
-* Tutoooo
