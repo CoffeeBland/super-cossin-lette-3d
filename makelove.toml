@@ -1,6 +1,7 @@
 name = "SuperCossinLette3D"
 default_targets = ["win64", "appimage", "lovejs"]
 build_directory = "bin"
+icon_file = "Icon.ico"
 
 love_files = [
     "::git-ls-tree::",

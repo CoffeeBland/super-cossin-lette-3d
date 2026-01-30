@@ -83,7 +83,9 @@ function Ending:render(dt)
         love.graphics.push()
         love.graphics.translate(CURRES[1] / 2, CURRES[2] / 2)
         love.graphics.setFont(fonts.hero)
-        love.graphics.printf(self.finFrames < self.totalFinFrames / 2 and "BUBYE" or "FIN", -800, 0, 1600, "center")
+        love.graphics.printf(
+            self.finFrames < self.totalFinFrames / 2 and "BUBYE" or "FIN",
+            -800, 0, 1600, "center")
         love.graphics.pop()
     end
 

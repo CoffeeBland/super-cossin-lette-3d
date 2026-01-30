@@ -130,6 +130,7 @@ return {
         buttonMargin = 60,
         buttonActive = { 0.875, 0.867, 0.741, 1 },
         buttonInactive = { 0.875, 0.867, 0.741, 0.25 },
+        buttonDisabled = { 0.875/2, 0, 0, 0.5 },
         blur = 8
     },
     options = {
@@ -783,6 +784,10 @@ return {
                 entity = { byName = "blonde" }
             },
             { "if", "[vars.nextMap]" },
+                { "save",
+                    key = "[vars.currentMap]",
+                    value = true
+                },
                 { "changeState",
                     MapIntro,
                     { map = "[vars.nextMap]" }

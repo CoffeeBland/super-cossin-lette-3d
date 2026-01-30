@@ -76,7 +76,9 @@ function Menu.draw(idx, scroll, items, w, h, dt)
         love.graphics.setColor(unpack(
             (item.active or i == idx) and
                 Game.constants.pause.buttonActive or
-                Game.constants.pause.buttonInactive))
+                (item.disabled and
+                    Game.constants.pause.buttonDisabled or
+                    Game.constants.pause.buttonInactive)))
         love.graphics.setFont(item.font or fonts.menu)
         local y = item.y + scroll
         if item.value then

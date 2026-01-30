@@ -1,7 +1,7 @@
 Maps = {}
 
 function Maps.isMapItem(item)
-    return item.map or item.name == "ok"
+    return (item.map or item.game or item.name == "ok") and not item.disabled
 end
 
 function Maps:enter(params)
@@ -13,6 +13,7 @@ function Maps:enter(params)
 
     local seen = {}
     local nextmap = Game.constants.firstLevel
+    local previousmap = nil
     local noDisplayIdx = 1
 
     while mapsByName[nextmap] and not seen[nextmap] do
@@ -26,10 +27,32 @@ function Maps:enter(params)
         table.insert(self.items, {
             text = displayName,
             map = map,
-            name = nextmap
+            name = nextmap,
+            disabled = previousmap and not Save:get(previousmap) and Options.values.debug == 0
         })
+        previousmap = nextmap
         nextmap = map._data.properties["vars.nextMap"]
     end
+
+    local oldDisabled = not (Save:get("Ending") or Options.values.debug > 0)
+    table.insert(self.items, {})
+    table.insert(self.items, {
+        text = "RELICATS",
+        active = not oldDisabled,
+        disabled = oldDisabled
+    })
+    table.insert(self.items, {})
+    table.insert(self.items, {
+        text = "LA GRANDE AVENTURE",
+        game = "cossin-lette-1-2",
+        disabled = oldDisabled
+    })
+    table.insert(self.items, {
+        text = "LA REVANCHE",
+        game = "cossin-lette-2",
+        disabled = oldDisabled
+    })
+    table.insert(self.items, {})
 
     if Options.values.debug > 0 then
         table.insert(self.items, {})
@@ -78,9 +101,12 @@ function Maps:update(dt)
         local item = self.items[self.idx]
         if item.name == "ok" then
             StateMachine:pop(self)
-        else
+        elseif item.map then
             Music:fadeout()
             StateMachine:change(MapIntro, { map = item.name })
+        elseif item.game then
+            os.execute("start " .. item.game .. "/Game.exe")
+            love.event.quit(0)
         end
     end
 end

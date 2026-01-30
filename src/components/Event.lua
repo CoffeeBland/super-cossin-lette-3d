@@ -273,6 +273,10 @@ function Event:processEvent(framePart, game, index)
         game.timer:start(time)
     elseif type == "tint" then
         game.tint = event.color
+    elseif type == "save" then
+        local key = game:eval(event.key)
+        local value = game:eval(event.value)
+        Save:set(key, value)
     else
         error("Unknown event", event)
     end

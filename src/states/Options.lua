@@ -67,7 +67,7 @@ options = {
         name = "arcade",
         text = "CONTRÔLES ARCADE",
         type = "toggle",
-        default = true,
+        default = false,
         apply = function(value)
             setupActions()
             load.loadData("cossin", "data/cossin.lua")
@@ -179,6 +179,15 @@ options = {
                     Options:reset(option.name)
                 end
             end
+        end
+    },
+    {
+        name = "default",
+        text = "RÉINITIALISER SAUVEGARDE",
+        type = "button",
+        action = function()
+            Save:clear()
+            Save:flush()
         end
     },
     {

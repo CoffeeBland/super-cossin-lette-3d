@@ -7,12 +7,14 @@ require "src.constants"
 require "src.error"
 require "src.Menu"
 require "src.Cossins"
+require "src.Save"
 require "src.states.StateMachine"
 
 dbg = { cycle = 0, physics = false, fps = false, autorefresh = false }
 DISREGARD_NEXT_UPDATE = true
 
 function love.load(args)
+    Save:init()
     Options:apply()
     love.mouse.setVisible(false)
     local requestedState, requestedMap
@@ -59,6 +61,7 @@ function love.update(dt)
     if DISREGARD_NEXT_UPDATE then
         dt = 0
         DISREGARD_NEXT_UPDATE = false
+        Save:flush()
     end
 
     input.poll(dt)
