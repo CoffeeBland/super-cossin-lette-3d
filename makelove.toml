@@ -2,11 +2,22 @@ name = "SuperCossinLette3D"
 default_targets = ["win64", "appimage", "lovejs"]
 build_directory = "bin"
 icon_file = "Icon.ico"
+keep_game_directory = true
 
 love_files = [
-    "::git-ls-tree::",
-    "-*/.*",
+    "./main.lua",
+    "./conf.lua",
+    "./audio/*",
+    "./data/*",
+    "./img/*",
+    "./maps/*",
+    "./music/*",
+    "./src/*"
 ]
+
+[archive_files]
+"cossin-lette-1" = "cossin-lette-1"
+"cossin-lette-2" = "cossin-lette-2"
 
 [lovejs]
 memory = "100000000"

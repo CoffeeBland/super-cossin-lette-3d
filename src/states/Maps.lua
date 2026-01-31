@@ -44,7 +44,7 @@ function Maps:enter(params)
     table.insert(self.items, {})
     table.insert(self.items, {
         text = "LA GRANDE AVENTURE",
-        game = "cossin-lette-1-2",
+        game = "cossin-lette-1",
         disabled = oldDisabled
     })
     table.insert(self.items, {
