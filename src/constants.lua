@@ -297,6 +297,8 @@ MASK_SHADER = love.graphics.newShader[[
 ]]
 
 DITHER_SHADER = love.graphics.newShader[[
+    uniform float scale;
+
     const mat4x4 thresholdMatrix = mat4x4(
             1.0/17.0,  9.0/17.0,  3.0/17.0, 11.0/17.0,
            13.0/17.0,  5.0/17.0, 15.0/17.0,  7.0/17.0,
@@ -311,13 +313,15 @@ DITHER_SHADER = love.graphics.newShader[[
     }
 
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
-        float alpha = Texel(texture, texture_coords).a;
+        float alpha = Texel(texture, texture_coords).a * color.a;
+        screen_coords = screen_coords * scale;
         if (alpha == 0.0 || dither(alpha, screen_coords)) {
             discard;
         }
         return color;
     }
 ]]
+DITHER_SHADER:send("scale", 1)
 
 SPARKLY_SHADER = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {

@@ -50,7 +50,7 @@ function Intro:update(dt)
         actions.start or
         actions.back or
         actions.action then
-        StateMachine:change(Title)
+        StateMachine:change(CoffeeBland)
     end
 
     if self.splashFrame == 0 then

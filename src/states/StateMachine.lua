@@ -1,6 +1,7 @@
 require "src.states.Intro"
 require "src.states.Game"
 require "src.states.Title"
+require "src.states.CoffeeBland"
 require "src.states.MapIntro"
 require "src.states.Ending"
 require "src.states.Options"
@@ -129,5 +130,8 @@ function StateMachine:render(dt)
         love.graphics.setColor(self.fadeColor[1], self.fadeColor[2], self.fadeColor[3], self.fadePart)
         love.graphics.rectangle("fill", 0, 0, CURRES[1], CURRES[2])
         love.graphics.setColor(1, 1, 1, 1)
+    end
+    if self.current and self.current.postRender then
+        self.current:postRender(dt)
     end
 end

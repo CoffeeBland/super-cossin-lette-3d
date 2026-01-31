@@ -42,6 +42,10 @@ local credits = {
 }
 
 function Credits:enter()
+    if Music.current then
+        Music.current:setFilter(Game.constants.music.filters.pause)
+    end
+
     self.items = {
         {
             text = "Super Cossin Lette 3D",
@@ -75,6 +79,9 @@ function Credits:enter()
 end
 
 function Credits:exit()
+    if Music.current then
+        Music.current:setFilter()
+    end
 end
 
 function Credits:update(dt)

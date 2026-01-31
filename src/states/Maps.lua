@@ -5,6 +5,10 @@ function Maps.isMapItem(item)
 end
 
 function Maps:enter(params)
+    if Music.current then
+        Music.current:setFilter(Game.constants.music.filters.pause)
+    end
+
     for file, info in pairs(love.filesystem.crawl("maps")) do
         Map.load(str.filename(file))
     end
@@ -78,7 +82,10 @@ function Maps:enter(params)
 end
 
 function Maps:exit()
-
+    -- This condition is bad and you should feel bad.
+    if Music.current then
+        Music.current:setFilter()
+    end
 end
 
 function Maps:update(dt)
