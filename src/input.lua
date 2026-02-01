@@ -362,16 +362,20 @@ function input.draw()
             love.graphics.setColor(1, 1, 1, 1)
         end
 
-        local text = "  POUR PLUS DE COSSINS"
+        local text = "  (SELECT) POUR PLUS DE COSSINS"
         local height = fonts.menu:getHeight()
         local triangleWidth = height * 0.5
         local width = fonts.menu:getWidth(text) + triangleWidth
+        local hmargin = Game.constants.options.hmargin * SCALE_TO_EXPECTED
+        local vmargin = Game.constants.options.vmargin * SCALE_TO_EXPECTED
 
         love.graphics.push()
         love.graphics.translate(
             CURRES[1] / 2,
-            CURRES[2] - height - Game.constants.options.hmargin * SCALE_TO_EXPECTED)
+            CURRES[2] - height - vmargin)
         love.graphics.setFont(fonts.menu)
+
+        love.graphics.printf("v " .. VERSION, CURRES[1] / 2 - 160 - hmargin, 0, 160, "right")
 
         love.graphics.push()
         love.graphics.translate(-width / 2, height / 2)
