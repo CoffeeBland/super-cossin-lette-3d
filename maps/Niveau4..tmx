@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="73" nextobjectid="2649">
- <editorsettings>
-  <export target="../maps/Niveau4..tmx" format="tmx"/>
- </editorsettings>
  <properties>
   <property name="vars.music" value="Promenade"/>
   <property name="vars.nextMap" value="Niveau5"/>
   <property name="vars.targetFruits" type="int" value="8"/>
   <property name="vars.timer" type="float" value="120"/>
  </properties>
- <tileset firstgid="1" source="objects.tsx"/>
+ <tileset firstgid="1" source="../tiled/objects.tsx"/>
  <tileset firstgid="94" source=":/automap-tiles.tsx"/>
- <tileset firstgid="99" source="tileset.tsx"/>
+ <tileset firstgid="99" source="../tiled/tileset.tsx"/>
  <layer id="58" name="Gazon" width="30" height="20">
   <data encoding="csv">
    <chunk x="0" y="-16" width="16" height="16">
