@@ -7,7 +7,7 @@
   <property name="name" value="AU PETIT LAC"/>
   <property name="skipAnimTileGen" type="bool" value="true"/>
   <property name="vars.ambience" value="ForestBirds"/>
-  <property name="vars.nextMap" value="Atol"/>
+  <property name="vars.nextMap" value="Niveau4"/>
   <property name="vars.targetFruits" type="int" value="12"/>
   <property name="vars.timer" type="float" value="60"/>
  </properties>

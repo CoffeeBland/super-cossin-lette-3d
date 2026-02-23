@@ -21,12 +21,6 @@ function Save:init()
 end
 
 function Save:set(key, value)
-    if value == true then
-        value = "true"
-    end
-    if value == false then
-        value = "false"
-    end
     self.values[key] = value
     self.dirty = true
 end
@@ -46,6 +40,12 @@ function Save:flush()
     end
     local str = ""
     for k, v in pairs(self.values) do
+        if v == true then
+            v = "true"
+        end
+        if v == false then
+            v = "false"
+        end
         if v ~= nil then
             str = str .. k .. " = " .. v .. "\n"
         end

@@ -16,7 +16,7 @@ return {
     ["skipAnimTileGen"] = true,
     ["vars.ambience"] = "ForestBirds",
     ["vars.music"] = "Promenade",
-    ["vars.nextMap"] = "Geronimo",
+    ["vars.nextMap"] = "Atol",
     ["vars.targetFruits"] = 12,
     ["vars.timer"] = 120
   },

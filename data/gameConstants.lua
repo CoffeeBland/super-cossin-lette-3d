@@ -946,6 +946,10 @@ return {
         { "waitForZoom",
             entity = { byName = "cossin" },
         },
+        { "save",
+            key = "[vars.currentMap]",
+            value = true
+        },
         { "changeState",
             Ending,
             {},
