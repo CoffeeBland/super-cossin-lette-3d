@@ -36,7 +36,7 @@ function Ending:update(dt)
 
     self.timeline:update(dt)
     if self.timeline.frame == self.timeline.events[#self.timeline.events].frame then
-        Credits:enter()
+        Credits:createItems()
         local _, creditsHeight = Menu.draw(nil, 0, Credits.items, CURRES[1], CURRES[2], 0)
         self.creditsScroll = (CURRES[2] + creditsHeight) / 2
         self.endCreditsScroll = -(CURRES[2] + creditsHeight) / 2

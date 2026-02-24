@@ -41,11 +41,7 @@ local credits = {
     }
 }
 
-function Credits:enter()
-    if Music.current then
-        Music.current:setFilter(Game.constants.music.filters.pause)
-    end
-
+function Credits:createItems()
     self.items = {
         {
             text = "Super Cossin Lette 3D",
@@ -72,7 +68,13 @@ function Credits:enter()
             })
         end
     end
+end
 
+function Credits:enter()
+    if Music.current then
+        Music.current:setFilter(Game.constants.music.filters.pause)
+    end
+    self:createItems()
     self.idx = 1
     self.scroll = 0
     self.autoScrollFrames = Game.constants.pause.autoScrollFrames
