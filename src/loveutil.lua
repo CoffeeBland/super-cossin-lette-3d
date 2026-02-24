@@ -82,3 +82,9 @@ function love.timer.measure()
     -- Noop by default. See options.
     return 0
 end
+
+local originalReset = love.graphics.reset
+love.graphics.reset = function()
+    originalReset()
+    love.graphics.setDefaultFilter("nearest", "nearest")
+end

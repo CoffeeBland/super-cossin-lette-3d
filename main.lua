@@ -27,7 +27,7 @@ function love.load(args)
         Options:set("debug", 1 - Options.values.debug)
     end
 
-    love.graphics.setDefaultFilter("nearest", "nearest")
+    love.graphics.reset()
     love.physics.setMeter(METER_SCALE)
 
     load.init()
