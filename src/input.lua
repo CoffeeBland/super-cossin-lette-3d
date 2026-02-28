@@ -4,6 +4,7 @@ local movementActions
 local pressActionsByKey
 local pressActionsByButton
 function setupActions()
+    local jumpOnPress = true
     pressActions = {
         start = {
             keys = { "escape" },
@@ -29,7 +30,7 @@ function setupActions()
             keys = {},
             buttons = { "back" }
         },
-        jump = Options.values.arcade and {
+        jump = jumpOnPress and {
             keys = { "space" },
             buttons = { "a" }
         } or nil,
@@ -40,7 +41,7 @@ function setupActions()
     }
 
     releaseActions = {
-        jump = (not Options.values.arcade) and {
+        jump = not jumpOnPress and {
             keys = { "space" },
             buttons = { "a" }
         } or nil

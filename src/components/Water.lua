@@ -58,9 +58,9 @@ function Water:update(framePart, game, entity)
         if self.remainingDrownFrames < DELTA then
             self.remainingDrownFrames = nil
             anim:release("drown")
-            pos.x = pos.lastGoodX
-            pos.y = pos.lastGoodY
-            pos.z = pos.lastGoodZ
+            pos.x = self.lastGoodX
+            pos.y = self.lastGoodY
+            pos.z = self.lastGoodZ
             pos.onGround = false
             physics.body:setPosition(pos.x, pos.y)
             physics.body:setLinearVelocity(0, 0)
@@ -68,21 +68,22 @@ function Water:update(framePart, game, entity)
             physics:updateHeightSlices(pos)
         end
     else
-        self.sensorsInWater = 0
+        local sensorsInWater = 0
         for _, sensor in pairs(self.sampleSensors) do
             if game.physics:getFirstOverlappingOfType(sensor, WATER_SENSOR, pos) then
-                self.sensorsInWater = self.sensorsInWater + 1
+                sensorsInWater = sensorsInWater + 1
             end
         end
-        if self.sensorsInWater == #self.sampleSensors then
+        if sensorsInWater == #self.sampleSensors then
             self.remainingDrownFrames = self.drownFrames
             anim:request("drown")
             physics.body:setLinearVelocity(0, 0)
         end
-        if pos.onGround and (self.sensorsInWater == 0 or not pos.lastGoodX) then
-            pos.lastGoodX = pos.x
-            pos.lastGoodY = pos.y
-            pos.lastGoodZ = pos.z
+        local onFirmGround = pos.onGround and (not pos.floorEntity or not pos.floorEntity.velocity)
+        if onFirmGround and (sensorsInWater == 0 or not self.lastGoodX) then
+            self.lastGoodX = pos.x
+            self.lastGoodY = pos.y
+            self.lastGoodZ = pos.z
         end
     end
 end
