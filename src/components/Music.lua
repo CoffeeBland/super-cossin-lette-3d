@@ -74,6 +74,7 @@ function Music:gameUpdate(framePart, dt, game)
         end
     end
     self.speed = speed
+    self.shake = game.camera.shakeFrames > 0 and game.camera.shakeAmplitude or 0
 end
 
 function Music:update(dt)
@@ -83,6 +84,7 @@ function Music:update(dt)
         local currentVolume = math.interp(self.currentFadeinFrames, self.current:getVolume(), Game.constants.music.volume)
         self.current:setVolume(currentVolume * Options.values.music / 100)
         self.current:setPitch(self.speed)
+        self.current:setEffect("shake", self.shake > 0)
         self.currentFadeinFrames = math.max(self.currentFadeinFrames - framePart, 0)
         if self.currentLoop then
             self:loop(self.currentName, self.current)

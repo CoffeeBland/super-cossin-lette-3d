@@ -39,7 +39,7 @@ return function()
                 eatFruit = {
                     name = "Gulp",
                     pitchRange = { 1.6, 2 },
-                    mass = 0.33
+                    mass = 0.5
                 },
                 speak = {
                     name = "Bloop",
@@ -56,7 +56,7 @@ return function()
                     },
                     volumeRange = { 0.8, 1 },
                     pitchRange = { 1.2, 1.4 },
-                    mass = 0.33
+                    mass = 0.5
                 },
             },
             conditions = {

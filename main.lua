@@ -83,7 +83,7 @@ function love.update(dt)
     frameTime = frameTime - frameDuration * frames
     -- Cap the amount of frames we ever do to one-away from the previous frames we did.
     -- This (maybe) avoids zigzagging the frames.
-    local actualFrames = math.sign(frames - previousFrames) + previousFrames
+    local actualFrames = frames -- math.sign(frames - previousFrames) + previousFrames
     for i = 1, actualFrames do
         StateMachine:update(frameDuration)
 

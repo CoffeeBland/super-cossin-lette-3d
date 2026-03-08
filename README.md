@@ -5,13 +5,13 @@
         * Course!
         * Atol / chill
         * Heist / tension
-    * Enregistrer le title theme
-    * Enregistrer les jingles
-    * Pitch shift la musique selon le poid de cossin
+    * Ré-enregistrer la fin
+    * Enregistrer vas-y cossin
 * Distribution
     * Windô
     * Linux
     * Mac ? Iiiiiiiish
+* Trailer
 
 ## MAPS
 * Un labyrinthe. That's it

@@ -9,7 +9,7 @@ function Save:init()
 
     local lines = str.split(contents, "\n")
     for _, line in ipairs(lines) do
-        local key, value = line:match"%s*(%w+)%s*=%s*(%w+)"
+        local key, value = line:match"%s*([%w_]+)%s*=%s*(%w+)"
         if value == "true" then
             value = true
         end

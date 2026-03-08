@@ -12,6 +12,7 @@ return {
   nextlayerid = 78,
   nextobjectid = 2933,
   properties = {
+    ["vars.ambience"] = "Lake",
     ["vars.music"] = "Promenade",
     ["vars.nextMap"] = "map_jessi",
     ["vars.targetFruits"] = 11,

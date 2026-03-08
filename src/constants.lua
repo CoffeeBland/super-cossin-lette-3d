@@ -512,6 +512,10 @@ love.audio.setEffect("brun", {
     edge = 0.25
 })
 
+love.audio.setEffect("shake", {
+    type = "ringmodulator"
+})
+
 love.audio.setEffect("mass1.33", {
     type = "reverb",
     decaytime = 0.75

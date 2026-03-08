@@ -5,6 +5,7 @@
  </editorsettings>
  <properties>
   <property name="name" value="EN BAS DE LA COLLINE"/>
+  <property name="vars.ambience" value="Meadow"/>
   <property name="vars.nextMap" value="Raceway"/>
   <property name="vars.targetFruits" type="int" value="10"/>
   <property name="vars.timer" type="float" value="90"/>

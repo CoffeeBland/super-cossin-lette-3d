@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "isometric",
   renderorder = "right-down",
@@ -10,11 +10,12 @@ return {
   tilewidth = 128,
   tileheight = 74,
   nextlayerid = 14,
-  nextobjectid = 465,
+  nextobjectid = 486,
   properties = {
     ["autoanim"] = true,
     ["name"] = "A LA BANQUE",
     ["vars.ambience"] = "ForestBirds",
+    ["vars.music"] = "Forreal",
     ["vars.nextMap"] = "Ending",
     ["vars.targetFruits"] = 100,
     ["vars.timer"] = 90
@@ -4061,15 +4062,16 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = -1331.14,
-          y = 1080.8,
+          x = -1331.21,
+          y = 1076.87,
           width = 128,
           height = 192,
           rotation = 0,
           gid = 316,
           visible = true,
           properties = {
-            ["golden"] = true
+            ["golden"] = true,
+            ["posZ"] = 0
           }
         },
         {
@@ -4173,15 +4175,16 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = -976.788,
-          y = 1146.79,
+          x = -980.08,
+          y = 1152.75,
           width = 128,
           height = 192,
           rotation = 0,
           gid = 318,
           visible = true,
           properties = {
-            ["golden"] = true
+            ["golden"] = true,
+            ["posZ"] = 0
           }
         },
         {
@@ -4189,15 +4192,16 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = -1199.4,
-          y = 934.127,
+          x = -1206.45,
+          y = 927.846,
           width = 128,
           height = 192,
           rotation = 0,
           gid = 319,
           visible = true,
           properties = {
-            ["golden"] = true
+            ["golden"] = true,
+            ["posZ"] = 0
           }
         },
         {
@@ -4205,15 +4209,16 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = -1161.3,
-          y = 1275.3,
+          x = -1148.96,
+          y = 1277.62,
           width = 128,
           height = 192,
           rotation = 0,
           gid = 317,
           visible = true,
           properties = {
-            ["golden"] = true
+            ["golden"] = true,
+            ["posZ"] = 0
           }
         },
         {
@@ -8684,6 +8689,326 @@ return {
           properties = {
             ["randomTruncateHeight"] = true,
             ["truncateHeight"] = 230
+          }
+        },
+        {
+          id = 465,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1287.25,
+          y = 1123.92,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 327,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 466,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1185.04,
+          y = 877.708,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 327,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 467,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1017.2,
+          y = 1171.2,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 327,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 468,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1084.51,
+          y = 1281.18,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 327,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 469,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -945.187,
+          y = 1208.52,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 328,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 470,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1324.08,
+          y = 1148.75,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 328,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 471,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1124.26,
+          y = 951.594,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 328,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 472,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1119.4,
+          y = 1234.73,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 328,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 473,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -949.687,
+          y = 1093.02,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 328,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 474,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -927.51,
+          y = 1166.84,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 329,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 476,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1128.65,
+          y = 1342.65,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 329,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 477,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1282.3,
+          y = 1080.3,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 329,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 478,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1257.22,
+          y = 951.219,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 329,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 479,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1014.13,
+          y = 1104.13,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 2147483977,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 480,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1183.48,
+          y = 1004.15,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 2147483976,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 481,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1323,
+          y = 1045,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 330,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 482,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1387.53,
+          y = 1072.2,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 327,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 483,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1225.14,
+          y = 903.135,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 330,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 484,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1178.81,
+          y = 1255.48,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 328,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
+          }
+        },
+        {
+          id = 485,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -1199.98,
+          y = 1320.65,
+          width = 128,
+          height = 74,
+          rotation = 0,
+          gid = 329,
+          visible = true,
+          properties = {
+            ["posZ"] = 0
           }
         }
       }

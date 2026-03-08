@@ -14,7 +14,7 @@ return {
   properties = {
     ["name"] = "SUR LA PISTE",
     ["vars.ambience"] = "Meadow",
-    ["vars.music"] = "Forreal",
+    ["vars.music"] = "Title",
     ["vars.nextMap"] = "Heist",
     ["vars.targetFruits"] = 20,
     ["vars.timer"] = 45
