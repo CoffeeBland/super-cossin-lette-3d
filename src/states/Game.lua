@@ -184,6 +184,7 @@ function Game:enter(args)
     Requests.populate(self)
     time = love.timer.measure(time, "entities")
 
+    load.createGeneratedSprites()
     load.createHeightTextures()
 
     time = love.timer.getTime()

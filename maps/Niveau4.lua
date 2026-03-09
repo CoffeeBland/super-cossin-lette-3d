@@ -12,9 +12,10 @@ return {
   nextlayerid = 78,
   nextobjectid = 2933,
   properties = {
+    ["name"] = "A LA QUETE DU RADIS",
     ["vars.ambience"] = "Lake",
     ["vars.music"] = "Promenade",
-    ["vars.nextMap"] = "map_jessi",
+    ["vars.nextMap"] = "Niveau5",
     ["vars.targetFruits"] = 11,
     ["vars.timer"] = 125
   },

@@ -42,6 +42,106 @@ local function getTilePos(alignment, tile)
     end
 end
 
+function load.createGeneratedSprites()
+    for name, object in pairs(objects.byName) do
+        local entity = object.prefab and prefabs[object.prefab](object, {}) or {}
+        for _, sprite in ipairs(entity.sprites or EMPTY) do
+            if sprite.generateSprite then
+                if not sprites[sprite.name] then
+                    local tilesX, tilesY = 1, 1
+                    for _, anim in ipairs(sprite.generateSprite) do
+                        for _, tile in ipairs(anim.tiles) do
+                            tilesX = math.max(tilesX, tile[1] + 1)
+                            tilesY = math.max(tilesY, tile[2] + 1)
+                        end
+                    end
+
+                    local original = textures[sprite.name]
+                    local w, h = original:getDimensions()
+
+                    local clipCanvas = love.graphics.newCanvas(w, h)
+                    local spriteCanvas = love.graphics.newCanvas(w * tilesX, h * tilesY)
+
+                    local quads = {}
+                    for tx = 1, tilesX do
+                        for ty = 1, tilesY do
+                            quads[tx] = {}
+                            quads[tx][ty] = love.graphics.newQuad(
+                                (tx - 1) * w,
+                                (ty - 1) * h,
+                                w,
+                                h,
+                                spriteCanvas)
+                        end
+                    end
+
+                    for _, anim in ipairs(sprite.generateSprite) do
+                        local clipTexture = textures[anim.clip]
+                        local animTexture = textures[anim.anim]
+                        local animQuads = {}
+                        for i, tile in ipairs(anim.fromTiles or EMPTY) do
+                            animQuads[i] = love.graphics.newQuad(
+                                tile[1] * w,
+                                tile[2] * h,
+                                w,
+                                h,
+                                animTexture)
+                        end
+
+                        for i, tile in ipairs(anim.tiles) do
+                            local targetQuad = quads[tile[1] + 1][tile[2] + 1]
+                            local animQuad = animQuads[i]
+                            local transform = anim.transform and anim.transform[i] or EMPTY
+
+                            love.graphics.setCanvas({ clipCanvas, stencil = true })
+                            love.graphics.clear()
+                            love.graphics.push()
+                            if clipTexture then
+                                love.graphics.setStencilTest("equal", 0)
+                                love.graphics.stencil(function ()
+                                    love.graphics.setShader(MASK_SHADER)
+                                    MASK_SHADER:send("size", { clipTexture:getDimensions() })
+                                    love.graphics.draw(clipTexture, animQuad)
+                                    love.graphics.setShader()
+                                end)
+                            end
+                            for _, t in ipairs(transform) do
+                                if t[1] == "translate" then
+                                    love.graphics.translate(t.x, t.y)
+                                end
+                            end
+                            love.graphics.draw(original)
+                            if clipTexture then
+                                love.graphics.setStencilTest()
+                            end
+                            love.graphics.pop()
+                            if animTexture then
+                                love.graphics.draw(animTexture, animQuad)
+                            end
+
+                            love.graphics.setCanvas(spriteCanvas)
+                            love.graphics.draw(clipCanvas, tile[1] * w, tile[2] * h)
+                            love.graphics.setCanvas()
+
+                            anim.tiles[i] = {
+                                quad = targetQuad,
+                                trigger = tile[3]
+                            }
+                        end
+
+                        anim.tileWidth = w
+                        anim.tileHeight = h
+                    end
+
+                    textures[sprite.name] = love.graphics.newImage(spriteCanvas:newImageData())
+                    sprites[sprite.name] = sprite.generateSprite
+                    dirtyHeightTextures[sprite.name] = true
+                end
+            end
+        end
+    end
+end
+
 local function areHeightTilesEqual(a, b)
     local ax, ay, aw, ah = a.quad:getViewport()
     local bx, by, bw, bh = b.quad:getViewport()
@@ -651,7 +751,6 @@ function load.loadData(name, file)
             for i, anim in ipairs(sprite) do
                 anim.tileWidth = data.tileWidth or sprite.tileWidth
                 anim.tileHeight = data.tileHeight or sprite.tileHeight
-                anim.triggers = {}
                 for i, tile in ipairs(anim.tiles) do
                     anim.tiles[i] = {
                         quad = love.graphics.newQuad(

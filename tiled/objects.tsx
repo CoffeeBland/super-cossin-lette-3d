@@ -767,19 +767,21 @@
  </tile>
  <tile id="88">
   <properties>
+   <property name="autoheightDeltaX" type="float" value="-90"/>
+   <property name="autoheightDeltaY" type="float" value="-90"/>
    <property name="autoshadow" type="bool" value="true"/>
    <property name="height" type="float" value="240"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="400"/>
-   <property name="offsetY" type="float" value="360"/>
+   <property name="offsetY" type="float" value="440"/>
    <property name="posZ" type="float" value="240"/>
-   <property name="reflectedOffset" type="float" value="0"/>
-   <property name="reflectionHeightScale" type="float" value="1"/>
+   <property name="reflectedOffset" type="float" value="90"/>
+   <property name="reflectionHeightScale" type="float" value="1.05"/>
   </properties>
   <image source="../img/Arche_top.png" width="961" height="622"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="954" y="466">
-    <polygon points="-160.667,-35.333 -465,121 -855.333,-103 -619.333,-238.667"/>
+    <polygon points="-22.3337,36.3333 -366.667,203.333 -984.666,-141.667 -735.333,-282.667"/>
    </object>
   </objectgroup>
  </tile>
@@ -791,9 +793,9 @@
    <property name="height" type="float" value="480"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="280"/>
-   <property name="offsetY" type="float" value="560"/>
-   <property name="reflectedOffset" type="float" value="80"/>
-   <property name="reflectionHeightScale" type="float" value="1.05"/>
+   <property name="offsetY" type="float" value="580"/>
+   <property name="reflectedOffset" type="float" value="90"/>
+   <property name="reflectionHeightScale" type="float" value="1"/>
   </properties>
   <image source="../img/Arche_arriere.png" width="1152" height="1024"/>
   <objectgroup draworder="index" id="3">
@@ -811,8 +813,8 @@
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="860"/>
    <property name="offsetY" type="float" value="830"/>
-   <property name="reflectedOffset" type="float" value="92"/>
-   <property name="reflectionHeightScale" type="float" value="1.1"/>
+   <property name="reflectedOffset" type="float" value="90"/>
+   <property name="reflectionHeightScale" type="float" value="1.05"/>
   </properties>
   <image source="../img/Arche_avant.png" width="1152" height="1024"/>
   <objectgroup draworder="index" id="2">

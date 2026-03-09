@@ -6,7 +6,7 @@
  <properties>
   <property name="poZ" type="float" value="480"/>
   <property name="vars.music" value="Promenade"/>
-  <property name="vars.nextMap" value="Niveau5"/>
+  <property name="vars.nextMap" value="map_jessi"/>
   <property name="vars.targetFruits" type="int" value="18"/>
   <property name="vars.timer" type="float" value="140"/>
  </properties>

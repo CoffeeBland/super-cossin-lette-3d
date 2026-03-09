@@ -9,8 +9,32 @@ return function(object, data, flipX, flipY)
                 anchor = { x = object.offsetX, y = object.offsetY },
                 flipX = flipX,
                 flipY = flipY,
-                hue = golden and 0.13 or nil
+                hue = golden and 0.13 or nil,
+                generateSprite = {
+                    {
+                        name = "float",
+                        fps = 5,
+                        pingPong = true,
+                        fromTiles = { { 0, 0 }, { 1, 0 }, { 2, 0 } },
+                        tiles = { { 1, 0 }, { 2, 0 }, { 3, 0 } },
+                        transform = {
+                            { { "translate", x = 0, y = 5 } },
+                            { { "translate", x = 0, y = 10 } },
+                            { { "translate", x = 0, y = 15 } }
+                        },
+                        anim = "FruitBopWater",
+                        clip = "FruitBopClip"
+                    },
+                    {
+                        name = "idle",
+                        tiles = { { 0, 0 } },
+                        fps = 1
+                    },
+                }
             }
+        },
+        water = {
+            samples = { { 0, 0, 5 } }
         },
         pos = { height = 80 },
         fruit = {
@@ -40,6 +64,15 @@ return function(object, data, flipX, flipY)
                     speed = 6,
                     angleRange = { 0, math.pi * 2 }
                 },
+                ["float:start"] = {
+                    name = "Splash",
+                    offset = { x = 0, y = 0, z = 20 },
+                    offsetRange = { x = { -40, 40 }, y = { -60, 20 } },
+                    count = 6,
+                    durationRange = { 30, 40 },
+                    speed = 5,
+                    angleRange = { 0, math.pi * 2 }
+                }
             },
             always = (radish or golden) and {
                 name = "Sparkle",

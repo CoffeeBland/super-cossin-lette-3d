@@ -2032,14 +2032,16 @@ return {
     {
       id = 88,
       properties = {
+        ["autoheightDeltaX"] = -90,
+        ["autoheightDeltaY"] = -90,
         ["autoshadow"] = true,
         ["height"] = 240,
         ["lensed"] = true,
         ["offsetX"] = 400,
-        ["offsetY"] = 360,
+        ["offsetY"] = 440,
         ["posZ"] = 240,
-        ["reflectedOffset"] = 0,
-        ["reflectionHeightScale"] = 1
+        ["reflectedOffset"] = 90,
+        ["reflectionHeightScale"] = 1.05
       },
       image = "../img/Arche_top.png",
       width = 961,
@@ -2070,10 +2072,10 @@ return {
             rotation = 0,
             visible = true,
             polygon = {
-              { x = -160.667, y = -35.333 },
-              { x = -465, y = 121 },
-              { x = -855.333, y = -103 },
-              { x = -619.333, y = -238.667 }
+              { x = -22.3337, y = 36.3333 },
+              { x = -366.667, y = 203.333 },
+              { x = -984.666, y = -141.667 },
+              { x = -735.333, y = -282.667 }
             },
             properties = {}
           }
@@ -2089,9 +2091,9 @@ return {
         ["height"] = 480,
         ["lensed"] = true,
         ["offsetX"] = 280,
-        ["offsetY"] = 560,
-        ["reflectedOffset"] = 80,
-        ["reflectionHeightScale"] = 1.05
+        ["offsetY"] = 580,
+        ["reflectedOffset"] = 90,
+        ["reflectionHeightScale"] = 1
       },
       image = "../img/Arche_arriere.png",
       width = 1152,
@@ -2142,8 +2144,8 @@ return {
         ["lensed"] = true,
         ["offsetX"] = 860,
         ["offsetY"] = 830,
-        ["reflectedOffset"] = 92,
-        ["reflectionHeightScale"] = 1.1
+        ["reflectedOffset"] = 90,
+        ["reflectionHeightScale"] = 1.05
       },
       image = "../img/Arche_avant.png",
       width = 1152,

@@ -4,6 +4,7 @@
   <export target="../maps/Niveau2.lua" format="lua"/>
  </editorsettings>
  <properties>
+  <property name="name" value="DANS D'AUTRES BOIS"/>
   <property name="vars.ambience" value="ForestBirds"/>
   <property name="vars.music" value="Promenade"/>
   <property name="vars.nextMap" value="Niveau3"/>

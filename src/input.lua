@@ -376,7 +376,7 @@ function input.draw()
             CURRES[2] - height - vmargin)
         love.graphics.setFont(fonts.menu)
 
-        love.graphics.printf("v " .. VERSION, CURRES[1] / 2 - 160 - hmargin, 0, 160, "right")
+        love.graphics.printf("v" .. VERSION, CURRES[1] / 2 - 160 - hmargin, 0, 160, "right")
 
         love.graphics.push()
         love.graphics.translate(-width / 2, height / 2)

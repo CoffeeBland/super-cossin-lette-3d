@@ -3,7 +3,8 @@ Music = {
     oldFadeoutFrames = 0,
     current = nil,
     currentFadeinFrames = 0,
-    speed = 1
+    speed = 1,
+    shake = 0
 }
 
 local fadeFrames = 60

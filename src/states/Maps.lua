@@ -25,7 +25,11 @@ function Maps:enter(params)
         local map = mapsByName[nextmap]
         local displayName = map._data.properties.name
         if not displayName then
-            displayName = "DANS LES BOIS #" .. noDisplayIdx
+            if noDisplayIdx > 1 then
+                displayName = "DANS LES BOIS #" .. noDisplayIdx
+            else
+                displayName = "DANS LES BOIS"
+            end
             noDisplayIdx = noDisplayIdx + 1
         end
         table.insert(self.items, {

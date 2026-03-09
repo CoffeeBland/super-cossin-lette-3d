@@ -74,10 +74,15 @@ function Water:update(framePart, game, entity)
                 sensorsInWater = sensorsInWater + 1
             end
         end
-        if sensorsInWater == #self.sampleSensors then
-            self.remainingDrownFrames = self.drownFrames
-            anim:request("drown")
-            physics.body:setLinearVelocity(0, 0)
+        local inWater = sensorsInWater == #self.sampleSensors
+        if self.drownFrames > 0 then
+            if inWater then
+                self.remainingDrownFrames = self.drownFrames
+                anim:request("drown")
+                physics.body:setLinearVelocity(0, 0)
+            end
+        else
+            anim:toggle("float", sensorsInWater == #self.sampleSensors)
         end
         local onFirmGround = pos.onGround and (not pos.floorEntity or not pos.floorEntity.velocity)
         if onFirmGround and (sensorsInWater == 0 or not self.lastGoodX) then

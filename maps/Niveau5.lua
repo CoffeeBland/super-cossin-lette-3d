@@ -14,7 +14,7 @@ return {
   properties = {
     ["poZ"] = 480,
     ["vars.music"] = "Promenade",
-    ["vars.nextMap"] = "Niveau5",
+    ["vars.nextMap"] = "map_jessi",
     ["vars.targetFruits"] = 18,
     ["vars.timer"] = 140
   },
