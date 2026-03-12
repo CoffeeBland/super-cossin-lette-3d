@@ -3407,7 +3407,7 @@ return {
       id = 78,
       name = "Objets",
       class = "",
-      visible = false,
+      visible = true,
       opacity = 1,
       offsetx = 0,
       offsety = 0,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="74" infinite="1" nextlayerid="88" nextobjectid="3198">
  <editorsettings>
-  <export target="../maps/Niveau5.lua" format="lua"/>
+  <export format="lua"/>
  </editorsettings>
  <properties>
   <property name="poZ" type="float" value="480"/>
@@ -2701,7 +2701,7 @@
   <object id="2934" gid="44" x="5765" y="-155" width="128" height="74"/>
   <object id="2935" gid="44" x="5812.5" y="-218.5" width="128" height="74"/>
  </objectgroup>
- <objectgroup id="78" name="Objets" visible="0">
+ <objectgroup id="78" name="Objets">
   <object id="2944" gid="90" x="1595.31" y="924.688" width="1152" height="1024"/>
   <object id="2945" gid="2147483738" x="2302.06" y="761.937" width="1152" height="1024"/>
   <object id="2946" gid="90" x="3212.81" y="507.188" width="1152" height="1024"/>
