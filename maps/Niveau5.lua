@@ -12,9 +12,10 @@ return {
   nextlayerid = 88,
   nextobjectid = 3198,
   properties = {
-    ["poZ"] = 480,
+    ["name"] = "A LA RECREATHEQUE",
+    ["vars.ambience"] = "Meadow",
     ["vars.music"] = "Promenade",
-    ["vars.nextMap"] = "map_jessi",
+    ["vars.nextMap"] = "Lonely",
     ["vars.targetFruits"] = 18,
     ["vars.timer"] = 140
   },

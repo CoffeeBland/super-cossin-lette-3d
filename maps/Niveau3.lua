@@ -15,7 +15,7 @@ return {
     ["name"] = "SUR LE DELTA",
     ["vars.ambience"] = "Lake",
     ["vars.music"] = "Promenade",
-    ["vars.nextMap"] = "Lonely",
+    ["vars.nextMap"] = "Niveau4",
     ["vars.targetFruits"] = 8,
     ["vars.timer"] = 120
   },

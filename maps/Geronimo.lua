@@ -15,7 +15,7 @@ return {
     ["name"] = "AU PETIT LAC",
     ["skipAnimTileGen"] = true,
     ["vars.ambience"] = "ForestBirds",
-    ["vars.nextMap"] = "Niveau4",
+    ["vars.nextMap"] = "map_jessi",
     ["vars.targetFruits"] = 12,
     ["vars.timer"] = 60
   },

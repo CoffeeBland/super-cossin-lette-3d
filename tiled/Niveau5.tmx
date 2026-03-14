@@ -4,9 +4,10 @@
   <export format="lua"/>
  </editorsettings>
  <properties>
-  <property name="poZ" type="float" value="480"/>
+  <property name="name" value="A LA RECREATHEQUE"/>
+  <property name="vars.ambience" value="Meadow"/>
   <property name="vars.music" value="Promenade"/>
-  <property name="vars.nextMap" value="map_jessi"/>
+  <property name="vars.nextMap" value="Lonely"/>
   <property name="vars.targetFruits" type="int" value="18"/>
   <property name="vars.timer" type="float" value="140"/>
  </properties>
