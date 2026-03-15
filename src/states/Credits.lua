@@ -38,6 +38,16 @@ local credits = {
     {
         "Veut un jeu vidéo",
         "Emery",
+    },
+    {
+        "Outils",
+        "LÖVE",
+        "Tiled",
+        "Procreate",
+        "Visual Studio Code",
+        "Audacity",
+        "MuseScore",
+        "GIMP"
     }
 }
 
