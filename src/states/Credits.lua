@@ -47,7 +47,8 @@ local credits = {
         "Visual Studio Code",
         "Audacity",
         "MuseScore",
-        "GIMP"
+        "GIMP",
+        "Git"
     }
 }
 

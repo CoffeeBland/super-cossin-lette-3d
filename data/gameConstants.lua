@@ -58,9 +58,8 @@ return {
     },
     music = {
         loops = {
-            Title = { loopStart = 55540, loopEnd = 987656 },
-            VasYCossin = { loopStart = 211680, loopEnd = 2434320 },
-            Promenade = { loopStart = 1522, loopEnd = 1340436 }
+            Title = { loopStart = 55150, loopEnd = 772810 },
+            VasYCossin = { loopStart = 211680, loopEnd = 2434320 }
         },
         filters = {
             pause =  {
@@ -1088,7 +1087,7 @@ return {
             entity = { byName = "cossin" },
             { "walkTo", point = { byName = "fruit1" } },
             { "walkTo", point = { byName = "fruit3" } },
-            { "walkTo", point = { byName = "arch", offset = { x = 750, y = -350 } } },
+            { "walkTo", point = { byName = "arch", offset = { x = 550, y = -400 } } },
         },
         { "waitForMove", entity = { byName = "cossin" } },
         { "waitForSound", name = "TutoPasDeBras" },

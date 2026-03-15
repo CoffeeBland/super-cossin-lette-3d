@@ -447,12 +447,22 @@ function MapIntro:getErrataTimeline(name)
     frame = 60
     if load.loadAudioFile("audio/" .. mapNameSound .. ".ogg", mapNameSound) then
         table.insert(timeline,
+            { "musicFilter",
+                filter = Game.constants.music.filters.pause,
+                frame = frame
+            })
+        table.insert(timeline,
             { "sound",
                 name = mapNameSound,
                 frame = frame
             })
         dur = sounds[mapNameSound]:getDuration("seconds")
     end
+    table.insert(timeline,
+        { "musicFilter",
+            filter = Game.constants.music.filters.speech,
+            frame = frame + math.floor(dur * 60)
+        })
     table.insert(timeline,
         { "sound",
             name = "MapIntro",
