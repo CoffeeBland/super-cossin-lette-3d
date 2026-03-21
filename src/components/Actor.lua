@@ -117,7 +117,7 @@ function Actor:processMove(framePart, game, nextMove, entity, actions)
     elseif type == "walkTo" then
         local x, y = game:findPoint(nextMove.point)
         local dx, dy = x - pos.x, y - pos.y
-        self.autoWalkJumpFrames = self.autoWalkJumpFrames or Game.constants.autoWalkJumpFrames
+        self.autoWalkJumpFrames = self.autoWalkJumpFrames or nextMove.autoWalkJumpFrames or Game.constants.autoWalkJumpFrames
         self.autoWalkCutoffFrames = self.autoWalkCutoffFrames or Game.constants.autoWalkCutoffFrames
         if dx^2 + dy^2 > Game.constants.autoWalkCutoffDistance2 and self.autoWalkCutoffFrames > 0 then
             actions.movement.angle = math.atan2(dy, dx)

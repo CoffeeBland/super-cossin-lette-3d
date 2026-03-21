@@ -770,6 +770,7 @@
    <property name="autoheightDeltaX" type="float" value="-90"/>
    <property name="autoheightDeltaY" type="float" value="-90"/>
    <property name="autoshadow" type="bool" value="true"/>
+   <property name="entityName" value="top"/>
    <property name="height" type="float" value="240"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="400"/>
@@ -827,6 +828,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
+   <property name="entityName" value="top"/>
    <property name="height" type="float" value="260"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
@@ -844,6 +846,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
+   <property name="entityName" value="top"/>
    <property name="height" type="float" value="260"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
@@ -861,6 +864,7 @@
   <properties>
    <property name="autoheightBulge" type="float" value="930"/>
    <property name="autoshadow" type="bool" value="true"/>
+   <property name="entityName" value="top"/>
    <property name="height" type="float" value="260"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
@@ -876,6 +880,7 @@
  </tile>
  <tile id="5">
   <properties>
+   <property name="entityName" value="trunk"/>
    <property name="height" type="float" value="770"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
@@ -890,6 +895,7 @@
  </tile>
  <tile id="6">
   <properties>
+   <property name="entityName" value="trunk"/>
    <property name="height" type="float" value="770"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>
@@ -904,6 +910,7 @@
  </tile>
  <tile id="7">
   <properties>
+   <property name="entityName" value="trunk"/>
    <property name="height" type="float" value="770"/>
    <property name="lensed" type="bool" value="true"/>
    <property name="offsetX" type="float" value="510"/>

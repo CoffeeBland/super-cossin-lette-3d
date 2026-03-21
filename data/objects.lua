@@ -2035,6 +2035,7 @@ return {
         ["autoheightDeltaX"] = -90,
         ["autoheightDeltaY"] = -90,
         ["autoshadow"] = true,
+        ["entityName"] = "top",
         ["height"] = 240,
         ["lensed"] = true,
         ["offsetX"] = 400,
@@ -2191,6 +2192,7 @@ return {
       properties = {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
+        ["entityName"] = "top",
         ["height"] = 260,
         ["lensed"] = true,
         ["offsetX"] = 510,
@@ -2235,6 +2237,7 @@ return {
       properties = {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
+        ["entityName"] = "top",
         ["height"] = 260,
         ["lensed"] = true,
         ["offsetX"] = 510,
@@ -2279,6 +2282,7 @@ return {
       properties = {
         ["autoheightBulge"] = 930,
         ["autoshadow"] = true,
+        ["entityName"] = "top",
         ["height"] = 260,
         ["lensed"] = true,
         ["offsetX"] = 510,
@@ -2321,6 +2325,7 @@ return {
     {
       id = 5,
       properties = {
+        ["entityName"] = "trunk",
         ["height"] = 770,
         ["lensed"] = true,
         ["offsetX"] = 510,
@@ -2370,6 +2375,7 @@ return {
     {
       id = 6,
       properties = {
+        ["entityName"] = "trunk",
         ["height"] = 770,
         ["lensed"] = true,
         ["offsetX"] = 510,
@@ -2419,6 +2425,7 @@ return {
     {
       id = 7,
       properties = {
+        ["entityName"] = "trunk",
         ["height"] = 770,
         ["lensed"] = true,
         ["offsetX"] = 510,
