@@ -16,7 +16,7 @@ return {
     ["vars.ambience"] = "Meadow",
     ["vars.nextMap"] = "Raceway",
     ["vars.targetFruits"] = 10,
-    ["vars.timer"] = 90
+    ["vars.timer"] = 110
   },
   tilesets = {
     {

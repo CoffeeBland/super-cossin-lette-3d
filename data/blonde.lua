@@ -79,7 +79,7 @@ return function()
             pickupAnimFrames = 20,
             firstOffset = { x = 0, y = 0, z = 0 },
             otherOffset = { x = 0, y = 0, z = 0 },
-            dropForce = 240,
+            dropForce = 60,
             dropJumpSpeed = 60,
             dropCooldown = 60,
             eatCooldown = 18,

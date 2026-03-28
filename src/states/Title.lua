@@ -423,6 +423,8 @@ function Title:render()
             menuWidth = menuWidth + margin + button.width
         end
         love.graphics.translate(-menuWidth / 2, 0)
+        love.graphics.setColor(bgcol)
+        love.graphics.rectangle("fill", 0, -60, menuWidth, 120)
 
         local x = 0
         for _, button in ipairs(menu.buttons) do
